@@ -21,7 +21,8 @@ Imports:
     reshape2
 Suggests:
     testthat,
-    knitr
+    knitr,
+    rmarkdown
 Remotes:
     RforMassSpectrometry/MsCoreUtils,
     RforMassSpectrometry/MetaboCoreutils
@@ -33,4 +34,3 @@ URL: https://github.com/michaelwitting/MetaboAnnotation
 biocViews: Infrastructure, Metabolomics, MassSpectrometry
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.1.1
-

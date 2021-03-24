@@ -87,10 +87,12 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
 
   adductMzs <- mass2mz(cmpds$exactmass, adducts)
 
-  ionDf <- melt(cbind.data.frame(cmpds, adductMzs),
+  ionDf <- melt(cbind.data.frame(cmpds, adductMzs, stringsAsFactors = FALSE),
                 id.vars = colnames(cmpds),
                 value.name = "mz",
                 variable.name = "adduct")
+
+  ionDf$adduct <- as.character(ionDf$adduct)
 
   ionDf[order(ionDf$mz),]
 
@@ -113,9 +115,13 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
   matches[is.na(matches)] <- FALSE
 
   if(any(matches)) {
+
     return(ionDf[matches,])
+
   } else {
+
     return(NA)
+
   }
 }
 

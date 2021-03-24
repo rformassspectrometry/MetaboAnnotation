@@ -1,0 +1,27 @@
+---
+title: "MetaboAnnotation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MetaboAnnotation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(MetaboAnnotation)
+library(tidyverse)
+
+ms1_data <- read_tsv(system.file("MS1_example.txt", package = "MetaboAnnotation"))
+
+cmpds <- read_tsv(system.file("LipidMaps.txt", package = "MetaboAnnotation"))
+
+result <- annotateMz(ms1_data, cmpds, adducts = c("[M+H]+", "[M+Na]+", "[M+NH4]+"), tolerance = 0.005, ppm = 0)
+
+```
