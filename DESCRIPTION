@@ -1,16 +1,36 @@
-Package: metaboIdentifyR
+Package: MetaboAnnotation
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Version: 0.0.1
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
+Authors@R: c(person(given = "Johannes", family = "Rainer",
+                    email = "Johannes.Rainer@eurac.edu",
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-6977-7147")),
+             person(given = "Michael", family = "Witting",
+                    email = "michael.witting@helmholtz-muenchen.de",
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-1462-4426")))
+Author: Michael Witting and Johannes Rainer.
+Maintainer: RforMassSpectrometry Package Maintainer
+    <maintainer@rformassspectrometry.org>
+Depends:
+    R (>= 4.0.0)
+Imports:
+    MsCoreUtils,
+    MetaboCoreUtils,
+    reshape2
+Suggests:
+    testthat,
+    knitr
+Remotes:
+    RforMassSpectrometry/MsCoreUtils,
+    RforMassSpectrometry/MetaboCoreutils
+License: Artistic-2.0
+LazyData: yes
+VignetteBuilder: knitr
+BugReports: https://github.com/michaelwitting/MetaboAnnotation/issues
+URL: https://github.com/michaelwitting/MetaboAnnotation
+biocViews: Infrastructure, Metabolomics, MassSpectrometry
+Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.1.1
+
