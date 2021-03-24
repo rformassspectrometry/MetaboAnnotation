@@ -1,35 +1,77 @@
-#' @title Perform annotation on MS1 level
+
+setGeneric("annotateMz", function(x, y, adducts, tolerance, ppm)
+  standardGeneric("annotateMz")
+  )
+
 #'
-#' @description
 #'
-#' `annotateMz` calculates the m/z value from a neutral mass and an adduct
-#' definition.
+#' @importFrom MetaboCoreUtils adductNames
 #'
-#' @param mz `numeric` neutral mass for which the adduct m/z shall be calculated.
+#' @exportMethod annotateMz
+setMethod("annotateMz", signature = c(x = "data.frame", y = "data.frame"),
+          function(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0) {
+
+            # some sanity checks
+            if(!any(adducts %in% c(adductNames("positive"), adductNames("negative")))) {
+
+              stop("Unknown adducts, please check MetaboCoreUtils for valid adducts")
+
+            }
+
+            if(!"mz" %in% colnames(x)) {
+
+              stop("Missing mz column in x")
+
+            }
+
+            cmpds <- y
+            mz <- x$mz
+
+            .annotateMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
+
+          })
+
 #'
-#' @param compdb `data.frame` data frame containing compounds used for annoation.
-#'     Should minimally contain $name, $exactmass as input.
 #'
-#' @param adducts `character` specifying the name of the adduct;
-#'     supported values are returned by [MetaboCoreUtils::adductNames()]
+#' @importFrom MetaboCoreUtils adductNames
+#' @importClassesFrom CompoundDb CompDb
 #'
-#' @param tolerance `numeric` absolute annotation error
+#' @exportMethod annotateMz
+setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
+          function(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0) {
+
+            # some sanity checks
+            if(!any(adducts %in% c(adductNames("positive"), adductNames("negative")))) {
+
+              stop("Unknown adducts, please check MetaboCoreUtils for valid adducts")
+
+            }
+
+            if(!"mz" %in% colnames(x)) {
+
+              stop("Missing mz column in x")
+
+            }
+
+            cmpds <- compounds(y)
+            mz <- x$mz
+
+            .annotateMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
+
+          })
+
+
+
 #'
-#' @param ppm `numeric` ppm annotation error
 #'
-#' @return `list` List of data frames with the same length as mz.
-#'
-#' @author Michael Witting
-#'
-#' @export
-annotateMz <- function(mz,
-                       compdb,
-                       adducts,
-                       tolerance = 0,
-                       ppm = 0) {
+.annotateMz <- function(mz,
+                        cmpds,
+                        adducts,
+                        tolerance = 0,
+                        ppm = 0) {
 
   # create data.frame will all ion m/z
-  ionDf <- .createIonDf(compdb, adducts)
+  ionDf <- .createIonDf(cmpds, adducts)
 
   # perform annotation of m/z values
   lapply(mz, .closestFeature, ionDf = ionDf, tolerance = tolerance, ppm = ppm)
@@ -41,12 +83,12 @@ annotateMz <- function(mz,
 #'
 #' @importFrom MetaboCoreUtils mass2mz
 #' @importFrom reshape2 melt
-.createIonDf <- function(compdb, adducts) {
+.createIonDf <- function(cmpds, adducts) {
 
-  adductMzs <- mass2mz(compdb$exactmass, adducts)
+  adductMzs <- mass2mz(cmpds$exactmass, adducts)
 
-  ionDf <- melt(cbind.data.frame(compdb, adductMzs),
-                id.vars = colnames(compdb),
+  ionDf <- melt(cbind.data.frame(cmpds, adductMzs),
+                id.vars = colnames(cmpds),
                 value.name = "mz",
                 variable.name = "adduct")
 
