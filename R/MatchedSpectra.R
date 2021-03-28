@@ -10,10 +10,24 @@
 #' `MatchedSpectra` object. Functions like the [matchSpectra()] function will
 #' return this type of object.
 #'
+#' @section Creation and subsetting:
+#'
+#' `MatchedSpectra` objects can be created with the `MatchedSpectra` function
+#' providing the `query` and `target` `Spectra` as well as a `data.frame` with
+#' the
+#'
+#' - `[` subset the `MatchedSpectra` selecting `query` spectra to keep with
+#'   parameter `i`. The `target` spectra will by default be returned as-is.
+#' 
 #' @section Extracting data:
 #'
 #' - `length` returns the number of matches.
 #'
+#' - `spectraVariables` returns all available spectra variables in the *query*
+#'   and *target* spectra. The prefix `"target_"` is used to label spectra
+#'   variables of target spectra (e.g. the name of the spectra variable for the
+#'   MS level of target spectra is called `"target_msLevel"`).  
+#' 
 #' - `target` returns the *target* `Spectra`.
 #' 
 #' - `query` returns the *query* `Spectra`.
@@ -23,7 +37,13 @@
 #'
 #' - `whichQuery` returns an `integer` with the indices of the spectra in
 #'   *query* that match at least on spectrum in *target*.
+#'
+#' @param drop for `[`: ignored.
 #' 
+#' @param i `integer` or `logical` defining the `query` spectra to keep.
+#'
+#' @param j for `[`: ignored.
+#'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'     `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the
 #'     *n:m* mapping of elements between the `query` and the `target` `Spectra`.
@@ -121,38 +141,68 @@ setMethod("length", "MatchedSpectra", function(x) nrow(x@matches))
 setMethod("show", "MatchedSpectra", function(object) {
     cat("Object of class", class(object)[1L], "\n")
     cat("Number of matches:", length(object@matches), "\n")
-    cat("Number of query spectra: ", length(object@query), ", ",
-        length(unique(object@matches$query_idx)), "matched\n", sep = "")
-    cat("Number of target spectra: ", length(object@target), ", ",
-        length(unique(object@matches$target_idx)), "matched\n", sep = "")
+    cat("Number of query spectra: ", length(object@query), " (",
+        length(unique(object@matches$query_idx)), " matched)\n", sep = "")
+    cat("Number of target spectra: ", length(object@target), " (",
+        length(unique(object@matches$target_idx)), " matched)\n", sep = "")
 })
 
+#' @exportMethod [
+#'
+#' @rdname MatchedSpectra
+setMethod("[", "MatchedSpectra", function(x, i, j, ..., drop = FALSE) {
+    if (missing(i))
+        return(x)
+    if (is.logical(i))
+        i <- which(i)
+    .subset_matches_nodim(x, i)
+})
+
+#' @rdname MatchedSpectra
+#' 
 #' @export
 target <- function(object) {
     object@target
 }
 
+#' @rdname MatchedSpectra
+#' 
 #' @export
 query <- function(object) {
     object@query
 }
 
+#' @rdname MatchedSpectra
+#' 
 #' @export
 whichTarget <- function(object) {
-    unique(object@matches$query_idx)
-}
-
-#' @export
-whichQuery <- function(object) {
     unique(object@matches$target_idx)
 }
 
+#' @rdname MatchedSpectra
+#' 
+#' @export
+whichQuery <- function(object) {
+    unique(object@matches$query_idx)
+}
+
+#' @importMethodsFrom ProtGenerics spectraVariables
+#'
+#' @rdname MatchedSpectra
+#' 
+#' @export
+setMethod("spectraVariables", "MatchedSpectra", function(object) {
+    svq <- spectraVariables(query(object))
+    svt <- spectraVariables(target(object))
+    c(svq, paste0("target_", svt))
+})
+
 ## Other methods
-## - spectraVariables
-## - spectraData
+## - spectraVariables: combine from both, appending target_ to the target
+## - spectraData: combine both spectraData DataFrames. Add NAs for not matching
+##   query spectra.
 ## - $
-## - [
-## - prune
+## - pruneTarget: keep only spectra with a match in query
 
 .validate_matches_format <- function(x) {
     msg <- NULL
@@ -182,11 +232,17 @@ whichQuery <- function(object) {
     msg
 }
 
-## .subset_matches_nodim <- function(x, i) {
-##     keepq <- match(x@matches$query_idx, i)
-##     keepq <- keep[!is.na(keep)]
-##     slot(x, "query", check = FALSE) <- x@query[i]
-##     slot(x, "matches", check = FALSE) <- x@matches[keep, , drop = FALSE]
-##     slot(x, "target", check = FALSE) <- x@target[x@matches$target_idx]
-##     x
-## }
+.subset_matches_nodim <- function(x, i) {
+    slot(x, "query", check = FALSE) <- x@query[i]
+    mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
+    ## Support handling duplicated indices.
+    mtches <- split.data.frame(
+        x@matches, f = as.factor(x@matches$query_idx))[as.character(i)]
+    lns <- vapply(mtches, function(z)
+        if (length(z)) nrow(z) else 0L, integer(1))
+    mtches <- do.call(rbind, mtches[lengths(mtches) > 0])
+    rownames(mtches) <- NULL
+    mtches$query_idx <- rep(seq_along(i), lns)
+    slot(x, "matches", check = FALSE) <- mtches
+    x
+}

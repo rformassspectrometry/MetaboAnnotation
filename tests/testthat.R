@@ -11,6 +11,7 @@ con <- dbConnect(MariaDB(), host = "host.docker.internal",
                  dbname = "MassBank", user = "massbank",
                  password = "massbank")
 
+## Need to use a local 
 be <- backendInitialize(MsBackendMassbankSql(), dbcon = con)
 massbank <- filterPolarity(Spectra(be), polarity = 1)
 massbank <- setBackend(massbank, MsBackendDataFrame())
