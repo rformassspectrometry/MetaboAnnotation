@@ -232,6 +232,15 @@ setMethod("spectraVariables", "MatchedSpectra", function(object) {
     msg
 }
 
+#' Subsetting of a matched object with slots query, target and matches. Should
+#' work on all such objects for which `target` and `query` don't have dimensions
+#'
+#' @param i has to be an `integer` vector with the indices of the query elements
+#'     to keep.
+#' 
+#' @importFrom methods slot<-
+#'
+#' @noRd
 .subset_matches_nodim <- function(x, i) {
     slot(x, "query", check = FALSE) <- x@query[i]
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
