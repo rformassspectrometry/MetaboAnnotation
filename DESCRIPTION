@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.1
+Version: 0.0.2
 Description: What the package does (one paragraph).
 Authors@R: c(person(given = "Johannes", family = "Rainer",
                     email = "Johannes.Rainer@eurac.edu",
@@ -14,10 +14,12 @@ Author: Michael Witting and Johannes Rainer.
 Maintainer: RforMassSpectrometry Package Maintainer
     <maintainer@rformassspectrometry.org>
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.0.0),
+    Spectra
 Imports:
     MsCoreUtils,
     MetaboCoreUtils,
+    ProtGenerics,
     reshape2
 Suggests:
     testthat,
