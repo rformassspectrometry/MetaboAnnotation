@@ -11,6 +11,7 @@
 \alias{whichTarget}
 \alias{whichQuery}
 \alias{spectraVariables,MatchedSpectra-method}
+\alias{$,MatchedSpectra-method}
 \alias{CompareSpectraParam}
 \title{Representation of Spectra matches}
 \usage{
@@ -36,6 +37,8 @@ whichTarget(object)
 whichQuery(object)
 
 \S4method{spectraVariables}{MatchedSpectra}(object)
+
+\S4method{$}{MatchedSpectra}(x, name)
 
 CompareSpectraParam(
   MAPFUN = joinPeaks,
@@ -72,7 +75,10 @@ See individual method desciption above for details.
 \description{
 Matches between query and target spectra can be represented by the
 \code{MatchedSpectra} object. Functions like the \code{\link[=matchSpectra]{matchSpectra()}} function will
-return this type of object.
+return this type of object. By default, all data accessors work as
+\emph{left joins} between the \emph{query} and the \emph{target} spectra, i.e. values are
+returned for each \emph{query} spectrum with eventual duplicated entries (values)
+if the query spectrum matches more than one target spectrum.
 }
 \section{Creation and subsetting}{
 
@@ -89,6 +95,15 @@ parameter \code{i}. The \code{target} spectra will by default be returned as-is.
 \section{Extracting data}{
 
 \itemize{
+\item \code{$} extracts a single spectra variable from the \code{MatchedSpectra} \code{x}. Use
+\code{spectraVariables} to get all available spectra variables. Prefix
+\code{"target_"} is used for spectra variables from the \emph{target} \code{Spectra}.
+Similar to a left join between the query and target spectra, this function
+returns a value for each query spectrum with eventual duplicated values for
+query spectra matching more than one target spectrum. If spectra variables
+from the target spectra are extracted, an \code{NA} is reported for \emph{query}
+spectra that don't match any target spectra. See examples below for more
+details.
 \item \code{length} returns the number of matches.
 \item \code{spectraVariables} returns all available spectra variables in the \emph{query}
 and \emph{target} spectra. The prefix \code{"target_"} is used to label spectra
@@ -123,6 +138,37 @@ ms <- MatchedSpectra(
                                    target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
                                    score = 1:6))
 
+## Which of the query spectra match at least one target spectrum?
+whichQuery(ms)
+
+## Extracting spectra variables: accessor methods for spectra variables act
+## as "left joins", i.e. they return a value for each query spectrum, with
+## eventually duplicated elements if one query spectrum matches more than
+## one target spectrum.
+
+## Which target spectrum matches at least one query spectrum?
+whichTarget(ms)
+
+## Extracting the retention times of the query spectra.
+ms$rtime
+
+## We have duplicated retention times for query spectrum 1 (matches 2 target
+## spectra) and 4 (matches 3 target spectra). The retention time is returned
+## for each query spectrum.
+
+## Extracting retention times of the target spectra. Note that only retention
+## times for target spectra matching at least one query spectrum are returned
+## and an NA is reported for query spectra without matching target spectrum.
+ms$target_rtime
+
+## The first query spectrum matches target spectra 2 and 5, thus their
+## retention times are returned as well as the retention time of the second
+## target spectrum that matches also query spectrum 2. The 3rd query spectrum
+## does match any target spectrum, thus `NA` is returned. Query spectrum 4
+## matches target spectra 8, 12, and 15, thus the next reported retention
+## times are those from these 3 target spectra. None of the remaining 6 query
+## spectra matches any target spectra and thus `NA` is reported for each of
+## them.
 }
 \author{
 Johannes Rainer

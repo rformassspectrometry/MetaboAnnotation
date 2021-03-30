@@ -101,3 +101,27 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@matches$target_idx, 2L)
     expect_equal(res@matches$score, 3)    
 })
+
+test_that(".fill_index works", {
+    res <- .fill_index(1:5, integer())
+    expect_equal(res, 1:5)
+
+    res <- .fill_index(1:20, c(2, 4, 4, 4, 6, 9, 10))
+    expect_equal(res, c(1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+                        14, 15, 16, 17, 18, 19, 20))
+})
+
+test_that("$,MatchedSpectra works", {
+    ms <- MatchedSpectra()
+    expect_equal(ms$msLevel, integer())
+    expect_equal(ms$target_msLevel, integer())
+
+    ms <- MatchedSpectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    res <- ms$rtime
+    expect_equal(res, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
+    res <- ms$target_rtime
+    expect_equal(res, c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
+})
