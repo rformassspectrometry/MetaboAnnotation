@@ -12,6 +12,8 @@
 \alias{whichQuery}
 \alias{spectraVariables,MatchedSpectra-method}
 \alias{$,MatchedSpectra-method}
+\alias{spectraData,MatchedSpectra-method}
+\alias{pruneTarget}
 \alias{CompareSpectraParam}
 \title{Representation of Spectra matches}
 \usage{
@@ -39,6 +41,10 @@ whichQuery(object)
 \S4method{spectraVariables}{MatchedSpectra}(object)
 
 \S4method{$}{MatchedSpectra}(x, name)
+
+\S4method{spectraData}{MatchedSpectra}(object, columns = spectraVariables(object))
+
+pruneTarget(object)
 
 CompareSpectraParam(
   MAPFUN = joinPeaks,
@@ -105,6 +111,19 @@ from the target spectra are extracted, an \code{NA} is reported for \emph{query}
 spectra that don't match any target spectra. See examples below for more
 details.
 \item \code{length} returns the number of matches.
+\item \code{pruneTarget} \emph{cleans} the \code{MatchedSpectra} object by removing non-matched
+target spectra.
+\item \code{spectraData} returns spectra variables from the query and/or target
+\code{Spectra} as a \code{DataFrame}. Parameter \code{columns} allows to define which
+variables should be returned (defaults to
+\code{columns = spectraVariables(object)}), spectra variable names of the target
+spectra need to be prefixed with \code{target_} (e.g. \code{target_msLevel} to get
+the MS level from target spectra). Similar to \code{$}, this function performs
+a \emph{left join} of spectra variables from the \emph{query} and \emph{target} spectra
+returning all values for all query spectra (eventually returning duplicated
+elements for query spectra matching multiple target spectra) and the values
+for the target spectra matched to the respective query spectra. See help on
+\code{$} above or examples below for details.
 \item \code{spectraVariables} returns all available spectra variables in the \emph{query}
 and \emph{target} spectra. The prefix \code{"target_"} is used to label spectra
 variables of target spectra (e.g. the name of the spectra variable for the
@@ -169,6 +188,41 @@ ms$target_rtime
 ## times are those from these 3 target spectra. None of the remaining 6 query
 ## spectra matches any target spectra and thus `NA` is reported for each of
 ## them.
+
+## `spectraData` can be used to extract all (or selected) spectra variables
+## from the object. Same as with `$`, a left join between the specta
+## variables from the query spectra and the target spectra is performed. The
+## prefix `"target_"` is used to label the spectra variables from the target
+## spectra. Below we extract selected spectra variables from the object.
+res <- spectraData(ms, columns = c("rtime", "spectrum_id",
+    "target_rtime", "target_spectrum_id"))
+res
+res$spectrum_id
+res$target_spectrum_id
+
+## Again, all values for query spectra are returned and for query spectra not
+## matching any target spectrum NA is reported as value for the respecive
+## variable.
+
+## The example matched spectra object contains all query and all target
+## spectra. Below we subset the object keeping only query spectra that are
+## matched to at least one target spectrum.
+ms_sub <- ms[whichQuery(ms)]
+
+## ms_sub contains now only 3 query spectra:
+length(query(ms_sub))
+
+## while the original object contains all 10 query spectra:
+length(query(ms))
+
+## Both object contain however still the full target `Spectra`:
+length(target(ms))
+length(target(ms_sub))
+
+## With the `pruneTarget` we can however reduce also the target spectra to
+## only those that match at least one query spectrum
+ms_sub <- pruneTarget(ms_sub)
+length(target(ms_sub))
 }
 \author{
 Johannes Rainer

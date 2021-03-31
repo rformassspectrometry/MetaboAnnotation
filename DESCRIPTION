@@ -1,18 +1,26 @@
 Package: MetaboAnnotation
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.2
-Description: What the package does (one paragraph).
-Authors@R: c(person(given = "Johannes", family = "Rainer",
-                    email = "Johannes.Rainer@eurac.edu",
-                    role = c("aut", "cre"),
-                    comment = c(ORCID = "0000-0002-6977-7147")),
-             person(given = "Michael", family = "Witting",
-                    email = "michael.witting@helmholtz-muenchen.de",
-                    role = c("aut", "cre"),
-                    comment = c(ORCID = "0000-0002-1462-4426")))
-Author: Michael Witting and Johannes Rainer.
-Maintainer: RforMassSpectrometry Package Maintainer
-    <maintainer@rformassspectrometry.org>
+Description:
+    High level functions to assist in annotation of (metabolomics) data sets.
+    These include functions to perform simple tentative annotations based on
+    mass matching but also functions to consider m/z and retention times for
+    annotation of LC-MS features given that respective reference values are
+    available. In addition, the function provides high-level functions to
+    simplify matching of LC-MS/MS spectra against spectral libraries and objects
+    and functionality to represent and manage such matched data.
+Authors@R:
+    c(person(given = "RforMassSpectrometry Package Maintainer",
+             email = "maintainer@rformassspectrometry.org",
+             role = "cre"),
+      person(given = "Michael", family = "Witting",
+             role = c("aut"),
+             email = "michael.witting@helmholtz-muenchen.de",
+             comment = c(ORCID = "0000-0002-1462-4426")),
+      person(given = "Johannes", family = "Rainer",
+             email = "Johannes.Rainer@eurac.edu",
+             role = "aut",
+             comment = c(ORCID = "0000-0002-6977-7147")))
 Depends:
     R (>= 4.0.0),
     Spectra
@@ -22,6 +30,7 @@ Imports:
     ProtGenerics,
     reshape2,
     methods,
+    S4Vectors,
     CompoundDb
 Suggests:
     testthat,

@@ -36,6 +36,21 @@
 #' 
 #' - `length` returns the number of matches.
 #'
+#' - `pruneTarget` *cleans* the `MatchedSpectra` object by removing non-matched
+#'   target spectra.
+#' 
+#' - `spectraData` returns spectra variables from the query and/or target
+#'   `Spectra` as a `DataFrame`. Parameter `columns` allows to define which
+#'   variables should be returned (defaults to
+#'   `columns = spectraVariables(object)`), spectra variable names of the target
+#'   spectra need to be prefixed with `target_` (e.g. `target_msLevel` to get
+#'   the MS level from target spectra). Similar to `$`, this function performs
+#'   a *left join* of spectra variables from the *query* and *target* spectra
+#'   returning all values for all query spectra (eventually returning duplicated
+#'   elements for query spectra matching multiple target spectra) and the values
+#'   for the target spectra matched to the respective query spectra. See help on
+#'   `$` above or examples below for details.
+#' 
 #' - `spectraVariables` returns all available spectra variables in the *query*
 #'   and *target* spectra. The prefix `"target_"` is used to label spectra
 #'   variables of target spectra (e.g. the name of the spectra variable for the
@@ -131,6 +146,41 @@
 #' ## times are those from these 3 target spectra. None of the remaining 6 query
 #' ## spectra matches any target spectra and thus `NA` is reported for each of
 #' ## them.
+#'
+#' ## `spectraData` can be used to extract all (or selected) spectra variables
+#' ## from the object. Same as with `$`, a left join between the specta
+#' ## variables from the query spectra and the target spectra is performed. The
+#' ## prefix `"target_"` is used to label the spectra variables from the target
+#' ## spectra. Below we extract selected spectra variables from the object.
+#' res <- spectraData(ms, columns = c("rtime", "spectrum_id",
+#'     "target_rtime", "target_spectrum_id"))
+#' res
+#' res$spectrum_id
+#' res$target_spectrum_id
+#'
+#' ## Again, all values for query spectra are returned and for query spectra not
+#' ## matching any target spectrum NA is reported as value for the respecive
+#' ## variable.
+#'
+#' ## The example matched spectra object contains all query and all target
+#' ## spectra. Below we subset the object keeping only query spectra that are
+#' ## matched to at least one target spectrum.
+#' ms_sub <- ms[whichQuery(ms)]
+#'
+#' ## ms_sub contains now only 3 query spectra:
+#' length(query(ms_sub))
+#'
+#' ## while the original object contains all 10 query spectra:
+#' length(query(ms))
+#'
+#' ## Both object contain however still the full target `Spectra`:
+#' length(target(ms))
+#' length(target(ms_sub))
+#'
+#' ## With the `pruneTarget` we can however reduce also the target spectra to
+#' ## only those that match at least one query spectrum
+#' ms_sub <- pruneTarget(ms_sub)
+#' length(target(ms_sub))
 NULL
 
 setClass(
@@ -184,7 +234,7 @@ setMethod("length", "MatchedSpectra", function(x) nrow(x@matches))
 #' @rdname MatchedSpectra
 setMethod("show", "MatchedSpectra", function(object) {
     cat("Object of class", class(object)[1L], "\n")
-    cat("Number of matches:", length(object@matches), "\n")
+    cat("Number of matches:", nrow(object@matches), "\n")
     cat("Number of query spectra: ", length(object@query), " (",
         length(unique(object@matches$query_idx)), " matched)\n", sep = "")
     cat("Number of target spectra: ", length(object@target), " (",
@@ -259,15 +309,59 @@ setMethod("$", "MatchedSpectra", function(x, name) {
         do.call("$", list(x@query, name))[idxs]
 })
 
+#' @importMethodsFrom S4Vectors cbind
+#'
+#' @importMethodsFrom Spectra spectraData
+#'
+#' @importFrom S4Vectors DataFrame
+#' 
+#' @rdname MatchedSpectra
+#'
+#' @export
+setMethod(
+    "spectraData",
+    "MatchedSpectra", function(object, columns = spectraVariables(object)) {
+        if (any(!columns %in% spectraVariables(object)))
+            stop("column(s) ", paste0(columns[!columns %in%
+                                              spectraVariables(object)],
+                                      collapse = ", "), " not available")
+        idxs <- .fill_index(seq_along(object@query), object@matches$query_idx)
+        from_target <- grepl("^target_", columns)
+        if (any(!from_target)) {
+            spq <- spectraData(object@query, columns = columns[!from_target])
+            res <- spq[idxs, ]
+        } else res <- DataFrame()
+        if (any(from_target)) {
+            spt <- spectraData(object@target[object@matches$target_idx],
+                               columns = sub("target_", "",
+                                             columns[from_target]))
+            colnames(spt) <- paste0("target_", colnames(spt))
+            keep <- idxs %in% object@matches$query_idx
+            idxs[keep] <- seq_len(sum(keep))
+            idxs[!keep] <- NA
+            if (nrow(res) == length(idxs))
+                res <- cbind(res, spt[idxs, ])
+            else res <- spt[idxs, ]
+        }
+        res
+    })
+
 .fill_index <- function(x, y) {
     sort(c(setdiff(x, y), y))
 }
 
-## Other methods
-## - spectraData: combine both spectraData DataFrames. Add NAs for not matching
-##   query spectra.
-## - $
-## - pruneTarget: keep only spectra with a match in query
+#' @rdname MatchedSpectra
+#'
+#' @importFrom methods validObject
+#' 
+#' @export
+pruneTarget <- function(object) {
+    keep <- whichTarget(object)
+    object@target <- object@target[keep]
+    object@matches$target_idx <- match(object@matches$target_idx, keep)
+    validObject(object)
+    object
+}
 
 .validate_matches_format <- function(x) {
     msg <- NULL

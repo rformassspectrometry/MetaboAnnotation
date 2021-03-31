@@ -99,7 +99,16 @@ test_that(".subset_matches_nodim and [ works", {
     res <- ms[c(FALSE, TRUE)]
     expect_equal(res@matches$query_idx, 1L)
     expect_equal(res@matches$target_idx, 2L)
-    expect_equal(res@matches$score, 3)    
+    expect_equal(res@matches$score, 3)
+
+    ## All works even after subsetting and pruning.
+    ms <- MatchedSpectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    res <- ms[whichQuery(ms)]
+    expect_equal(res$spectrum_id, c("a", "a", "b", "d", "d", "d"))
+    res <- pruneTarget(res)
 })
 
 test_that(".fill_index works", {
@@ -124,4 +133,85 @@ test_that("$,MatchedSpectra works", {
     expect_equal(res, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
     res <- ms$target_rtime
     expect_equal(res, c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
+
+    ## A MatchedSpectra with no matching target spectra
+    ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
+                                                        target_idx = integer(),
+                                                        score = numeric()))
+    res <- ms$rtime
+    expect_equal(res, 1:10)
+    res <- ms$target_rtime
+    expect_true(all(is.na(res)))
+})
+
+test_that("spectraData,MatchedSpectra works", {
+    ms <- MatchedSpectra()
+    res <- spectraData(ms)
+    expect_true(is(res, "DataFrame"))
+    expect_true(nrow(res) == 0)
+    expect_equal(colnames(res), spectraVariables(ms))
+
+    ms <- MatchedSpectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    res <- spectraData(ms)
+    expect_equal(res$rtime, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
+    expect_equal(res$target_rtime,
+                 c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
+
+    expect_error(spectraData(ms, columns = "other"), "other not available")
+
+    
+    ## Only query spectra variables
+    res <- spectraData(ms, columns = c("rtime", "spectrum_id", "msLevel"))
+    expect_equal(colnames(res), c("rtime", "spectrum_id", "msLevel"))
+    expect_equal(res$rtime, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
+
+    ## Only target spectra variables
+    res <- spectraData(ms, columns = c("target_rtime", "target_spectrum_id"))
+    expect_equal(colnames(res), c("target_rtime", "target_spectrum_id"))
+    expect_equal(res$target_rtime,
+                 c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
+    
+    ## A MatchedSpectra with no matching target spectra
+    ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
+                                                        target_idx = integer(),
+                                                        score = numeric()))
+    res <- spectraData(ms)
+    expect_equal(res$rtime, 1:10)
+    expect_true(all(is.na(res$target_rtime)))
+
+    ## Only query spectra variables
+    res <- spectraData(ms, columns = c("rtime", "spectrum_id", "msLevel"))
+    expect_equal(colnames(res), c("rtime", "spectrum_id", "msLevel"))
+    expect_equal(res$rtime, 1:10)
+
+    ## Only target spectra variables
+    res <- spectraData(ms, columns = c("target_rtime", "target_spectrum_id"))
+    expect_true(nrow(res) == 10)
+    expect_equal(colnames(res), c("target_rtime", "target_spectrum_id"))
+    expect_true(all(is.na(res$target_rtime)))
+})
+
+test_that("pruneTarget,MatchedSpectra works", {
+    ms <- MatchedSpectra()
+    res <- pruneTarget(ms)
+    expect_true(is(res, "MatchedSpectra"))
+    expect_equal(res, ms)
+
+    ms <- MatchedSpectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    res <- pruneTarget(ms)
+    expect_equal(spectraData(res), spectraData(ms))
+    expect_true(length(res@target) < length(ms@target))
+
+    ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
+                                                        target_idx = integer(),
+                                                        score = numeric()))
+    res <- pruneTarget(ms)
+    expect_equal(spectraData(res), spectraData(ms))
+    expect_true(length(res@target) < length(ms@target))    
 })
