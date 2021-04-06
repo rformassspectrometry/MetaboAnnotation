@@ -40,7 +40,7 @@ Suggests:
     BiocStyle
 Remotes:
     RforMassSpectrometry/MsCoreUtils,
-    RforMassSpectrometry/MetaboCoreUtils
+    RforMassSpectrometry/MetaboCoreUtils,
     EuracBiomedicalResearch/CompoundDb
 License: Artistic-2.0
 LazyData: yes
