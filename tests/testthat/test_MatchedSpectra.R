@@ -133,7 +133,9 @@ test_that("$,MatchedSpectra works", {
     expect_equal(res, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
     res <- ms$target_rtime
     expect_equal(res, c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
-
+    res <- ms$score
+    expect_equal(res, c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
+    
     ## A MatchedSpectra with no matching target spectra
     ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
                                                         target_idx = integer(),
@@ -142,6 +144,8 @@ test_that("$,MatchedSpectra works", {
     expect_equal(res, 1:10)
     res <- ms$target_rtime
     expect_true(all(is.na(res)))
+    res <- ms$score
+    expect_true(all(is.na(res)))    
 })
 
 test_that("spectraData,MatchedSpectra works", {
@@ -159,7 +163,8 @@ test_that("spectraData,MatchedSpectra works", {
     expect_equal(res$rtime, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
     expect_equal(res$target_rtime,
                  c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
-
+    expect_equal(res$score, c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
+    
     expect_error(spectraData(ms, columns = "other"), "other not available")
 
     
@@ -167,12 +172,18 @@ test_that("spectraData,MatchedSpectra works", {
     res <- spectraData(ms, columns = c("rtime", "spectrum_id", "msLevel"))
     expect_equal(colnames(res), c("rtime", "spectrum_id", "msLevel"))
     expect_equal(res$rtime, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
-
+    
     ## Only target spectra variables
     res <- spectraData(ms, columns = c("target_rtime", "target_spectrum_id"))
     expect_equal(colnames(res), c("target_rtime", "target_spectrum_id"))
     expect_equal(res$target_rtime,
                  c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
+
+    ## Only matches
+    res <- spectraData(ms, columns = c("score"))
+    expect_equal(colnames(res), c("score"))
+    expect_equal(res$score,
+                 c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
     
     ## A MatchedSpectra with no matching target spectra
     ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
@@ -192,6 +203,11 @@ test_that("spectraData,MatchedSpectra works", {
     expect_true(nrow(res) == 10)
     expect_equal(colnames(res), c("target_rtime", "target_spectrum_id"))
     expect_true(all(is.na(res$target_rtime)))
+
+    ## Only matches
+    res <- spectraData(ms, columns = c("score"))
+    expect_equal(colnames(res), c("score"))
+    expect_true(all(is.na(res$score)))
 })
 
 test_that("pruneTarget,MatchedSpectra works", {
@@ -215,3 +231,7 @@ test_that("pruneTarget,MatchedSpectra works", {
     expect_equal(spectraData(res), spectraData(ms))
     expect_true(length(res@target) < length(ms@target))    
 })
+
+test_that("plotSpectraMirror throws an error") {
+    expect_error(plotSpectraMirror(ms), "Length")
+}

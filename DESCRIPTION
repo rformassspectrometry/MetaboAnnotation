@@ -22,8 +22,7 @@ Authors@R:
              role = "aut",
              comment = c(ORCID = "0000-0002-6977-7147")))
 Depends:
-    R (>= 4.0.0),
-    Spectra
+    R (>= 4.0.0)
 Imports:
     MsCoreUtils,
     MetaboCoreUtils,
@@ -31,13 +30,17 @@ Imports:
     reshape2,
     methods,
     S4Vectors,
-    CompoundDb
+    Spectra (>= 1.1.18),
+    CompoundDb,
+    BiocParallel
 Suggests:
     testthat,
-    knitr
+    knitr,
+    msdata,
+    BiocStyle
 Remotes:
     RforMassSpectrometry/MsCoreUtils,
-    RforMassSpectrometry/MetaboCoreutils
+    RforMassSpectrometry/MetaboCoreUtils
     EuracBiomedicalResearch/CompoundDb
 License: Artistic-2.0
 LazyData: yes
