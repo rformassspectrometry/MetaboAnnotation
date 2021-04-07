@@ -1,4 +1,4 @@
-headgroup	abbrev	exactmass	formula	chain_type
+headgroup	name	exactmass	formula	chain_type
 NAE	NAE 20:4;O	363.277344	C22H37NO3	even
 NAT	NAT 20:4;O	427.239246	C22H37NO5S	even
 NAE	NAE 20:3;O2	381.287909	C22H39NO4	even
