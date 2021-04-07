@@ -31,5 +31,35 @@ test_that("matchSpectra,CompareSpectraParam works", {
     csp <- CompareSpectraParam(requirePrecursor = TRUE)
     res <- matchSpectra(pest_ms2, minimb, csp)
     expect_equal(unique(res@matches$query_idx), c(2, 4, 6, 8))
+    expect_true(anyDuplicated(res@matches$query_idx) == 2)
+})
+
+test_that("MatchForwardReverseParam works", {
+    res <- MatchForwardReverseParam()
+    expect_true(is(res, "MatchForwardReverseParam"))
+    expect_equal(res@FUN, MsCoreUtils::ndotproduct)
+    expect_equal(res@requirePrecursor, TRUE)
+
+    expect_warning(res <- MatchForwardReverseParam(type = "left"), "supported")
+    expect_true(!any(names(res@dots) == "type"))
+})
+
+test_that("matchSpectra,MatchForwardReverseParam works", {
+    mp <- MatchForwardReverseParam(requirePrecursor = FALSE,
+                                   THRESHFUN = function(x) which.max(x))
+    res <- matchSpectra(pest_ms2, minimb, mp)
+    expect_equal(res@matches$query_idx, 1:13)
+    expect_equal(colnames(res@matches), c("query_idx", "target_idx", "score",
+                                          "reverse_score", "presence_ratio"))
+
+    mp <- MatchForwardReverseParam(requirePrecursor = TRUE,
+                                   THRESHFUN = function(x) which.max(x))
+    res <- matchSpectra(pest_ms2, minimb, mp)
+    expect_equal(res@matches$query_idx, c(2, 4, 6, 8, 9))
     expect_true(anyDuplicated(res@matches$query_idx) == 0)
+    expect_true(all(res$reverse_score > res$score, na.rm = TRUE))
+
+    mp <- MatchForwardReverseParam(requirePrecursor = TRUE)
+    res <- matchSpectra(pest_ms2, minimb, mp)
+    expect_equal(unique(res@matches$query_idx), c(2, 4, 6, 8))
 })

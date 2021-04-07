@@ -1,0 +1,10 @@
+README.md
+local_data/*
+
+^.*\.Rproj$
+^\.Rproj\.user$
+.travis.yml
+
+.org
+^\.github$
+.editorconfig
