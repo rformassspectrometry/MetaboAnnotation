@@ -3,7 +3,10 @@
 \name{CompareSpectraParam}
 \alias{CompareSpectraParam}
 \alias{CompareSpectraParam-class}
+\alias{MatchForwardReverseParam-class}
+\alias{MatchForwardReverseParam}
 \alias{matchSpectra,Spectra,Spectra,CompareSpectraParam-method}
+\alias{matchSpectra,Spectra,Spectra,MatchForwardReverseParam-method}
 \title{Matching MS Spectra against a reference}
 \usage{
 CompareSpectraParam(
@@ -17,7 +20,20 @@ CompareSpectraParam(
   ...
 )
 
+MatchForwardReverseParam(
+  MAPFUN = joinPeaks,
+  tolerance = 0,
+  ppm = 5,
+  FUN = MsCoreUtils::ndotproduct,
+  requirePrecursor = TRUE,
+  requirePrecursorPeak = FALSE,
+  THRESHFUN = function(x) which(x >= 0.7),
+  ...
+)
+
 \S4method{matchSpectra}{Spectra,Spectra,CompareSpectraParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+
+\S4method{matchSpectra}{Spectra,Spectra,MatchForwardReverseParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
 }
 \arguments{
 \item{MAPFUN}{\code{function} used to map peaks between the compared spectra.
@@ -92,8 +108,55 @@ individual query spectrum. This can considerably improve performance.
 Finally, parameter \code{THRESHFUN} allows to define a function to be applied to
 the similarity scores to define which matches to report. See below for more
 details.
+\item \code{MatchForwardReverseParam}: performs spectra matching as with
+\code{CompareSpectraParam} but reports, similar to MS-DIAL, also the \emph{reverse}
+similarity score and the \emph{presence ratio}. In detail, the matching of query
+spectra to target spectra is performed by considering all peaks from the
+query and all peaks from the target (reference) spectrum (i.e. \emph{forward}
+matching using an \emph{outer join}-based peak matching strategy). For matching
+spectra also the \emph{reverse} similarity is calculated considering only peaks
+present in the target (reference) spectrum (i.e. using a \emph{right join}-based
+peak matching). This is reported as spectra variable \code{"reverse_score"}.
+In addition, the ratio between the number of matched peaks and the total
+number of peaks in the target (reference) spectra is reported as the
+\emph{presence ratio} (spectra variable \code{"presence_ratio"}). See examples below
+for details.
 }
+}
+\examples{
+
+library(Spectra)
+library(msdata)
+fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
+
+## subset to selected spectra.
+pest_ms2 <- pest_ms2[c(808, 809, 945:955)]
+
+## Load a small example MassBank data set
+load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
+
+## Match spectra with the default similarity score (normalized dot product)
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10)
+mtches <- matchSpectra(pest_ms2, minimb, csp)
+
+mtches
+
+## Are there any matching spectra for the first query spectrum?
+mtches[1]
+## No
+
+## And for the second query spectrum?
+mtches[2]
+## The second query spectrum matches 4 target spectra. The scores for these
+## matches are:
+mtches[2]$score
+
+## To access the score for the full data set
+mtches$score
+
+## See the package vignette for details, descriptions and more examples.
 }
 \author{
-Johannes Rainer
+Johannes Rainer, Michael Witting
 }

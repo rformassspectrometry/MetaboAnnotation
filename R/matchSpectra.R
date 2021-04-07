@@ -29,7 +29,7 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 
 #' @title Matching MS Spectra against a reference
 #'
-#' @aliases CompareSpectraParam-class
+#' @aliases CompareSpectraParam-class MatchForwardReverseParam-class
 #' 
 #' @name CompareSpectraParam
 #' 
@@ -56,6 +56,20 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   the similarity scores to define which matches to report. See below for more
 #'   details. 
 #'
+#' - `MatchForwardReverseParam`: performs spectra matching as with
+#'   `CompareSpectraParam` but reports, similar to MS-DIAL, also the *reverse*
+#'   similarity score and the *presence ratio*. In detail, the matching of query
+#'   spectra to target spectra is performed by considering all peaks from the
+#'   query and all peaks from the target (reference) spectrum (i.e. *forward*
+#'   matching using an *outer join*-based peak matching strategy). For matching
+#'   spectra also the *reverse* similarity is calculated considering only peaks
+#'   present in the target (reference) spectrum (i.e. using a *right join*-based
+#'   peak matching). This is reported as spectra variable `"reverse_score"`.
+#'   In addition, the ratio between the number of matched peaks and the total
+#'   number of peaks in the target (reference) spectra is reported as the
+#'   *presence ratio* (spectra variable `"presence_ratio"`). See examples below
+#'   for details.
+#' 
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
 #'   `BiocParallel` package for more information). By default parallel
 #'   processing is disabled.
@@ -107,7 +121,7 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @param ... for `CompareSpectraParam`: additional parameters passed along
 #'   to the [compareSpectra()] call.
 #' 
-#' @author Johannes Rainer
+#' @author Johannes Rainer, Michael Witting
 #'
 #' @importClassesFrom ProtGenerics Param
 #'
@@ -120,6 +134,40 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @rdname CompareSpectraParam
 #'
 #' @exportClass CompareSpectraParam
+#'
+#' @examples
+#' 
+#' library(Spectra)
+#' library(msdata)
+#' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+#' pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
+#'
+#' ## subset to selected spectra.
+#' pest_ms2 <- pest_ms2[c(808, 809, 945:955)]
+#'
+#' ## Load a small example MassBank data set
+#' load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
+#'
+#' ## Match spectra with the default similarity score (normalized dot product)
+#' csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10)
+#' mtches <- matchSpectra(pest_ms2, minimb, csp)
+#'
+#' mtches
+#'
+#' ## Are there any matching spectra for the first query spectrum?
+#' mtches[1]
+#' ## No
+#' 
+#' ## And for the second query spectrum?
+#' mtches[2]
+#' ## The second query spectrum matches 4 target spectra. The scores for these
+#' ## matches are:
+#' mtches[2]$score
+#'
+#' ## To access the score for the full data set
+#' mtches$score
+#'
+#' ## See the package vignette for details, descriptions and more examples.
 NULL
 
 setClass("CompareSpectraParam",
@@ -152,6 +200,10 @@ setClass("CompareSpectraParam",
              msg
          })
 
+setClass("MatchForwardReverseParam",
+         contains = "CompareSpectraParam"
+         )
+
 #' @rdname CompareSpectraParam
 #'
 #' @importMethodsFrom Spectra compareSpectra spectraNames<- precursorMz
@@ -173,6 +225,27 @@ CompareSpectraParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
         THRESHFUN = THRESHFUN, dots = list(...))
+}
+
+#' @rdname CompareSpectraParam
+#'
+#' @export
+MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
+                                     FUN = MsCoreUtils::ndotproduct,
+                                     requirePrecursor = TRUE,
+                                     requirePrecursorPeak = FALSE,
+                                     THRESHFUN = function(x) which(x >= 0.7),
+                                     ...) {
+    dots <- list(...)
+    if (any(names(dots) == "type")) {
+        warning("Specifying a join type with parameter 'type' is not ",
+                "supported. Will ignore parameter 'type'")
+        dots$type <- NULL
+    }
+    new("MatchForwardReverseParam", MAPFUN = MAPFUN, tolerance = tolerance,
+        ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
+        requirePrecursorPeak = requirePrecursorPeak[1L],
+        THRESHFUN = THRESHFUN, dots = dots)
 }
 
 .compare_spectra_parms_list <- function(x) {
@@ -208,7 +281,10 @@ setMethod(
             cor <- base::do.call(compareSpectra,
                                  c(list(x = qi, y = trgt), parms))
             keep <- tf(cor)
-            data.frame(query_idx = rep(i, length(keep)),
+            if (is.logical(keep))
+                kl <- sum(keep)
+            else kl <- length(keep)
+            data.frame(query_idx = rep(i, kl),
                        target_idx = as.integer(spectraNames(trgt)[keep]),
                        score = cor[keep])
         }, qry = query, trgt = target, parms = parms,
@@ -218,6 +294,42 @@ setMethod(
         maps <- do.call(rbind, maps)
         res <- MatchedSpectra(query, target, maps)
         res@metadata <- list(param = param)
+        res
+    })
+
+#' @rdname CompareSpectraParam
+#'
+#' @importFrom methods as
+#'
+#' @importMethodsFrom Spectra peaksData
+#' 
+#' @export
+setMethod(
+    "matchSpectra",
+    signature(query = "Spectra", target = "Spectra",
+              param = "MatchForwardReverseParam"),
+    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+        res <- matchSpectra(query, target, as(param, "CompareSpectraParam"))
+        ## Loop over the matches and assign additional stuff...
+        nm <- nrow(res@matches)
+        res@matches$reverse_score <- rep(NA_real_, nm)
+        res@matches$presence_ratio <- rep(NA_real_, nm)
+        parms_rv <- .compare_spectra_parms_list(param)
+        parms_rv$type <- "right"
+        for (i in seq_len(nm)) {
+            spl <- c(
+                list(x = peaksData(query[res@matches$query_idx[i]])[[1L]],
+                     y = peaksData(target[res@matches$target_idx[i]])[[1L]]),
+                parms_rv)
+            map <- do.call(param@MAPFUN, spl)
+            spl$x <- map$x
+            spl$y <- map$y
+            cor <- do.call(param@FUN, spl)
+            res@matches$reverse_score[i] <- cor
+            res@matches$presence_ratio[i] <- sum(!is.na(map$x[, 1L])) /
+                nrow(map$y)
+        }
+        res@metadata$param <- param
         res
     })
 

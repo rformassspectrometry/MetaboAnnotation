@@ -226,7 +226,39 @@ extract the compound name of the target spectra for this second query spectrum.
 mtches[2]$target_compound_name
 ```
 
-In this example we matched query spectra only to target spectra if their
+As alternative to the `CompareSpectraParam` we could also use the
+`MatchForwardReverseParam` with `matchSpectra`. This has the same settings and
+performs the same spectra similarity search than `CompareSpectraParam`, but
+reports in addition (similar to MS-DIAL) to the (*forward*) similarity score
+also the *reverse* spectra similarity score as well as the *presence ratio* for
+matching spectra. While the default *forward* score is calculated considering
+all peaks from the query and the target spectrum (the peak mapping is performed
+using an *outer join* strategy), the *reverse score* is calculated only on peaks
+that are present in the target spectrum and the matching peaks from the query
+spectrum (the peak mapping is performed using a *right join* strategy). The
+*presence ratio* is the ratio between the number of mapped peaks between the
+query and the target spectrum and the total number of peaks in the target
+spectrum. These values are available as spectra variables `"reverse_score"` and
+`"presence_ratio"` in the result object). Below we perform the same spectra
+matching as above, but using the `MatchForwardReverseParam`.
+
+```{r}
+mp <- MatchForwardReverseParam(requirePrecursor = TRUE, ppm = 10)
+mtches <- matchSpectra(pest_ms2, minimb, param = mp)
+mtches
+```
+
+Below we extract the query and target spectra IDs, the compound name and all
+scores.
+
+```{r}
+as.data.frame(
+    spectraData(mtches, c("spectrum_id", "target_spectrum_id",
+                          "target_compound_name", "score", "reverse_score",
+                          "presence_ratio")))
+```
+
+In these examples we matched query spectra only to target spectra if their
 precursor m/z is ~ equal and reported only matches with a similarity higher than
 0.7. `CompareSpectraParam`, through its parameter `THRESHFUN` would however also
 allow other types of analyses. We could for example also report the *best
