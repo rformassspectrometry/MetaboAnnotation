@@ -1,5 +1,7 @@
 #' @title m/z matching
 #'
+#' @name matchMz
+#'
 #' @description
 #'
 #' The `matchMz` method matches (compares) m/z values from a MS1 data table
@@ -21,7 +23,7 @@
 #' @param ppm `numeric(1)` for a relative, m/z-dependent, maximal accepted
 #'   difference between m/z values.
 #'
-#' @retunr `list` of the same length as x with data frames containing the
+#' @return `list` of the same length as x with data frames containing the
 #'   annotations
 #'
 #' @author Michael Witting
@@ -32,6 +34,7 @@ setGeneric("matchMz", function(x, y, adducts, tolerance, ppm)
 )
 
 
+#' @rdname matchMz
 #'
 #' @importFrom MetaboCoreUtils adductNames
 #'
@@ -67,9 +70,13 @@ setMethod("matchMz",
 
           })
 
+#' @rdname matchMz
 #'
 #' @importFrom MetaboCoreUtils adductNames
+#'
 #' @importClassesFrom CompoundDb CompDb
+#'
+#' @importMethodsFrom CompoundDb compounds
 #'
 #' @export
 setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
@@ -106,8 +113,6 @@ setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
 
 
 
-#'
-#'
 .matchMz <- function(mz,
                      cmpds,
                      adducts,
@@ -122,11 +127,11 @@ setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
 
 }
 
-
-#'
-#'
 #' @importFrom MetaboCoreUtils mass2mz
+#'
 #' @importFrom reshape2 melt
+#'
+#' @noRd
 .createIonDf <- function(cmpds,
                          adducts) {
 
@@ -143,9 +148,9 @@ setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
 
 }
 
-#'
-#'
 #' @importFrom MsCoreUtils closest
+#'
+#' @noRd
 .closestFeature <- function(mz,
                             ionDf,
                             tolerance = 0,
