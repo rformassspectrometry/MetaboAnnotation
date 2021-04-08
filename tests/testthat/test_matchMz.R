@@ -12,7 +12,7 @@ test_that("MS1 annotation works", {
     mz = sort(c(205.097154, 132.101905))
   )
 
-  result <- annotateMz(x, cmpds, adducts, tolerance = 0.005, ppm = 0)
+  result <- matchMz(x, cmpds, adducts, tolerance = 0.005, ppm = 0)
 
   expect_equal(length(result), 2L)
   expect_equal(nrow(result[[1]]), 2)

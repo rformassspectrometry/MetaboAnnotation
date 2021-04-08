@@ -1,31 +1,4 @@
 ---
-<<<<<<< HEAD
-title: "MetaboAnnotation"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{MetaboAnnotation}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup}
-library(MetaboAnnotation)
-library(tidyverse)
-
-ms1_data <- read_tsv(system.file("MS1_example.txt", package = "MetaboAnnotation"))
-
-cmpds <- read_tsv(system.file("LipidMaps.txt", package = "MetaboAnnotation"))
-
-result <- annotateMz(ms1_data, cmpds, adducts = c("[M+H]+", "[M+Na]+", "[M+NH4]+"), tolerance = 0.005, ppm = 0)
-
-=======
 title: "Annotation of MS-based Metabolomics Data"
 package: MetaboCoreUtils
 output:
@@ -70,6 +43,31 @@ provided by the `MetaboAnnotation` package.
 library(MetaboAnnotation)
 ```
 
+## Matching of m/z values
+
+In this section a simple matching of feature m/z values against theoretical m/z
+values is performed. This is the lowest level of confidence in metabolite anno-
+tation. However, it gives ideas about potential metabolites that can analyzed 
+in further downstream analysis.
+
+The following example loads the feature table from a lipidomics experiments and
+matches the measured m/z values against the CompDB from LipidMaps.
+
+```{r, message = FALSE}
+ms1_features <- read.table(system.file("extdata", "MS1_example.txt", package = "MetaboAnnotation"),
+                           header = TRUE, sep = "\t")
+
+compDb <- read.table(system.file("extdata", "LipidMaps_CompDB.txt", package = "MetaboAnnotation"),
+                           header = TRUE, sep = "\t")
+
+##
+annotations <- matchMz(ms1_features, compDb,
+                       adducts = c("[M+H]+", "[M+Na]+"),
+                       tolerance = 0.005, ppm = 0)
+
+```
+
+
 ## Matching of MS/MS spectra
 
 In this section we match experimental MS/MS spectra against reference
@@ -92,10 +90,8 @@ library(Spectra)
 library(msdata)
 fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
 pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
-
 ## subset to selected spectra.
 pest_ms2 <- pest_ms2[c(808, 809, 945:955)]
-
 ## assign arbitrary *feature IDs* to each spectrum.
 pest_ms2$feature_id <- c("FT001", "FT001", "FT002", "FT003", "FT003", "FT003",
                          "FT004", "FT004", "FT004", "FT005", "FT005", "FT006",
@@ -300,7 +296,6 @@ select_top_match <- function(x) {
 csp <- CompareSpectraParam(ppm = 10, requirePrecursor = FALSE,
                            THRESHFUN = select_top_match)
 mtches <- matchSpectra(pest_ms2, minimb, param = csp)
-
 res <- spectraData(mtches, columns = c("spectrum_id", "target_spectrum_id",
                                        "target_compound_name", "score"))
 as.data.frame(res)
@@ -318,5 +313,4 @@ analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
 
 ```{r sessioninfo, echo=FALSE}
 sessionInfo()
->>>>>>> 6a5615ee6f6fe4e7715c08cc21922da1b7ada09b
 ```

@@ -1,14 +1,43 @@
-
-setGeneric("annotateMz", function(x, y, adducts, tolerance, ppm)
-  standardGeneric("annotateMz")
-  )
-
+#' @title m/z matching
 #'
+#' @description
+#'
+#' The `matchMz` method matches (compares) m/z values from a MS1 data table
+#'    with theoretical m/z values from compounds. `adducts` specifies the allowed
+#'    adducts based on adduct names from [MetaboCoreUtils::adductNames()]. The
+#'    maximum allowed error is defined by `tolerance` or `ppm`
+#'
+#' @param x Feature table containing information on MS1 features. Must contain
+#'    column called `mz`
+#'
+#' @param y Compound table with metabolites to compare against. Must contain
+#'    columns called `exactmass` and `name`
+#'
+#' @param adducts Allowed adducts named accordingly to [MetaboCoreUtils::adductNames()]
+#'
+#' @param tolerance `numeric(1)` for an absolute maximal accepted difference
+#'   between m/z values.
+#'
+#' @param ppm `numeric(1)` for a relative, m/z-dependent, maximal accepted
+#'   difference between m/z values.
+#'
+#' @retunr `list` of the same length as x with data frames containing the
+#'   annotations
+#'
+#' @author Michael Witting
+#'
+#' @export
+setGeneric("matchMz", function(x, y, adducts, tolerance, ppm)
+  standardGeneric("matchMz")
+)
+
+
 #'
 #' @importFrom MetaboCoreUtils adductNames
 #'
-#' @exportMethod annotateMz
-setMethod("annotateMz", signature = c(x = "data.frame", y = "data.frame"),
+#' @export
+setMethod("matchMz",
+          signature = c(x = "data.frame", y = "data.frame"),
           function(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0) {
 
             # some sanity checks
@@ -25,19 +54,25 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "data.frame"),
             }
 
             cmpds <- y
+
+            if(!all(c("name", "exactmass") %in% colnames(cmpds))) {
+
+              stop("Missing name and exactmass column in y")
+
+            }
+
             mz <- x$mz
 
-            .annotateMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
+            .matchMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
 
           })
 
 #'
-#'
 #' @importFrom MetaboCoreUtils adductNames
 #' @importClassesFrom CompoundDb CompDb
 #'
-#' @exportMethod annotateMz
-setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
+#' @export
+setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
           function(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0) {
 
             # some sanity checks
@@ -54,9 +89,18 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
             }
 
             cmpds <- compounds(y)
+
+            cmpds <- y
+
+            if(!all(c("name", "exactmass") %in% colnames(cmpds))) {
+
+              stop("Missing name and exactmass column in y")
+
+            }
+
             mz <- x$mz
 
-            .annotateMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
+            .matchMz(mz, cmpds, adducts, tolerance = tolerance, ppm = ppm)
 
           })
 
@@ -64,11 +108,11 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
 
 #'
 #'
-.annotateMz <- function(mz,
-                        cmpds,
-                        adducts,
-                        tolerance = 0,
-                        ppm = 0) {
+.matchMz <- function(mz,
+                     cmpds,
+                     adducts,
+                     tolerance = 0,
+                     ppm = 0) {
 
   # create data.frame will all ion m/z
   ionDf <- .createIonDf(cmpds, adducts)
@@ -83,7 +127,8 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
 #'
 #' @importFrom MetaboCoreUtils mass2mz
 #' @importFrom reshape2 melt
-.createIonDf <- function(cmpds, adducts) {
+.createIonDf <- function(cmpds,
+                         adducts) {
 
   adductMzs <- mass2mz(cmpds$exactmass, adducts)
 
@@ -124,4 +169,3 @@ setMethod("annotateMz", signature = c(x = "data.frame", y = "CompDb"),
 
   }
 }
-
