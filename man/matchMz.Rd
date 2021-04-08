@@ -2,9 +2,15 @@
 % Please edit documentation in R/matchMz.R
 \name{matchMz}
 \alias{matchMz}
+\alias{matchMz,data.frame,data.frame-method}
+\alias{matchMz,data.frame,CompDb-method}
 \title{m/z matching}
 \usage{
 matchMz(x, y, adducts, tolerance, ppm)
+
+\S4method{matchMz}{data.frame,data.frame}(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0)
+
+\S4method{matchMz}{data.frame,CompDb}(x, y, adducts = c("[M+H]+"), tolerance = 0, ppm = 0)
 }
 \arguments{
 \item{x}{Feature table containing information on MS1 features. Must contain
@@ -20,6 +26,10 @@ between m/z values.}
 
 \item{ppm}{\code{numeric(1)} for a relative, m/z-dependent, maximal accepted
 difference between m/z values.}
+}
+\value{
+\code{list} of the same length as x with data frames containing the
+annotations
 }
 \description{
 The \code{matchMz} method matches (compares) m/z values from a MS1 data table

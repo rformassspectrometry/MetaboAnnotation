@@ -47,18 +47,23 @@ library(MetaboAnnotation)
 
 In this section a simple matching of feature m/z values against theoretical m/z
 values is performed. This is the lowest level of confidence in metabolite anno-
-tation. However, it gives ideas about potential metabolites that can analyzed 
+tation. However, it gives ideas about potential metabolites that can analyzed
 in further downstream analysis.
 
 The following example loads the feature table from a lipidomics experiments and
-matches the measured m/z values against the CompDB from LipidMaps.
+matches the measured m/z values against reference masses from LipidMaps. Below
+we use a `data.frame` as *reference* database, but a
+[`CompDb`](https://github.com/EuracBiomedicalResearch/CompoundDb) compound
+database instance would also be supported.
 
 ```{r, message = FALSE}
-ms1_features <- read.table(system.file("extdata", "MS1_example.txt", package = "MetaboAnnotation"),
+ms1_features <- read.table(system.file("extdata", "MS1_example.txt",
+                                       package = "MetaboAnnotation"),
                            header = TRUE, sep = "\t")
 
-compDb <- read.table(system.file("extdata", "LipidMaps_CompDB.txt", package = "MetaboAnnotation"),
-                           header = TRUE, sep = "\t")
+compDb <- read.table(system.file("extdata", "LipidMaps_CompDB.txt",
+                                 package = "MetaboAnnotation"),
+                     header = TRUE, sep = "\t")
 
 ##
 annotations <- matchMz(ms1_features, compDb,
@@ -71,7 +76,7 @@ annotations <- matchMz(ms1_features, compDb,
 ## Matching of MS/MS spectra
 
 In this section we match experimental MS/MS spectra against reference
-spectra. This can also be performed with functions from the 
+spectra. This can also be performed with functions from the
 `r BiocStyle::Biocpkg("Spectra")` package (see
 [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/), but the
 functions and concepts used here are more suitable to the *end user* as they
@@ -110,7 +115,7 @@ subset of [MassBank](https://massbank.eu/MassBank/) release *2021.03*. This
 small `Spectra` object is provided within this package but it would be possible
 to use any other `Spectra` object instead (see the
 [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/) for different
-ways and options to provide access to spectral libraries/databases *via* 
+ways and options to provide access to spectral libraries/databases *via*
 `Spectra`).
 
 ```{r}
@@ -152,7 +157,7 @@ mtches[1]
 ```
 
 In this case, for the first query spectrum, no match was found among the target
-spectra. Below we subset the `MatchedSpectra` to results for the second query 
+spectra. Below we subset the `MatchedSpectra` to results for the second query
 spectrum:
 
 ```{r}
@@ -231,7 +236,7 @@ peak values) it is not ideal for visualization. Thus, we apply below a
 spectra again afterwards (see the help for `addProcessing` in the `Spectra`
 package for more details on spectra data manipulations). This function will
 replace the absolute spectra intensities with intensities relative to the
-maximum intensity of the spectrum. 
+maximum intensity of the spectrum.
 
 ```{r}
 norm_int <- function(x) {
@@ -305,7 +310,7 @@ as.data.frame(res)
 Note that this whole example would work on any `Spectra` object with MS2
 spectra. Such objects could also be extracted from an `xcms`-based LC-MS/MS data
 analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
-`r Biocpkg("xcms")` package. Also, 
+`r Biocpkg("xcms")` package. Also,
 
 
 

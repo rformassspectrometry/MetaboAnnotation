@@ -6,7 +6,14 @@
 [![codecov.io](http://codecov.io/github/michaelwitting/MetaboAnnotation/coverage.svg?branch=master)](http://codecov.io/github/michaelwitting/MetaboAnnotation?branch=master)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
-`MetaboAnnotation` supplied high level functions around metabolite annotation
+High level functions to assist in annotation of (metabolomics) data sets. These
+include functions to perform simple tentative annotations based on mass matching
+but also functions to consider m/z and retention times for annotation of LC-MS
+features given that respective reference values are available. In addition, the
+function provides high-level functions to simplify matching of LC-MS/MS spectra
+against spectral libraries and objects and functionality to represent and manage
+such matched data.
+
 
 # Contributions
 
