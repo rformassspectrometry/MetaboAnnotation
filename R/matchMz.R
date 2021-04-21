@@ -255,19 +255,28 @@ setMethod("matchMz",
             
             ionDf <- .createIonDf(cmpds, adducts)
             
-            cls <- closest(ionDf$mz,
-                           mz,
-                           tolerance = param@tolerance,
-                           ppm = param@ppm)
-            mtchd <- which(!is.na(cls))
-            matches <- data.frame(query_idx = cls[mtchd],
-                                  target_idx = (as.integer(rownames(ionDf))
-                                                [mtchd] - 1L) %% nrow(cmpds) + 1L,
-                                  adduct = ionDf$adduct[mtchd],
-                                  score = mz[cls[mtchd]] - ionDf$mz[mtchd])
+            matches <- do.call(rbind, lapply(seq_along(mz), .getMatches, mz, 
+                                             ionDf, param@tolerance, param@ppm))
             Matched(query = query, target = target, matches = matches)
           })
 
+
+
+.getMatches <- function(index, mzquery, ionDf, tolerance, ppm){
+  mz <- mzquery[index]
+  cls <- closest(ionDf$mz,
+                 mz,
+                 tolerance = tolerance,
+                 ppm = ppm)
+  
+  mtchd <- which(!is.na(cls))
+  matches <- data.frame(query_idx = rep(index, length(mtchd)),
+                        target_idx = (as.integer(rownames(ionDf))
+                                      [mtchd] - 1L) %% nrow(cmpds) + 1L,
+                        adduct = ionDf$adduct[mtchd],
+                        score = mz - ionDf$mz[mtchd])
+  matches
+}
 
 
 #' @importFrom MetaboCoreUtils mass2mz
