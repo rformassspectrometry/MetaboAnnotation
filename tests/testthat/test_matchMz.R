@@ -26,6 +26,11 @@ test_that("MS1 annotation works", {
 ############################################################################
 ############################################################################
 ############################################################################
+library(MetaboCoreUtils)
+library(MsCoreUtils)
+library(reshape2)
+library(testthat)
+library(BiocParallel)
 
 test_that("TargetMass2MzParam works", {
   res <- TargetMass2MzParam()
@@ -33,6 +38,7 @@ test_that("TargetMass2MzParam works", {
   
   expect_error(TargetMass2MzParam(tolerance = 1:3), "positive number")
   expect_error(TargetMass2MzParam(ppm = -4), "positive number")
+  expect_error(TargetMass2MzParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
 })
 
 test_that("matchMz,TargetMass2MzParam works", {
@@ -50,14 +56,11 @@ test_that("matchMz,TargetMass2MzParam works", {
            mass2mz(131.094629, "[M+H]+"), 
            mass2mz(204.089878, "[M+Na]+")+1e-6)
   )
-  library(MetaboCoreUtils)
-  library(MsCoreUtils)
-  library(reshape2)
   ionDf <- .createIonDf(cmpds, adducts)
   
-  par <- TargetMass2MzParam(tolerance = 0, ppm = 20)
+  par <- TargetMass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
  
-  res <- matchMz(x, cmpds, par, adducts)
+  res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x) 
   expect_equal(target(res), cmpds)
   expect_equal(res@matches$query_idx, c(1, 2, 2, 3))

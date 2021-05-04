@@ -160,10 +160,10 @@ setMethod("matchMz", signature = c(x = "data.frame", y = "CompDb"),
 ############################################################################
 ############################################################################
 
-# Should I add also adducts to this class?
 
 setClass("TargetMass2MzParam", 
          slots = c(
+           adducts = "character",
            tolerance = "numeric",
            ppm = "numeric"),
          contains = "Param",
@@ -176,16 +176,22 @@ setClass("TargetMass2MzParam",
              msg <- c("'tolerance' has to be a positive number of length 1")
            if (length(object@ppm) != 1 || object@ppm < 0)
              msg <- c("'ppm' has to be a positive number of length 1")
+           if(!all(object@adducts %in% c(adductNames("positive"), 
+                                         adductNames("negative"))))
+             msg <- "Unknown adducts, please check MetaboCoreUtils for valid adducts"
            msg
          })
+
+
 
 #' @rdname TargetMass2MzParam
 #' 
 #' @importFrom methods new
 #'
 #' @export
-TargetMass2MzParam <- function(tolerance = 0, ppm = 5) {
-  new("TargetMass2MzParam", tolerance = tolerance,
+
+TargetMass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
+  new("TargetMass2MzParam", adducts = adducts, tolerance = tolerance,
       ppm = ppm)
 }
 
@@ -207,19 +213,18 @@ TargetMass2MzParam <- function(tolerance = 0, ppm = 5) {
 #' @param target Compound table with metabolites to compare against. Must contain
 #'    columns called `exactmass` and `name`
 #'
-#' @param param object containing information on tolerance (`numeric(1)` 
-#' for an absolute maximal accepted difference between m/z values.)
-#'   and ppm (`numeric(1)` for a relative, m/z-dependent, maximal accepted
-#'   difference between m/z values).
-#' @param adducts Allowed adducts named accordingly to [MetaboCoreUtils::adductNames()]
-#'
+#' @param param object containing information on adducts (named accordingly to 
+#' [MetaboCoreUtils::adductNames()]), tolerance (`numeric(1)` for an absolute 
+#' maximal accepted difference between m/z values), ppm (`numeric(1)` for a 
+#' relative, m/z-dependent, maximal accepted difference between m/z values).
 #'
 #' @return `Matched` object representing the annotations
 #'
-#' @author 
+#' @author Andrea Vicini, Michael Witting
 #'
 #' @export
-setGeneric("matchMz", function(query, target, param, adducts)
+
+setGeneric("matchMz", function(query, target, param, ...)
   standardGeneric("matchMz")
 )
 
@@ -228,40 +233,24 @@ setMethod("matchMz",
           signature = c(query = "data.frame", 
                         target = "data.frame", 
                         param = "TargetMass2MzParam"),
-          function(query, target, param, adducts = c("[M+H]+")){
-            # some sanity checks
-            if(!any(adducts %in% c(adductNames("positive"), adductNames("negative")))) {
-              
-              stop("Unknown adducts, please check MetaboCoreUtils for valid adducts")
-              
-            }
+          function(query, target, param, BPPARAM = SerialParam()){
             
-            if(!"mz" %in% colnames(query)) {
-              
-              stop("Missing mz column in query")
-              
-            }
-            
-            cmpds <- target
-            
-            if(!all(c("name", "exactmass") %in% colnames(cmpds))) {
-              
+            if(!"mz" %in% colnames(query))  stop("Missing mz column in query")
+            if(!all(c("name", "exactmass") %in% colnames(target)))
               stop("Missing name and exactmass column in target")
               
-            }
-            
             mz <- query$mz
-            
-            
-            ionDf <- .createIonDf(cmpds, adducts)
-            
-            matches <- do.call(rbind, lapply(seq_along(mz), .getMatches, mz, 
-                                             ionDf, param@tolerance, param@ppm))
+            ionDf <- .createIonDf(target, param@adducts)
+            matches <- do.call(rbind, bplapply(seq_along(mz), .getMatches, mz, 
+                                               ionDf, param@tolerance, param@ppm, 
+                                               BPPARAM = BPPARAM))
             Matched(query = query, target = target, matches = matches)
           })
 
 
-
+#' @author Andrea Vicini
+#'
+#' @noRd
 .getMatches <- function(index, mzquery, ionDf, tolerance, ppm){
   mz <- mzquery[index]
   cls <- closest(ionDf$mz,
