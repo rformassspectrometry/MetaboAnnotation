@@ -241,6 +241,8 @@ setValidity("Matched", function(object) {
     if (length(msg)) return(msg)
     msg <- .validate_matches_content(object@matches, .nelements(object@query),
                                      .nelements(object@target))
+    if(any(c("query", "target") %in% colnames(object@matches)))
+        return("\"query\" and \"target\" can't be used as matches column names")
     if (length(msg)) return(msg)
     msg <- .validate_qt(object@query)
     if (length(msg)) return(msg)
@@ -332,17 +334,16 @@ setMethod("$", "Matched", function(x, name) {
             keep <- idxs %in% x@matches$query_idx
             idxs[keep] <- seq_len(sum(keep))
             idxs[!keep] <- NA
-            return(vals[idxs])
+            return(.extract_elements(vals, idxs))
         }
         if (length(grep("^target_", name))) {
-            vals <- do.call("$", list(x@target[x@matches$target_idx, ],
-                                      sub("target_", "", name)))
+            vals <- x@target[x@matches$target_idx, sub("target_", "", name)]
             keep <- idxs %in% x@matches$query_idx
             idxs[keep] <- seq_len(sum(keep))
             idxs[!keep] <- NA
             vals[idxs]
         } else
-            do.call("$", list(x@query, name))[idxs] 
+            x@query[idxs, name]
     }
 })
 
@@ -389,8 +390,6 @@ data <- function(object, columns = colnames(object)){
         res_t <- .extract_elements(object@target, 
                                    object@matches$target_idx[target_idxs], 
                                    sub("target_", "", columns[from_target]))
-        # if target was a list subsetting it with NA would return NULL for the 
-        # corresponding element. Is that acceptable or should I set it to NA here?
     }
     if (any(from_matches)) {
         keep <- idxs %in% object@matches$query_idx
@@ -402,8 +401,9 @@ data <- function(object, columns = colnames(object)){
     if(!is.null(res_t) && is.null(dim(object@target))) res_t <- I(res_t)
     any_qtm <- c(any(from_query), any(from_target), any(from_matches))
     res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-    colnames(res) <- columns
-    res
+    colnames(res) <- c(columns[from_query], columns[from_target], 
+                       columns[from_matches]) 
+    res[, columns, drop = FALSE]
 }
 
 
@@ -412,8 +412,11 @@ data <- function(object, columns = colnames(object)){
 }
 
 .extract_elements <- function(x, i, j) {
-    if (length(dim(x))) x[i, j, drop = FALSE]
-    else x[i]
+    if (length(dim(x))) res <- x[i, j, drop = FALSE]
+    else res <- x[i]
+    if(is(x)[1] == "list" && any(na <- is.na(i)))
+        res[na] <- NA
+    res
 }
 
 
@@ -462,10 +465,6 @@ data <- function(object, columns = colnames(object)){
             msg <- c(msg,
                      "column \"query_idx\" is expected to be of type integer")
     }
-    # Could it be possible to require that no column of of x is equal to 
-    # "query" or "target" and check it here. This situation would cause confusion
-    # when either query or target are not two dimensional objects because in that case 
-    # we decided to use "query" and "target" to extract query and target objects.
     msg
 }
 

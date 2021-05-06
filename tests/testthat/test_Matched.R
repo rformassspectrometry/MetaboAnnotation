@@ -206,7 +206,9 @@ test_that("$,Matched works", {
                                      score = seq(0.5, 0.9, by = 0.1)))
     expect_equal(mo$score, c(0.5, 0.6, 0.7, 0.8, NA, NA, 0.9))
     expect_equal(mo$query, q2[c(1, 2, 2, 2, 3, 4, 5)])
-    expect_equal(mo$target, t2[c(2,2,3,4, NA, NA, 5)])
+    tmp <- t2[c(2,2,3,4, NA, NA, 5)]
+    tmp[5:6] <- NA
+    expect_equal(mo$target, tmp)
     
     mo <- Matched(
         q2, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
@@ -222,7 +224,9 @@ test_that("$,Matched works", {
                                      score = seq(0.5, 0.9, by = 0.1)))
     expect_equal(mo$score, c(0.5, 0.6, 0.7, 0.8, NA, NA, 0.9))
     expect_equal(mo$col1, q1[c(1, 2, 2, 2, 3, 4, 5), "col1"])
-    expect_equal(mo$target, t2[c(2,2,3,4, NA, NA, 5)])
+    tmp <- t2[c(2,2,3,4, NA, NA, 5)]
+    tmp[5:6] <- NA
+    expect_equal(mo$target, tmp)
 })
 
 test_that("colnames,Matched works", {
