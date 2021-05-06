@@ -1,5 +1,5 @@
 Package: MetaboAnnotation
-Title: What the Package Does (One Line, Title Case)
+Title: Utilities for Annotation of Metabolomics Data
 Version: 0.0.4
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.

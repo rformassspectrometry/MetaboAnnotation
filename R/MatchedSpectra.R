@@ -1,17 +1,17 @@
 #' @title Representation of Spectra matches
 #'
 #' @name MatchedSpectra
-#' 
+#'
 #' @aliases MatchedSpectra MatchedSpectra-class
-#' 
+#'
 #' @description
-#' 
+#'
 #' Matches between query and target spectra can be represented by the
 #' `MatchedSpectra` object. Functions like the [matchSpectra()] function will
 #' return this type of object. By default, all data accessors work as
 #' *left joins* between the *query* and the *target* spectra, i.e. values are
 #' returned for each *query* spectrum with eventual duplicated entries (values)
-#' if the query spectrum matches more than one target spectrum. 
+#' if the query spectrum matches more than one target spectrum.
 #'
 #' @section Creation and subsetting:
 #'
@@ -21,10 +21,10 @@
 #'
 #' - `[` subset the `MatchedSpectra` selecting `query` spectra to keep with
 #'   parameter `i`. The `target` spectra will by default be returned as-is.
-#' 
+#'
 #' - `pruneTarget` *cleans* the `MatchedSpectra` object by removing non-matched
 #'   target spectra.
-#' 
+#'
 #' @section Extracting data:
 #'
 #' - `$` extracts a single spectra variable from the `MatchedSpectra` `x`. Use
@@ -37,7 +37,7 @@
 #'   from the target spectra are extracted, an `NA` is reported for *query*
 #'   spectra that don't match any target spectra. See examples below for more
 #'   details.
-#' 
+#'
 #' - `length` returns the number of **query** spectra.
 #'
 #' - `spectraData` returns spectra variables from the query and/or target
@@ -52,14 +52,14 @@
 #'   duplicated elements for query spectra matching multiple target spectra)
 #'   and the values for the target spectra matched to the respective query
 #'   spectra. See help on `$` above or examples below for details.
-#' 
+#'
 #' - `spectraVariables` returns all available spectra variables in the *query*
 #'   and *target* spectra. The prefix `"target_"` is used to label spectra
 #'   variables of target spectra (e.g. the name of the spectra variable for the
-#'   MS level of target spectra is called `"target_msLevel"`).  
-#' 
+#'   MS level of target spectra is called `"target_msLevel"`).
+#'
 #' - `target` returns the *target* `Spectra`.
-#' 
+#'
 #' - `query` returns the *query* `Spectra`.
 #'
 #' - `whichTarget` returns an `integer` with the indices of the spectra in
@@ -81,9 +81,9 @@
 #'
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
-#' 
+#'
 #' @param drop for `[`: ignored.
-#' 
+#'
 #' @param FUN For `addProcessing`: function to be applied to the peak matrix
 #'   of each spectrum in `object`. See [Spectra()] for more details.
 #'
@@ -92,15 +92,15 @@
 #' @param j for `[`: ignored.
 #'
 #' @param main for `plotSpectraMirror`: an optional title for each plot.
-#' 
+#'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the
 #'   *n:m* mapping of elements between the `query` and the `target` `Spectra`.
 #'
 #' @param name for `$`: the name of the spectra variable to extract.
-#' 
+#'
 #' @param object `MatchedSpectra` object.
-#' 
+#'
 #' @param spectraVariables For `addProcessing`: `character` with additional
 #'   spectra variables that should be passed along to the function defined
 #'   with `FUN`. See [Spectra()] for details.
@@ -119,15 +119,15 @@
 #' @param ... for `addProcessing`: additional parameters for the function `FUN`.
 #'
 #' @return See individual method desciption above for details.
-#' 
+#'
 #' @importClassesFrom Spectra Spectra
 #'
 #' @importFrom Spectra Spectra
-#' 
+#'
 #' @exportClass MatchedSpectra
 #'
 #' @author Johannes Rainer
-#' 
+#'
 #' @rdname MatchedSpectra
 #'
 #' @examples
@@ -149,7 +149,7 @@
 #'     sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
 #'                                    target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
 #'                                    score = 1:6))
-#' 
+#'
 #' ## Which of the query spectra match at least one target spectrum?
 #' whichQuery(ms)
 #'
@@ -157,10 +157,10 @@
 #' ## as "left joins", i.e. they return a value for each query spectrum, with
 #' ## eventually duplicated elements if one query spectrum matches more than
 #' ## one target spectrum.
-#' 
+#'
 #' ## Which target spectrum matches at least one query spectrum?
 #' whichTarget(ms)
-#' 
+#'
 #' ## Extracting the retention times of the query spectra.
 #' ms$rtime
 #'
@@ -288,28 +288,28 @@ setMethod("[", "MatchedSpectra", function(x, i, j, ..., drop = FALSE) {
 })
 
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 target <- function(object) {
     object@target
 }
 
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 query <- function(object) {
     object@query
 }
 
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 whichTarget <- function(object) {
     unique(object@matches$target_idx)
 }
 
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 whichQuery <- function(object) {
     unique(object@matches$query_idx)
@@ -318,7 +318,7 @@ whichQuery <- function(object) {
 #' @importMethodsFrom ProtGenerics spectraVariables
 #'
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 setMethod("spectraVariables", "MatchedSpectra", function(object) {
     svq <- spectraVariables(query(object))
@@ -330,7 +330,7 @@ setMethod("spectraVariables", "MatchedSpectra", function(object) {
 #' @importMethodsFrom S4Vectors $
 #'
 #' @rdname MatchedSpectra
-#' 
+#'
 #' @export
 setMethod("$", "MatchedSpectra", function(x, name) {
     idxs <- .fill_index(seq_along(x@query), x@matches$query_idx)
@@ -356,7 +356,7 @@ setMethod("$", "MatchedSpectra", function(x, name) {
 #' @importMethodsFrom Spectra spectraData
 #'
 #' @importFrom S4Vectors DataFrame
-#' 
+#'
 #' @rdname MatchedSpectra
 #'
 #' @export
@@ -412,7 +412,7 @@ setMethod(
 #' @rdname MatchedSpectra
 #'
 #' @importFrom methods validObject
-#' 
+#'
 #' @export
 pruneTarget <- function(object) {
     keep <- whichTarget(object)
@@ -455,7 +455,7 @@ pruneTarget <- function(object) {
 #'
 #' @param i has to be an `integer` vector with the indices of the query elements
 #'     to keep.
-#' 
+#'
 #' @importFrom methods slot<-
 #'
 #' @noRd
@@ -496,7 +496,7 @@ setMethod(
 #' @rdname MatchedSpectra
 #'
 #' @importFrom graphics par
-#' 
+#'
 #' @export
 setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
                                                           ylab = "intensity",
