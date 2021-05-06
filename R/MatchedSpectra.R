@@ -405,10 +405,6 @@ setMethod(
         res[, columns, drop = FALSE]
     })
 
-.fill_index <- function(x, y) {
-    sort(c(setdiff(x, y), y))
-}
-
 #' @rdname MatchedSpectra
 #'
 #' @importFrom methods validObject
@@ -420,58 +416,6 @@ pruneTarget <- function(object) {
     object@matches$target_idx <- match(object@matches$target_idx, keep)
     validObject(object)
     object
-}
-
-.validate_matches_format <- function(x) {
-    msg <- NULL
-    if (!is.data.frame(x))
-        msg <- c(msg, "'matches' should be a 'data.frame'")
-    else {
-        if (!all(c("query_idx", "target_idx", "score") %in% colnames(x)))
-            return(c(msg, paste0("Not all required column names \"query_idx\",",
-                                 " \"target_idx\" and \"score\" found in",
-                                 " 'matches'")))
-        if (!is.integer(x$target_idx))
-            msg <- c(msg,
-                     "column \"target_idx\" is expected to be of type integer")
-        if (!is.integer(x$query_idx))
-            msg <- c(msg,
-                     "column \"query_idx\" is expected to be of type integer")
-    }
-    msg
-}
-
-.validate_matches_content <- function(x, nquery, ntarget) {
-    msg <- NULL
-    if (!all(x$query_idx %in% seq_len(nquery)))
-        msg <- c(msg, "indices in \"query_idx\" are out of bounds")
-    if (!all(x$target_idx %in% seq_len(ntarget)))
-        msg <- c(msg, "indices in \"target_idx\" are out of bounds")
-    msg
-}
-
-#' Subsetting of a matched object with slots query, target and matches. Should
-#' work on all such objects for which `target` and `query` don't have dimensions
-#'
-#' @param i has to be an `integer` vector with the indices of the query elements
-#'     to keep.
-#'
-#' @importFrom methods slot<-
-#'
-#' @noRd
-.subset_matches_nodim <- function(x, i) {
-    slot(x, "query", check = FALSE) <- x@query[i]
-    mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
-    ## Support handling duplicated indices.
-    mtches <- split.data.frame(
-        x@matches, f = as.factor(x@matches$query_idx))[as.character(i)]
-    lns <- vapply(mtches, function(z)
-        if (length(z)) nrow(z) else 0L, integer(1))
-    mtches <- do.call(rbind, mtches[lengths(mtches) > 0])
-    rownames(mtches) <- NULL
-    mtches$query_idx <- rep(seq_along(i), lns)
-    slot(x, "matches", check = FALSE) <- mtches
-    x
 }
 
 #' @importMethodsFrom Spectra addProcessing
