@@ -27,24 +27,20 @@ Authors@R:
 Depends:
     R (>= 4.0.0)
 Imports:
+    BiocGenerics,
     MsCoreUtils,
     MetaboCoreUtils,
     ProtGenerics,
-    reshape2,
     methods,
     S4Vectors,
     Spectra (>= 1.1.18),
-    CompoundDb,
     BiocParallel
 Suggests:
     testthat,
     knitr,
     msdata,
-    BiocStyle
-Remotes:
-    RforMassSpectrometry/MsCoreUtils,
-    RforMassSpectrometry/MetaboCoreUtils,
-    EuracBiomedicalResearch/CompoundDb
+    BiocStyle,
+    rmarkdown
 License: Artistic-2.0
 LazyData: yes
 VignetteBuilder: knitr

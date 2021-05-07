@@ -40,6 +40,8 @@
 #'
 #' - `length` returns the number of **query** spectra.
 #'
+#' - `matchedData` same as `spectraData` below.
+#'
 #' - `spectraData` returns spectra variables from the query and/or target
 #'   `Spectra` as a `DataFrame`. Parameter `columns` allows to define which
 #'   variables should be returned (defaults to
@@ -82,14 +84,8 @@
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
 #'
-#' @param drop for `[`: ignored.
-#'
-#' @param FUN For `addProcessing`: function to be applied to the peak matrix
+#' @param FUN for `addProcessing`: function to be applied to the peak matrix
 #'   of each spectrum in `object`. See [Spectra()] for more details.
-#'
-#' @param i `integer` or `logical` defining the `query` spectra to keep.
-#'
-#' @param j for `[`: ignored.
 #'
 #' @param main for `plotSpectraMirror`: an optional title for each plot.
 #'
@@ -101,7 +97,7 @@
 #'
 #' @param object `MatchedSpectra` object.
 #'
-#' @param spectraVariables For `addProcessing`: `character` with additional
+#' @param spectraVariables for `addProcessing`: `character` with additional
 #'   spectra variables that should be passed along to the function defined
 #'   with `FUN`. See [Spectra()] for details.
 #'
@@ -129,6 +125,8 @@
 #' @author Johannes Rainer
 #'
 #' @rdname MatchedSpectra
+#'
+#' @seealso [Matched] for additional functions available for `MatchedSpectra`.
 #'
 #' @examples
 #'
@@ -220,14 +218,7 @@ NULL
 
 setClass(
     "MatchedSpectra",
-    slots = c(
-        query = "Spectra",
-        target = "Spectra",
-        matches = "data.frame",
-        ## metadata
-        metadata = "list",
-        version = "character"
-    ),
+    contains = "Matched",
     prototype = prototype(
         query = Spectra(),
         target = Spectra(),
@@ -257,64 +248,6 @@ setValidity("MatchedSpectra", function(object) {
     TRUE
 })
 
-#' @export
-#'
-#' @rdname MatchedSpectra
-setMethod("length", "MatchedSpectra", function(x) length(x@query))
-
-#' @exportMethod show
-#'
-#' @importMethodsFrom methods show
-#'
-#' @rdname MatchedSpectra
-setMethod("show", "MatchedSpectra", function(object) {
-    cat("Object of class", class(object)[1L], "\n")
-    cat("Total number of matches:", nrow(object@matches), "\n")
-    cat("Number of query spectra: ", length(object@query), " (",
-        length(unique(object@matches$query_idx)), " matched)\n", sep = "")
-    cat("Number of target spectra: ", length(object@target), " (",
-        length(unique(object@matches$target_idx)), " matched)\n", sep = "")
-})
-
-#' @exportMethod [
-#'
-#' @rdname MatchedSpectra
-setMethod("[", "MatchedSpectra", function(x, i, j, ..., drop = FALSE) {
-    if (missing(i))
-        return(x)
-    if (is.logical(i))
-        i <- which(i)
-    .subset_matches_nodim(x, i)
-})
-
-#' @rdname MatchedSpectra
-#'
-#' @export
-target <- function(object) {
-    object@target
-}
-
-#' @rdname MatchedSpectra
-#'
-#' @export
-query <- function(object) {
-    object@query
-}
-
-#' @rdname MatchedSpectra
-#'
-#' @export
-whichTarget <- function(object) {
-    unique(object@matches$target_idx)
-}
-
-#' @rdname MatchedSpectra
-#'
-#' @export
-whichQuery <- function(object) {
-    unique(object@matches$query_idx)
-}
-
 #' @importMethodsFrom ProtGenerics spectraVariables
 #'
 #' @rdname MatchedSpectra
@@ -325,6 +258,13 @@ setMethod("spectraVariables", "MatchedSpectra", function(object) {
     svt <- spectraVariables(target(object))
     cns <- colnames(object@matches)
     c(svq, paste0("target_", svt), cns[!cns %in% c("query_idx", "target_idx")])
+})
+
+#' @exportMethod colnames
+#'
+#' @rdname MatchedSpectra
+setMethod("colnames", "MatchedMatched", function(x) {
+    spectraVariables(x)
 })
 
 #' @importMethodsFrom S4Vectors $
@@ -406,17 +346,10 @@ setMethod(
     })
 
 #' @rdname MatchedSpectra
-#'
-#' @importFrom methods validObject
-#'
-#' @export
-pruneTarget <- function(object) {
-    keep <- whichTarget(object)
-    object@target <- object@target[keep]
-    object@matches$target_idx <- match(object@matches$target_idx, keep)
-    validObject(object)
-    object
-}
+setMethod("matchedData", "MatchedSpectra",
+          function(object, columns = spectraVariables(object), ...) {
+              spectraData(object, columns)
+})
 
 #' @importMethodsFrom Spectra addProcessing
 #'
