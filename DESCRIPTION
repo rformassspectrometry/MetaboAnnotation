@@ -44,8 +44,8 @@ Suggests:
 License: Artistic-2.0
 LazyData: yes
 VignetteBuilder: knitr
-BugReports: https://github.com/michaelwitting/MetaboAnnotation/issues
-URL: https://github.com/michaelwitting/MetaboAnnotation
+BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
+URL: https://github.com/RforMassSpectrometry/MetaboAnnotation
 biocViews: Infrastructure, Metabolomics, MassSpectrometry
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.1.1
