@@ -51,7 +51,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/michaelwitting/MetaboAnnotation/" class="external-link">
+  <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -72,7 +72,7 @@
       <h1 data-toc-skip>Annotation of MS-based Metabolomics Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/michaelwitting/MetaboAnnotation/blob/master/vignettes/MetaboAnnotation.Rmd" class="external-link"><code>vignettes/MetaboAnnotation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/vignettes/MetaboAnnotation.Rmd" class="external-link"><code>vignettes/MetaboAnnotation.Rmd</code></a></small>
       <div class="hidden name"><code>MetaboAnnotation.Rmd</code></div>
 
     </div>
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.13/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Mon May 10 15:00:02 2021</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.13/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Mon May 10 15:01:21 2021</p>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h1>
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="#example-use-cases" class="anchor" aria-hidden="true"></a>Example use cases</h1>
 <p>The following sections illustrate example use cases of the functionality provided by the <code>MetaboAnnotation</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/michaelwitting/MetaboAnnotation" class="external-link">MetaboAnnotation</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboAnnotation" class="external-link">MetaboAnnotation</a></span><span class="op">)</span></code></pre></div>
 <div id="matching-of-mz-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#matching-of-mz-values" class="anchor" aria-hidden="true"></a>Matching of m/z values</h2>
@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## file(s):
 ## PestMix1_DDA.mzML
 ## Processing:
-##  Filter: select MS level(s) 2 [Mon May 10 15:00:08 2021]</code></pre>
+##  Filter: select MS level(s) 2 [Mon May 10 15:01:26 2021]</code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
