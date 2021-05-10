@@ -43,12 +43,13 @@ provided by the `MetaboAnnotation` package.
 library(MetaboAnnotation)
 ```
 
+
 ## Matching of m/z values
 
 In this section a simple matching of feature m/z values against theoretical m/z
 values is performed. This is the lowest level of confidence in metabolite anno-
-tation. However, it gives ideas about potential metabolites that can analyzed
-in further downstream analysis.
+tation. However, it gives ideas about potential metabolites that can be analyzed
+in further downstream experiments and analyses.
 
 The following example loads the feature table from a lipidomics experiments and
 matches the measured m/z values against reference masses from LipidMaps. Below
@@ -60,17 +61,73 @@ database instance would also be supported.
 ms1_features <- read.table(system.file("extdata", "MS1_example.txt",
                                        package = "MetaboAnnotation"),
                            header = TRUE, sep = "\t")
+head(ms1_features)
+target_df <- read.table(system.file("extdata", "LipidMaps_CompDB.txt",
+                                    package = "MetaboAnnotation"),
+                        header = TRUE, sep = "\t")
+head(target_df)
 
-compDb <- read.table(system.file("extdata", "LipidMaps_CompDB.txt",
-                                 package = "MetaboAnnotation"),
-                     header = TRUE, sep = "\t")
-
-##
-annotations <- matchMz(ms1_features, compDb,
-                       adducts = c("[M+H]+", "[M+Na]+"),
-                       tolerance = 0.005, ppm = 0)
+## annotations <- matchMz(ms1_features, compDb,
+##                        adducts = c("[M+H]+", "[M+Na]+"),
+##                        tolerance = 0.005, ppm = 0)
 
 ```
+
+For reference (target) compounds we have only the mass available. We need to
+convert this mass to m/z values in order to match the m/z values from the
+features (i.e. the query m/z values) against them. For this we need to define
+the *most likely* ions/adducts that would be generated from the compounds based
+on the ionization used in the experiment. We assume the most abundant adducts
+from the compounds being `"[M+H]+"` and `"[M+Na]+`. We next perform the matching
+with the `matchMz` function providing the query and target data as well as a
+parameter object (in our case a `TargetMass2MzParam`) with the settings for the
+matching. With the `TargetMass2MzParam`, the mass or target compounds get first
+converted to m/z values, based on the defined adducts, and these are then
+matched against the query m/z values (i.e. the m/z values for the features). To
+get a full list of supported adducts the `MetaboCoreUtils::adductNames(polarity
+= "positive")` or `MetaboCoreUtils::adductNames(polarity = "negative")` can be
+used). Note also, to keep the runtime of this vignette short, we match only the
+first 100 features.
+
+```{r}
+parm <- TargetMass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+                           tolerance = 0.005, ppm = 0)
+
+matched_features <- matchMz(ms1_features[1:100, ], target_df, parm)
+matched_features
+```
+
+From the tested 100 features 55 were matched against at least one target
+compound (all matches are against a single compound). The result object (of type
+`Matched`) contains the full query data frame and target data frames as well as
+the matching information. We can access the original query data with `query` and
+the original target data with `target` function:
+
+```{r}
+head(query(matched_features))
+head(target(matched_features))
+```
+
+Functions `whichQuery` and `whichTarget` can be used to identify the rows in the
+query and target data that could be matched:
+
+```{r}
+whichQuery(matched_features)
+whichTarget(matched_features)
+```
+
+We can extract the full matching table with `data`. This returns a `DataFrame`
+with all rows in *query* the corresponding matches in *target* along with the
+matching adduct (column `"adduct"`) and the difference in m/z (column
+`"score"`). Note that if a row in *query* matches multiple elements in *target*,
+this row will be duplicated in the `DataFrame` returned by `data`. For rows that
+can not be matched `NA` values are reported.
+
+```{r}
+data(matched_features)
+```
+
+See also the help page for `?Matched` for more details and information.
 
 
 ## Matching of MS/MS spectra

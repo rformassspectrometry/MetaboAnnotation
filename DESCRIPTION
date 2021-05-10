@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.4
+Title: Utilities for Annotation of Metabolomics Data
+Version: 0.1.0
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -20,28 +20,27 @@ Authors@R:
       person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
              role = "aut",
-             comment = c(ORCID = "0000-0002-6977-7147")))
+             comment = c(ORCID = "0000-0002-6977-7147")),
+      person(given = "Andrea", family = "Vicini",
+	     email = "andrea.vicini@eurac.edu",
+	     role = "aut"))
 Depends:
     R (>= 4.0.0)
 Imports:
+    BiocGenerics,
     MsCoreUtils,
     MetaboCoreUtils,
     ProtGenerics,
-    reshape2,
     methods,
     S4Vectors,
     Spectra (>= 1.1.18),
-    CompoundDb,
     BiocParallel
 Suggests:
     testthat,
     knitr,
     msdata,
-    BiocStyle
-Remotes:
-    RforMassSpectrometry/MsCoreUtils,
-    RforMassSpectrometry/MetaboCoreUtils,
-    EuracBiomedicalResearch/CompoundDb
+    BiocStyle,
+    rmarkdown
 License: Artistic-2.0
 LazyData: yes
 VignetteBuilder: knitr
