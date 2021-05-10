@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>m/z matching — matchMz • MetaboAnnotation</title>
+<title>m/z matching — TargetMass2MzParam • MetaboAnnotation</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,24 @@
 
 
 
-<meta property="og:title" content="m/z matching — matchMz" />
+<meta property="og:title" content="m/z matching — TargetMass2MzParam" />
 <meta property="og:description" content="The matchMz method matches (compares) m/z values from a MS1 data table
-with theoretical m/z values from compounds. adducts specifies the allowed
-adducts based on adduct names from MetaboCoreUtils::adductNames(). The
-maximum allowed error is defined by tolerance or ppm" />
+(parameter query) with theoretical m/z values for (reference) compounds
+(parameter target). The approach which is used to perform the comparison
+and additional settings for this matching can be defined with param.
+Available matching approaches and respective param objects are:
+TargetMass2MzParam: match m/z values against reference compounds for
+which the (exact) mass is known. Before matching, m/z values are calculated
+from the mass of the compounds in the target table for the specified
+adducts (parameter adduct in the parameter object).
+query must be a data.frame with a column named &quot;mz&quot; or a numeric
+with the m/z values of the features. If target is a data.frame it must
+contain a column &quot;exactmass&quot; with the exact monoisotopic mass for each
+compound. TargetMass2MzParam's parameter adducts allows to define the
+expected adducts (defaults to adducts = &quot;[M+H]+&quot; but any adducts available in [MetaboCoreUtils::adducts()] are supported). Parameter toleranceandppm` allow to define the maximal acceptable (constant or
+m/z relative) difference between query and target m/z values.
+
+" />
 
 
 
@@ -60,6 +73,8 @@ maximum allowed error is defined by tolerance or ppm" />
 <![endif]-->
 
 
+
+<!-- dependencies from examples -->
 
 
   
@@ -84,7 +99,7 @@ maximum allowed error is defined by tolerance or ppm" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -127,56 +142,164 @@ maximum allowed error is defined by tolerance or ppm" />
 
     <div class="ref-description">
     <p>The <code>matchMz</code> method matches (compares) m/z values from a MS1 data table
-with theoretical m/z values from compounds. <code>adducts</code> specifies the allowed
-adducts based on adduct names from <code><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html'>MetaboCoreUtils::adductNames()</a></code>. The
-maximum allowed error is defined by <code>tolerance</code> or <code>ppm</code></p>
+(parameter <code>query</code>) with theoretical m/z values for (reference) compounds
+(parameter <code>target</code>). The approach which is used to perform the comparison
+and additional settings for this matching can be defined with <code>param</code>.</p>
+<p>Available matching approaches and respective <code>param</code> objects are:</p><ul>
+<li><p><code>TargetMass2MzParam</code>: match m/z values against reference compounds for
+which the (exact) mass is known. Before matching, m/z values are calculated
+from the mass of the compounds in the <em>target</em> table for the specified
+adducts (parameter <code>adduct</code> in the parameter object).
+<code>query</code> must be a <code>data.frame</code> with a column named <code>"mz"</code> or a <code>numeric</code>
+with the m/z values of the features. If <code>target</code> is a <code>data.frame</code> it must
+contain a column <code>"exactmass"</code> with the exact monoisotopic mass for each
+compound. <code>TargetMass2MzParam</code>'s parameter <code>adducts</code> allows to define the
+expected adducts (defaults to <code>adducts = "[M+H]+" but any adducts available in [MetaboCoreUtils::adducts()] are supported). Parameter </code>tolerance<code>and</code>ppm` allow to define the maximal acceptable (constant or
+m/z relative) difference between query and target m/z values.</p></li>
+</ul>
+
     </div>
 
-    <pre class="usage"><span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>adducts</span>, <span class='va'>tolerance</span>, <span class='va'>ppm</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'><a href='matchMz.html'>TargetMass2MzParam</a></span><span class='op'>(</span>adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+H]+"</span><span class='op'>)</span>, tolerance <span class='op'>=</span> <span class='fl'>0</span>, ppm <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 
-<span class='co'># S4 method for data.frame,data.frame</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+H]+"</span><span class='op'>)</span>, tolerance <span class='op'>=</span> <span class='fl'>0</span>, ppm <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='co'># S4 method for data.frame,CompDb</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+H]+"</span><span class='op'>)</span>, tolerance <span class='op'>=</span> <span class='fl'>0</span>, ppm <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
+<span class='co'># S4 method for numeric,data.frame,TargetMass2MzParam</span>
+<span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># S4 method for data.frame,data.frame,TargetMass2MzParam</span>
+<span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Feature table containing information on MS1 features. Must contain
-column called <code>mz</code></p></td>
-    </tr>
-    <tr>
-      <th>y</th>
-      <td><p>Compound table with metabolites to compare against. Must contain
-columns called <code>exactmass</code> and <code>name</code></p></td>
-    </tr>
-    <tr>
       <th>adducts</th>
-      <td><p>Allowed adducts named accordingly to <code><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html'>MetaboCoreUtils::adductNames()</a></code></p></td>
+      <td><p>for <code>TargetMass2MzParam</code>: <code>character</code> with the names of
+adducts to calculate m/z from target compounds' masses. Use
+<code>MetaboCoreUtils::adductNames("positive")</code> and
+<code>MetaboCoreUtils::adductNames("negative")</code> for valid names.</p></td>
     </tr>
     <tr>
       <th>tolerance</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> for an absolute maximal accepted difference
-between m/z values.</p></td>
+      <td><p>for <code>TargetMass2MzParam</code>: <code>numeric(1)</code> defining the maximal
+acceptable absolute difference in m/z values to consider them <em>matching</em>.
+See <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/matching.html'>MsCoreUtils::closest()</a></code> for more information.</p></td>
     </tr>
     <tr>
       <th>ppm</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> for a relative, m/z-dependent, maximal accepted
-difference between m/z values.</p></td>
+      <td><p>for <code>TargetMass2MzParam</code>: <code>numeric(1)</code> defining the maximal
+acceptable m/z-dependent difference (in parts-per-million) in m/z values
+to consider them to be <em>matching</em>. See <code><a href='https://rdrr.io/pkg/MsCoreUtils/man/matching.html'>MsCoreUtils::closest()</a></code> for
+more information.</p></td>
+    </tr>
+    <tr>
+      <th>query</th>
+      <td><p>feature table containing information on MS1 features. Can be
+a <code>data.frame</code> (with mandatory column names <code>"mz"</code>) or a <code>numeric</code> with
+the m/z values.</p></td>
+    </tr>
+    <tr>
+      <th>target</th>
+      <td><p>compound table with metabolites to compare against.</p></td>
+    </tr>
+    <tr>
+      <th>param</th>
+      <td><p>parameter object defining the matching approach and containing
+the settings for that approach. See description above for details.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>currently ignored.</p></td>
+    </tr>
+    <tr>
+      <th>BPPARAM</th>
+      <td><p>parallel processing setup. See <code><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>BiocParallel::bpparam()</a></code> for
+details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>list</code> of the same length as x with data frames containing the
-annotations</p>
+    <p><a href='Matched.html'>Matched</a> object representing the result</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><a href='matchSpectra.html'>matchSpectra</a> or <code><a href='CompareSpectraParam.html'>CompareSpectraParam()</a></code> for spectra data matching</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Michael Witting</p>
+    <p>Andrea Vicini, Michael Witting</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RforMassSpectrometry/MetaboCoreUtils'>MetaboCoreUtils</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Create a simple "target/reference" compound table</span></span>
+<span class='r-in'><span class='va'>target_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>   name <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"Tryptophan"</span>, <span class='st'>"Leucine"</span>, <span class='st'>"Isoleucine"</span><span class='op'>)</span>,</span>
+<span class='r-in'>   formula <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"C11H12N2O2"</span>, <span class='st'>"C6H13NO2"</span>, <span class='st'>"C6H13NO2"</span><span class='op'>)</span>,</span>
+<span class='r-in'>   exactmass <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>204.089878</span>, <span class='fl'>131.094629</span>, <span class='fl'>131.094629</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Create a "feature" table with m/z of features. We calculate m/z for</span></span>
+<span class='r-in'><span class='co'>## certain adducts of some of the compounds in the reference table.</span></span>
+<span class='r-in'><span class='va'>fts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span></span>
+<span class='r-in'>    feature_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"FT001"</span>, <span class='st'>"FT002"</span>, <span class='st'>"FT003"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    mz <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html'>mass2mz</a></span><span class='op'>(</span><span class='fl'>204.089878</span>, <span class='st'>"[M+H]+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           <span class='fu'><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html'>mass2mz</a></span><span class='op'>(</span><span class='fl'>131.094629</span>, <span class='st'>"[M+H]+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>           <span class='fu'><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html'>mass2mz</a></span><span class='op'>(</span><span class='fl'>204.089878</span>, <span class='st'>"[M+Na]+"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fl'>1e-6</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Define the parameters for the matching</span></span>
+<span class='r-in'><span class='va'>parm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>TargetMass2MzParam</a></span><span class='op'>(</span></span>
+<span class='r-in'>    adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+H]+"</span>, <span class='st'>"[M+Na]+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    tolerance <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>    ppm <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>fts</span>, <span class='va'>target_df</span>, <span class='va'>parm</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class Matched </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 3 (3 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 3 (3 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Get the full matching result:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘res’ not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## We have thus matches of FT002 to two different compounds (but with the</span></span>
+<span class='r-in'><span class='co'>## same mass.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## We repeat the matching requiring an exact match</span></span>
+<span class='r-in'><span class='va'>parm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>TargetMass2MzParam</a></span><span class='op'>(</span></span>
+<span class='r-in'>    adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+H]+"</span>, <span class='st'>"[M+Na]+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    tolerance <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>    ppm <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>fts</span>, <span class='va'>target_df</span>, <span class='va'>parm</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class Matched </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 3 (2 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 3 (3 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘res’ not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The last feature could thus not be matched to any compound.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## At last we use also different adduct definitions.</span></span>
+<span class='r-in'><span class='va'>parm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>TargetMass2MzParam</a></span><span class='op'>(</span></span>
+<span class='r-in'>    adducts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"[M+K]+"</span>, <span class='st'>"[M+Li]+"</span><span class='op'>)</span>,</span>
+<span class='r-in'>    tolerance <span class='op'>=</span> <span class='fl'>0</span>,</span>
+<span class='r-in'>    ppm <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchMz.html'>matchMz</a></span><span class='op'>(</span><span class='va'>fts</span>, <span class='va'>target_df</span>, <span class='va'>parm</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class Matched </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 3 (0 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 3 (0 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>data set ‘res’ not found</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## No matches were found.</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -188,7 +311,7 @@ annotations</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer.</p></p>
+  <p><p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer, Andrea Vicini.</p></p>
 </div>
 
 <div class="pkgdown">

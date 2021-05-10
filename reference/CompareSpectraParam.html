@@ -116,7 +116,7 @@ for details.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -233,13 +233,13 @@ Defaults for <code>CompareSpectraParam</code> to <code>joinPeaks()</code>. See
     </tr>
     <tr>
       <th>tolerance</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> for an absolute maximal accepted difference
+      <td><p><code>numeric(1)</code> for an absolute maximal accepted difference
 between m/z values. This will be used in <code>compareSpectra</code> as well as for
 eventual precursor m/z matching.</p></td>
     </tr>
     <tr>
       <th>ppm</th>
-      <td><p><code><a href='https://rdrr.io/r/base/numeric.html'>numeric(1)</a></code> for a relative, m/z-dependent, maximal accepted
+      <td><p><code>numeric(1)</code> for a relative, m/z-dependent, maximal accepted
 difference between m/z values. This will be used in <code>compareSpectra</code> as
 well as for eventual precursor m/z matching.</p></td>
     </tr>
@@ -251,7 +251,7 @@ for <code>CompareSpectraParam</code> to <code><a href='https://rdrr.io/pkg/MsCor
     </tr>
     <tr>
       <th>requirePrecursor</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> whether only target spectra are
+      <td><p><code>logical(1)</code> whether only target spectra are
 considered in the similarity calculation with a precursor m/z that matches
 the precursor m/z of the query spectrum (considering also <code>ppm</code> and
 <code>tolerance</code>). With <code>requirePrecursor = TRUE</code> (the default) the function
@@ -260,7 +260,7 @@ spectra) with missing precursor m/z.</p></td>
     </tr>
     <tr>
       <th>requirePrecursorPeak</th>
-      <td><p><code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> whether only target spectra will be
+      <td><p><code>logical(1)</code> whether only target spectra will be
 considered in the spectra similarity calculation that have a peak with an
 m/z matching the precursor m/z of the query spectrum. Defaults to
 <code>requirePrecursorPeak = FALSE</code>.</p></td>
@@ -307,71 +307,90 @@ processing is disabled.</p></td>
     <p>Johannes Rainer, Michael Witting</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RforMassSpectrometry/Spectra'>Spectra</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
-#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
-#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
-#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
-#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
-#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid, I, unname</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocParallel</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: ProtGenerics</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘ProtGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    smooth</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>msdata</span><span class='op'>)</span>
-<span class='va'>fl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"TripleTOF-SWATH"</span>, <span class='st'>"PestMix1_DDA.mzML"</span>, package <span class='op'>=</span> <span class='st'>"msdata"</span><span class='op'>)</span>
-<span class='va'>pest_ms2</span> <span class='op'>&lt;-</span> <span class='fu'>filterMsLevel</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/Spectra/man/Spectra.html'>Spectra</a></span><span class='op'>(</span><span class='va'>fl</span><span class='op'>)</span>, <span class='fl'>2L</span><span class='op'>)</span>
-
-<span class='co'>## subset to selected spectra.</span>
-<span class='va'>pest_ms2</span> <span class='op'>&lt;-</span> <span class='va'>pest_ms2</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>808</span>, <span class='fl'>809</span>, <span class='fl'>945</span><span class='op'>:</span><span class='fl'>955</span><span class='op'>)</span><span class='op'>]</span>
-
-<span class='co'>## Load a small example MassBank data set</span>
-<span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"minimb.RData"</span>, package <span class='op'>=</span> <span class='st'>"MetaboAnnotation"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'>## Match spectra with the default similarity score (normalized dot product)</span>
-<span class='va'>csp</span> <span class='op'>&lt;-</span> <span class='fu'>CompareSpectraParam</span><span class='op'>(</span>requirePrecursor <span class='op'>=</span> <span class='cn'>TRUE</span>, ppm <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-<span class='va'>mtches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchSpectra.html'>matchSpectra</a></span><span class='op'>(</span><span class='va'>pest_ms2</span>, <span class='va'>minimb</span>, <span class='va'>csp</span><span class='op'>)</span>
-
-<span class='va'>mtches</span>
-</div><div class='output co'>#&gt; Object of class MatchedSpectra 
-#&gt; Total number of matches: 16 
-#&gt; Number of query spectra: 13 (5 matched)
-#&gt; Number of target spectra: 100 (11 matched)</div><div class='input'>
-<span class='co'>## Are there any matching spectra for the first query spectrum?</span>
-<span class='va'>mtches</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Object of class MatchedSpectra 
-#&gt; Total number of matches: 
-#&gt; Number of query spectra: 1 (0 matched)
-#&gt; Number of target spectra: 100 (0 matched)</div><div class='input'><span class='co'>## No</span>
-
-<span class='co'>## And for the second query spectrum?</span>
-<span class='va'>mtches</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; Object of class MatchedSpectra 
-#&gt; Total number of matches: 4 
-#&gt; Number of query spectra: 1 (1 matched)
-#&gt; Number of target spectra: 100 (4 matched)</div><div class='input'><span class='co'>## The second query spectrum matches 4 target spectra. The scores for these</span>
-<span class='co'>## matches are:</span>
-<span class='va'>mtches</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>$</span><span class='va'>score</span>
-</div><div class='output co'>#&gt; [1] 0.7869556 0.8855473 0.7234894 0.7219942</div><div class='input'>
-<span class='co'>## To access the score for the full data set</span>
-<span class='va'>mtches</span><span class='op'>$</span><span class='va'>score</span>
-</div><div class='output co'>#&gt;  [1]        NA 0.7869556 0.8855473 0.7234894 0.7219942        NA 0.7769746
-#&gt;  [8] 0.7577286        NA 0.7433718 0.7019807 0.7081274        NA 0.7320465
-#&gt; [15] 0.8106258 0.7290458 0.8168876 0.7247800 0.7412586 0.7198787        NA
-#&gt; [22]        NA        NA        NA</div><div class='input'>
-<span class='co'>## See the package vignette for details, descriptions and more examples.</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RforMassSpectrometry/Spectra'>Spectra</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: S4Vectors</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: stats4</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: BiocGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: parallel</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘BiocGenerics’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:parallel’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     parLapplyLB, parRapply, parSapply, parSapplyLB</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     IQR, mad, sd, var, xtabs</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     union, unique, unsplit, which.max, which.min</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘S4Vectors’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     expand.grid, I, unname</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: BiocParallel</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: ProtGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘ProtGenerics’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from ‘package:stats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     smooth</span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>msdata</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"TripleTOF-SWATH"</span>, <span class='st'>"PestMix1_DDA.mzML"</span>, package <span class='op'>=</span> <span class='st'>"msdata"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>pest_ms2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html'>filterMsLevel</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/pkg/Spectra/man/Spectra.html'>Spectra</a></span><span class='op'>(</span><span class='va'>fl</span><span class='op'>)</span>, <span class='fl'>2L</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## subset to selected spectra.</span></span>
+<span class='r-in'><span class='va'>pest_ms2</span> <span class='op'>&lt;-</span> <span class='va'>pest_ms2</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>808</span>, <span class='fl'>809</span>, <span class='fl'>945</span><span class='op'>:</span><span class='fl'>955</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Load a small example MassBank data set</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/load.html'>load</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"minimb.RData"</span>, package <span class='op'>=</span> <span class='st'>"MetaboAnnotation"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Match spectra with the default similarity score (normalized dot product)</span></span>
+<span class='r-in'><span class='va'>csp</span> <span class='op'>&lt;-</span> <span class='fu'>CompareSpectraParam</span><span class='op'>(</span>requirePrecursor <span class='op'>=</span> <span class='cn'>TRUE</span>, ppm <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mtches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchSpectra.html'>matchSpectra</a></span><span class='op'>(</span><span class='va'>pest_ms2</span>, <span class='va'>minimb</span>, <span class='va'>csp</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>mtches</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSpectra </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 16 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 13 (5 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 100 (11 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Are there any matching spectra for the first query spectrum?</span></span>
+<span class='r-in'><span class='va'>mtches</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSpectra </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 1 (0 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 100 (0 matched)</span>
+<span class='r-in'><span class='co'>## No</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## And for the second query spectrum?</span></span>
+<span class='r-in'><span class='va'>mtches</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSpectra </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 1 (1 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 100 (4 matched)</span>
+<span class='r-in'><span class='co'>## The second query spectrum matches 4 target spectra. The scores for these</span></span>
+<span class='r-in'><span class='co'>## matches are:</span></span>
+<span class='r-in'><span class='va'>mtches</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>$</span><span class='va'>score</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.7869556 0.8855473 0.7234894 0.7219942</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## To access the score for the full data set</span></span>
+<span class='r-in'><span class='va'>mtches</span><span class='op'>$</span><span class='va'>score</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1]        NA 0.7869556 0.8855473 0.7234894 0.7219942        NA 0.7769746</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] 0.7577286        NA 0.7433718 0.7019807 0.7081274        NA 0.7320465</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [15] 0.8106258 0.7290458 0.8168876 0.7247800 0.7412586 0.7198787        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [22]        NA        NA        NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## See the package vignette for details, descriptions and more examples.</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -383,7 +402,7 @@ processing is disabled.</p></td>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer.</p></p>
+  <p><p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer, Andrea Vicini.</p></p>
 </div>
 
 <div class="pkgdown">

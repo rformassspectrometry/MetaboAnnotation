@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What the Package Does (One Line, Title Case) • MetaboAnnotation</title>
+<title>Utilities for Annotation of Metabolomics Data • MetaboAnnotation</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="What the Package Does (One Line, Title Case)">
+<script src="pkgdown.js"></script><meta property="og:title" content="Utilities for Annotation of Metabolomics Data">
 <meta property="og:description" content="
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -78,17 +78,17 @@
 
 <div id="metaboannotation" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#metaboannotation" class="anchor"></a>MetaboAnnotation</h1></div>
+<a href="#metaboannotation" class="anchor" aria-hidden="true"></a>MetaboAnnotation</h1></div>
 
 <p>High level functions to assist in annotation of (metabolomics) data sets. These include functions to perform simple tentative annotations based on mass matching but also functions to consider m/z and retention times for annotation of LC-MS features given that respective reference values are available. In addition, the function provides high-level functions to simplify matching of LC-MS/MS spectra against spectral libraries and objects and functionality to represent and manage such matched data.</p>
 </div>
 <div id="contributions" class="section level1">
 <h1 class="hasAnchor">
-<a href="#contributions" class="anchor"></a>Contributions</h1>
+<a href="#contributions" class="anchor" aria-hidden="true"></a>Contributions</h1>
 <p>Contributions are generally welcome, but should follow the <a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions" class="external-link">contribution guidelines</a>. Also, please check the coding style guidelines in the <a href="https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html" class="external-link">RforMassSpectrometry vignette</a>.</p>
 <div id="external-contributors" class="section level2">
 <h2 class="hasAnchor">
-<a href="#external-contributors" class="anchor"></a>External contributors</h2>
+<a href="#external-contributors" class="anchor" aria-hidden="true"></a>External contributors</h2>
 </div>
 </div>
 
@@ -119,6 +119,7 @@
 <li>RforMassSpectrometry Package Maintainer <br><small class="roles"> Maintainer </small>  </li>
 <li>Michael Witting <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1462-4426" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Johannes Rainer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6977-7147" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Andrea Vicini <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
@@ -139,7 +140,7 @@
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer.</p>
+<p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer, Andrea Vicini.</p>
 </div>
 
 <div class="pkgdown">
