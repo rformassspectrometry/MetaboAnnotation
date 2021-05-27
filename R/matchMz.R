@@ -538,6 +538,10 @@ setMethod("matchMz",
   }
 }
 
+#' @author Andrea Vicini
+#'
+#' @importFrom MsCoreUtils closest
+#'
 #' @noRd
 .getMatchesMzRt <- function(queryIndex, queryMz, queryRt, target, tolerance, 
                             ppm, toleranceRt){
@@ -582,4 +586,241 @@ setMethod("matchMz",
     data.frame(index = rep(seq_along(x), length(adducts)),
                adduct = rep(colnames(mz), each = length(x)),
                mz = as.numeric(mz))
+}
+
+
+#### <= approach. 
+# The functions above have been copied below and their names have been changed 
+# by adding a 2 at the end. The sorting of target inside matchMz2 is removed
+# from the functions since <= doesn't require it.
+#' @rdname matchMz2
+#'
+#' @export
+setGeneric("matchMz2", function(query, target, param, ...)
+  standardGeneric("matchMz2"))
+#' @rdname matchMz2
+#'
+#' @importFrom BiocParallel bpmapply SerialParam
+setMethod("matchMz2",
+          signature = c(query = "numeric",
+                        target = "numeric",
+                        param = "TargetMass2MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            target_mz <- .mass_to_mz_df(target, param@adducts)
+            matches <- do.call(
+              rbind, bpmapply(seq_along(query), query, FUN = .getMatches2,
+                              MoreArgs = list(target = target_mz,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm),
+                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+            Matched(query = query, target = target, matches = matches)
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "numeric",
+                        target = "data.frame",
+                        param = "TargetMass2MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"exactmass" %in% colnames(target))
+              stop("Missing column \"exactmass\" in target")
+            res <- matchMz2(query, target$exactmass, param)
+            res@target <- target
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "numeric",
+                        param = "TargetMass2MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            res <- matchMz2(query$mz, target, param)
+            res@query <- query
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "data.frame",
+                        param = "TargetMass2MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            if (!"exactmass" %in% colnames(target))
+              stop("Missing column \"exactmass\" in target")
+            res <- matchMz2(query$mz, target$exactmass, param)
+            res@query <- query
+            res@target <- target
+            res
+          })
+#' @rdname matchMz2
+#'
+#' @importFrom BiocParallel bpmapply SerialParam
+setMethod("matchMz2",
+          signature = c(query = "numeric",
+                        target = "numeric",
+                        param = "MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            target_mz <- data.frame(index = seq_along(target), 
+                                    mz = target)
+            matches <- do.call(
+              rbind, bpmapply(seq_along(query), query, FUN = .getMatches2,
+                              MoreArgs = list(target = target_mz,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm),
+                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+            Matched(query = query, target = target, matches = matches)
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "numeric",
+                        target = "data.frame",
+                        param = "MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(target))
+              stop("Missing column \"mz\" in target")
+            res <- matchMz2(query, target$mz, param)
+            res@target <- target
+            res
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "numeric",
+                        param = "MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            res <- matchMz2(query$mz, target, param)
+            res@query <- query
+            res
+          })
+#' @rdname matchMz2
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "data.frame",
+                        param = "MzParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            if (!"mz" %in% colnames(target))
+              stop("Missing column \"mz\" in target")
+            res <- matchMz2(query$mz, target$mz, param)
+            res@query <- query
+            res@target <- target
+            res
+          })
+#' @rdname matchMz2
+#'
+#' @importFrom BiocParallel bpmapply SerialParam
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "data.frame",
+                        param = "TargetMass2MzRtParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            if (!"rt" %in% colnames(query))
+              stop("Missing column \"rt\" in query")
+            if (!"exactmass" %in% colnames(target))
+              stop("Missing column \"exactmass\" in target")
+            if (!"rt" %in% colnames(target))
+              stop("Missing column \"rt\" in target")
+            target_mz <- .mass_to_mz_df(target$exactmass, param@adducts)
+            target_mz$rt <- rep(target$rt, length(param@adducts))
+            matches <- do.call(
+              rbind, bpmapply(seq_len(nrow(query)), query$mz, query$rt, 
+                              FUN = .getMatchesMzRt2,
+                              MoreArgs = list(target = target_mz,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm,
+                                              toleranceRt = param@toleranceRt),
+                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+            Matched(query = query, target = target, matches = matches)
+          })
+#' @rdname matchMz2
+#'
+#' @importFrom BiocParallel bpmapply SerialParam
+setMethod("matchMz2",
+          signature = c(query = "data.frame",
+                        target = "data.frame",
+                        param = "MzRtParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            if (!"mz" %in% colnames(query))
+              stop("Missing column \"mz\" in query")
+            if (!"rt" %in% colnames(query))
+              stop("Missing column \"rt\" in query")
+            target_mz <- data.frame(index = seq_len(nrow(target)), 
+                                    mz = target$mz, rt = target$rt)
+            matches <- do.call(
+              rbind, bpmapply(seq_len(nrow(query)), query$mz, query$rt, 
+                              FUN = .getMatchesMzRt2,
+                              MoreArgs = list(target = target_mz,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm,
+                                              toleranceRt = param@toleranceRt),
+                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+            Matched(query = query, target = target, matches = matches)
+          })
+#' @author Andrea Vicini
+#'
+#' @noRd
+#' <= is used in place of MsCoreUtils::closest(). To simulate closest() the 
+#' right hand side of <= should be tolerance + ppm(target$mz, ppm) however we 
+#' use tolerance + ppm(queryMz, ppm) which requires less computation. We expect 
+#' to obtain the same results almost every time since the difference between the 
+#' two terms will be small when queryMz and a element of target$mz are close.
+#' In case we wanted to use the approach more similar to closest we could 
+#' precompute ppm(target$mz, ppm) in matchMz2 and pass it to .getMatches2 to 
+#' avoid recomputing it at every loop.
+.getMatches2 <- function(queryIndex, queryMz, target, tolerance, ppm){
+  cls <- abs(queryMz - target$mz) <= (tolerance + ppm(queryMz, ppm))
+  if ("adduct" %in% colnames(target)){
+    if (any(cls))
+      data.frame(query_idx = queryIndex,
+                 target_idx = target$index[cls],
+                 adduct = target$adduct[cls],
+                 score = abs(queryMz - target$mz[cls]))
+    else data.frame(query_idx = integer(),
+                    target_idx = integer(),
+                    adduct = character(),
+                    score = numeric())
+  } else {
+    if (any(cls))
+      data.frame(query_idx = queryIndex,
+                 target_idx = target$index[cls],
+                 score = abs(queryMz - target$mz[cls]))
+    else data.frame(query_idx = integer(),
+                    target_idx = integer(),
+                    score = numeric())
+  }
+}
+
+#' @noRd
+.getMatchesMzRt2 <- function(queryIndex, queryMz, queryRt, target, tolerance, 
+                            ppm, toleranceRt){
+  cls_rt <- which(abs(queryRt - target$rt) <= toleranceRt)
+  cls <- abs(queryMz - target$mz[cls_rt]) <= (tolerance + ppm(queryMz, ppm))
+  if ("adduct" %in% colnames(target)){
+    if (any(cls))
+      data.frame(query_idx = queryIndex,
+                 target_idx = target$index[cls_rt[cls]],
+                 adduct = target$adduct[cls_rt[cls]],
+                 score = abs(queryMz - target$mz[cls_rt[cls]]),
+                 score_rt = abs(queryRt - target$rt[cls_rt[cls]]))
+    else data.frame(query_idx = integer(),
+                    target_idx = integer(),
+                    adduct = character(),
+                    score = numeric(),
+                    score_rt = numeric())
+  } else {
+    if (any(cls))
+      data.frame(query_idx = queryIndex,
+                 target_idx = target$index[cls_rt[cls]],
+                 score = abs(queryMz - target$mz[cls_rt[cls]]),
+                 score_rt = abs(queryRt - target$rt[cls_rt[cls]]))
+    else data.frame(query_idx = integer(),
+                    target_idx = integer(),
+                    score = numeric(),
+                    score_rt = numeric())
+  }
 }
