@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Fri Jun 4 09:32:09 2021</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Fri Jun 4 10:13:20 2021</p>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h1>
@@ -211,30 +211,40 @@ document.addEventListener("DOMContentLoaded", function() {
 <h2 class="hasAnchor">
 <a href="#matching-of-mz-and-retention-time-values" class="anchor" aria-hidden="true"></a>Matching of m/z and retention time values</h2>
 <p>If expected retention time values were available for the target compounds, an annotation with higher confidence could be performed with <code>matchMz</code> and a <code>TargetMass2MzRtParam</code> parameter object. To illustrate this we randomly assign retention times from query features to the target compounds adding also 2 seconds difference. In a real use case the target <code>data.frame</code> would contain masses (or m/z values) for standards along with the retention times when ions of these standards were measured on the same LC-MS setup from which the query data derives.</p>
-<p>Below we subset our data table with the MS1 features to the first 100 rows (to keep the runtime of the vignette short) and rename column <code>"rtime"</code> to <code>"rt"</code> (as retention times are expected to be provided in a column named <code>"rt"</code>).</p>
+<p>Below we subset our data table with the MS1 features to the first 100 rows (to keep the runtime of the vignette short).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ms1_subset</span> <span class="op">&lt;-</span> <span class="va">ms1_features</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"rt"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">)</span></code></pre></div>
+<pre><code>##     feature_id       mz    rtime
+## 1 Cluster_0001 102.1281 1.560147
+## 2 Cluster_0002 102.1279 2.153590
+## 3 Cluster_0003 102.1281 2.925570
+## 4 Cluster_0004 102.1281 3.419617
+## 5 Cluster_0005 102.1270 5.801039
+## 6 Cluster_0006 102.1230 8.137535</code></pre>
+<p>The table contains thus retention times of the features in a column named <code>"rtime"</code>.</p>
 <p>Next we randomly assign retention times of the features to compounds in our target data adding a deviation of 2 seconds. As described above, in a real use case retention times are supposed to be determined by measuring the compounds with the same LC-MS setup.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
-<span class="va">target_df</span><span class="op">$</span><span class="va">rt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">$</span><span class="va">rt</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">target_df</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fl">2</span></code></pre></div>
-<p>We have now retention times available for both the query and the target data and can thus perform a matching based on m/z <strong>and</strong> retention times. We use the <code>TargetMass2MzRtParam</code> which allows us to specify (as for the <code>TargetMass2MzParam</code>) the expected adducts, the maximal acceptable m/z relative and absolute deviation as well as the maximal acceptable (absolute) difference in retention times. We use the settings from the previous section and allow a difference of 10 seconds in retention times.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
+<span class="va">target_df</span><span class="op">$</span><span class="va">rtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">$</span><span class="va">rtime</span>,
+                          <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">target_df</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fl">2</span></code></pre></div>
+<p>We have now retention times available for both the query and the target data and can thus perform a matching based on m/z <strong>and</strong> retention times. We use the <code>TargetMass2MzRtParam</code> which allows us to specify (as for the <code>TargetMass2MzParam</code>) the expected adducts, the maximal acceptable m/z relative and absolute deviation as well as the maximal acceptable (absolute) difference in retention times. We use the settings from the previous section and allow a difference of 10 seconds in retention times. The retention times are provided in columns named <code>"rtime"</code> which is different from the default (<code>"rt"</code>). We thus specify the name of the column containing the retention times with parameter <code>rtColumn</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">TargetMass2MzRtParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
                              tolerance <span class="op">=</span> <span class="fl">0.005</span>, ppm <span class="op">=</span> <span class="fl">0</span>,
                              toleranceRt <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_subset</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span><span class="op">)</span>
+<span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_subset</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span>,
+                            rtColumn <span class="op">=</span> <span class="st">"rtime"</span><span class="op">)</span>
 <span class="va">matched_features</span></code></pre></div>
 <pre><code>## Object of class Matched 
 ## Total number of matches: 31 
 ## Number of query objects: 100 (31 matched)
 ## Number of target objects: 57599 (1 matched)</code></pre>
 <p>Less features were matched based on m/z and retention times.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
 <pre><code>## DataFrame with 31 rows and 12 columns
-##       feature_id        mz        rt target_headgroup target_name
+##       feature_id        mz     rtime target_headgroup target_name
 ##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;
 ## 1   Cluster_0070   201.113   5.87206               FA  FA 10:2;O2
 ## 2   Cluster_0071   201.113   5.93346               FA  FA 10:2;O2
@@ -247,19 +257,19 @@ document.addEventListener("DOMContentLoaded", function() {
 ## 29  Cluster_0098   201.113   11.4760               FA  FA 10:2;O2
 ## 30  Cluster_0099   201.114   11.5652               FA  FA 10:2;O2
 ## 31  Cluster_0100   201.114   11.7752               FA  FA 10:2;O2
-##     target_exactmass target_formula target_chain_type target_rt      adduct
-##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt; &lt;numeric&gt; &lt;character&gt;
-## 1            200.105       C10H16O4              even   15.8624      [M+H]+
-## 2            200.105       C10H16O4              even   15.8624      [M+H]+
-## 3            200.105       C10H16O4              even   15.8624      [M+H]+
-## 4            200.105       C10H16O4              even   15.8624      [M+H]+
-## 5            200.105       C10H16O4              even   15.8624      [M+H]+
-## ...              ...            ...               ...       ...         ...
-## 27           200.105       C10H16O4              even   15.8624      [M+H]+
-## 28           200.105       C10H16O4              even   15.8624      [M+H]+
-## 29           200.105       C10H16O4              even   15.8624      [M+H]+
-## 30           200.105       C10H16O4              even   15.8624      [M+H]+
-## 31           200.105       C10H16O4              even   15.8624      [M+H]+
+##     target_exactmass target_formula target_chain_type target_rtime      adduct
+##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt;    &lt;numeric&gt; &lt;character&gt;
+## 1            200.105       C10H16O4              even      15.8624      [M+H]+
+## 2            200.105       C10H16O4              even      15.8624      [M+H]+
+## 3            200.105       C10H16O4              even      15.8624      [M+H]+
+## 4            200.105       C10H16O4              even      15.8624      [M+H]+
+## 5            200.105       C10H16O4              even      15.8624      [M+H]+
+## ...              ...            ...               ...          ...         ...
+## 27           200.105       C10H16O4              even      15.8624      [M+H]+
+## 28           200.105       C10H16O4              even      15.8624      [M+H]+
+## 29           200.105       C10H16O4              even      15.8624      [M+H]+
+## 30           200.105       C10H16O4              even      15.8624      [M+H]+
+## 31           200.105       C10H16O4              even      15.8624      [M+H]+
 ##         score  score_rt
 ##     &lt;numeric&gt; &lt;numeric&gt;
 ## 1   0.0004538   9.99030
@@ -279,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <a href="#matching-of-msms-spectra" class="anchor" aria-hidden="true"></a>Matching of MS/MS spectra</h2>
 <p>In this section we match experimental MS/MS spectra against reference spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.14/Spectra" class="external-link">Spectra</a></em> package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>, but the functions and concepts used here are more suitable to the <em>end user</em> as they simplify the handling of the spectra matching results.</p>
 <p>Below we load spectra from a file from a reversed-phase (DDA) LC-MS/MS run of the Agilent Pesticide mix. With <code>filterMsLevel</code> we subset the data set to only MS2 spectra. To reduce processing time of the example we further subset the <code>Spectra</code> to a small set of selected MS2 spectra. In addition we assign <em>feature identifiers</em> to each spectrum (again, for this example these are arbitrary IDs, but in a <em>real</em> data analysis such identifiers could indicate to which LC-MS feature these spectra belong).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msdata</span><span class="op">)</span>
 <span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span>
@@ -312,10 +322,10 @@ document.addEventListener("DOMContentLoaded", function() {
 ## file(s):
 ## PestMix1_DDA.mzML
 ## Processing:
-##  Filter: select MS level(s) 2 [Fri Jun  4 09:32:15 2021]</code></pre>
+##  Filter: select MS level(s) 2 [Fri Jun  4 10:13:26 2021]</code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">minimb</span></code></pre></div>
 <pre><code>## MSn data (Spectra) with 100 spectra in a MsBackendDataFrame backend:
@@ -337,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ##  Filter: select spectra with polarity 1 [Wed Mar 31 10:06:28 2021]
 ##  Switch backend from MsBackendMassbankSql to MsBackendDataFrame [Wed Mar 31 10:07:59 2021]</code></pre>
 <p>We can now use the <code>matchSpectra</code> function to match each of our experimental <em>query</em> spectra against the <em>target</em> (reference) spectra. Settings for this matching can be defined with a dedicated <em>param</em> object. We use below the <code>CompareSpectraParam</code> that uses the <code>compareSpectra</code> function from the <code>Spectra</code> package to calculate similarities between each query spectrum and all target spectra. <code>CompareSpectraParam</code> allows to set all individual settings for the <code>compareSpectra</code> call with parameters <code>MAPFUN</code>, <code>ppm</code>, <code>tolerance</code> and <code>FUN</code> (see the help on <code>compareSpectra</code> in the <em><a href="https://bioconductor.org/packages/3.14/Spectra" class="external-link">Spectra</a></em> package for more details). In addition, we can <em>pre-filter</em> the target spectra for each individual query spectrum to speed-up the calculations. By setting <code>requirePrecursor = TRUE</code> we compare below each query spectrum only to target spectra with matching precursor m/z (accepting a deviation defined by parameters <code>ppm</code> and <code>tolerance</code>). By default, <code>matchSpectra</code> with <code>CompareSpectraParam</code> considers spectra with a similarity score higher than 0.7 as <em>matching</em> and these are thus reported.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>,
                        param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,
                                                    ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
@@ -347,14 +357,14 @@ document.addEventListener("DOMContentLoaded", function() {
 ## Number of query objects: 13 (5 matched)
 ## Number of target objects: 100 (11 matched)</code></pre>
 <p>The results are reported as a <code>MatchedSpectra</code> object which represents the matching results for all query spectra. This type of object contains all query spectra, all target spectra, the matching information and the parameter object with the settings of the matching. The object can be subsetted to e.g. matching results for a specific query spectrum:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code>## Object of class MatchedSpectra 
 ## Total number of matches: 
 ## Number of query objects: 1 (0 matched)
 ## Number of target objects: 100 (0 matched)</code></pre>
 <p>In this case, for the first query spectrum, no match was found among the target spectra. Below we subset the <code>MatchedSpectra</code> to results for the second query spectrum:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code>## Object of class MatchedSpectra 
 ## Total number of matches: 4 
@@ -362,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## Number of target objects: 100 (4 matched)</code></pre>
 <p>The second query spectrum could be matched to 4 target spectra. The matching between query and target spectra can be n:m, i.e. each query spectrum can match no or multiple target spectra and each target spectrum can be matched to none, one or multiple query spectra.</p>
 <p>Data (spectra variables of either the query and/or the target spectra) can be extracted from the result object with the <code>spectraData</code> function or with <code>$</code> (similar to a <code>Spectra</code> object). The <code>spectraVariables</code> function can be used to list all available spectra variables in the result object:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraVariables</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></code></pre></div>
 <pre><code>##  [1] "msLevel"                        "rtime"                         
 ##  [3] "acquisitionNum"                 "scanIndex"                     
@@ -406,17 +416,17 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [79] "target_compound_name"           "score"</code></pre>
 <p>This lists the spectra variables from both the <em>query</em> <strong>and</strong> the <em>target</em> spectra, with the prefix <code>"target_"</code> being used for spectra variable names of the target spectra. Spectra variable <code>"score"</code> contains the similarity score.</p>
 <p>We could thus use <code>$target_compound_name</code> to extract the compound name of the matching target spectra for the second query spectrum:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
 <pre><code>## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</code></pre>
 <p>The same information can also be extracted on the <em>full</em> <code>MatchedSpectra</code>. Below we use <code>$spectrum_id</code> to extract the query spectra identifiers we added above from the full result object.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">$</span><span class="va">spectrum_id</span></code></pre></div>
 <pre><code>##  [1] "sp_1"  "sp_2"  "sp_2"  "sp_2"  "sp_2"  "sp_3"  "sp_4"  "sp_4"  "sp_5" 
 ## [10] "sp_6"  "sp_6"  "sp_6"  "sp_7"  "sp_8"  "sp_8"  "sp_8"  "sp_8"  "sp_8" 
 ## [19] "sp_9"  "sp_9"  "sp_10" "sp_11" "sp_12" "sp_13"</code></pre>
 <p>Because of the n:m mapping between query and target spectra, the number of values returned by <code>$</code> (or <code>spectraData</code>) can be larger than the total number of query spectra. Also in the example above, some of the spectra IDs are present more than once in the result returned by <code>$spectrum_id</code>. The respective spectra could be matched to more than one target spectrum (based on our settings) and hence their IDs are reported multiple times. Both <code>spectraData</code> and <code>$</code> for <code>MatchedSpectra</code> use a <em>left join</em> strategy to report/return values: a value (row) is reported for each query spectrum (even if it does <strong>not</strong> match any target spectrum) with eventually duplicated values (rows) if the query spectrum matches more than one target spectrum (each value for a query spectrum is repeated as many times as it matches target spectra). To illustrate this we use below the <code>spectraData</code> function to extract specific data from our result object, i.e. the spectrum and feature IDs for the query spectra we defined above, the MS2 spectra similarity score, and the target spectra’s ID and compound name.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"feature_id"</span>,
                                              <span class="st">"score"</span>, <span class="st">"target_spectrum_id"</span>,
                                              <span class="st">"target_compound_name"</span><span class="op">)</span><span class="op">)</span>
@@ -447,11 +457,11 @@ document.addEventListener("DOMContentLoaded", function() {
 ## 23       sp_12      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;
 ## 24       sp_13      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</code></pre>
 <p>Using the <code>plotSpectraMirror</code> function we can visualize the matching results for one query spectrum. Below we call this function to show all matches for the second spectrum.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <p>Not unexpectedly, the peak intensities of query and target spectra are on different scales. While this was no problem for the similarity calculation (the normalized dot-product which is used by default is independent of the absolute peak values) it is not ideal for visualization. Thus, we apply below a <em>normalization</em> function to both the query and target spectra and plot the spectra again afterwards (see the help for <code>addProcessing</code> in the <code>Spectra</code> package for more details on spectra data manipulations). This function will replace the absolute spectra intensities with intensities relative to the maximum intensity of the spectrum.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">norm_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
     <span class="va">x</span>
@@ -460,11 +470,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <p>The query spectrum seems to nicely match the identified target spectra. Below we extract the compound name of the target spectra for this second query spectrum.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
 <pre><code>## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</code></pre>
 <p>As alternative to the <code>CompareSpectraParam</code> we could also use the <code>MatchForwardReverseParam</code> with <code>matchSpectra</code>. This has the same settings and performs the same spectra similarity search than <code>CompareSpectraParam</code>, but reports in addition (similar to MS-DIAL) to the (<em>forward</em>) similarity score also the <em>reverse</em> spectra similarity score as well as the <em>presence ratio</em> for matching spectra. While the default <em>forward</em> score is calculated considering all peaks from the query and the target spectrum (the peak mapping is performed using an <em>outer join</em> strategy), the <em>reverse score</em> is calculated only on peaks that are present in the target spectrum and the matching peaks from the query spectrum (the peak mapping is performed using a <em>right join</em> strategy). The <em>presence ratio</em> is the ratio between the number of mapped peaks between the query and the target spectrum and the total number of peaks in the target spectrum. These values are available as spectra variables <code>"reverse_score"</code> and <code>"presence_ratio"</code> in the result object). Below we perform the same spectra matching as above, but using the <code>MatchForwardReverseParam</code>.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">MatchForwardReverseParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">mp</span><span class="op">)</span>
 <span class="va">mtches</span></code></pre></div>
@@ -473,7 +483,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## Number of query objects: 13 (5 matched)
 ## Number of target objects: 100 (11 matched)</code></pre>
 <p>Below we extract the query and target spectra IDs, the compound name and all scores.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"target_spectrum_id"</span>,
                           <span class="st">"target_compound_name"</span>, <span class="st">"score"</span>, <span class="st">"reverse_score"</span>,
@@ -529,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## 23            NA             NA
 ## 24            NA             NA</code></pre>
 <p>In these examples we matched query spectra only to target spectra if their precursor m/z is ~ equal and reported only matches with a similarity higher than 0.7. <code>CompareSpectraParam</code>, through its parameter <code>THRESHFUN</code> would however also allow other types of analyses. We could for example also report the <em>best matching</em> target spectrum for each query spectrum, independently of whether the similarity score is higher than a certain threshold. Below we perform such an analysis defining a <code>THRESHFUN</code> that selects always the best match.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">select_top_match</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="op">}</span>

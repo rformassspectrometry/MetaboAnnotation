@@ -42,18 +42,22 @@
 <meta property="og:title" content="m/z matching — MzParam" />
 <meta property="og:description" content="The matchMz method matches (compares) m/z values from a MS1 data table
 (parameter query) with theoretical m/z values for (reference) compounds
-(parameter target). The approach which is used to perform the comparison
-and additional settings for this matching can be defined with param.
+(parameter target) considering or not also retention times. The approach
+which is used to perform the comparison and additional settings for this
+matching can be defined with param.
 Available matching approaches and respective param objects are:
 TargetMass2MzParam: match m/z values against reference compounds for
 which the (exact) mass is known. Before matching, m/z values are calculated
 from the mass of the compounds in the target table for the specified
 adducts (parameter adduct in the parameter object).
-query must be a data.frame with a column named &quot;mz&quot; or a numeric
-with the m/z values of the features. If target is a data.frame it must
-contain a column &quot;exactmass&quot; with the exact monoisotopic mass for each
-compound. TargetMass2MzParam's parameter adducts allows to define the
-expected adducts (defaults to adducts = &quot;[M+H]+&quot; but any adducts
+query must be a data.frame with a column containing m/z values (column
+name can be specified with parameter mzColumn which defaults to &quot;mz&quot;)
+or a numeric with the m/z values of the features.
+If target is a data.frame it must
+contain a column with the (monoisotopic) mass of the compounds (the column
+name can be specified with parameter massColumn which defaults to
+&quot;exactmass&quot;) TargetMass2MzParam's parameter adducts allows to define
+the expected adducts (defaults to adducts = &quot;[M+H]+&quot; but any adducts
 available in MetaboCoreUtils::adducts() are supported). Parameter
 tolerance and ppm allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.
@@ -63,27 +67,33 @@ known. Before matching, m/z values are calculated from the mass of the
 compounds in the target table for the specified adducts (parameter
 adduct in the parameter object). The retention time is considered equal
 for different adducts of the same compound. query must be a data.frame
-with columns &quot;mz&quot; with the m/z values of the features and &quot;rt&quot; with
-their retention time. target must be a data.frame with columns
-&quot;exactmass&quot; with the exact monoisotopic mass for each compound and &quot;rt&quot;
-with the associated retention time. TargetMass2MzRtParam's parameter
-adducts allows to define the expected adducts (defaults to
-adducts = &quot;[M+H]+&quot; but any adducts available in
+with m/z and retention time values of the features. The names of the
+columns containing these information can be specified with parameters
+mzColumn and rtColumn which default to &quot;mz&quot; and &quot;rt&quot;,
+respectively). target must be a data.frame with the (monoisotopic)
+mass and retention time for each compound. The names of the columns
+containing these information can be specified with parameters massColumn
+and rtColumn which default to &quot;exactmass&quot; and &quot;rt&quot;, respectively.
+TargetMass2MzRtParam's parameter adducts allows to define the expected
+adducts (defaults to adducts = &quot;[M+H]+&quot; but any adducts available in
 MetaboCoreUtils::adducts() are supported). Parameter tolerance and
 ppm allow to define the maximal acceptable (constant or m/z relative)
 difference between query and target m/z values; parameter toleranceRt
 allows to specify the maximal acceptable difference between query and
 target retention time values.
 MzParam: match m/z values against reference compounds for which the m/z
-is known. query must be either a data.frame with a column named &quot;mz&quot;
-or a numeric with the m/z values of the features. The same holds for
-target. MzParam parameters tolerance and ppm allow to define the
-maximal acceptable (constant or m/z relative) difference between query and
-target m/z values.
+is known. query must be either a data.frame with a column containing
+m/z values (which name can be specified with parameter mzColumn,
+default being mzColumn = &quot;mz&quot;) or a numeric with the m/z values of
+the features. The same holds for target. MzParam parameters
+tolerance and ppm allow to define the maximal acceptable (constant or
+m/z relative) difference between query and target m/z values.
 MzRtParam: match m/z and retention time values against reference
 compounds for which m/z and retention time are known. query must be a
-data.frame with columns &quot;mz&quot; with the m/z values of the features and
-&quot;rt&quot; with their retention time. The same holds for target.MzRtParam
+data.frame with columns containing the m/z and retention times of the
+features. The names of the respective columns can be specified with
+parameters mzColumn and rtColumn which default to &quot;mz&quot; and &quot;rt&quot;,
+respectively. The same holds for target.MzRtParam
 parameters tolerance and ppm allow to define the maximal acceptable
 (constant or m/z relative) difference between query and target m/z values;
 MzRtParam parameter toleranceRt allows to specify the maximal
@@ -173,18 +183,22 @@ acceptable difference between query and target retention time values.
     <div class="ref-description">
     <p>The <code>matchMz</code> method matches (compares) m/z values from a MS1 data table
 (parameter <code>query</code>) with theoretical m/z values for (reference) compounds
-(parameter <code>target</code>). The approach which is used to perform the comparison
-and additional settings for this matching can be defined with <code>param</code>.</p>
+(parameter <code>target</code>) considering or not also retention times. The approach
+which is used to perform the comparison and additional settings for this
+matching can be defined with <code>param</code>.</p>
 <p>Available matching approaches and respective <code>param</code> objects are:</p><ul>
 <li><p><code>TargetMass2MzParam</code>: match m/z values against reference compounds for
 which the (exact) mass is known. Before matching, m/z values are calculated
 from the mass of the compounds in the <em>target</em> table for the specified
 adducts (parameter <code>adduct</code> in the parameter object).
-<code>query</code> must be a <code>data.frame</code> with a column named <code>"mz"</code> or a <code>numeric</code>
-with the m/z values of the features. If <code>target</code> is a <code>data.frame</code> it must
-contain a column <code>"exactmass"</code> with the exact monoisotopic mass for each
-compound. <code>TargetMass2MzParam</code>'s parameter <code>adducts</code> allows to define the
-expected adducts (defaults to <code>adducts = "[M+H]+"</code> but any adducts
+<code>query</code> must be a <code>data.frame</code> with a column containing m/z values (column
+name can be specified with parameter <code>mzColumn</code> which defaults to <code>"mz"</code>)
+or a <code>numeric</code> with the m/z values of the features.
+If <code>target</code> is a <code>data.frame</code> it must
+contain a column with the (monoisotopic) mass of the compounds (the column
+name can be specified with parameter <code>massColumn</code> which defaults to
+<code>"exactmass"</code>) <code>TargetMass2MzParam</code>'s parameter <code>adducts</code> allows to define
+the expected adducts (defaults to <code>adducts = "[M+H]+"</code> but any adducts
 available in <code><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html'>MetaboCoreUtils::adducts()</a></code> are supported). Parameter
 <code>tolerance</code> and <code>ppm</code> allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.</p></li>
@@ -194,27 +208,33 @@ known. Before matching, m/z values are calculated from the mass of the
 compounds in the <em>target</em> table for the specified adducts (parameter
 <code>adduct</code> in the parameter object). The retention time is considered equal
 for different adducts of the same compound. <code>query</code> must be a <code>data.frame</code>
-with columns <code>"mz"</code> with the m/z values of the features and <code>"rt"</code> with
-their retention time. <code>target</code> must be a <code>data.frame</code> with columns
-<code>"exactmass"</code> with the exact monoisotopic mass for each compound and <code>"rt"</code>
-with the associated retention time. <code>TargetMass2MzRtParam</code>'s parameter
-<code>adducts</code> allows to define the expected adducts (defaults to
-<code>adducts = "[M+H]+"</code> but any adducts available in
+with m/z and retention time values of the features. The names of the
+columns containing these information can be specified with parameters
+<code>mzColumn</code> and <code>rtColumn</code> which default to <code>"mz"</code> and <code>"rt"</code>,
+respectively). <code>target</code> must be a <code>data.frame</code> with the (monoisotopic)
+mass and retention time for each compound. The names of the columns
+containing these information can be specified with parameters <code>massColumn</code>
+and <code>rtColumn</code> which default to <code>"exactmass"</code> and <code>"rt"</code>, respectively.
+<code>TargetMass2MzRtParam</code>'s parameter <code>adducts</code> allows to define the expected
+adducts (defaults to <code>adducts = "[M+H]+"</code> but any adducts available in
 <code><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html'>MetaboCoreUtils::adducts()</a></code> are supported). Parameter <code>tolerance</code> and
 <code>ppm</code> allow to define the maximal acceptable (constant or m/z relative)
 difference between query and target m/z values; parameter <code>toleranceRt</code>
 allows to specify the maximal acceptable difference between query and
 target retention time values.</p></li>
 <li><p><code>MzParam</code>: match m/z values against reference compounds for which the m/z
-is known. <code>query</code> must be either a <code>data.frame</code> with a column named <code>"mz"</code>
-or a <code>numeric</code> with the m/z values of the features. The same holds for
-<code>target</code>. <code>MzParam</code> parameters <code>tolerance</code> and <code>ppm</code> allow to define the
-maximal acceptable (constant or m/z relative) difference between query and
-target m/z values.</p></li>
+is known. <code>query</code> must be either a <code>data.frame</code> with a column containing
+m/z values (which name can be specified with parameter <code>mzColumn</code>,
+default being <code>mzColumn = "mz"</code>) or a <code>numeric</code> with the m/z values of
+the features. The same holds for <code>target</code>. <code>MzParam</code> parameters
+<code>tolerance</code> and <code>ppm</code> allow to define the maximal acceptable (constant or
+m/z relative) difference between query and target m/z values.</p></li>
 <li><p><code>MzRtParam</code>: match m/z and retention time values against reference
 compounds for which m/z and retention time are known. <code>query</code> must be a
-<code>data.frame</code> with columns <code>"mz"</code> with the m/z values of the features and
-<code>"rt"</code> with their retention time. The same holds for <code>target</code>.<code>MzRtParam</code>
+<code>data.frame</code> with columns containing the m/z and retention times of the
+features. The names of the respective columns can be specified with
+parameters <code>mzColumn</code> and <code>rtColumn</code> which default to <code>"mz"</code> and <code>"rt"</code>,
+respectively. The same holds for <code>target</code>.<code>MzRtParam</code>
 parameters <code>tolerance</code> and <code>ppm</code> allow to define the maximal acceptable
 (constant or m/z relative) difference between query and target m/z values;
 <code>MzRtParam</code> parameter <code>toleranceRt</code> allows to specify the maximal
@@ -242,31 +262,59 @@ acceptable difference between query and target retention time values.</p></li>
 <span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for numeric,data.frame,TargetMass2MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  massColumn <span class='op'>=</span> <span class='st'>"exactmass"</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,numeric,TargetMass2MzParam</span>
 <span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,TargetMass2MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>,
+  massColumn <span class='op'>=</span> <span class='st'>"exactmass"</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for numeric,numeric,MzParam</span>
 <span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for numeric,data.frame,MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,numeric,MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,TargetMass2MzRtParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  massColumn <span class='op'>=</span> <span class='st'>"exactmass"</span>,
+  mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>,
+  rtColumn <span class='op'>=</span> <span class='st'>"rt"</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,MzRtParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></code></pre></div>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>,
+  rtColumn <span class='op'>=</span> <span class='st'>"rt"</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -319,6 +367,21 @@ the settings for that approach. See description above for details.</p></td>
       <th>BPPARAM</th>
       <td><p>parallel processing setup. See <code><a href='https://rdrr.io/pkg/BiocParallel/man/register.html'>BiocParallel::bpparam()</a></code> for
 details.</p></td>
+    </tr>
+    <tr>
+      <th>massColumn</th>
+      <td><p><code>character(1)</code> with the name of the column containing the
+mass of compounds. Defaults to <code>massColumn = "exactmass"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>mzColumn</th>
+      <td><p><code>character(1)</code> with the name of the column containing the
+m/z values. Defaults to <code>mzColumn = "mz"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>rtColumn</th>
+      <td><p><code>character(1)</code> with the name of the column containing the
+retention times of the compounds. Defaults to <code>rtColumn = "rt"</code>.</p></td>
     </tr>
     </table>
 
