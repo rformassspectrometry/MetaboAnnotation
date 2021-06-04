@@ -4,7 +4,7 @@
 \alias{MatchedSpectra}
 \alias{MatchedSpectra-class}
 \alias{spectraVariables,MatchedSpectra-method}
-\alias{colnames,MatchedMatched-method}
+\alias{colnames,MatchedSpectra-method}
 \alias{$,MatchedSpectra-method}
 \alias{spectraData,MatchedSpectra-method}
 \alias{matchedData,MatchedSpectra-method}
@@ -21,7 +21,7 @@ MatchedSpectra(
 
 \S4method{spectraVariables}{MatchedSpectra}(object)
 
-\S4method{colnames}{MatchedMatched}(x)
+\S4method{colnames}{MatchedSpectra}(x)
 
 \S4method{$}{MatchedSpectra}(x, name)
 

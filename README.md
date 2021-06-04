@@ -22,4 +22,8 @@ Also, please check the coding style guidelines in the [RforMassSpectrometry
 vignette](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html).
 
 
-## External contributors
+## Authors and Contributors
+
+- Andrea Vicini
+- Michael Witting
+- Johannes Rainer

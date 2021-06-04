@@ -263,7 +263,7 @@ setMethod("spectraVariables", "MatchedSpectra", function(object) {
 #' @exportMethod colnames
 #'
 #' @rdname MatchedSpectra
-setMethod("colnames", "MatchedMatched", function(x) {
+setMethod("colnames", "MatchedSpectra", function(x) {
     spectraVariables(x)
 })
 

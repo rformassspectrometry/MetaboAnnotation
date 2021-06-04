@@ -377,7 +377,7 @@ setMethod("colnames", "Matched", function(x) {
 
 #' @rdname Matched
 #'
-#' @export
+#' @exportMethod matchedData
 setGeneric("matchedData", function(object, ...)
     standardGeneric("matchedData"))
 
