@@ -241,7 +241,9 @@ providing the <code>query</code> and <code>target</code> object as well as the <
 from <em>query</em> match which element from <em>target</em>.</p>
 <p>A <code>Matched</code> object can be subsetted in the following ways:</p><ul>
 <li><p><code>[</code> subset the <code>Matched</code> selecting <code>query</code> object elements to keep with
-parameter <code>i</code>. The <code>target</code> object will by default be returned as-is.</p></li>
+parameter <code>i</code>. The resulting <code>Matched</code> object will contain all the matches
+for the selected query elements. The <code>target</code> object will by default be
+returned as-is.</p></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the <code>Matched</code> object by removing non-matched
 target elements.</p></li>
 </ul>
