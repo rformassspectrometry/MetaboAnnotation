@@ -24,7 +24,9 @@
 #' A `Matched` object can be subsetted in the following ways:
 #'
 #' - `[` subset the `Matched` selecting `query` object elements to keep with
-#'   parameter `i`. The `target` object will by default be returned as-is.
+#'   parameter `i`. The resulting `Matched` object will contain all the matches
+#'   for the selected query elements. The `target` object will by default be
+#'   returned as-is.
 #'
 #' - `pruneTarget` *cleans* the `Matched` object by removing non-matched
 #'   target elements.

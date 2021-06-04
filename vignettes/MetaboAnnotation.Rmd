@@ -66,11 +66,6 @@ target_df <- read.table(system.file("extdata", "LipidMaps_CompDB.txt",
                                     package = "MetaboAnnotation"),
                         header = TRUE, sep = "\t")
 head(target_df)
-
-## annotations <- matchMz(ms1_features, compDb,
-##                        adducts = c("[M+H]+", "[M+Na]+"),
-##                        tolerance = 0.005, ppm = 0)
-
 ```
 
 For reference (target) compounds we have only the mass available. We need to
@@ -116,18 +111,74 @@ whichQuery(matched_features)
 whichTarget(matched_features)
 ```
 
-We can extract the full matching table with `data`. This returns a `DataFrame`
-with all rows in *query* the corresponding matches in *target* along with the
-matching adduct (column `"adduct"`) and the difference in m/z (column
-`"score"`). Note that if a row in *query* matches multiple elements in *target*,
-this row will be duplicated in the `DataFrame` returned by `data`. For rows that
-can not be matched `NA` values are reported.
+We can extract the full matching table with `matchedData`. This returns a
+`DataFrame` with all rows in *query* the corresponding matches in *target*
+along with the matching adduct (column `"adduct"`) and the difference in m/z
+(column `"score"`). Note that if a row in *query* matches multiple elements in
+*target*, this row will be duplicated in the `DataFrame` returned by `data`.
+For rows that can not be matched `NA` values are reported.
 
 ```{r}
-data(matched_features)
+matchedData(matched_features)
 ```
 
-See also the help page for `?Matched` for more details and information.
+See also the help page for `?Matched` for more details and information. In
+addition to the matching of query m/z against target exact masses as described
+above it would also be possible to match directly query m/z against target m/z
+values by using the `MzParam` instead of the `TargetMass2MzParam`.
+
+
+## Matching of m/z and retention time values
+
+If expected retention time values were available for the target compounds, an
+annotation with higher confidence could be performed with `matchMz` and a
+`TargetMass2MzRtParam` parameter object. To illustrate this we randomly assign
+retention times from query features to the target compounds adding also 2
+seconds difference. In a real use case the target `data.frame` would contain
+masses (or m/z values) for standards along with the retention times when ions of
+these standards were measured on the same LC-MS setup from which the query data
+derives.
+
+Below we subset our data table with the MS1 features to the first 100 rows (to
+keep the runtime of the vignette short) and rename column `"rtime"` to `"rt"`
+(as retention times are expected to be provided in a column named `"rt"`).
+
+```{r}
+ms1_subset <- ms1_features[1:100, ]
+colnames(ms1_subset) <- sub("rtime", "rt", colnames(ms1_subset))
+```
+
+Next we randomly assign retention times of the features to compounds in our
+target data adding a deviation of 2 seconds. As described above, in a real use
+case retention times are supposed to be determined by measuring the compounds
+with the same LC-MS setup.
+
+```{r}
+set.seed(123)
+target_df$rt <- sample(ms1_subset$rt, nrow(target_df), replace = TRUE) + 2
+```
+
+We have now retention times available for both the query and the target data and
+can thus perform a matching based on m/z **and** retention times. We use the
+`TargetMass2MzRtParam` which allows us to specify (as for the
+`TargetMass2MzParam`) the expected adducts, the maximal acceptable m/z relative
+and absolute deviation as well as the maximal acceptable (absolute) difference
+in retention times. We use the settings from the previous section and allow a
+difference of 10 seconds in retention times.
+
+```{r}
+parm <- TargetMass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
+                             tolerance = 0.005, ppm = 0,
+                             toleranceRt = 10)
+matched_features <- matchMz(ms1_subset, target_df, param = parm)
+matched_features
+```
+
+Less features were matched based on m/z and retention times.
+
+```{r}
+matchedData(matched_features)[whichQuery(matched_features), ]
+```
 
 
 ## Matching of MS/MS spectra

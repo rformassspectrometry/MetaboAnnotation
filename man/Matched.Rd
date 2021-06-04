@@ -98,7 +98,9 @@ from \emph{query} match which element from \emph{target}.
 A \code{Matched} object can be subsetted in the following ways:
 \itemize{
 \item \code{[} subset the \code{Matched} selecting \code{query} object elements to keep with
-parameter \code{i}. The \code{target} object will by default be returned as-is.
+parameter \code{i}. The resulting \code{Matched} object will contain all the matches
+for the selected query elements. The \code{target} object will by default be
+returned as-is.
 \item \code{pruneTarget} \emph{cleans} the \code{Matched} object by removing non-matched
 target elements.
 }
