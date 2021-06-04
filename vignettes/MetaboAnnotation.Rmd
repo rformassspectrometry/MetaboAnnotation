@@ -140,13 +140,15 @@ these standards were measured on the same LC-MS setup from which the query data
 derives.
 
 Below we subset our data table with the MS1 features to the first 100 rows (to
-keep the runtime of the vignette short) and rename column `"rtime"` to `"rt"`
-(as retention times are expected to be provided in a column named `"rt"`).
+keep the runtime of the vignette short).
 
 ```{r}
 ms1_subset <- ms1_features[1:100, ]
-colnames(ms1_subset) <- sub("rtime", "rt", colnames(ms1_subset))
+head(ms1_subset)
 ```
+
+The table contains thus retention times of the features in a column named
+`"rtime"`.
 
 Next we randomly assign retention times of the features to compounds in our
 target data adding a deviation of 2 seconds. As described above, in a real use
@@ -155,7 +157,8 @@ with the same LC-MS setup.
 
 ```{r}
 set.seed(123)
-target_df$rt <- sample(ms1_subset$rt, nrow(target_df), replace = TRUE) + 2
+target_df$rtime <- sample(ms1_subset$rtime,
+                          nrow(target_df), replace = TRUE) + 2
 ```
 
 We have now retention times available for both the query and the target data and
@@ -164,13 +167,17 @@ can thus perform a matching based on m/z **and** retention times. We use the
 `TargetMass2MzParam`) the expected adducts, the maximal acceptable m/z relative
 and absolute deviation as well as the maximal acceptable (absolute) difference
 in retention times. We use the settings from the previous section and allow a
-difference of 10 seconds in retention times.
+difference of 10 seconds in retention times. The retention times are provided in
+columns named `"rtime"` which is different from the default (`"rt"`). We thus
+specify the name of the column containing the retention times with parameter
+`rtColumn`.
 
 ```{r}
 parm <- TargetMass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
                              tolerance = 0.005, ppm = 0,
                              toleranceRt = 10)
-matched_features <- matchMz(ms1_subset, target_df, param = parm)
+matched_features <- matchMz(ms1_subset, target_df, param = parm,
+                            rtColumn = "rtime")
 matched_features
 ```
 
