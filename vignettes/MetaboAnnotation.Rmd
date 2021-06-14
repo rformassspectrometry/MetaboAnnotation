@@ -80,8 +80,8 @@ the *most likely* ions/adducts that would be generated from the compounds based
 on the ionization used in the experiment. We assume the most abundant adducts
 from the compounds being `"[M+H]+"` and `"[M+Na]+`. We next perform the matching
 with the `matchMz` function providing the query and target data as well as a
-parameter object (in our case a `TargetMass2MzParam`) with the settings for the
-matching. With the `TargetMass2MzParam`, the mass or target compounds get first
+parameter object (in our case a `Mass2MzParam`) with the settings for the
+matching. With the `Mass2MzParam`, the mass or target compounds get first
 converted to m/z values, based on the defined adducts, and these are then
 matched against the query m/z values (i.e. the m/z values for the features). To
 get a full list of supported adducts the `MetaboCoreUtils::adductNames(polarity
@@ -90,7 +90,7 @@ used). Note also, to keep the runtime of this vignette short, we match only the
 first 100 features.
 
 ```{r}
-parm <- TargetMass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+parm <- Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
                            tolerance = 0.005, ppm = 0)
 
 matched_features <- matchMz(ms1_features[1:100, ], target_df, parm)
