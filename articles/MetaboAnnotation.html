@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Fri Jun 4 10:13:20 2021</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Wed Jun 16 08:24:06 2021</p>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h1>
@@ -136,9 +136,9 @@ document.addEventListener("DOMContentLoaded", function() {
 ## 4       NAE    NAE 20:4  347.2824  C22H37NO2       even
 ## 5       NAE    NAE 18:2  323.2824  C20H37NO2       even
 ## 6       NAE    NAE 18:3  321.2668  C20H35NO2       even</code></pre>
-<p>For reference (target) compounds we have only the mass available. We need to convert this mass to m/z values in order to match the m/z values from the features (i.e. the query m/z values) against them. For this we need to define the <em>most likely</em> ions/adducts that would be generated from the compounds based on the ionization used in the experiment. We assume the most abundant adducts from the compounds being <code>"[M+H]+"</code> and <code>"[M+Na]+</code>. We next perform the matching with the <code>matchMz</code> function providing the query and target data as well as a parameter object (in our case a <code>TargetMass2MzParam</code>) with the settings for the matching. With the <code>TargetMass2MzParam</code>, the mass or target compounds get first converted to m/z values, based on the defined adducts, and these are then matched against the query m/z values (i.e. the m/z values for the features). To get a full list of supported adducts the <code>MetaboCoreUtils::adductNames(polarity = "positive")</code> or <code>MetaboCoreUtils::adductNames(polarity = "negative")</code> can be used). Note also, to keep the runtime of this vignette short, we match only the first 100 features.</p>
+<p>For reference (target) compounds we have only the mass available. We need to convert this mass to m/z values in order to match the m/z values from the features (i.e. the query m/z values) against them. For this we need to define the <em>most likely</em> ions/adducts that would be generated from the compounds based on the ionization used in the experiment. We assume the most abundant adducts from the compounds being <code>"[M+H]+"</code> and <code>"[M+Na]+</code>. We next perform the matching with the <code>matchMz</code> function providing the query and target data as well as a parameter object (in our case a <code>Mass2MzParam</code>) with the settings for the matching. With the <code>Mass2MzParam</code>, the mass or target compounds get first converted to m/z values, based on the defined adducts, and these are then matched against the query m/z values (i.e. the m/z values for the features). To get a full list of supported adducts the <code>MetaboCoreUtils::adductNames(polarity = "positive")</code> or <code>MetaboCoreUtils::adductNames(polarity = "negative")</code> can be used). Note also, to keep the runtime of this vignette short, we match only the first 100 features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">TargetMass2MzParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">Mass2MzParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
                            tolerance <span class="op">=</span> <span class="fl">0.005</span>, ppm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 
 <span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_features</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span>
@@ -205,12 +205,12 @@ document.addEventListener("DOMContentLoaded", function() {
 ## 98           200.105       C10H16O4              even      [M+H]+ 0.0005328
 ## 99           200.105       C10H16O4              even      [M+H]+ 0.0014619
 ## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</code></pre>
-<p>See also the help page for <code><a href="../reference/Matched.html">?Matched</a></code> for more details and information. In addition to the matching of query m/z against target exact masses as described above it would also be possible to match directly query m/z against target m/z values by using the <code>MzParam</code> instead of the <code>TargetMass2MzParam</code>.</p>
+<p>See also the help page for <code><a href="../reference/Matched.html">?Matched</a></code> for more details and information. In addition to the matching of query m/z against target exact masses as described above it would also be possible to match directly query m/z against target m/z values by using the <code>MzParam</code> instead of the <code>Mass2MzParam</code>.</p>
 </div>
 <div id="matching-of-mz-and-retention-time-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#matching-of-mz-and-retention-time-values" class="anchor" aria-hidden="true"></a>Matching of m/z and retention time values</h2>
-<p>If expected retention time values were available for the target compounds, an annotation with higher confidence could be performed with <code>matchMz</code> and a <code>TargetMass2MzRtParam</code> parameter object. To illustrate this we randomly assign retention times from query features to the target compounds adding also 2 seconds difference. In a real use case the target <code>data.frame</code> would contain masses (or m/z values) for standards along with the retention times when ions of these standards were measured on the same LC-MS setup from which the query data derives.</p>
+<p>If expected retention time values were available for the target compounds, an annotation with higher confidence could be performed with <code>matchMz</code> and a <code>Mass2MzRtParam</code> parameter object. To illustrate this we randomly assign retention times from query features to the target compounds adding also 2 seconds difference. In a real use case the target <code>data.frame</code> would contain masses (or m/z values) for standards along with the retention times when ions of these standards were measured on the same LC-MS setup from which the query data derives.</p>
 <p>Below we subset our data table with the MS1 features to the first 100 rows (to keep the runtime of the vignette short).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ms1_subset</span> <span class="op">&lt;-</span> <span class="va">ms1_features</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>
@@ -228,11 +228,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="va">target_df</span><span class="op">$</span><span class="va">rtime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">$</span><span class="va">rtime</span>,
                           <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">target_df</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span> <span class="fl">2</span></code></pre></div>
-<p>We have now retention times available for both the query and the target data and can thus perform a matching based on m/z <strong>and</strong> retention times. We use the <code>TargetMass2MzRtParam</code> which allows us to specify (as for the <code>TargetMass2MzParam</code>) the expected adducts, the maximal acceptable m/z relative and absolute deviation as well as the maximal acceptable (absolute) difference in retention times. We use the settings from the previous section and allow a difference of 10 seconds in retention times. The retention times are provided in columns named <code>"rtime"</code> which is different from the default (<code>"rt"</code>). We thus specify the name of the column containing the retention times with parameter <code>rtColumn</code>.</p>
+<p>We have now retention times available for both the query and the target data and can thus perform a matching based on m/z <strong>and</strong> retention times. We use the <code>Mass2MzRtParam</code> which allows us to specify (as for the <code>Mass2MzParam</code>) the expected adducts, the maximal acceptable m/z relative and absolute deviation as well as the maximal acceptable (absolute) difference in retention times. We use the settings from the previous section and allow a difference of 10 seconds in retention times. The retention times are provided in columns named <code>"rtime"</code> which is different from the default (<code>"rt"</code>). We thus specify the name of the column containing the retention times with parameter <code>rtColumn</code>.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">TargetMass2MzRtParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
-                             tolerance <span class="op">=</span> <span class="fl">0.005</span>, ppm <span class="op">=</span> <span class="fl">0</span>,
-                             toleranceRt <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">Mass2MzRtParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
+                       tolerance <span class="op">=</span> <span class="fl">0.005</span>, ppm <span class="op">=</span> <span class="fl">0</span>,
+                       toleranceRt <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_subset</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span>,
                             rtColumn <span class="op">=</span> <span class="st">"rtime"</span><span class="op">)</span>
 <span class="va">matched_features</span></code></pre></div>
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## file(s):
 ## PestMix1_DDA.mzML
 ## Processing:
-##  Filter: select MS level(s) 2 [Fri Jun  4 10:13:26 2021]</code></pre>
+##  Filter: select MS level(s) 2 [Wed Jun 16 08:24:11 2021]</code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -599,13 +599,13 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
-## [1] parallel  stats4    stats     graphics  grDevices utils     datasets 
-## [8] methods   base     
+## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
 ## 
 ## other attached packages:
-## [1] msdata_0.33.0          Spectra_1.3.0          ProtGenerics_1.25.0   
-## [4] BiocParallel_1.27.0    S4Vectors_0.31.0       BiocGenerics_0.39.0   
-## [7] MetaboAnnotation_0.2.0 BiocStyle_2.21.1      
+## [1] msdata_0.33.0          Spectra_1.3.1          ProtGenerics_1.25.0   
+## [4] BiocParallel_1.27.0    S4Vectors_0.31.0       BiocGenerics_0.39.1   
+## [7] MetaboAnnotation_0.2.1 BiocStyle_2.21.2      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_1.0.6            highr_0.9             bslib_0.2.5.1        
@@ -613,16 +613,16 @@ document.addEventListener("DOMContentLoaded", function() {
 ##  [7] tools_4.1.0           ncdf4_1.17            digest_0.6.27        
 ## [10] jsonlite_1.7.2        evaluate_0.14         memoise_2.0.0        
 ## [13] clue_0.3-59           rlang_0.4.11          yaml_2.2.1           
-## [16] pkgdown_1.6.1.9001    xfun_0.23             fastmap_1.1.0        
-## [19] stringr_1.4.0         knitr_1.33            cluster_2.1.2        
-## [22] desc_1.3.0            fs_1.5.0              sass_0.4.0           
-## [25] systemfonts_1.0.2     MetaboCoreUtils_1.1.0 MsCoreUtils_1.5.0    
-## [28] IRanges_2.27.0        rprojroot_2.0.2       Biobase_2.53.0       
-## [31] R6_2.5.0              textshaping_0.3.4     rmarkdown_2.8        
-## [34] bookdown_0.22         mzR_2.27.0            magrittr_2.0.1       
-## [37] codetools_0.2-18      htmltools_0.5.1.1     MASS_7.3-54          
-## [40] ragg_1.1.2            stringi_1.6.2         cachem_1.0.5         
-## [43] crayon_1.4.1</code></pre>
+## [16] parallel_4.1.0        pkgdown_1.6.1.9001    xfun_0.23            
+## [19] fastmap_1.1.0         stringr_1.4.0         knitr_1.33           
+## [22] cluster_2.1.2         desc_1.3.0            fs_1.5.0             
+## [25] sass_0.4.0            systemfonts_1.0.2     MetaboCoreUtils_1.1.0
+## [28] MsCoreUtils_1.5.0     IRanges_2.27.0        rprojroot_2.0.2      
+## [31] Biobase_2.53.0        R6_2.5.0              textshaping_0.3.5    
+## [34] rmarkdown_2.8         bookdown_0.22         mzR_2.27.0           
+## [37] magrittr_2.0.1        codetools_0.2-18      htmltools_0.5.1.1    
+## [40] MASS_7.3-54           ragg_1.1.3            stringi_1.6.2        
+## [43] cachem_1.0.5          crayon_1.4.1</code></pre>
 </div>
   </div>
 
