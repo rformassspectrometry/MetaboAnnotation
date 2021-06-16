@@ -6,7 +6,6 @@
 \alias{[,Matched-method}
 \alias{length,Matched-method}
 \alias{show,Matched-method}
-\alias{[,Matched,ANY,ANY,ANY-method}
 \alias{target}
 \alias{query}
 \alias{whichTarget}
@@ -29,7 +28,7 @@ Matched(
 
 \S4method{show}{Matched}(object)
 
-\S4method{[}{Matched,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+\S4method{[}{Matched}(x, i, j, ..., drop = FALSE)
 
 target(object)
 

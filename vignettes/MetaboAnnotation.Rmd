@@ -125,14 +125,14 @@ matchedData(matched_features)
 See also the help page for `?Matched` for more details and information. In
 addition to the matching of query m/z against target exact masses as described
 above it would also be possible to match directly query m/z against target m/z
-values by using the `MzParam` instead of the `TargetMass2MzParam`.
+values by using the `MzParam` instead of the `Mass2MzParam`.
 
 
 ## Matching of m/z and retention time values
 
 If expected retention time values were available for the target compounds, an
 annotation with higher confidence could be performed with `matchMz` and a
-`TargetMass2MzRtParam` parameter object. To illustrate this we randomly assign
+`Mass2MzRtParam` parameter object. To illustrate this we randomly assign
 retention times from query features to the target compounds adding also 2
 seconds difference. In a real use case the target `data.frame` would contain
 masses (or m/z values) for standards along with the retention times when ions of
@@ -163,8 +163,8 @@ target_df$rtime <- sample(ms1_subset$rtime,
 
 We have now retention times available for both the query and the target data and
 can thus perform a matching based on m/z **and** retention times. We use the
-`TargetMass2MzRtParam` which allows us to specify (as for the
-`TargetMass2MzParam`) the expected adducts, the maximal acceptable m/z relative
+`Mass2MzRtParam` which allows us to specify (as for the
+`Mass2MzParam`) the expected adducts, the maximal acceptable m/z relative
 and absolute deviation as well as the maximal acceptable (absolute) difference
 in retention times. We use the settings from the previous section and allow a
 difference of 10 seconds in retention times. The retention times are provided in
@@ -173,9 +173,9 @@ specify the name of the column containing the retention times with parameter
 `rtColumn`.
 
 ```{r}
-parm <- TargetMass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
-                             tolerance = 0.005, ppm = 0,
-                             toleranceRt = 10)
+parm <- Mass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
+                       tolerance = 0.005, ppm = 0,
+                       toleranceRt = 10)
 matched_features <- matchMz(ms1_subset, target_df, param = parm,
                             rtColumn = "rtime")
 matched_features

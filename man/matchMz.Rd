@@ -26,24 +26,28 @@ Mass2MzRtParam(adducts = c("[M+H]+"), tolerance = 0, ppm = 5, toleranceRt = 0)
 
 MzRtParam(tolerance = 0, ppm = 0, toleranceRt = 0)
 
-TargetMass2MzRtParam(
-  adducts = c("[M+H]+"),
-  tolerance = 0,
-  ppm = 5,
-  toleranceRt = 0
-)
-
-MzRtParam(tolerance = 0, ppm = 0, toleranceRt = 0)
-
 matchMz(query, target, param, ...)
 
 \S4method{matchMz}{numeric,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
 
-\S4method{matchMz}{numeric,data.frame,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
+\S4method{matchMz}{numeric,data.frame,Mass2MzParam}(
+  query,
+  target,
+  param,
+  massColumn = "exactmass",
+  BPPARAM = SerialParam()
+)
 
 \S4method{matchMz}{data.frame,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frame,data.frame,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
+\S4method{matchMz}{data.frame,data.frame,Mass2MzParam}(
+  query,
+  target,
+  param,
+  mzColumn = "mz",
+  massColumn = "exactmass",
+  BPPARAM = SerialParam()
+)
 
 \S4method{matchMz}{numeric,numeric,MzParam}(query, target, param, BPPARAM = SerialParam())
 
@@ -53,7 +57,7 @@ matchMz(query, target, param, ...)
 
 \S4method{matchMz}{data.frame,data.frame,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frame,data.frame,TargetMass2MzRtParam}(
+\S4method{matchMz}{data.frame,data.frame,Mass2MzRtParam}(
   query,
   target,
   param,
@@ -80,23 +84,14 @@ acceptable absolute difference in m/z values to consider them \emph{matching}.}
 acceptable m/z-dependent difference (in parts-per-million) in m/z values
 to consider them to be \emph{matching}.}
 
-\item{adducts}{for \code{TargetMass2MzParam} or \code{TargetMass2MzRtParam}:
+\item{adducts}{for \code{Mass2MzParam} or \code{Mass2MzRtParam}:
 \code{character} with the names of adducts to calculate m/z from target
 compounds' masses. Use \code{MetaboCoreUtils::adductNames("positive")} and
 \code{MetaboCoreUtils::adductNames("negative")} for valid names.}
 
-\item{toleranceRt}{for \code{TargetMass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
+\item{toleranceRt}{for \code{Mass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
 defining the maximal acceptable absolute difference in retention time
 values to consider them them \emph{matching}.}
-
-\item{adducts}{for \code{Mass2MzParam} or \code{Mass2MzRtParam}: \code{character}
-with the names of adducts to calculate m/z from target compounds' masses.
-Use \code{MetaboCoreUtils::adductNames("positive")} and
-\code{MetaboCoreUtils::adductNames("negative")} for valid names.}
-
-\item{toleranceRt}{for \code{Mass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
-defining the maximal acceptable absolute difference in retention time values
-to consider them them \emph{matching}.}
 
 \item{query}{feature table containing information on MS1 features. Can be
 a \code{data.frame} (with mandatory column names \code{"mz"}) or a \code{numeric} with
@@ -144,12 +139,12 @@ or a \code{numeric} with the m/z values of the features.
 If \code{target} is a \code{data.frame} it must
 contain a column with the (monoisotopic) mass of the compounds (the column
 name can be specified with parameter \code{massColumn} which defaults to
-\code{"exactmass"}) \code{TargetMass2MzParam}'s parameter \code{adducts} allows to define
+\code{"exactmass"}) \code{Mass2MzParam}'s parameter \code{adducts} allows to define
 the expected adducts (defaults to \code{adducts = "[M+H]+"} but any adducts
 available in \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter
 \code{tolerance} and \code{ppm} allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.
-\item \code{TargetMass2MzRtParam}: match m/z and retention time values against
+\item \code{Mass2MzRtParam}: match m/z and retention time values against
 reference compounds for which the (exact) mass \strong{and} retention time are
 known. Before matching, m/z values are calculated from the mass of the
 compounds in the \emph{target} table for the specified adducts (parameter
@@ -162,7 +157,7 @@ respectively). \code{target} must be a \code{data.frame} with the (monoisotopic)
 mass and retention time for each compound. The names of the columns
 containing these information can be specified with parameters \code{massColumn}
 and \code{rtColumn} which default to \code{"exactmass"} and \code{"rt"}, respectively.
-\code{TargetMass2MzRtParam}'s parameter \code{adducts} allows to define the expected
+\code{Mass2MzRtParam}'s parameter \code{adducts} allows to define the expected
 adducts (defaults to \code{adducts = "[M+H]+"} but any adducts available in
 \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter \code{tolerance} and
 \code{ppm} allow to define the maximal acceptable (constant or m/z relative)
@@ -262,7 +257,7 @@ fts <- data.frame(
 )
 
 ## Define the parameters for the matching
-parm <- TargetMass2MzRtParam(
+parm <- Mass2MzRtParam(
   adducts = c("[M+H]+", "[M+Na]+"),
   tolerance = 0,
   ppm = 20,
@@ -281,7 +276,7 @@ matchedData(res)
 ## between rt values
 
 ## Define the parameters for the matching
-parm <- TargetMass2MzRtParam(
+parm <- Mass2MzRtParam(
   adducts = c("[M+H]+", "[M+Na]+"),
   tolerance = 0,
   ppm = 20,
