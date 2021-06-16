@@ -1,20 +1,20 @@
-test_that("TargetMass2MzParam works", {
-  res <- TargetMass2MzParam()
-  expect_true(is(res, "TargetMass2MzParam"))
+test_that("Mass2MzParam works", {
+  res <- Mass2MzParam()
+  expect_true(is(res, "Mass2MzParam"))
 
-  expect_error(TargetMass2MzParam(tolerance = 1:3), "positive number")
-  expect_error(TargetMass2MzParam(ppm = -4), "positive number")
-  expect_error(TargetMass2MzParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
+  expect_error(Mass2MzParam(tolerance = 1:3), "positive number")
+  expect_error(Mass2MzParam(ppm = -4), "positive number")
+  expect_error(Mass2MzParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
 })
 
-test_that("TargetMass2MzRtParam works", {
-  res <- TargetMass2MzRtParam()
-  expect_true(is(res, "TargetMass2MzRtParam"))
+test_that("Mass2MzRtParam works", {
+  res <- Mass2MzRtParam()
+  expect_true(is(res, "Mass2MzRtParam"))
 
-  expect_error(TargetMass2MzRtParam(tolerance = 1:3), "positive number")
-  expect_error(TargetMass2MzRtParam(toleranceRt = -1), "positive number")
-  expect_error(TargetMass2MzRtParam(ppm = -4), "positive number")
-  expect_error(TargetMass2MzRtParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
+  expect_error(Mass2MzRtParam(tolerance = 1:3), "positive number")
+  expect_error(Mass2MzRtParam(toleranceRt = -1), "positive number")
+  expect_error(Mass2MzRtParam(ppm = -4), "positive number")
+  expect_error(Mass2MzRtParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
 })
 
 test_that("MzParam works", {
@@ -34,7 +34,7 @@ test_that("MzRtParam works", {
   expect_error(MzRtParam(ppm = -4), "positive number")
 })
 
-test_that("matchMz,TargetMass2MzParam works", {
+test_that("matchMz,Mass2MzParam works", {
 
   cmpds <- data.frame(
     name = c("Tryptophan", "Leucine", "Isoleucine"),
@@ -50,7 +50,7 @@ test_that("matchMz,TargetMass2MzParam works", {
            mass2mz(204.089878, "[M+Na]+") + 1e-6)
   )
 
-  par <- TargetMass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
   expect_equal(target(res), cmpds)
@@ -58,7 +58,7 @@ test_that("matchMz,TargetMass2MzParam works", {
   expect_equal(res@matches$target_idx, c(1, 2, 3, 1))
   expect_equal(res@matches$score, c(0, 0, 0, 1e-6))
 
-  par <- TargetMass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
   expect_equal(target(res), cmpds)
@@ -68,7 +68,7 @@ test_that("matchMz,TargetMass2MzParam works", {
 
   ## no matches
   adducts <- c("[M+Li]+", "[M+K]+")
-  par <- TargetMass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
   res <- matchMz(x, cmpds, par)
   expect_true(is(res, "Matched"))
   expect_equal(query(res), x)
@@ -96,7 +96,7 @@ test_that(".getMatches works", {
     expect_equal(res$target_idx, c(2, 1, 3))
 })
 
-test_that("matchMz,TargetMass2MzRtParam works", {
+test_that("matchMz,Mass2MzRtParam works", {
 
   cmpds <- data.frame(
     name = c("Tryptophan", "Leucine", "Isoleucine"),
@@ -114,7 +114,7 @@ test_that("matchMz,TargetMass2MzRtParam works", {
     rt = c(150, 140, 150.1)
   )
 
-  par <- TargetMass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
+  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
                               toleranceRt = 0)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
@@ -124,7 +124,7 @@ test_that("matchMz,TargetMass2MzRtParam works", {
   expect_equal(res@matches$score, c(0, 0, 0))
   expect_equal(res@matches$score_rt, c(0, 0, 0))
 
-  par <- TargetMass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
+  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
                             toleranceRt = 0.2)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
@@ -134,7 +134,7 @@ test_that("matchMz,TargetMass2MzRtParam works", {
   expect_equal(res@matches$score, c(0, 0, 0, 1e-6))
   expect_equal(res@matches$score_rt, c(0, 0, 0, 0.1))
 
-  par <- TargetMass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 0,
+  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 0,
                               toleranceRt = 0.2)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
@@ -147,7 +147,7 @@ test_that("matchMz,TargetMass2MzRtParam works", {
 
   ## no matches
   adducts <- c("[M+Li]+", "[M+K]+")
-  par <- TargetMass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
+  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
                             toleranceRt = 0.2)
   res <- matchMz(x, cmpds, par)
   expect_true(is(res, "Matched"))

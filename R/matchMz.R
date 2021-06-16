@@ -28,7 +28,7 @@ MzParam <- function(tolerance = 0, ppm = 5) {
 #' @importFrom MetaboCoreUtils adductNames
 #'
 #' @noRd
-setClass("TargetMass2MzParam",
+setClass("Mass2MzParam",
          slots = c(
            adducts = "character"),
          contains = "MzParam",
@@ -48,18 +48,18 @@ setClass("TargetMass2MzParam",
 #' @importFrom methods new
 #'
 #' @export
-TargetMass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
-  new("TargetMass2MzParam", adducts = adducts, tolerance = tolerance,
+Mass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
+  new("Mass2MzParam", adducts = adducts, tolerance = tolerance,
       ppm = ppm)
 }
 
 #' @importFrom MetaboCoreUtils adductNames
 #'
 #' @noRd
-setClass("TargetMass2MzRtParam",
+setClass("Mass2MzRtParam",
          slots = c(
            toleranceRt = "numeric"),
-         contains = "TargetMass2MzParam",
+         contains = "Mass2MzParam",
          prototype = prototype(
            toleranceRt = 0),
          validity = function(object) {
@@ -74,9 +74,9 @@ setClass("TargetMass2MzRtParam",
 #' @importFrom methods new
 #'
 #' @export
-TargetMass2MzRtParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5,
+Mass2MzRtParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5,
                                  toleranceRt = 0) {
-  new("TargetMass2MzRtParam", adducts = adducts, tolerance = tolerance,
+  new("Mass2MzRtParam", adducts = adducts, tolerance = tolerance,
       ppm = ppm, toleranceRt = toleranceRt)
 }
 
@@ -117,7 +117,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' Available matching approaches and respective `param` objects are:
 #'
-#' - `TargetMass2MzParam`: match m/z values against reference compounds for
+#' - `Mass2MzParam`: match m/z values against reference compounds for
 #'   which the (exact) mass is known. Before matching, m/z values are calculated
 #'   from the mass of the compounds in the *target* table for the specified
 #'   adducts (parameter `adduct` in the parameter object).
@@ -127,13 +127,13 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   If `target` is a `data.frame` it must
 #'   contain a column with the (monoisotopic) mass of the compounds (the column
 #'   name can be specified with parameter `massColumn` which defaults to
-#'   `"exactmass"`) `TargetMass2MzParam`'s parameter `adducts` allows to define
+#'   `"exactmass"`) `Mass2MzParam`'s parameter `adducts` allows to define
 #'   the expected adducts (defaults to `adducts = "[M+H]+"` but any adducts
 #'   available in [MetaboCoreUtils::adducts()] are supported). Parameter
 #'   `tolerance` and `ppm` allow to define the maximal acceptable (constant or
 #'   m/z relative) difference between query and target m/z values.
 #'
-#' - `TargetMass2MzRtParam`: match m/z and retention time values against
+#' - `Mass2MzRtParam`: match m/z and retention time values against
 #'   reference compounds for which the (exact) mass **and** retention time are
 #'   known. Before matching, m/z values are calculated from the mass of the
 #'   compounds in the *target* table for the specified adducts (parameter
@@ -146,7 +146,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   mass and retention time for each compound. The names of the columns
 #'   containing these information can be specified with parameters `massColumn`
 #'   and `rtColumn` which default to `"exactmass"` and `"rt"`, respectively.
-#'   `TargetMass2MzRtParam`'s parameter `adducts` allows to define the expected
+#'   `Mass2MzRtParam`'s parameter `adducts` allows to define the expected
 #'   adducts (defaults to `adducts = "[M+H]+"` but any adducts available in
 #'   [MetaboCoreUtils::adducts()] are supported). Parameter `tolerance` and
 #'   `ppm` allow to define the maximal acceptable (constant or m/z relative)
@@ -173,7 +173,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   `MzRtParam` parameter `toleranceRt` allows to specify the maximal
 #'   acceptable difference between query and target retention time values.
 #'
-#' @param adducts for `TargetMass2MzParam` or `TargetMass2MzRtParam`:
+#' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
 #'     `character` with the names of adducts to calculate m/z from target
 #'     compounds' masses. Use `MetaboCoreUtils::adductNames("positive")` and
 #'     `MetaboCoreUtils::adductNames("negative")` for valid names.
@@ -202,7 +202,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @param tolerance for any `param` object: `numeric(1)` defining the maximal
 #'     acceptable absolute difference in m/z values to consider them *matching*.
 #'
-#' @param toleranceRt for `TargetMass2MzRtParam` or `MzRtParam`: `numeric(1)`
+#' @param toleranceRt for `Mass2MzRtParam` or `MzRtParam`: `numeric(1)`
 #'     defining the maximal acceptable absolute difference in retention time
 #'     values to consider them them *matching*.
 #'
@@ -238,7 +238,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'            mass2mz(204.089878, "[M+Na]+") + 1e-6))
 #'
 #' ## Define the parameters for the matching
-#' parm <- TargetMass2MzParam(
+#' parm <- Mass2MzParam(
 #'     adducts = c("[M+H]+", "[M+Na]+"),
 #'     tolerance = 0,
 #'     ppm = 20)
@@ -252,7 +252,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' ## same mass).
 #'
 #' ## We repeat the matching requiring an exact match
-#' parm <- TargetMass2MzParam(
+#' parm <- Mass2MzParam(
 #'     adducts = c("[M+H]+", "[M+Na]+"),
 #'     tolerance = 0,
 #'     ppm = 0)
@@ -264,7 +264,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' ## The last feature could thus not be matched to any compound.
 #'
 #' ## At last we use also different adduct definitions.
-#' parm <- TargetMass2MzParam(
+#' parm <- Mass2MzParam(
 #'     adducts = c("[M+K]+", "[M+Li]+"),
 #'     tolerance = 0,
 #'     ppm = 20)
@@ -293,7 +293,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' )
 #'
 #' ## Define the parameters for the matching
-#' parm <- TargetMass2MzRtParam(
+#' parm <- Mass2MzRtParam(
 #'   adducts = c("[M+H]+", "[M+Na]+"),
 #'   tolerance = 0,
 #'   ppm = 20,
@@ -312,7 +312,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' ## between rt values
 #'
 #' ## Define the parameters for the matching
-#' parm <- TargetMass2MzRtParam(
+#' parm <- Mass2MzRtParam(
 #'   adducts = c("[M+H]+", "[M+Na]+"),
 #'   tolerance = 0,
 #'   ppm = 20,
@@ -346,7 +346,7 @@ setGeneric("matchMz", function(query, target, param, ...)
 setMethod("matchMz",
           signature = c(query = "numeric",
                         target = "numeric",
-                        param = "TargetMass2MzParam"),
+                        param = "Mass2MzParam"),
           function(query, target, param, BPPARAM = SerialParam()) {
             target_mz <- .mass_to_mz_df(target, param@adducts)
             matches <- do.call(
@@ -361,7 +361,7 @@ setMethod("matchMz",
 setMethod("matchMz",
           signature = c(query = "numeric",
                         target = "data.frame",
-                        param = "TargetMass2MzParam"),
+                        param = "Mass2MzParam"),
           function(query, target, param, massColumn = "exactmass",
                    BPPARAM = SerialParam()) {
             if (!massColumn %in% colnames(target))
@@ -374,7 +374,7 @@ setMethod("matchMz",
 setMethod("matchMz",
           signature = c(query = "data.frame",
                         target = "numeric",
-                        param = "TargetMass2MzParam"),
+                        param = "Mass2MzParam"),
           function(query, target, param, BPPARAM = SerialParam()) {
             if (!"mz" %in% colnames(query))
               stop("Missing column \"mz\" in query")
@@ -386,7 +386,7 @@ setMethod("matchMz",
 setMethod("matchMz",
           signature = c(query = "data.frame",
                         target = "data.frame",
-                        param = "TargetMass2MzParam"),
+                        param = "Mass2MzParam"),
           function(query, target, param, mzColumn = "mz",
                    massColumn = "exactmass", BPPARAM = SerialParam()) {
             if (!mzColumn %in% colnames(query))
@@ -464,7 +464,7 @@ setMethod("matchMz",
 setMethod("matchMz",
           signature = c(query = "data.frame",
                         target = "data.frame",
-                        param = "TargetMass2MzRtParam"),
+                        param = "Mass2MzRtParam"),
           function(query, target, param, massColumn = "exactmass",
                    mzColumn = "mz", rtColumn = "rt", BPPARAM = SerialParam()) {
             if (!mzColumn %in% colnames(query))
