@@ -10,7 +10,7 @@ test_that("Mass2MzParam works", {
 test_that("Mass2MzRtParam works", {
   res <- Mass2MzRtParam()
   expect_true(is(res, "Mass2MzRtParam"))
-  
+
   expect_error(Mass2MzRtParam(tolerance = 1:3), "positive number")
   expect_error(Mass2MzRtParam(toleranceRt = -1), "positive number")
   expect_error(Mass2MzRtParam(ppm = -4), "positive number")
@@ -20,7 +20,7 @@ test_that("Mass2MzRtParam works", {
 test_that("MzParam works", {
   res <- MzParam()
   expect_true(is(res, "MzParam"))
-  
+
   expect_error(MzParam(tolerance = 1:3), "positive number")
   expect_error(MzParam(ppm = -4), "positive number")
 })
@@ -28,7 +28,7 @@ test_that("MzParam works", {
 test_that("MzRtParam works", {
   res <- MzRtParam()
   expect_true(is(res, "MzRtParam"))
-  
+
   expect_error(MzRtParam(tolerance = 1:3), "positive number")
   expect_error(MzRtParam(toleranceRt = -1), "positive number")
   expect_error(MzRtParam(ppm = -4), "positive number")
@@ -97,24 +97,24 @@ test_that(".getMatches works", {
 })
 
 test_that("matchMz,Mass2MzRtParam works", {
-  
+
   cmpds <- data.frame(
     name = c("Tryptophan", "Leucine", "Isoleucine"),
     formula = c("C11H12N2O2", "C6H13NO2", "C6H13NO2"),
     exactmass = c(204.089878, 131.094629, 131.094629),
     rt = c(150, 140, 140)
   )
-  
+
   adducts <- c("[M+H]+", "[M+Na]+")
-  
+
   x <- data.frame(
     mz = c(mass2mz(204.089878, "[M+H]+"),
            mass2mz(131.094629, "[M+H]+"),
            mass2mz(204.089878, "[M+Na]+") + 1e-6),
     rt = c(150, 140, 150.1)
   )
-  
-  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20, 
+
+  par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
                               toleranceRt = 0)
   res <- matchMz(x, cmpds, par)
   expect_equal(query(res), x)
@@ -123,7 +123,7 @@ test_that("matchMz,Mass2MzRtParam works", {
   expect_equal(res@matches$target_idx, c(1, 2, 3))
   expect_equal(res@matches$score, c(0, 0, 0))
   expect_equal(res@matches$score_rt, c(0, 0, 0))
-  
+
   par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
                             toleranceRt = 0.2)
   res <- matchMz(x, cmpds, par)
@@ -133,7 +133,7 @@ test_that("matchMz,Mass2MzRtParam works", {
   expect_equal(res@matches$target_idx, c(1, 2, 3, 1))
   expect_equal(res@matches$score, c(0, 0, 0, 1e-6))
   expect_equal(res@matches$score_rt, c(0, 0, 0, 0.1))
-  
+
   par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 0,
                               toleranceRt = 0.2)
   res <- matchMz(x, cmpds, par)
@@ -143,8 +143,8 @@ test_that("matchMz,Mass2MzRtParam works", {
   expect_equal(res@matches$target_idx, c(1, 2, 3))
   expect_equal(res@matches$score, c(0, 0, 0))
   expect_equal(res@matches$score_rt, c(0, 0, 0))
-  
-  
+
+
   ## no matches
   adducts <- c("[M+Li]+", "[M+K]+")
   par <- Mass2MzRtParam(adducts = adducts, tolerance = 0, ppm = 20,
@@ -162,26 +162,26 @@ test_that(".getMatchesMzRt works", {
                      mz = c(11:17, 12:18),
                      rt = rep(21:27, 2))
   trgt <- trgt[order(trgt$mz), ]
-  
-  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 23, 
+
+  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 23,
                          target = trgt, tolerance = 0, ppm = 0, toleranceRt = 0)
-  
+
   expect_true(is.data.frame(res))
   expect_equal(res$query_idx, c(3))
   expect_equal(res$target_idx, c(3))
-  
-  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 24, 
+
+  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 24,
                          target = trgt, tolerance = 0, ppm = 0, toleranceRt = 0)
   expect_true(is.data.frame(res))
   expect_true(nrow(res) == 0)
-  
-  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 24, 
+
+  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 24,
                          target = trgt, tolerance = 0, ppm = 0, toleranceRt = 1)
   expect_true(is.data.frame(res))
   expect_equal(res$query_idx, c(3))
   expect_equal(res$target_idx, c(3))
-  
-  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 23, 
+
+  res <- .getMatchesMzRt(queryIndex = 3, queryMz = 13, queryRt = 23,
                          target = trgt, tolerance = 1, ppm = 0, toleranceRt = 1)
   expect_true(is.data.frame(res))
   expect_equal(res$query_idx, c(3, 3, 3, 3, 3))
@@ -211,7 +211,7 @@ test_that("matchMz, MzParam works", {
   # trgt <- data.frame(mz = seq(110, 200, 10))
   # qry <- c(150, 170, 179)
   # trgt <- seq(110, 200, 10)
-  
+
   par <- MzParam(tolerance = 0)
   res <- matchMz(qry, trgt, par)
   expect_equal(query(res), qry)
@@ -219,14 +219,14 @@ test_that("matchMz, MzParam works", {
   expect_equal(res@matches$query_idx, c(1, 2))
   expect_equal(res@matches$target_idx, c(5, 7))
   expect_equal(res@matches$score, c(0, 0))
-  
+
   ## no matches
   res <- matchMz(qry + 0.1, trgt, par)
   expect_true(is(res, "Matched"))
   expect_equal(query(res), qry + 0.1)
   expect_equal(target(res), trgt)
   expect_true(nrow(res@matches) == 0)
-  
+
   # positive tolerance
   par <- MzParam(tolerance = 10)
   res <- matchMz(qry, trgt, par)
@@ -241,7 +241,7 @@ test_that("matchMz, MzRtParam works", {
 
   qry <- data.frame(mz = c(13, 14.1, 17, 18), rt = c(23, 24, 26.8, 23))
   trgt <- data.frame(mz = 11:17, rt = 21:27)
-  
+
   par <- MzRtParam(tolerance = 0, ppm = 0, toleranceRt = 0)
   res <- matchMz(qry, trgt, par)
   expect_equal(query(res), qry)
@@ -250,21 +250,21 @@ test_that("matchMz, MzRtParam works", {
   expect_equal(res@matches$target_idx, c(3))
   expect_equal(res@matches$score, c(0))
   expect_equal(res@matches$score_rt, c(0))
-  
+
   par <- MzRtParam(tolerance = 0.1, ppm = 0, toleranceRt = 0)
   res <- matchMz(qry, trgt, par)
   expect_equal(res@matches$query_idx, c(1, 2))
   expect_equal(res@matches$target_idx, c(3, 4))
   expect_equal(res@matches$score, c(0, 0.1))
   expect_equal(res@matches$score_rt, c(0, 0))
-  
+
   par <- MzRtParam(tolerance = 0.1, ppm = 0, toleranceRt = 0.2)
   res <- matchMz(qry, trgt, par)
   expect_equal(res@matches$query_idx, c(1, 2, 3))
   expect_equal(res@matches$target_idx, c(3, 4, 7))
   expect_equal(res@matches$score, c(0, 0.1, 0))
   expect_equal(res@matches$score_rt, c(0, 0, 0.2))
-  
+
   ## no matches
   res <- matchMz(qry + 0.5, trgt, par)
   expect_true(is(res, "Matched"))
