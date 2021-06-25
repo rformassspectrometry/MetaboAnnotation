@@ -34,7 +34,8 @@ Imports:
     methods,
     S4Vectors,
     Spectra (>= 1.1.18),
-    BiocParallel
+    BiocParallel,
+    SummarizedExperiment
 Suggests:
     testthat,
     knitr,

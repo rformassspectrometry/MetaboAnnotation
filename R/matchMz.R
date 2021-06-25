@@ -164,14 +164,17 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' - `MzRtParam`: match m/z and retention time values against reference
 #'   compounds for which m/z and retention time are known. `query` must be a
-#'   `data.frame` with columns containing the m/z and retention times of the
+#'   `data.frame` or a `SummarizedExperiment`. The `data.frame` in one case or 
+#'   the `SummarizedExperiment` `rowData` in the other must have columns 
+#'   containing the m/z and retention times of the
 #'   features. The names of the respective columns can be specified with
 #'   parameters `mzColumn` and `rtColumn` which default to `"mz"` and `"rt"`,
-#'   respectively. The same holds for `target`.`MzRtParam`
-#'   parameters `tolerance` and `ppm` allow to define the maximal acceptable
-#'   (constant or m/z relative) difference between query and target m/z values;
-#'   `MzRtParam` parameter `toleranceRt` allows to specify the maximal
-#'   acceptable difference between query and target retention time values.
+#'   respectively.`target` must be a `data.frame` again with the information on 
+#'   m/z and retention time.`MzRtParam` parameters `tolerance` and `ppm` allow 
+#'   to define the maximal acceptable (constant or m/z relative) difference 
+#'   between query and target m/z values; `MzRtParam` parameter `toleranceRt` 
+#'   allows to specify the maximal acceptable difference between query and 
+#'   target retention time values.
 #'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
 #'     `character` with the names of adducts to calculate m/z from target
@@ -333,6 +336,8 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' res <- matchMz(mz1, mz2, MzParam(tolerance = 0.001))
 #'
 #' matchedData(res)
+#' 
+#' ## Should I add here an example where `query` is a `SummarizedExperiment`? 
 NULL
 
 #' @rdname matchMz
@@ -514,6 +519,35 @@ setMethod("matchMz",
                                                 toleranceRt = param@toleranceRt),
                                 BPPARAM = BPPARAM, SIMPLIFY = FALSE))
             Matched(query = query, target = target, matches = matches)
+          })
+#' @rdname matchMz
+#'
+#' @importFrom BiocParallel bpmapply SerialParam
+setMethod("matchMz",
+          signature = c(query = "SummarizedExperiment",
+                        target = "data.frame",
+                        param = "MzRtParam"),
+          function(query, target, param, mzColumn = "mz", rtColumn = "rt",
+                   BPPARAM = SerialParam()) {
+            rD_query <- rowData(query)
+            if (!mzColumn %in% colnames(rD_query))
+              stop("Missing column \"", mzColumn, "\" in rowData(query)")
+            if (!rtColumn %in% colnames(rD_query))
+              stop("Missing column \"", rtColumn, "\" in rowData(query)")
+            target_mz <- data.frame(index = seq_len(nrow(target)),
+                                    mz = target[, mzColumn],
+                                    rt = target[, rtColumn])
+            matches <- do.call(
+              rbind, bpmapply(seq_len(nrow(rD_query)), rD_query[, mzColumn],
+                              rD_query[, rtColumn],
+                              FUN = .getMatchesMzRt,
+                              MoreArgs = list(target = target_mz,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm,
+                                              toleranceRt = param@toleranceRt),
+                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+            MatchedSummarizedExperiment(query = query, target = target, 
+                                        matches = matches)
           })
 
 #' @author Andrea Vicini

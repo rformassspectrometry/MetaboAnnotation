@@ -158,13 +158,13 @@
 #' ## are matched to at least one target row.
 #' mo_sub <- mo[whichQuery(mo)]
 #'
-#' ## ms_sub contains now only 3 query rows:
+#' ## mo_sub contains now only 3 query rows:
 #' nrow(query(mo_sub))
 #'
 #' ## while the original object contains all 5 query rows:
 #' nrow(query(mo))
 #'
-#' ## Both object contain however still the full target object:
+#' ## Both objects contain however still the full target object:
 #' nrow(target(mo))
 #' nrow(target(mo_sub))
 #'
@@ -366,8 +366,10 @@ setMethod("colnames", "Matched", function(x) {
     cns <- colnames(x@matches)
     cnq <- NULL
     cnt <- NULL
-    if (length(dim(target(x))) == 2)
-        cnt <- paste0("target_", colnames(target(x)))
+    if (length(dim(target(x))) == 2){
+        cnt <- colnames(x@target)
+        if (length(cnt)) cnt <- paste0("target_", cnt)
+    }
     if (is.null(dim(target(x))))
         cnt <- "target"
     if (length(dim(query(x))) == 2)
@@ -436,8 +438,10 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @noRd
 .extract_elements <- function(x, i, j) {
-    if (length(dim(x))) res <- x[i, j, drop = FALSE]
-    else res <- x[i]
+    if (length(dim(x))) {
+        if (missing(j)) j <- seq_len(dim(x)[2])
+        res <- x[i, j, drop = FALSE]
+    } else res <- x[i]
     if(is(x)[1] == "list" && any(na <- is.na(i)))
         res[na] <- NA
     res
@@ -505,8 +509,8 @@ setMethod("matchedData", "Matched", function(object,
     ndim <- length(dim(x))
     if(!(ndim %in% c(0,2)))
         msg <- c(msg, "unsupported dimensions in either \"query\" or \"target\"")
-    if(ndim == 2 && is.null(colnames(x)))
-        msg <- c(msg, "either \"query\" or \"target\" or target have 2
+    if(is.matrix(x) && is.null(colnames(x)))
+        msg <- c(msg, "either \"query\" or \"target\" have 2
                  dimensions but no column names")
     msg
 }

@@ -6,6 +6,7 @@
 \alias{[,Matched-method}
 \alias{length,Matched-method}
 \alias{show,Matched-method}
+\alias{[,Matched,ANY,ANY,ANY-method}
 \alias{target}
 \alias{query}
 \alias{whichTarget}
@@ -28,7 +29,7 @@ Matched(
 
 \S4method{show}{Matched}(object)
 
-\S4method{[}{Matched}(x, i, j, ..., drop = FALSE)
+\S4method{[}{Matched,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
 
 target(object)
 
@@ -196,13 +197,13 @@ res$target_col1
 ## are matched to at least one target row.
 mo_sub <- mo[whichQuery(mo)]
 
-## ms_sub contains now only 3 query rows:
+## mo_sub contains now only 3 query rows:
 nrow(query(mo_sub))
 
 ## while the original object contains all 5 query rows:
 nrow(query(mo))
 
-## Both object contain however still the full target object:
+## Both objects contain however still the full target object:
 nrow(target(mo))
 nrow(target(mo_sub))
 
