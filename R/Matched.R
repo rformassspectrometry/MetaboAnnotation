@@ -509,9 +509,9 @@ setMethod("matchedData", "Matched", function(object,
     ndim <- length(dim(x))
     if(!(ndim %in% c(0,2)))
         msg <- c(msg, "unsupported dimensions in either \"query\" or \"target\"")
-    if(is.matrix(x) && is.null(colnames(x)))
-        msg <- c(msg, "either \"query\" or \"target\" have 2
-                 dimensions but no column names")
+    if (ndim == 2 && !inherits(x, "SummarizedExperiment") && is.null(colnames(x)))
+        msg <- c(msg, paste0("either \"query\" or \"target\" have 2",
+                 " dimensions but no column names"))
     msg
 }
 

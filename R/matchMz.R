@@ -336,8 +336,6 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' res <- matchMz(mz1, mz2, MzParam(tolerance = 0.001))
 #'
 #' matchedData(res)
-#' 
-#' ## Should I add here an example where `query` is a `SummarizedExperiment`? 
 NULL
 
 #' @rdname matchMz
@@ -520,34 +518,17 @@ setMethod("matchMz",
                                 BPPARAM = BPPARAM, SIMPLIFY = FALSE))
             Matched(query = query, target = target, matches = matches)
           })
+
 #' @rdname matchMz
-#'
-#' @importFrom BiocParallel bpmapply SerialParam
-setMethod("matchMz",
-          signature = c(query = "SummarizedExperiment",
-                        target = "data.frame",
-                        param = "MzRtParam"),
+setMethod("matchMz", 
+          signature = c(query = "SummarizedExperiment", 
+                        target = "ANY", 
+                        param = "Param"),
           function(query, target, param, mzColumn = "mz", rtColumn = "rt",
                    BPPARAM = SerialParam()) {
-            rD_query <- rowData(query)
-            if (!mzColumn %in% colnames(rD_query))
-              stop("Missing column \"", mzColumn, "\" in rowData(query)")
-            if (!rtColumn %in% colnames(rD_query))
-              stop("Missing column \"", rtColumn, "\" in rowData(query)")
-            target_mz <- data.frame(index = seq_len(nrow(target)),
-                                    mz = target[, mzColumn],
-                                    rt = target[, rtColumn])
-            matches <- do.call(
-              rbind, bpmapply(seq_len(nrow(rD_query)), rD_query[, mzColumn],
-                              rD_query[, rtColumn],
-                              FUN = .getMatchesMzRt,
-                              MoreArgs = list(target = target_mz,
-                                              tolerance = param@tolerance,
-                                              ppm = param@ppm,
-                                              toleranceRt = param@toleranceRt),
-                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            MatchedSummarizedExperiment(query = query, target = target, 
-                                        matches = matches)
+            matches <- matchMz(data.frame(rowData(query)), target, param, 
+                               mzColumn , rtColumn, BPPARAM)@matches
+            MatchedSummarizedExperiment(query, target, matches)
           })
 
 #' @author Andrea Vicini

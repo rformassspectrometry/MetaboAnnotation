@@ -55,7 +55,7 @@ See individual method description above for details.
 \description{
 Matches between a query \code{SummarizedExperiment} and target \code{data.frame} can be
 represented by the\code{MatchedSummarizedExperiment} object. Functions like the
-\code{\link[=matchSummarizedExperiment]{matchSummarizedExperiment()}} function will return this type of object.
+\code{\link[=matchMz]{matchMz()}} function can return this type of object.
 By default, all data accessors work as \emph{left joins} between the \emph{query}
 \code{SummarizedExperiment} and the \emph{target} \code{data.frame}, i.e. values are
 returned for each row in \code{rowData} of \emph{query}  with eventual duplicated

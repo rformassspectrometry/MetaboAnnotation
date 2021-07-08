@@ -16,7 +16,7 @@
 \alias{matchMz,data.frame,data.frame,MzParam-method}
 \alias{matchMz,data.frame,data.frame,Mass2MzRtParam-method}
 \alias{matchMz,data.frame,data.frame,MzRtParam-method}
-\alias{matchMz,SummarizedExperiment,data.frame,MzRtParam-method}
+\alias{matchMz,SummarizedExperiment,ANY,Param-method}
 \title{m/z matching}
 \usage{
 MzParam(tolerance = 0, ppm = 5)
@@ -77,7 +77,7 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{SummarizedExperiment,data.frame,MzRtParam}(
+\S4method{matchMz}{SummarizedExperiment,ANY,Param}(
   query,
   target,
   param,
@@ -310,8 +310,6 @@ mz2 <- mz1 + rnorm(4, sd = 0.001)
 res <- matchMz(mz1, mz2, MzParam(tolerance = 0.001))
 
 matchedData(res)
-
-## Should I add here an example where `query` is a `SummarizedExperiment`? 
 }
 \seealso{
 \link{matchSpectra} or \code{\link[=CompareSpectraParam]{CompareSpectraParam()}} for spectra data matching
