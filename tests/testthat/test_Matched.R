@@ -191,14 +191,18 @@ test_that(".fill_index works", {
                         14, 15, 16, 17, 18, 19, 20))
 })
 
-test_that("$,Matched works", {
+test_that("$,Matched and .dollar works", {
     mo <- Matched(
         q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = seq(0.5, 0.9, by = 0.1)))
     expect_equal(mo$score, c(0.5, 0.6, 0.7, 0.8, NA, NA, 0.9))
+    expect_equal(mo$score, .dollar(mo@query, mo@target, mo@matches, "score"))
     expect_equal(mo$col1, q1[c(1, 2, 2, 2, 3, 4, 5), "col1"])
+    expect_equal(mo$col1, .dollar(mo@query, mo@target, mo@matches, "col1"))
     expect_equal(mo$target_col1, t1[c(2,2,3,4, NA, NA, 5), "col1"])
+    expect_equal(mo$target_col1,
+                 .dollar(mo@query, mo@target, mo@matches, "target_col1"))
 
     mo <- Matched(
         q2, t2, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
@@ -227,6 +231,36 @@ test_that("$,Matched works", {
     tmp <- t2[c(2,2,3,4, NA, NA, 5)]
     tmp[5:6] <- NA
     expect_equal(mo$target, tmp)
+})
+
+test_that(".dollar works with unordered @matches", {
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = seq(0.5, 0.9, by = 0.1)))
+    ## Both query and target idx are unsorted.
+    mo2 <- mo
+    mo2@matches <- mo@matches[c(2, 1, 3, 5, 4), ]
+    ## query
+    expect_equal(mo$col1, mo2$col1)
+    expect_equal(mo$col2, mo2$col2)
+    ## matches
+    expect_equal(mo$score, mo2$score)
+    ## target
+    expect_equal(mo$target_col1, mo2$target_col1)
+    expect_equal(mo$target_col2, mo2$target_col2)
+
+    ## query idx is sorted, target idx not.
+    mo2 <- mo
+    mo2@target <- mo@target[c(4, 5, 1, 2, 3, 6), ]
+    mo2@matches$target_idx <- c(4L, 4L, 5L, 1L, 2L)
+    mo2@matches$score <- mo2@matches$score[c(4L, 4L, 5L, 1L, 2L)]
+
+    ## matches
+    expect_equal(mo$score, mo2$score)
+    ## target
+    expect_equal(mo$target_col1, mo2$target_col1)
+    expect_equal(mo$target_col2, mo2$target_col2)
 })
 
 test_that("colnames,Matched works", {
