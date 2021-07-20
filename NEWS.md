@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.2
+
+- Add `MatchedSummarizedExperiment`.
+
 ## Changes in 0.2.1
 
 - Rename `TargetMass2MzParam` to `Mass2MzParam`.
