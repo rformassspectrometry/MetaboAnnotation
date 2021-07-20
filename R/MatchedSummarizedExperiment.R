@@ -225,7 +225,7 @@ setMethod("colnames", "MatchedSummarizedExperiment", function(x) {
 #' @export
 
 setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
-  .dollar(rowData(x@query), x@target, x@matches, name)
+  .dollar2(rowData(x@query), x@target, x@matches, name)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -240,6 +240,6 @@ setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
 
 setMethod("matchedData", "MatchedSummarizedExperiment",
           function(object, columns = colnames(object), ...) {
-  .matchedData(rowData(object@query), object@target, object@matches, columns, 
+  .matchedData2(rowData(object@query), object@target, object@matches, columns, 
                ...)
 })
