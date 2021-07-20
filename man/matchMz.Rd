@@ -16,6 +16,7 @@
 \alias{matchMz,data.frame,data.frame,MzParam-method}
 \alias{matchMz,data.frame,data.frame,Mass2MzRtParam-method}
 \alias{matchMz,data.frame,data.frame,MzRtParam-method}
+\alias{matchMz,SummarizedExperiment,ANY,Param-method}
 \title{m/z matching}
 \usage{
 MzParam(tolerance = 0, ppm = 5)
@@ -68,6 +69,15 @@ matchMz(query, target, param, ...)
 )
 
 \S4method{matchMz}{data.frame,data.frame,MzRtParam}(
+  query,
+  target,
+  param,
+  mzColumn = "mz",
+  rtColumn = "rt",
+  BPPARAM = SerialParam()
+)
+
+\S4method{matchMz}{SummarizedExperiment,ANY,Param}(
   query,
   target,
   param,
@@ -173,14 +183,17 @@ the features. The same holds for \code{target}. \code{MzParam} parameters
 m/z relative) difference between query and target m/z values.
 \item \code{MzRtParam}: match m/z and retention time values against reference
 compounds for which m/z and retention time are known. \code{query} must be a
-\code{data.frame} with columns containing the m/z and retention times of the
+\code{data.frame} or a \code{SummarizedExperiment}. The \code{data.frame} in one case or
+the \code{SummarizedExperiment} \code{rowData} in the other must have columns
+containing the m/z and retention times of the
 features. The names of the respective columns can be specified with
 parameters \code{mzColumn} and \code{rtColumn} which default to \code{"mz"} and \code{"rt"},
-respectively. The same holds for \code{target}.\code{MzRtParam}
-parameters \code{tolerance} and \code{ppm} allow to define the maximal acceptable
-(constant or m/z relative) difference between query and target m/z values;
-\code{MzRtParam} parameter \code{toleranceRt} allows to specify the maximal
-acceptable difference between query and target retention time values.
+respectively.\code{target} must be a \code{data.frame} again with the information on
+m/z and retention time.\code{MzRtParam} parameters \code{tolerance} and \code{ppm} allow
+to define the maximal acceptable (constant or m/z relative) difference
+between query and target m/z values; \code{MzRtParam} parameter \code{toleranceRt}
+allows to specify the maximal acceptable difference between query and
+target retention time values.
 }
 }
 \examples{

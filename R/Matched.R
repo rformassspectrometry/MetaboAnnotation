@@ -158,13 +158,13 @@
 #' ## are matched to at least one target row.
 #' mo_sub <- mo[whichQuery(mo)]
 #'
-#' ## ms_sub contains now only 3 query rows:
+#' ## mo_sub contains now only 3 query rows:
 #' nrow(query(mo_sub))
 #'
 #' ## while the original object contains all 5 query rows:
 #' nrow(query(mo))
 #'
-#' ## Both object contain however still the full target object:
+#' ## Both objects contain however still the full target object:
 #' nrow(target(mo))
 #' nrow(target(mo_sub))
 #'
@@ -266,8 +266,7 @@ setValidity("Matched", function(object) {
 #' @export
 #'
 #' @rdname Matched
-setMethod("length", "Matched", function(x) ifelse(is.null(d <- dim(x@query)),
-                                                  length(x@query), d[1]))
+setMethod("length", "Matched", function(x) .nelements(x@query))
 
 #' @exportMethod show
 #'
@@ -328,33 +327,7 @@ whichQuery <- function(object) {
 #'
 #' @export
 setMethod("$", "Matched", function(x, name) {
-    if(name %in% colnames(x))
-    {
-        idxs <- .fill_index(seq_len(length(x)), x@matches$query_idx)
-        if (name %in% colnames(x@matches)) {
-            keep <- idxs %in% x@matches$query_idx
-            idxs[keep] <- seq_len(sum(keep))
-            idxs[!keep] <- NA
-            return(x@matches[idxs, name])
-        }
-        if (name == "query" && is.null(dim(x@query)))
-            return(x@query[idxs])
-        if (name == "target" && is.null(dim(x@target))){
-            vals <- x@target[x@matches$target_idx]
-            keep <- idxs %in% x@matches$query_idx
-            idxs[keep] <- seq_len(sum(keep))
-            idxs[!keep] <- NA
-            return(.extract_elements(vals, idxs))
-        }
-        if (length(grep("^target_", name))) {
-            vals <- x@target[x@matches$target_idx, sub("target_", "", name)]
-            keep <- idxs %in% x@matches$query_idx
-            idxs[keep] <- seq_len(sum(keep))
-            idxs[!keep] <- NA
-            vals[idxs]
-        } else
-            x@query[idxs, name]
-    }
+  .dollar(x@query, x@target, x@matches, name)
 })
 
 #' @importFrom BiocGenerics colnames
@@ -363,18 +336,7 @@ setMethod("$", "Matched", function(x, name) {
 #'
 #' @rdname Matched
 setMethod("colnames", "Matched", function(x) {
-    cns <- colnames(x@matches)
-    cnq <- NULL
-    cnt <- NULL
-    if (length(dim(target(x))) == 2)
-        cnt <- paste0("target_", colnames(target(x)))
-    if (is.null(dim(target(x))))
-        cnt <- "target"
-    if (length(dim(query(x))) == 2)
-        cnq <- colnames(query(x))
-    if (is.null(dim(query(x))))
-        cnq <- "query"
-    c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
+  .colnames(x@query, x@target, x@matches)
 })
 
 #' @rdname Matched
@@ -392,41 +354,9 @@ setGeneric("matchedData", function(object, ...)
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    if (any(!columns %in% colnames(object)))
-        stop("column(s) ", paste0(columns[!columns %in% colnames(object)],
-                                  collapse = ", "), " not available")
-    idxs <- .fill_index(seq_len(length(object)), object@matches$query_idx)
-    from_target <- grepl("^target_", columns) | columns == "target"
-    from_matches <- columns %in% colnames(object@matches)
-    from_query <- !(from_target | from_matches)
-    res_q <- NULL
-    res_t <- NULL
-    res_m <- NULL
-    if (any(from_query))
-        res_q <- .extract_elements(object@query, idxs, columns[from_query])
-    if (any(from_target)) {
-        keep <- idxs %in% object@matches$query_idx
-        target_idxs <- idxs
-        target_idxs[keep] <- seq_len(sum(keep))
-        target_idxs[!keep] <- NA
-        res_t <- .extract_elements(object@target,
-                                   object@matches$target_idx[target_idxs],
-                                   sub("target_", "", columns[from_target]))
-    }
-    if (any(from_matches)) {
-        keep <- idxs %in% object@matches$query_idx
-        idxs[keep] <- seq_len(sum(keep))
-        idxs[!keep] <- NA
-        res_m <- object@matches[idxs, columns[from_matches], drop = FALSE]
-    }
-    if(!is.null(res_q) && is.null(dim(object@query))) res_q <- I(res_q)
-    if(!is.null(res_t) && is.null(dim(object@target))) res_t <- I(res_t)
-    any_qtm <- c(any(from_query), any(from_target), any(from_matches))
-    res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-    colnames(res) <- c(columns[from_query], columns[from_target],
-                       columns[from_matches])
-    res[, columns, drop = FALSE]
+    .matchedData(object@query, object@target, object@matches, columns, ... )
 })
+
 
 .nelements <- function(x) {
     ifelse(is.null(d <- dim(x)), length(x), d[1])
@@ -436,8 +366,10 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @noRd
 .extract_elements <- function(x, i, j) {
-    if (length(dim(x))) res <- x[i, j, drop = FALSE]
-    else res <- x[i]
+    if (length(dim(x))) {
+        if (missing(j)) j <- seq_len(dim(x)[2])
+        res <- x[i, j, drop = FALSE]
+    } else res <- x[i]
     if(is(x)[1] == "list" && any(na <- is.na(i)))
         res[na] <- NA
     res
@@ -505,10 +437,96 @@ setMethod("matchedData", "Matched", function(object,
     ndim <- length(dim(x))
     if(!(ndim %in% c(0,2)))
         msg <- c(msg, "unsupported dimensions in either \"query\" or \"target\"")
-    if(ndim == 2 && is.null(colnames(x)))
-        msg <- c(msg, "either \"query\" or \"target\" or target have 2
-                 dimensions but no column names")
+    if (ndim == 2 && !inherits(x, "SummarizedExperiment") && is.null(colnames(x)))
+        msg <- c(msg, paste0("either \"query\" or \"target\" have 2",
+                 " dimensions but no column names"))
     msg
+}
+
+.colnames <- function(query, target, matches) {
+  cns <- colnames(matches)
+  cnq <- NULL
+  cnt <- NULL
+  if (length(dim(target)) == 2){
+    cnt <- colnames(target)
+    if (length(cnt)) cnt <- paste0("target_", cnt)
+  }
+  if (is.null(dim(target)))
+    cnt <- "target"
+  if (length(dim(query)) == 2)
+    cnq <- colnames(query)
+  if (is.null(dim(query)))
+    cnq <- "query"
+  c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
+}
+
+.dollar <- function(query, target, matches, name) {
+  if(name %in% .colnames(query, target, matches))
+  {
+    idxs <- .fill_index(seq_len(.nelements(query)), matches$query_idx)
+    if (name %in% colnames(matches)) {
+      keep <- idxs %in% matches$query_idx
+      idxs[keep] <- seq_len(sum(keep))
+      idxs[!keep] <- NA
+      return(matches[idxs, name])
+    }
+    if (name == "query" && is.null(dim(query)))
+      return(query[idxs])
+    if (name == "target" && is.null(dim(target))){
+      vals <- target[matches$target_idx]
+      keep <- idxs %in% matches$query_idx
+      idxs[keep] <- seq_len(sum(keep))
+      idxs[!keep] <- NA
+      return(.extract_elements(vals, idxs))
+    }
+    if (length(grep("^target_", name))) {
+      vals <- target[matches$target_idx, sub("target_", "", name)]
+      keep <- idxs %in% matches$query_idx
+      idxs[keep] <- seq_len(sum(keep))
+      idxs[!keep] <- NA
+      vals[idxs]
+    } else
+      query[idxs, name]
+  }
+}
+
+
+.matchedData <- function(query, target, matches, columns, ...) {
+  cnms <- .colnames(query, target, matches)
+  if (any(!columns %in% cnms))
+    stop("column(s) ", paste0(columns[!columns %in% cnms],
+                              collapse = ", "), " not available")
+  idxs <- .fill_index(seq_len(.nelements(query)), matches$query_idx)
+  from_target <- grepl("^target_", columns) | columns == "target"
+  from_matches <- columns %in% colnames(matches)
+  from_query <- !(from_target | from_matches)
+  res_q <- NULL
+  res_t <- NULL
+  res_m <- NULL
+  if (any(from_query))
+    res_q <- .extract_elements(query, idxs, columns[from_query])
+  if (any(from_target)) {
+    keep <- idxs %in% matches$query_idx
+    target_idxs <- idxs
+    target_idxs[keep] <- seq_len(sum(keep))
+    target_idxs[!keep] <- NA
+    res_t <- .extract_elements(target,
+                               matches$target_idx[target_idxs],
+                               sub("target_", "", columns[from_target]))
+  }
+  if (any(from_matches)) {
+    keep <- idxs %in% matches$query_idx
+    idxs[keep] <- seq_len(sum(keep))
+    idxs[!keep] <- NA
+    res_m <- matches[idxs, columns[from_matches], drop = FALSE]
+  }
+  if(!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
+  if(!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
+  any_qtm <- c(any(from_query), any(from_target), any(from_matches))
+  res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
+  colnames(res) <- c(columns[from_query], columns[from_target],
+                     columns[from_matches])
+  res[, columns, drop = FALSE]
 }
 
 #' @rdname Matched
@@ -522,4 +540,19 @@ pruneTarget <- function(object) {
     object@matches$target_idx <- match(object@matches$target_idx, keep)
     validObject(object)
     object
+}
+
+
+removeMatches <- function(object, idxs)
+{
+    object@matches <- object@matches[-idxs, ]
+    validObject(object)
+    object
+}
+
+keepMatches <- function(object, idxs)
+{
+  object@matches <- object@matches[idxs, ]
+  validObject(object)
+  object
 }
