@@ -211,19 +211,9 @@ setValidity("MatchedSummarizedExperiment", function(object) {
 #' @exportMethod colnames
 #'
 #' @rdname MatchedSummarizedExperiment
-# setMethod("colnames", "MatchedSummarizedExperiment", function(x) {
-#   cns <- colnames(x@matches)
-#   cnq <- colnames(rowData(x@query))
-#   if (length(dim(target(x))) == 2){
-#     cnt <- colnames(x@target)
-#     if (length(cnt)) cnt <- paste0("target_", cnt)
-#   } else cnt <- "target"
-#   c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
-# })
 
 setMethod("colnames", "MatchedSummarizedExperiment", function(x) {
-  colnames(Matched(query = rowData(x@query), target = x@target, 
-                   matches = x@matches))
+  .colnames(rowData(x@query), x@target, x@matches)
 })
 
 #' @importMethodsFrom SummarizedExperiment rowData
@@ -233,37 +223,9 @@ setMethod("colnames", "MatchedSummarizedExperiment", function(x) {
 #' @rdname MatchedSummarizedExperiment
 #'
 #' @export
-# setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
-#   if(name %in% colnames(x))
-#   {
-#     idxs <- .fill_index(seq_len(length(x)), x@matches$query_idx)
-#     if (name %in% colnames(x@matches)) {
-#       keep <- idxs %in% x@matches$query_idx
-#       idxs[keep] <- seq_len(sum(keep))
-#       idxs[!keep] <- NA
-#       return(x@matches[idxs, name])
-#     }
-#     if (name == "target" && is.null(dim(x@target))){
-#       vals <- x@target[x@matches$target_idx]
-#       keep <- idxs %in% x@matches$query_idx
-#       idxs[keep] <- seq_len(sum(keep))
-#       idxs[!keep] <- NA
-#       return(.extract_elements(vals, idxs))
-#     }
-#     if (length(grep("^target_", name))) {
-#       vals <- x@target[x@matches$target_idx, sub("target_", "", name)]
-#       keep <- idxs %in% x@matches$query_idx
-#       idxs[keep] <- seq_len(sum(keep))
-#       idxs[!keep] <- NA
-#       vals[idxs]
-#     } else
-#       rowData(x@query)[idxs, name]
-#   }
-# })
 
 setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
-  do.call("$", list(Matched(query = rowData(x@query), 
-                            target = x@target, matches = x@matches), name))
+  .dollar(rowData(x@query), x@target, x@matches, name)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -275,46 +237,9 @@ setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
 #' @rdname MatchedSummarizedExperiment
 #'
 #' @export
-# setMethod("matchedData", "MatchedSummarizedExperiment", function(object,
-#                                              columns = colnames(object), ...) {
-#   if (any(!columns %in% colnames(object)))
-#     stop("column(s) ", paste0(columns[!columns %in% colnames(object)],
-#                               collapse = ", "), " not available")
-#   idxs <- .fill_index(seq_len(length(object)), object@matches$query_idx)
-#   from_target <- grepl("^target_", columns) | columns == "target"
-#   from_matches <- columns %in% colnames(object@matches)
-#   from_query <- !(from_target | from_matches)
-#   res_q <- NULL
-#   res_t <- NULL
-#   res_m <- NULL
-#   if (any(from_query))
-#     res_q <- .extract_elements(rowData(object@query), idxs, columns[from_query])
-#   if (any(from_target)) {
-#     keep <- idxs %in% object@matches$query_idx
-#     target_idxs <- idxs
-#     target_idxs[keep] <- seq_len(sum(keep))
-#     target_idxs[!keep] <- NA
-#     res_t <- .extract_elements(object@target,
-#                                object@matches$target_idx[target_idxs],
-#                                sub("target_", "", columns[from_target]))
-#   }
-#   if (any(from_matches)) {
-#     keep <- idxs %in% object@matches$query_idx
-#     idxs[keep] <- seq_len(sum(keep))
-#     idxs[!keep] <- NA
-#     res_m <- object@matches[idxs, columns[from_matches], drop = FALSE]
-#   }
-#   if(!is.null(res_t) && is.null(dim(object@target))) res_t <- I(res_t)
-#   any_qtm <- c(any(from_query), any(from_target), any(from_matches))
-#   res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-#   colnames(res) <- c(columns[from_query], columns[from_target],
-#                      columns[from_matches])
-#   res[, columns, drop = FALSE]
-# })
 
 setMethod("matchedData", "MatchedSummarizedExperiment",
           function(object, columns = colnames(object), ...) {
-  matchedData(Matched(query = rowData(object@query), 
-                      target = object@target,
-                      matches = object@matches), columns = columns, ...)
+  .matchedData(rowData(object@query), object@target, object@matches, columns, 
+               ...)
 })
