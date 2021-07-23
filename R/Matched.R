@@ -81,6 +81,8 @@
 #' @param i `integer` or `logical` defining the `query` elements to keep.
 #'
 #' @param j for `[`: ignored.
+#' 
+#' @param idxs for `keepMatches`: indexes of the matches to keep. 
 #'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
@@ -327,7 +329,7 @@ whichQuery <- function(object) {
 #'
 #' @export
 setMethod("$", "Matched", function(x, name) {
-  .dollar2(x@query, x@target, x@matches, name)
+  .dollar(x@query, x@target, x@matches, name)
 })
 
 #' @importFrom BiocGenerics colnames
@@ -354,7 +356,7 @@ setGeneric("matchedData", function(object, ...)
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    .matchedData2(object@query, object@target, object@matches, columns, ... )
+    .matchedData(object@query, object@target, object@matches, columns, ... )
 })
 
 
@@ -463,101 +465,29 @@ setMethod("matchedData", "Matched", function(object,
 .dollar <- function(query, target, matches, name) {
   if(name %in% .colnames(query, target, matches))
   {
-    idxs <- .fill_index(seq_len(.nelements(query)), matches$query_idx)
-    if (name %in% colnames(matches)) {
-      keep <- idxs %in% matches$query_idx
-      idxs[keep] <- seq_len(sum(keep))
-      idxs[!keep] <- NA
-      return(matches[idxs, name])
-    }
-    if (name == "query" && is.null(dim(query)))
-      return(query[idxs])
-    if (name == "target" && is.null(dim(target))){
-      vals <- target[matches$target_idx]
-      keep <- idxs %in% matches$query_idx
-      idxs[keep] <- seq_len(sum(keep))
-      idxs[!keep] <- NA
-      return(.extract_elements(vals, idxs))
-    }
-    if (length(grep("^target_", name))) {
-      vals <- target[matches$target_idx, sub("target_", "", name)]
-      keep <- idxs %in% matches$query_idx
-      idxs[keep] <- seq_len(sum(keep))
-      idxs[!keep] <- NA
-      vals[idxs]
-    } else
-      query[idxs, name]
-  }
-}
-
-.dollar2 <- function(query, target, matches, name) {
-  if(name %in% .colnames(query, target, matches))
-  {
     not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
     idxs_qry <- c(matches$query_idx, not_mtchd)
-    ord <- order(idxs_qry) # Needed only if we want the entries of the returned vector 
-    # in the same way as query is ordered but in principle we could avoid the ordering
+    ord <- order(idxs_qry)
     if (name %in% colnames(matches)) {
       idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
       return(matches[idxs_mtch, name])
     }
-    if (name == "target" || length(grep("^target_", name))){
+    if (name == "target" || length(grep("^target_", name))) {
       idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord] 
       .extract_elements(target, idxs_trg, sub("target_", "", name), drop = TRUE)
     }else
       .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
-  }
+  } else stop("'", name, "' not available")
 }
-
 
 .matchedData <- function(query, target, matches, columns, ...) {
   cnms <- .colnames(query, target, matches)
   if (any(!columns %in% cnms))
     stop("column(s) ", paste0(columns[!columns %in% cnms],
                               collapse = ", "), " not available")
-  idxs <- .fill_index(seq_len(.nelements(query)), matches$query_idx)
-  from_target <- grepl("^target_", columns) | columns == "target"
-  from_matches <- columns %in% colnames(matches)
-  from_query <- !(from_target | from_matches)
-  res_q <- NULL
-  res_t <- NULL
-  res_m <- NULL
-  if (any(from_query))
-    res_q <- .extract_elements(query, idxs, columns[from_query])
-  if (any(from_target)) {
-    keep <- idxs %in% matches$query_idx
-    target_idxs <- idxs
-    target_idxs[keep] <- seq_len(sum(keep))
-    target_idxs[!keep] <- NA
-    res_t <- .extract_elements(target,
-                               matches$target_idx[target_idxs],
-                               sub("target_", "", columns[from_target]))
-  }
-  if (any(from_matches)) {
-    keep <- idxs %in% matches$query_idx
-    idxs[keep] <- seq_len(sum(keep))
-    idxs[!keep] <- NA
-    res_m <- matches[idxs, columns[from_matches], drop = FALSE]
-  }
-  if(!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
-  if(!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
-  any_qtm <- c(any(from_query), any(from_target), any(from_matches))
-  res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-  colnames(res) <- c(columns[from_query], columns[from_target],
-                     columns[from_matches])
-  res[, columns, drop = FALSE]
-}
-
-
-.matchedData2 <- function(query, target, matches, columns, ...) {
-  cnms <- .colnames(query, target, matches)
-  if (any(!columns %in% cnms))
-    stop("column(s) ", paste0(columns[!columns %in% cnms],
-                              collapse = ", "), " not available")
   not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
   idxs_qry <- c(matches$query_idx, not_mtchd)
-  ord <- order(idxs_qry) # Needed only if we want the rows of the returned matrix ordered 
-  # in the same way as query is ordered but in principle we could avoid the ordering 
+  ord <- order(idxs_qry)
   from_target <- grepl("^target_", columns) | columns == "target"
   from_matches <- columns %in% colnames(matches)
   from_query <- !(from_target | from_matches)
@@ -597,7 +527,13 @@ pruneTarget <- function(object) {
     object
 }
 
+# Maybe we can delete one of the following functions.
 
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
 removeMatches <- function(object, idxs)
 {
     object@matches <- object@matches[-idxs, ]
@@ -605,6 +541,11 @@ removeMatches <- function(object, idxs)
     object
 }
 
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
 keepMatches <- function(object, idxs)
 {
   object@matches <- object@matches[idxs, ]

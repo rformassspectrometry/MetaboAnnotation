@@ -39,7 +39,7 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{data.frame,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
+\S4method{matchMz}{data.frame,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam(), mzColumn = "mz")
 
 \S4method{matchMz}{data.frame,data.frame,Mass2MzParam}(
   query,
@@ -56,7 +56,13 @@ matchMz(query, target, param, ...)
 
 \S4method{matchMz}{data.frame,numeric,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frame,data.frame,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
+\S4method{matchMz}{data.frame,data.frame,MzParam}(
+  query,
+  target,
+  param,
+  mzColumn = c("mz", "mz"),
+  BPPARAM = SerialParam()
+)
 
 \S4method{matchMz}{data.frame,data.frame,Mass2MzRtParam}(
   query,
@@ -64,7 +70,7 @@ matchMz(query, target, param, ...)
   param,
   massColumn = "exactmass",
   mzColumn = "mz",
-  rtColumn = "rt",
+  rtColumn = c("rt", "rt"),
   BPPARAM = SerialParam()
 )
 
@@ -72,8 +78,8 @@ matchMz(query, target, param, ...)
   query,
   target,
   param,
-  mzColumn = "mz",
-  rtColumn = "rt",
+  mzColumn = c("mz", "mz"),
+  rtColumn = c("rt", "rt"),
   BPPARAM = SerialParam()
 )
 

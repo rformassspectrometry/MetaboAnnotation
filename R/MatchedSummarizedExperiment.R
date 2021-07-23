@@ -70,12 +70,6 @@
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
 #'
-#' @param drop for `[`: ignored.
-#'
-#' @param i `integer` or `logical` defining the `query` elements to keep.
-#'
-#' @param j for `[`: ignored.
-#'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
 #'   mapping between the rows of `rowData` of query` and the `target` rows.
@@ -225,7 +219,7 @@ setMethod("colnames", "MatchedSummarizedExperiment", function(x) {
 #' @export
 
 setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
-  .dollar2(rowData(x@query), x@target, x@matches, name)
+  .dollar(rowData(x@query), x@target, x@matches, name)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -240,6 +234,6 @@ setMethod("$", "MatchedSummarizedExperiment", function(x, name) {
 
 setMethod("matchedData", "MatchedSummarizedExperiment",
           function(object, columns = colnames(object), ...) {
-  .matchedData2(rowData(object@query), object@target, object@matches, columns, 
+  .matchedData(rowData(object@query), object@target, object@matches, columns, 
                ...)
 })
