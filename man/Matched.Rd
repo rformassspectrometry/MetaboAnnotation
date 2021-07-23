@@ -16,6 +16,8 @@
 \alias{matchedData}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
+\alias{removeMatches}
+\alias{keepMatches}
 \title{Representation of generic objects matches}
 \usage{
 Matched(
@@ -48,6 +50,10 @@ matchedData(object, ...)
 \S4method{matchedData}{Matched}(object, columns = colnames(object), ...)
 
 pruneTarget(object)
+
+removeMatches(object, idxs)
+
+keepMatches(object, idxs)
 }
 \arguments{
 \item{query}{object with the query elements.}
@@ -75,6 +81,8 @@ mapping of elements between the \code{query} and the \code{target} objects.}
 
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
+
+\item{idxs}{for \code{keepMatches}: indexes of the matches to keep.}
 }
 \value{
 See individual method description above for details.

@@ -42,12 +42,6 @@ mapping between the rows of \code{rowData} of query\verb{and the}target` rows.}
 variables that should be extracted.}
 
 \item{...}{additional parameters.}
-
-\item{drop}{for \code{[}: ignored.}
-
-\item{i}{\code{integer} or \code{logical} defining the \code{query} elements to keep.}
-
-\item{j}{for \code{[}: ignored.}
 }
 \value{
 See individual method description above for details.

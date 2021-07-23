@@ -70,12 +70,6 @@
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
 #'
-#' @param drop for `[`: ignored.
-#'
-#' @param i `integer` or `logical` defining the `query` elements to keep.
-#'
-#' @param j for `[`: ignored.
-#'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
 #'   mapping between the rows of `rowData` of query` and the `target` rows.
