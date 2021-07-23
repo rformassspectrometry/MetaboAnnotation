@@ -90,14 +90,17 @@ tolerance and ppm allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.
 MzRtParam: match m/z and retention time values against reference
 compounds for which m/z and retention time are known. query must be a
-data.frame with columns containing the m/z and retention times of the
+data.frame or a SummarizedExperiment. The data.frame in one case or
+the SummarizedExperiment rowData in the other must have columns
+containing the m/z and retention times of the
 features. The names of the respective columns can be specified with
 parameters mzColumn and rtColumn which default to &quot;mz&quot; and &quot;rt&quot;,
-respectively. The same holds for target.MzRtParam
-parameters tolerance and ppm allow to define the maximal acceptable
-(constant or m/z relative) difference between query and target m/z values;
-MzRtParam parameter toleranceRt allows to specify the maximal
-acceptable difference between query and target retention time values.
+respectively.target must be a data.frame again with the information on
+m/z and retention time.MzRtParam parameters tolerance and ppm allow
+to define the maximal acceptable (constant or m/z relative) difference
+between query and target m/z values; MzRtParam parameter toleranceRt
+allows to specify the maximal acceptable difference between query and
+target retention time values.
 
 " />
 
@@ -139,7 +142,7 @@ acceptable difference between query and target retention time values.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -231,14 +234,17 @@ the features. The same holds for <code>target</code>. <code>MzParam</code> param
 m/z relative) difference between query and target m/z values.</p></li>
 <li><p><code>MzRtParam</code>: match m/z and retention time values against reference
 compounds for which m/z and retention time are known. <code>query</code> must be a
-<code>data.frame</code> with columns containing the m/z and retention times of the
+<code>data.frame</code> or a <code>SummarizedExperiment</code>. The <code>data.frame</code> in one case or
+the <code>SummarizedExperiment</code> <code>rowData</code> in the other must have columns
+containing the m/z and retention times of the
 features. The names of the respective columns can be specified with
 parameters <code>mzColumn</code> and <code>rtColumn</code> which default to <code>"mz"</code> and <code>"rt"</code>,
-respectively. The same holds for <code>target</code>.<code>MzRtParam</code>
-parameters <code>tolerance</code> and <code>ppm</code> allow to define the maximal acceptable
-(constant or m/z relative) difference between query and target m/z values;
-<code>MzRtParam</code> parameter <code>toleranceRt</code> allows to specify the maximal
-acceptable difference between query and target retention time values.</p></li>
+respectively.<code>target</code> must be a <code>data.frame</code> again with the information on
+m/z and retention time.<code>MzRtParam</code> parameters <code>tolerance</code> and <code>ppm</code> allow
+to define the maximal acceptable (constant or m/z relative) difference
+between query and target m/z values; <code>MzRtParam</code> parameter <code>toleranceRt</code>
+allows to specify the maximal acceptable difference between query and
+target retention time values.</p></li>
 </ul>
 
     </div>
@@ -266,7 +272,7 @@ acceptable difference between query and target retention time values.</p></li>
 <span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,numeric,Mass2MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,Mass2MzParam</span>
 <span class='fu'>matchMz</span><span class='op'>(</span>
@@ -288,7 +294,13 @@ acceptable difference between query and target retention time values.</p></li>
 <span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,MzParam</span>
-<span class='fu'>matchMz</span><span class='op'>(</span><span class='va'>query</span>, <span class='va'>target</span>, <span class='va'>param</span>, mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>, BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  mzColumn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"mz"</span>, <span class='st'>"mz"</span><span class='op'>)</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,Mass2MzRtParam</span>
 <span class='fu'>matchMz</span><span class='op'>(</span>
@@ -297,11 +309,21 @@ acceptable difference between query and target retention time values.</p></li>
   <span class='va'>param</span>,
   massColumn <span class='op'>=</span> <span class='st'>"exactmass"</span>,
   mzColumn <span class='op'>=</span> <span class='st'>"mz"</span>,
-  rtColumn <span class='op'>=</span> <span class='st'>"rt"</span>,
+  rtColumn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"rt"</span>, <span class='st'>"rt"</span><span class='op'>)</span>,
   BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='co'># S4 method for data.frame,data.frame,MzRtParam</span>
+<span class='fu'>matchMz</span><span class='op'>(</span>
+  <span class='va'>query</span>,
+  <span class='va'>target</span>,
+  <span class='va'>param</span>,
+  mzColumn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"mz"</span>, <span class='st'>"mz"</span><span class='op'>)</span>,
+  rtColumn <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"rt"</span>, <span class='st'>"rt"</span><span class='op'>)</span>,
+  BPPARAM <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html'>SerialParam</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='co'># S4 method for SummarizedExperiment,ANY,Param</span>
 <span class='fu'>matchMz</span><span class='op'>(</span>
   <span class='va'>query</span>,
   <span class='va'>target</span>,

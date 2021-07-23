@@ -86,7 +86,7 @@ details and more information" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ length(x)
 # S4 method for Matched
 show(object)
 
-# S4 method for Matched
+# S4 method for Matched,ANY,ANY,ANY
 [(x, i, j, ..., drop = FALSE)
 
 target(object)
@@ -172,7 +172,11 @@ matchedData(object, ...)
 # S4 method for Matched
 matchedData(object, columns = colnames(object), ...)
 
-pruneTarget(object)</code></pre></div>
+pruneTarget(object)
+
+removeMatches(object, idxs)
+
+keepMatches(object, idxs)</code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,6 +228,10 @@ mapping of elements between the <code>query</code> and the <code>target</code> o
       <th>columns</th>
       <td><p>for <code>matchedData</code>: <code>character</code> vector with column names of
 variables that should be extracted.</p></td>
+    </tr>
+    <tr>
+      <th>idxs</th>
+      <td><p>for <code>keepMatches</code>: indexes of the matches to keep.</p></td>
     </tr>
     </table>
 
@@ -363,7 +371,7 @@ element).</p></li>
 <span class='r-in'><span class='co'>## are matched to at least one target row.</span></span>
 <span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='va'>mo</span><span class='op'>[</span><span class='fu'>whichQuery</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>]</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## ms_sub contains now only 3 query rows:</span></span>
+<span class='r-in'><span class='co'>## mo_sub contains now only 3 query rows:</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>query</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
 <span class='r-in'></span>
@@ -371,7 +379,7 @@ element).</p></li>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>query</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'>## Both object contain however still the full target object:</span></span>
+<span class='r-in'><span class='co'>## Both objects contain however still the full target object:</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
