@@ -100,6 +100,11 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@query, mo@query[2, ])
     expect_equal(res@target, mo@target)
 
+    ## No matching
+    res <- .subset_matches_nodim(mo, c(3, 4))
+    expect_true(validObject(res))
+    expect_true(nrow(res@matches) == 0)
+    expect_equal(res@query, mo@query[c(3, 4), ])
 
     expect_error(.subset_matches_nodim(mo, 12), "out-of-bounds")
 

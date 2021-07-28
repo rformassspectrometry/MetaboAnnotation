@@ -265,6 +265,9 @@ length(target(mo_sub))
 mo_sub <- pruneTarget(mo_sub)
 nrow(target(mo_sub))
 }
+\seealso{
+\code{\link[=MatchedSpectra]{MatchedSpectra()}} for matched \code{\link[=Spectra]{Spectra()}} objects.
+}
 \author{
 Andrea Vicini, Johannes Rainer
 }

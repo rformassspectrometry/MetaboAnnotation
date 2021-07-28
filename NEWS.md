@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.3
+
+- Fixes in `MatchedSpectra`.
+
 ## Changes in 0.2.2
 
 - Add `MatchedSummarizedExperiment`.

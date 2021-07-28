@@ -81,8 +81,8 @@
 #' @param i `integer` or `logical` defining the `query` elements to keep.
 #'
 #' @param j for `[`: ignored.
-#' 
-#' @param idxs for `keepMatches`: indexes of the matches to keep. 
+#'
+#' @param idxs for `keepMatches`: indexes of the matches to keep.
 #'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
@@ -102,6 +102,8 @@
 #' @param ... additional parameters.
 #'
 #' @return See individual method description above for details.
+#'
+#' @seealso [MatchedSpectra()] for matched [Spectra()] objects.
 #'
 #' @exportClass Matched
 #'
@@ -390,14 +392,16 @@ setMethod("matchedData", "Matched", function(object,
         stop("subscript contains out-of-bounds indices")
     slot(x, "query", check = FALSE) <- .extract_elements(x@query, i)
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
-    ## Support handling duplicated indices.
-    mtches <- split.data.frame(
-        x@matches, f = as.factor(x@matches$query_idx))[as.character(i)]
-    lns <- vapply(mtches, function(z)
-        if (length(z)) nrow(z) else 0L, integer(1))
-    mtches <- do.call(rbind, mtches[lengths(mtches) > 0])
-    rownames(mtches) <- NULL
-    mtches$query_idx <- rep(seq_along(i), lns)
+    if (nrow(mtches)) {
+        ## Support handling duplicated indices.
+        mtches <- split.data.frame(
+            mtches, f = as.factor(mtches$query_idx))[as.character(i)]
+        lns <- vapply(mtches, function(z)
+            if (length(z)) nrow(z) else 0L, integer(1))
+        mtches <- do.call(rbind, mtches[lengths(mtches) > 0])
+        rownames(mtches) <- NULL
+        mtches$query_idx <- rep(seq_along(i), lns)
+    }
     slot(x, "matches", check = FALSE) <- mtches
     x
 }
@@ -473,7 +477,7 @@ setMethod("matchedData", "Matched", function(object,
       return(matches[idxs_mtch, name])
     }
     if (name == "target" || length(grep("^target_", name))) {
-      idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord] 
+      idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
       .extract_elements(target, idxs_trg, sub("target_", "", name), drop = TRUE)
     }else
       .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
@@ -497,8 +501,8 @@ setMethod("matchedData", "Matched", function(object,
   if (any(from_query))
     res_q <- .extract_elements(query, idxs_qry[ord], columns[from_query])
   if (any(from_target)) {
-    idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord] 
-    res_t <- .extract_elements(target, idxs_trg, 
+    idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
+    res_t <- .extract_elements(target, idxs_trg,
                                sub("target_", "", columns[from_target]))
   }
   if (any(from_matches)) {
@@ -534,8 +538,7 @@ pruneTarget <- function(object) {
 #' @importFrom methods validObject
 #'
 #' @export
-removeMatches <- function(object, idxs)
-{
+removeMatches <- function(object, idxs) {
     object@matches <- object@matches[-idxs, ]
     validObject(object)
     object
@@ -546,8 +549,7 @@ removeMatches <- function(object, idxs)
 #' @importFrom methods validObject
 #'
 #' @export
-keepMatches <- function(object, idxs)
-{
+keepMatches <- function(object, idxs) {
   object@matches <- object@matches[idxs, ]
   validObject(object)
   object
