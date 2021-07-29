@@ -276,7 +276,13 @@ setMethod("colnames", "MatchedSpectra", function(x) {
 
 #' @rdname MatchedSpectra
 setMethod("$", "MatchedSpectra", function(x, name) {
-    .dollar(spectraData(x@query), spectraData(x@target), x@matches, name)
+    if (name %in% spectraVariables(x@query))
+        qry <- spectraData(x@query, name)
+    else qry <- spectraData(x@query, "msLevel")
+    if (length(grep("^target_", name)))
+        trg <- spectraData(x@target, sub("^target_", "", name))
+    else trg <- data.frame()
+    .dollar(qry, trg, x@matches, name)
 })
 
 #' @importMethodsFrom Spectra spectraData
@@ -284,8 +290,16 @@ setMethod("$", "MatchedSpectra", function(x, name) {
 #' @rdname MatchedSpectra
 setMethod("spectraData", "MatchedSpectra",
           function(object, columns = spectraVariables(object)) {
-              .matchedData(spectraData(object@query),
-                           spectraData(object@target), object@matches, columns)
+              cols_trg <- grep("^target_", columns)
+              if (length(cols_trg))
+                  trg <- spectraData(
+                      object@target, sub("^target_", "", columns[cols_trg]))
+              else
+                  trg <- data.frame()
+              cols_qry <- columns[columns %in% spectraVariables(object@query)]
+              .matchedData(
+                  spectraData(object@query, unique(c("msLevel", cols_qry))),
+                  trg, object@matches, columns)
           })
 
 #' @rdname MatchedSpectra
