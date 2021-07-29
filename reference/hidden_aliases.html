@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • MetaboAnnotation</title>
+<title>Internal page for hidden aliases — colnames,MatchedSummarizedExperiment-method • MetaboAnnotation</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Internal page for hidden aliases — colnames,MatchedSummarizedExperiment-method" />
+<meta property="og:description" content="For S4 methods that require a documentation entry but only clutter the index." />
 
 
 
@@ -66,7 +67,7 @@
   <body data-spy="scroll" data-target="#toc">
     
 
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -115,51 +116,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Internal page for hidden aliases</h1>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/MatchedSummarizedExperiment.R'><code>R/MatchedSummarizedExperiment.R</code></a>, <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/hidden-aliases.R'><code>R/hidden-aliases.R</code></a></small>
+    <div class="hidden name"><code>hidden_aliases.Rd</code></div>
     </div>
 
-    <div id="metaboannotation-02" class="section level1">
-<h1 class="page-header" data-toc-text="0.2">
-<a href="#metaboannotation-02" class="anchor" aria-hidden="true"></a>MetaboAnnotation 0.2</h1>
-<div id="changes-in-023" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-in-023" class="anchor" aria-hidden="true"></a>Changes in 0.2.3</h2>
-<ul><li>Fixes in <code>MatchedSpectra</code>.</li>
-</ul></div>
-<div id="changes-in-022" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-in-022" class="anchor" aria-hidden="true"></a>Changes in 0.2.2</h2>
-<ul><li>Add <code>MatchedSummarizedExperiment</code>.</li>
-</ul></div>
-<div id="changes-in-021" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-in-021" class="anchor" aria-hidden="true"></a>Changes in 0.2.1</h2>
-<ul><li>Rename <code>TargetMass2MzParam</code> to <code>Mass2MzParam</code>.</li>
-</ul></div>
-<div id="changes-in-020" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-in-020" class="anchor" aria-hidden="true"></a>Changes in 0.2.0</h2>
-<ul><li>Add support for matching m/z against m/z and m/z in addition to retention times to <code>matchMz</code>.</li>
-</ul></div>
-</div>
-    <div id="metaboannotation-00" class="section level1">
-<h1 class="page-header" data-toc-text="0.0">
-<a href="#metaboannotation-00" class="anchor" aria-hidden="true"></a>MetaboAnnotation 0.0</h1>
-<div id="changes-in-004" class="section level2">
-<h2 class="hasAnchor">
-<a href="#changes-in-004" class="anchor" aria-hidden="true"></a>Changes in 0.0.4</h2>
-<ul><li>Fix vignette, documentations and unit tests.</li>
-</ul></div>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>For S4 methods that require a documentation entry but only clutter the index.</p>
+    </div>
 
+    <div class="ref-usage sourceCode"><pre><code># S4 method for MatchedSummarizedExperiment
+colnames(x)
+
+# S4 method for MatchedSummarizedExperiment
+$(x, name)
+
+# S4 method for MatchedSummarizedExperiment
+matchedData(object, columns = colnames(object), ...)</code></pre></div>
+
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Not applicable</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 

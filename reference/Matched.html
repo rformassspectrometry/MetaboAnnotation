@@ -46,7 +46,13 @@ left joins between the query and the target object, i.e. values are
 returned for each query object with eventual duplicated entries (values)
 if the query object matches more than one target object. See also
 Creation and subsetting as well as Extracting data sections below for
-details and more information" />
+details and more information
+The MatchedSummarizedExperiment object allows to represent matches between
+a SummarizedExperiment() object against a target object (which can be,
+like for the Matched object, a data.frame, matrix, vector or list).
+Matches represent links between rows of this SummarizedExperiment to the
+target, hence, colnames and matchedData will access the rowData() of
+the matched SummarizedExperiment." />
 
 
 
@@ -86,7 +92,7 @@ details and more information" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -123,7 +129,7 @@ details and more information" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Representation of generic objects matches</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/Matched.R'><code>R/Matched.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/Matched.R'><code>R/Matched.R</code></a>, <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/MatchedSummarizedExperiment.R'><code>R/MatchedSummarizedExperiment.R</code></a></small>
     <div class="hidden name"><code>Matched.Rd</code></div>
     </div>
 
@@ -135,6 +141,12 @@ returned for each <em>query</em> object with eventual duplicated entries (values
 if the query object matches more than one target object. See also
 <em>Creation and subsetting</em> as well as <em>Extracting data</em> sections below for
 details and more information</p>
+<p>The <code>MatchedSummarizedExperiment</code> object allows to represent matches between
+a <code>SummarizedExperiment()</code> object against a <em>target</em> object (which can be,
+like for the <code>Matched</code> object, a <code>data.frame</code>, <code>matrix</code>, <code>vector</code> or <code>list</code>).
+Matches represent links between rows of this <code>SummarizedExperiment</code> to the
+target, hence, <code>colnames</code> and <code>matchedData</code> will access the <code>rowData()</code> of
+the matched <code>SummarizedExperiment</code>.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre><code>Matched(
@@ -176,7 +188,14 @@ pruneTarget(object)
 
 removeMatches(object, idxs)
 
-keepMatches(object, idxs)</code></pre></div>
+keepMatches(object, idxs)
+
+MatchedSummarizedExperiment(
+  query = SummarizedExperiment(),
+  target = data.frame(),
+  matches = data.frame(query_idx = integer(), target_idx = integer(), score =
+    numeric())
+)</code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -243,17 +262,23 @@ variables that should be extracted.</p></td>
     
 
 
-<p><code>Matched</code> objects can be created with the <code>Matched</code> function
-providing the <code>query</code> and <code>target</code> object as well as the <code>matches</code>
+<p><code>Matched</code> and <code>MatchedSummarizedExperiment</code> objects are returned as result
+from the <code><a href='matchMz.html'>matchMz()</a></code> function.</p>
+<p>Alternatively, <code>Matched</code> objects can also be created with the <code>Matched</code>
+function providing the <code>query</code> and <code>target</code> object as well as the <code>matches</code>
 <code>data.frame</code> with two columns of integer indices defining which elements
 from <em>query</em> match which element from <em>target</em>.</p>
-<p>A <code>Matched</code> object can be subsetted in the following ways:</p><ul>
-<li><p><code>[</code> subset the <code>Matched</code> selecting <code>query</code> object elements to keep with
-parameter <code>i</code>. The resulting <code>Matched</code> object will contain all the matches
+<p><code>MatchedSummarizedExperiment</code> objects can be created with the
+<code>MatchedSummarizedExperiment</code> function providing the <code>SummarizedExperiment</code>
+with the <code>query</code> parameter.</p>
+<p>A <code>Matched</code> or <code>MatchedSummarizedExperiment</code> object can be subsetted in the
+following ways:</p><ul>
+<li><p><code>[</code> subset the object selecting <code>query</code> object elements to keep with
+parameter <code>i</code>. The resulting object will contain all the matches
 for the selected query elements. The <code>target</code> object will by default be
 returned as-is.</p></li>
-<li><p><code>pruneTarget</code> <em>cleans</em> the <code>Matched</code> object by removing non-matched
-target elements.</p></li>
+<li><p><code>pruneTarget</code> <em>cleans</em> the object by removing non-matched
+<strong>target</strong> elements.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="extracting-data"><a class="anchor" href="#extracting-data"></a>Extracting data</h2>
@@ -275,7 +300,9 @@ this function returns a value for each query element, with eventual
 duplicated values for query elements matching more than one target element.
 If variables from the target <code>data.frame</code> are extracted, an <code>NA</code> is
 reported for the entries corresponding to <em>query</em> elements that don't match
-any target element. See examples below for more details.</p></li>
+any target element. See examples below for more details.
+For <code>MatchedSummarizedExperiment</code> columns in the object's <code>rowData</code> are
+used as query columns and returned.</p></li>
 <li><p><code>length</code> returns the number of <strong>query</strong> elements.</p></li>
 <li><p><code>matchedData</code> allows to extract multiple variables contained in the
 <code>Matched</code> object as a <code>DataFrame</code>. Parameter <code>columns</code> allows to
@@ -287,7 +314,8 @@ this function performs a <em>left join</em> of variables from the <em>query</em>
 returning duplicated elements for query elements matching multiple target
 elements) and the values for the target elements matched to the respective
 query elements (or <code>NA</code> if the target element is not matched to any query
-element).</p></li>
+element). For <code>MatchedSummarizedExperiment</code> the object's <code>rowData</code> is used
+as the <em>query</em> data frame.</p></li>
 <li><p><code>target</code> returns the <em>target</em> object.</p></li>
 <li><p><code>query</code> returns the <em>query</em> object.</p></li>
 <li><p><code>whichTarget</code> returns an <code>integer</code> with the indices of the elements in
@@ -296,6 +324,9 @@ element).</p></li>
 <em>query</em> that match at least one element in <em>target</em>.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='MatchedSpectra.html'>MatchedSpectra()</a></code> for matched <code><a href='https://rdrr.io/pkg/Spectra/man/Spectra.html'>Spectra()</a></code> objects.</p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Andrea Vicini, Johannes Rainer</p>
@@ -454,6 +485,140 @@ element).</p></li>
 <span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>pruneTarget</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Creating a MatchedSummarizedExperiment object.</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/SummarizedExperiment'>SummarizedExperiment</a></span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: MatrixGenerics</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: matrixStats</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘MatrixGenerics’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colWeightedMeans, colWeightedMedians, colWeightedSds,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowWeightedSds, rowWeightedVars</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomicRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: IRanges</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: GenomeInfoDb</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Loading required package: Biobase</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Welcome to Bioconductor</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     Vignettes contain introductory material; view with</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'browseVignettes()'. To cite Bioconductor, see</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     'citation("Biobase")', and for packages 'citation("pkgname")'.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Attaching package: ‘Biobase’</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following object is masked from ‘package:MatrixGenerics’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     rowMedians</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span>     anyMissing, rowMedians</span>
+<span class='r-in'><span class='va'>q1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html'>SummarizedExperiment</a></span><span class='op'>(</span></span>
+<span class='r-in'>  assays <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>5</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  rowData <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>col1 <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, col2 <span class='op'>=</span> <span class='fl'>6</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>,</span>
+<span class='r-in'>  colData <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>cD1 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>, cD2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>t1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>col1 <span class='op'>=</span> <span class='fl'>11</span><span class='op'>:</span><span class='fl'>16</span>, col2 <span class='op'>=</span> <span class='fl'>17</span><span class='op'>:</span><span class='fl'>22</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'>## Define matches between row 1 in rowData(q1) with target row 2 and,</span></span>
+<span class='r-in'><span class='co'>## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target</span></span>
+<span class='r-in'><span class='co'>## row 5.</span></span>
+<span class='r-in'><span class='va'>mo</span> <span class='op'>&lt;-</span> <span class='fu'>MatchedSummarizedExperiment</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='va'>q1</span>, <span class='va'>t1</span>, matches <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>query_idx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>5L</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                target_idx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>, <span class='fl'>5L</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                 score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.9</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mo</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSummarizedExperiment </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 5 (3 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 6 (4 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Which of the query elements (rows) match at least one target</span></span>
+<span class='r-in'><span class='co'>## element (row)?</span></span>
+<span class='r-in'><span class='fu'>whichQuery</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 5</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Which target elements (rows) match at least one query element (row)?</span></span>
+<span class='r-in'><span class='fu'>whichTarget</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 2 3 4 5</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Extracting variable "col1" from rowData(q1).</span></span>
+<span class='r-in'><span class='va'>mo</span><span class='op'>$</span><span class='va'>col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 2 2 3 4 5</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## We have duplicated values for the entries of `col1` related to rows of</span></span>
+<span class='r-in'><span class='co'>## rowData(q1) matched to multiple rows of the target data.frame t1. The</span></span>
+<span class='r-in'><span class='co'>## value of `col1` is returned for each row in the rowData of query.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Extracting variable "col1" from target object. To access columns from</span></span>
+<span class='r-in'><span class='co'>## target we have to prefix the name of the column by `"target_"`.</span></span>
+<span class='r-in'><span class='co'>## Note that only values of `col1` for rows matching at least one row in</span></span>
+<span class='r-in'><span class='co'>## rowData of query are returned and an NA is reported for those without</span></span>
+<span class='r-in'><span class='co'>## matching target rows.</span></span>
+<span class='r-in'><span class='va'>mo</span><span class='op'>$</span><span class='va'>target_col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The 3rd and 4th query rows do not match any target row, thus `NA` is</span></span>
+<span class='r-in'><span class='co'>## returned.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## `matchedData` can be used to extract all (or selected) columns</span></span>
+<span class='r-in'><span class='co'>## from the object. Same as with `$`, a left join between the columns</span></span>
+<span class='r-in'><span class='co'>## from the query and the target is performed. Below we extract selected</span></span>
+<span class='r-in'><span class='co'>## columns from the object as a DataFrame.</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo</span>, columns <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='st'>"col1"</span>, <span class='st'>"col2"</span>, <span class='st'>"target_col1"</span>, <span class='st'>"target_col2"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 7 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        col1      col2 target_col1 target_col2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;integer&gt; &lt;integer&gt;   &lt;integer&gt;   &lt;integer&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         1         6          12          18</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         7          12          18</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         7          13          19</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         7          14          20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         3         8          NA          NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         4         9          NA          NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5         5        10          15          21</span>
+<span class='r-in'><span class='va'>res</span><span class='op'>$</span><span class='va'>col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 2 2 3 4 5</span>
+<span class='r-in'><span class='va'>res</span><span class='op'>$</span><span class='va'>target_col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The example MatchedSummarizedExperiment object contains all rows in the</span></span>
+<span class='r-in'><span class='co'>## rowData of the SummarizedExperiment and all target rows. Below we subset the</span></span>
+<span class='r-in'><span class='co'>## object keeping only rows that are matched to at least one target row.</span></span>
+<span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='va'>mo</span><span class='op'>[</span><span class='fu'>whichQuery</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## mo_sub contains now a SummarizedExperiment with only 3 rows:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>query</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 3</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## while the original object contains a SummarizedExperiment with all 5 rows:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>query</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 5</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Both objects contain however still the full target object:</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 6</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## With the `pruneTarget` we can however reduce also the target rows to</span></span>
+<span class='r-in'><span class='co'>## only those that match at least one in the rowData of query</span></span>
+<span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>pruneTarget</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
