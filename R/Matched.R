@@ -2,7 +2,7 @@
 #'
 #' @name Matched
 #'
-#' @aliases Matched Matched-class [,Matched-method
+#' @aliases Matched Matched-class [,Matched-method MatchedSummarizedExperiment MatchedSummarizedExperiment-class
 #'
 #' @description
 #'
@@ -14,22 +14,37 @@
 #' *Creation and subsetting* as well as *Extracting data* sections below for
 #' details and more information
 #'
+#' The `MatchedSummarizedExperiment` object allows to represent matches between
+#' a [SummarizedExperiment()] object against a *target* object (which can be,
+#' like for the `Matched` object, a `data.frame`, `matrix`, `vector` or `list`).
+#' Matches represent links between rows of this `SummarizedExperiment` to the
+#' target, hence, `colnames` and `matchedData` will access the [rowData()] of
+#' the matched `SummarizedExperiment`.
+#'
 #' @section Creation and subsetting:
 #'
-#' `Matched` objects can be created with the `Matched` function
-#' providing the `query` and `target` object as well as the `matches`
+#' `Matched` and `MatchedSummarizedExperiment` objects are returned as result
+#' from the [matchMz()] function.
+#'
+#' Alternatively, `Matched` objects can also be created with the `Matched`
+#' function providing the `query` and `target` object as well as the `matches`
 #' `data.frame` with two columns of integer indices defining which elements
 #' from *query* match which element from *target*.
 #'
-#' A `Matched` object can be subsetted in the following ways:
+#' `MatchedSummarizedExperiment` objects can be created with the
+#' `MatchedSummarizedExperiment` function providing the `SummarizedExperiment`
+#' with the `query` parameter.
 #'
-#' - `[` subset the `Matched` selecting `query` object elements to keep with
-#'   parameter `i`. The resulting `Matched` object will contain all the matches
+#' A `Matched` or `MatchedSummarizedExperiment` object can be subsetted in the
+#' following ways:
+#'
+#' - `[` subset the object selecting `query` object elements to keep with
+#'   parameter `i`. The resulting object will contain all the matches
 #'   for the selected query elements. The `target` object will by default be
 #'   returned as-is.
 #'
-#' - `pruneTarget` *cleans* the `Matched` object by removing non-matched
-#'   target elements.
+#' - `pruneTarget` *cleans* the object by removing non-matched
+#'   **target** elements.
 #'
 #' @section Extracting data:
 #'
@@ -48,6 +63,8 @@
 #'   If variables from the target `data.frame` are extracted, an `NA` is
 #'   reported for the entries corresponding to *query* elements that don't match
 #'   any target element. See examples below for more details.
+#'   For `MatchedSummarizedExperiment` columns in the object's `rowData` are
+#'   used as query columns and returned.
 #'
 #' - `length` returns the number of **query** elements.
 #'
@@ -61,7 +78,8 @@
 #'   returning duplicated elements for query elements matching multiple target
 #'   elements) and the values for the target elements matched to the respective
 #'   query elements (or `NA` if the target element is not matched to any query
-#'   element).
+#'   element). For `MatchedSummarizedExperiment` the object's `rowData` is used
+#'   as the *query* data frame.
 #'
 #' - `target` returns the *target* object.
 #'
@@ -219,6 +237,77 @@
 #' length(target(mo_sub))
 #'
 #' ## Reducing the target elements to only those that match at least one query row
+#' mo_sub <- pruneTarget(mo_sub)
+#' nrow(target(mo_sub))
+#'
+#'
+#'
+#' ## Creating a MatchedSummarizedExperiment object.
+#' library(SummarizedExperiment)
+#' q1 <- SummarizedExperiment(
+#'   assays = data.frame(matrix(NA, 5, 2)),
+#'   rowData = data.frame(col1 = 1:5, col2 = 6:10),
+#'   colData = data.frame(cD1 = c(NA, NA), cD2 = c(NA, NA)))
+#' t1 <- data.frame(col1 = 11:16, col2 = 17:22)
+#' ## Define matches between row 1 in rowData(q1) with target row 2 and,
+#' ## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target
+#' ## row 5.
+#' mo <- MatchedSummarizedExperiment(
+#'     q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+#'                                 target_idx = c(2L, 2L, 3L, 4L, 5L),
+#'                                  score = seq(0.5, 0.9, by = 0.1)))
+#' mo
+#'
+#' ## Which of the query elements (rows) match at least one target
+#' ## element (row)?
+#' whichQuery(mo)
+#'
+#' ## Which target elements (rows) match at least one query element (row)?
+#' whichTarget(mo)
+#'
+#' ## Extracting variable "col1" from rowData(q1).
+#' mo$col1
+#'
+#' ## We have duplicated values for the entries of `col1` related to rows of
+#' ## rowData(q1) matched to multiple rows of the target data.frame t1. The
+#' ## value of `col1` is returned for each row in the rowData of query.
+#'
+#' ## Extracting variable "col1" from target object. To access columns from
+#' ## target we have to prefix the name of the column by `"target_"`.
+#' ## Note that only values of `col1` for rows matching at least one row in
+#' ## rowData of query are returned and an NA is reported for those without
+#' ## matching target rows.
+#' mo$target_col1
+#'
+#' ## The 3rd and 4th query rows do not match any target row, thus `NA` is
+#' ## returned.
+#'
+#' ## `matchedData` can be used to extract all (or selected) columns
+#' ## from the object. Same as with `$`, a left join between the columns
+#' ## from the query and the target is performed. Below we extract selected
+#' ## columns from the object as a DataFrame.
+#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+#' res
+#' res$col1
+#' res$target_col1
+#'
+#' ## The example MatchedSummarizedExperiment object contains all rows in the
+#' ## rowData of the SummarizedExperiment and all target rows. Below we subset the
+#' ## object keeping only rows that are matched to at least one target row.
+#' mo_sub <- mo[whichQuery(mo)]
+#'
+#' ## mo_sub contains now a SummarizedExperiment with only 3 rows:
+#' nrow(query(mo_sub))
+#'
+#' ## while the original object contains a SummarizedExperiment with all 5 rows:
+#' nrow(query(mo))
+#'
+#' ## Both objects contain however still the full target object:
+#' nrow(target(mo))
+#' nrow(target(mo_sub))
+#'
+#' ## With the `pruneTarget` we can however reduce also the target rows to
+#' ## only those that match at least one in the rowData of query
 #' mo_sub <- pruneTarget(mo_sub)
 #' nrow(target(mo_sub))
 NULL
