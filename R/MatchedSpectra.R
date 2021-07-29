@@ -126,7 +126,7 @@
 #'
 #' @rdname MatchedSpectra
 #'
-#' @seealso [Matched] for additional functions available for `MatchedSpectra`.
+#' @seealso [Matched()] for additional functions available for `MatchedSpectra`.
 #'
 #' @examples
 #'
@@ -216,6 +216,9 @@
 #' length(target(ms_sub))
 NULL
 
+#' @importFrom Spectra Spectra
+#'
+#' @noRd
 setClass(
     "MatchedSpectra",
     contains = "Matched",
@@ -229,6 +232,8 @@ setClass(
         version = "0.1")
 )
 
+#' @importFrom Spectra Spectra
+#'
 #' @export
 #'
 #' @rdname MatchedSpectra
@@ -250,6 +255,8 @@ setValidity("MatchedSpectra", function(object) {
 
 #' @importMethodsFrom ProtGenerics spectraVariables
 #'
+#' @importMethodsFrom BiocGenerics colnames
+#'
 #' @rdname MatchedSpectra
 #'
 #' @export
@@ -267,87 +274,32 @@ setMethod("colnames", "MatchedSpectra", function(x) {
     spectraVariables(x)
 })
 
-#' @importMethodsFrom S4Vectors $
-#'
 #' @rdname MatchedSpectra
-#'
-#' @export
-# setMethod("$", "MatchedSpectra", function(x, name) {
-#     not_mtchd <- setdiff(seq_len(length(x)), x@matches$query_idx)
-#     idxs_qry <- c(x@matches$query_idx, not_mtchd)
-#     ord <- order(idxs_qry)
-#     if (name %in% colnames(x@matches)) {
-#         idxs_mtch <- c(seq_len(nrow(x@matches)), rep(NA, length(not_mtchd)))[ord]
-#         return(x@matches[idxs_mtch, name])
-#     }
-#     if (length(grep("^target_", name))) {
-#         idxs_trg <- c(x@matches$target_idx, rep(NA, length(not_mtchd)))[ord]
-#         do.call("$", list(x@target, sub("target_", "", name)))[idxs_trg]
-#     } else
-#         do.call("$", list(x@query, name))[idxs_qry[ord]]
-# })
-
 setMethod("$", "MatchedSpectra", function(x, name) {
-    .dollar(spectraData(x@query), spectraData(x@target), x@matches, name)
+    if (name %in% spectraVariables(x@query))
+        qry <- spectraData(x@query, name)
+    else qry <- spectraData(x@query, "msLevel")
+    if (length(grep("^target_", name)))
+        trg <- spectraData(x@target, sub("^target_", "", name))
+    else trg <- data.frame()
+    .dollar(qry, trg, x@matches, name)
 })
 
-#' @importMethodsFrom S4Vectors cbind
-#'
 #' @importMethodsFrom Spectra spectraData
 #'
-#' @importFrom S4Vectors DataFrame
-#'
 #' @rdname MatchedSpectra
-#'
-#' @export
-# setMethod(
-#     "spectraData",
-#     "MatchedSpectra", function(object, columns = spectraVariables(object)) {
-#         if (any(!columns %in% spectraVariables(object)))
-#             stop("column(s) ", paste0(columns[!columns %in%
-#                                               spectraVariables(object)],
-#                                       collapse = ", "), " not available")
-#         not_mtchd <- setdiff(seq_len(length(object)), object@matches$query_idx)
-#         idxs_qry <- c(object@matches$query_idx, not_mtchd)
-#         ord <- order(idxs_qry)
-#         from_target <- grepl("^target_", columns)
-#         from_matches <- columns %in% colnames(object@matches)
-#         from_query <- !(from_target | from_matches)
-#         res <- DataFrame()
-#         if (any(from_query))
-#             res <- spectraData(
-#                 object@query,
-#                 columns = columns[from_query])[idxs_qry[ord], , drop = FALSE]
-#         if (any(from_target)) {
-#             idxs_trg <- c(object@matches$target_idx, 
-#                           rep(NA, length(not_mtchd)))[ord]
-#             nms <- sub("target_", "", columns[from_target])
-#             spt <- spectraData(object@target, 
-#                                columns = nms)[idxs_trg, , drop = FALSE]
-#             colnames(spt) <- paste0("target_", nms)
-#             if (nrow(res) == length(idxs))
-#                 res <- cbind(res, spt)
-#             else res <- spt
-#         }
-#         if (any(from_matches)) {
-#             idxs_mtch <- c(seq_len(nrow(object@matches)), 
-#                            rep(NA, length(not_mtchd)))[ord]
-#             if (nrow(res) == length(idxs))
-#                 res <- cbind(res,
-#                              DataFrame(object@matches[idxs_mtch,
-#                                                       columns[from_matches],
-#                                                       drop = FALSE]))
-#             else res <- DataFrame(object@matches[idxs_mtch,
-#                                                  columns[from_matches],
-#                                                  drop = FALSE])
-#         }
-#         res[, columns, drop = FALSE]
-#     })
-
-setMethod("spectraData", "MatchedSpectra", 
+setMethod("spectraData", "MatchedSpectra",
           function(object, columns = spectraVariables(object)) {
-              .matchedData(spectraData(object@query), 
-                           spectraData(object@target), object@matches, columns)
+              cols_trg <- grep("^target_", columns)
+              if (length(cols_trg))
+                  trg <- spectraData(
+                      object@target, sub("^target_", "", columns[cols_trg]))
+              else
+                  trg <- data.frame()
+              cols_qry <- columns[columns %in% spectraVariables(object@query)]
+              .matchedData(
+                  spectraData(object@query, unique(c("msLevel", cols_qry))),
+                  trg, object@matches, columns)
           })
 
 #' @rdname MatchedSpectra

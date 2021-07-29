@@ -233,7 +233,7 @@ ms_sub <- pruneTarget(ms_sub)
 length(target(ms_sub))
 }
 \seealso{
-\link{Matched} for additional functions available for \code{MatchedSpectra}.
+\code{\link[=Matched]{Matched()}} for additional functions available for \code{MatchedSpectra}.
 }
 \author{
 Johannes Rainer

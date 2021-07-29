@@ -43,7 +43,7 @@ test_that("MatchedSpectra works", {
     expect_true(is(target(ms), "Spectra"))
     expect_equal(whichQuery(ms), integer())
     expect_equal(whichTarget(ms), integer())
-    
+
     ## With data
     ms <- MatchedSpectra(
         sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
@@ -73,20 +73,28 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@query, ms@query[2])
     expect_equal(res@target, ms@target)
 
+    ## no matches
+    res <- .subset_matches_nodim(ms, c(10, 3))
+    expect_true(length(res) == 2)
+    expect_true(validObject(res))
+    expect_true(nrow(res@matches) == 0)
+    expect_equal(res@query, ms@query[c(10, 3)])
+    expect_equal(res@target, ms@target)
+
     expect_error(.subset_matches_nodim(ms, 12), "out of bounds")
 
     res <- .subset_matches_nodim(ms, c(2, 4))
     expect_equal(res@query, ms@query[c(2, 4)])
     expect_true(length(res) == 2) # <-------- Changed to 10. It was 4.
     expect_equal(res@matches$score, 3:6)
-    
+
     ## duplicated index
     # res <- .subset_matches_nodim2(ms, c(2, 4, 2)) #<----- .subset_matches_nodim2?
     # expect_true(length(res) == 5)
     # expect_equal(res@matches$score, c(3, 4, 5, 6, 3))
     # expect_equal(query(res), query(ms)[c(2, 4, 2)])
     # expect_equal(target(res), target(ms))
-    
+
     ## arbitrary order
     res <- .subset_matches_nodim(ms, c(3, 2, 1, 1, 6, 9))
     expect_equal(query(res), query(ms)[c(3, 2, 1, 1, 6, 9)])
@@ -135,7 +143,7 @@ test_that("$,MatchedSpectra works", {
     expect_equal(res, c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
     res <- ms$score
     expect_equal(res, c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
-    
+
     ## A MatchedSpectra with no matching target spectra
     ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
                                                         target_idx = integer(),
@@ -145,7 +153,7 @@ test_that("$,MatchedSpectra works", {
     res <- ms$target_rtime
     expect_true(all(is.na(res)))
     res <- ms$score
-    expect_true(all(is.na(res)))    
+    expect_true(all(is.na(res)))
 })
 
 test_that("spectraData,MatchedSpectra works", {
@@ -164,15 +172,15 @@ test_that("spectraData,MatchedSpectra works", {
     expect_equal(res$target_rtime,
                  c(2, 5, 2, NA, 8, 2, 5, NA, NA, NA, NA, NA, NA))
     expect_equal(res$score, c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
-    
+
     expect_error(spectraData(ms, columns = "other"), "other not available")
 
-    
+
     ## Only query spectra variables
     res <- spectraData(ms, columns = c("rtime", "spectrum_id", "msLevel"))
     expect_equal(colnames(res), c("rtime", "spectrum_id", "msLevel"))
     expect_equal(res$rtime, c(1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10))
-    
+
     ## Only target spectra variables
     res <- spectraData(ms, columns = c("target_rtime", "target_spectrum_id"))
     expect_equal(colnames(res), c("target_rtime", "target_spectrum_id"))
@@ -184,7 +192,7 @@ test_that("spectraData,MatchedSpectra works", {
     expect_equal(colnames(res), c("score"))
     expect_equal(res$score,
                  c(1, 2, 3, NA, 4, 5, 6, NA, NA, NA, NA, NA, NA))
-    
+
     ## A MatchedSpectra with no matching target spectra
     ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
                                                         target_idx = integer(),
@@ -229,7 +237,7 @@ test_that("pruneTarget,MatchedSpectra works", {
                                                         score = numeric()))
     res <- pruneTarget(ms)
     expect_equal(spectraData(res), spectraData(ms))
-    expect_true(length(res@target) < length(ms@target))    
+    expect_true(length(res@target) < length(ms@target))
 })
 
 test_that("plotSpectraMirror throws an error", {

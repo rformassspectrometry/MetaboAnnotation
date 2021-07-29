@@ -1,7 +1,7 @@
 #' @title Spectral matching
 #'
 #' @description
-#' 
+#'
 #' The `matchSpectra` method matches (compares) spectra from `query` with those
 #' from `target` based on settings specified with `param` and returns the result
 #' from this as a [MatchedSpectra] object.
@@ -15,14 +15,14 @@
 #'     spectra are considered matching etc).
 #'
 #' @param ... optional parameters.
-#' 
+#'
 #' @return a [MatchedSpectra] object with the spectra matching results.
-#' 
+#'
 #' @author Johannes Rainer
 #'
 #' @seealso [CompareSpectraParam()] for the comparison between [Spectra]
 #'     objects.
-#' 
+#'
 #' @export
 setGeneric("matchSpectra", function(query, target, param, ...)
            standardGeneric("matchSpectra"))
@@ -30,11 +30,11 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @title Matching MS Spectra against a reference
 #'
 #' @aliases CompareSpectraParam-class MatchForwardReverseParam-class
-#' 
+#'
 #' @name CompareSpectraParam
-#' 
+#'
 #' @description
-#' 
+#'
 #' `matchSpectra` with both `query` and `target` being a [Spectra] object
 #' matches each spectra in `query` against all spectra in `target` and reports
 #' matches with a similarity that passes the `THRESHFUN` condition. The
@@ -54,7 +54,7 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   individual query spectrum. This can considerably improve performance.
 #'   Finally, parameter `THRESHFUN` allows to define a function to be applied to
 #'   the similarity scores to define which matches to report. See below for more
-#'   details. 
+#'   details.
 #'
 #' - `MatchForwardReverseParam`: performs spectra matching as with
 #'   `CompareSpectraParam` but reports, similar to MS-DIAL, also the *reverse*
@@ -69,11 +69,11 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   number of peaks in the target (reference) spectra is reported as the
 #'   *presence ratio* (spectra variable `"presence_ratio"`). See examples below
 #'   for details.
-#' 
+#'
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
 #'   `BiocParallel` package for more information). By default parallel
 #'   processing is disabled.
-#' 
+#'
 #' @param FUN `function` used to calculate similarity between spectra. Defaults
 #'   for `CompareSpectraParam` to [MsCoreUtils::ndotproduct()]. See
 #'   [MsCoreUtils::ndotproduct()] for details.
@@ -84,13 +84,13 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'
 #' @param param for `matchSpectra`: parameter object (such as
 #'   `CompareSpectraParam`) defining the settings for the matching.
-#' 
+#'
 #' @param ppm `numeric(1)` for a relative, m/z-dependent, maximal accepted
 #'   difference between m/z values. This will be used in `compareSpectra` as
 #'   well as for eventual precursor m/z matching.
 #'
 #' @param query for `matchSpectra`: [Spectra] object with the query spectra.
-#' 
+#'
 #' @param requirePrecursor `logical(1)` whether only target spectra are
 #'   considered in the similarity calculation with a precursor m/z that matches
 #'   the precursor m/z of the query spectrum (considering also `ppm` and
@@ -109,34 +109,34 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
 #'   between m/z values. This will be used in `compareSpectra` as well as for
 #'   eventual precursor m/z matching.
-#' 
+#'
 #' @param THRESHFUN `function` applied to the similarity score to define which
 #'   target spectra are considered *matching*. Defaults to
 #'   `THRESHFUN = function(x) which(x >= 0.7)` hence selects
 #'   all target spectra matching a query spectrum with a similarity higher or
 #'   equal than `0.7`. Any function that takes a numeric vector with similarity
 #'   scores (as returned by [compareSpectra()]) as input and returns a
-#'   `logical` or `integer` vector with the matches is supported. 
+#'   `logical` or `integer` vector with the matches is supported.
 #'
 #' @param ... for `CompareSpectraParam`: additional parameters passed along
 #'   to the [compareSpectra()] call.
-#' 
+#'
 #' @author Johannes Rainer, Michael Witting
 #'
 #' @importClassesFrom ProtGenerics Param
 #'
 #' @importClassesFrom Spectra Spectra
-#' 
+#'
 #' @importFrom MsCoreUtils ndotproduct
 #'
 #' @importFrom Spectra joinPeaks
-#' 
+#'
 #' @rdname CompareSpectraParam
 #'
 #' @exportClass CompareSpectraParam
 #'
 #' @examples
-#' 
+#'
 #' library(Spectra)
 #' library(msdata)
 #' fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
@@ -157,7 +157,7 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' ## Are there any matching spectra for the first query spectrum?
 #' mtches[1]
 #' ## No
-#' 
+#'
 #' ## And for the second query spectrum?
 #' mtches[2]
 #' ## The second query spectrum matches 4 target spectra. The scores for these
@@ -211,7 +211,7 @@ setClass("MatchForwardReverseParam",
 #' @importFrom MsCoreUtils ppm
 #'
 #' @importFrom BiocParallel bplapply
-#' 
+#'
 #' @importFrom methods new
 #'
 #' @export
@@ -256,7 +256,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
 #' @importMethodsFrom Spectra spectraNames containsMz filterPrecursorMz
 #'
 #' @rdname CompareSpectraParam
-#' 
+#'
 #' @export
 setMethod(
     "matchSpectra",
@@ -264,10 +264,11 @@ setMethod(
               param = "CompareSpectraParam"),
     function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
         parms <- .compare_spectra_parms_list(param)
+        if (is.null(spectraNames(target)))
+            spectraNames(target) <- seq_along(target)
         snames <- spectraNames(target)
-        spectraNames(target) <- seq_along(target)
         maps <- bplapply(seq_along(query), function(i, qry, trgt, parms, tf,
-                                                    precMz, precMzPeak) {
+                                                    precMz, precMzPeak, sn) {
             qi <- qry[i]
             if (precMz) {
                 pmz <- precursorMz(qi)
@@ -285,12 +286,12 @@ setMethod(
                 kl <- sum(keep)
             else kl <- length(keep)
             data.frame(query_idx = rep(i, kl),
-                       target_idx = as.integer(spectraNames(trgt)[keep]),
+                       target_idx = match(spectraNames(trgt)[keep], sn),
                        score = cor[keep])
         }, qry = query, trgt = target, parms = parms,
         precMz = param@requirePrecursor,
         precMzPeak = param@requirePrecursorPeak,
-        tf = param@THRESHFUN, BPPARAM = BPPARAM)
+        tf = param@THRESHFUN, sn = snames, BPPARAM = BPPARAM)
         maps <- do.call(rbind, maps)
         res <- MatchedSpectra(query, target, maps)
         res@metadata <- list(param = param)
@@ -302,7 +303,7 @@ setMethod(
 #' @importFrom methods as
 #'
 #' @importMethodsFrom Spectra peaksData
-#' 
+#'
 #' @export
 setMethod(
     "matchSpectra",
@@ -332,4 +333,3 @@ setMethod(
         res@metadata$param <- param
         res
     })
-
