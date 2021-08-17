@@ -100,7 +100,8 @@
 #'
 #' @param j for `[`: ignored.
 #'
-#' @param idxs for `keepMatches`: indexes of the matches to keep.
+#' @param idxs for `keepMatches`: indexes of the matches to keep; 
+#'   for `dropMatches`: indexes of the matches to drop.
 #'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
@@ -116,6 +117,14 @@
 #' @param query object with the query elements.
 #'
 #' @param x `Matched` object.
+#' 
+#' @param queryValues
+#' 
+#' @param targetValues
+#' 
+#' @param queryColname
+#' 
+#' @param targetColname
 #'
 #' @param ... additional parameters.
 #'
@@ -620,26 +629,90 @@ pruneTarget <- function(object) {
     object
 }
 
-# Maybe we can delete one of the following functions.
-
-#' @rdname Matched
-#'
-#' @importFrom methods validObject
-#'
-#' @export
-removeMatches <- function(object, idxs) {
-    object@matches <- object@matches[-idxs, ]
-    validObject(object)
-    object
+.findMatchesIdxs <- function(query, target, matches, queryValues = integer(), 
+                         targetValues = integer(), 
+                         queryColname = character(), 
+                         targetColname = character()) {
+  if(length(queryValues) != length(targetValues))
+    stop("'queryValues' and 'targetValues' must have the same length")
+  if(length(dim(query)) == 2) {
+    if(length(queryColname) == 0)
+      stop("\"", queryColname,"\" must be set when 'query' is 2-dimensional")
+    if(!queryColname %in% colnames(query))
+      stop("\"", queryColname,"\" is not a column of 'query'")
+  }
+  targetColname <- sub("target_", "", targetColname)
+  if(length(dim(target)) == 2) {
+    if(length(targetColname) == 0)
+      stop("\"", targetColname,"\" must be set when 'target' is 2-dimensional")
+    if(!targetColname %in% colnames(target))
+      stop("\"", targetColname,"\" is not a column of 'target'")
+  }
+  # if(length(dim(query)) == 2 && !queryColname %in% colnames(query)) 
+  #   stop("\"", queryColname,"\" is not a column of 'query'")
+  # targetColname <- sub("target_", "", targetColname)
+  # if(length(dim(target)) == 2 && !targetColname %in% colnames(target))  
+  #   stop("\"", targetColname,"\" is not a column of 'target'")
+  mq <- .extract_elements(query, matches$query_idx, queryColname, 
+                          drop = TRUE)
+  mt <- .extract_elements(target, matches$target_idx, targetColname,
+                          drop = TRUE)
+  unlist(sapply(seq_along(queryValues), function(i) 
+    which(mq == queryValues[i] & mt == targetValues[i]))) # casa succede se in cols ci sono  NA?
 }
 
 #' @rdname Matched
 #'
+#' @exportMethod keepMatches
+setGeneric("keepMatches", function(object, ...)
+  standardGeneric("keepMatches"))
+
+
+#' @rdname Matched
+#' 
 #' @importFrom methods validObject
 #'
 #' @export
-keepMatches <- function(object, idxs) {
-  object@matches <- object@matches[idxs, ]
-  validObject(object)
-  object
-}
+setMethod("keepMatches", "Matched", 
+          function(object, queryValues = integer(), targetValues = integer(),
+                   queryColname = character(), targetColname = character(),
+                   idxs = integer(), ...) {
+            if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
+              stop("some indexes in \"idxs\" are out of bounds")
+            if(!length(idxs) && length(queryValues))
+              idxs  <- .findMatchesIdxs(object@query, object@target, object@matches, 
+                                    queryValues, targetValues, queryColname, 
+                                    targetColname)
+            object@matches <- object@matches[seq_len(nrow(object@matches)) 
+                                             %in% idxs, ]
+            validObject(object)
+            object
+          })
+
+#' @rdname Matched
+#'
+#' @exportMethod dropMatches
+setGeneric("dropMatches", function(object, ...)
+  standardGeneric("dropMatches"))
+
+
+#' @rdname Matched
+#' 
+#' @importFrom methods validObject
+#'
+#' @export
+setMethod("dropMatches", "Matched", 
+          function(object, queryValues = integer(), targetValues = integer(),
+                   queryColname = character(), targetColname = character(),
+                   idxs = integer(), ...) {
+            if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
+              stop("some indexes in \"idxs\" are out of bound")
+            if(!length(idxs) && length(queryValues))
+              idxs  <- .findMatchesIdxs(object@query, object@target, object@matches, 
+                                    queryValues, targetValues, queryColname, 
+                                    targetColname)
+            object@matches <- object@matches[!seq_len(nrow(object@matches)) 
+                                             %in% idxs, ]
+            validObject(object)
+            object
+          })

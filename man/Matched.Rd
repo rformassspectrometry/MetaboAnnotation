@@ -18,8 +18,10 @@
 \alias{matchedData}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
-\alias{removeMatches}
 \alias{keepMatches}
+\alias{keepMatches,Matched-method}
+\alias{dropMatches}
+\alias{dropMatches,Matched-method}
 \title{Representation of generic objects matches}
 \usage{
 Matched(
@@ -53,9 +55,29 @@ matchedData(object, ...)
 
 pruneTarget(object)
 
-removeMatches(object, idxs)
+keepMatches(object, ...)
 
-keepMatches(object, idxs)
+\S4method{keepMatches}{Matched}(
+  object,
+  queryValues = integer(),
+  targetValues = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  idxs = integer(),
+  ...
+)
+
+dropMatches(object, ...)
+
+\S4method{dropMatches}{Matched}(
+  object,
+  queryValues = integer(),
+  targetValues = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  idxs = integer(),
+  ...
+)
 
 MatchedSummarizedExperiment(
   query = SummarizedExperiment(),
@@ -90,6 +112,14 @@ mapping of elements between the \code{query} and the \code{target} objects.}
 
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
+
+\item{queryValues}{}
+
+\item{targetValues}{}
+
+\item{queryColname}{}
+
+\item{targetColname}{}
 
 \item{idxs}{for \code{keepMatches}: indexes of the matches to keep.}
 }
