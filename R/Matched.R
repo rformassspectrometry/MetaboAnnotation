@@ -683,17 +683,12 @@ pruneTarget <- function(object) {
     if(!targetColname %in% colnames(target))
       stop("\"", targetColname,"\" is not a column of 'target'")
   }
-  # if(length(dim(query)) == 2 && !queryColname %in% colnames(query)) 
-  #   stop("\"", queryColname,"\" is not a column of 'query'")
-  # targetColname <- sub("target_", "", targetColname)
-  # if(length(dim(target)) == 2 && !targetColname %in% colnames(target))  
-  #   stop("\"", targetColname,"\" is not a column of 'target'")
   mq <- .extract_elements(query, matches$query_idx, queryColname, 
                           drop = TRUE)
   mt <- .extract_elements(target, matches$target_idx, targetColname,
                           drop = TRUE)
   unlist(sapply(seq_along(queryValues), function(i) 
-    which(mq == queryValues[i] & mt == targetValues[i]))) # casa succede se in cols ci sono  NA?
+    which(mq == queryValues[i] & mt == targetValues[i])))
 }
 
 #' @rdname Matched
@@ -715,9 +710,10 @@ setMethod("keepMatches", "Matched",
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
               stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
-              idxs  <- .findMatchesIdxs(object@query, object@target, object@matches, 
-                                    queryValues, targetValues, queryColname, 
-                                    targetColname)
+              idxs  <- .findMatchesIdxs(object@query, object@target, 
+                                        object@matches, queryValues, 
+                                        targetValues, queryColname, 
+                                        targetColname)
             object@matches <- object@matches[seq_len(nrow(object@matches)) 
                                              %in% idxs, ]
             validObject(object)
@@ -743,9 +739,10 @@ setMethod("dropMatches", "Matched",
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
               stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
-              idxs  <- .findMatchesIdxs(object@query, object@target, object@matches, 
-                                    queryValues, targetValues, queryColname, 
-                                    targetColname)
+              idxs  <- .findMatchesIdxs(object@query, object@target, 
+                                        object@matches, queryValues, 
+                                        targetValues, queryColname, 
+                                        targetColname)
             object@matches <- object@matches[!seq_len(nrow(object@matches)) 
                                              %in% idxs, ]
             validObject(object)
