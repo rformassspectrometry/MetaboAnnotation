@@ -45,6 +45,12 @@
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
+#'   
+#' - `keepMatches` keeps only the matches corresponding to certain indexes or
+#'   values of `query` and target.
+#'   
+#' - `dropMatches` drops the matches corresponding to certain indexes or
+#'   values of `query` and target.
 #'
 #' @section Extracting data:
 #'
@@ -118,13 +124,24 @@
 #'
 #' @param x `Matched` object.
 #' 
-#' @param queryValues
+#' @param queryValues vector of values to search for in `query` (if `query` 
+#' is 1-dimensional) or in column `queryColname` of `query` (if `query` is  
+#' 2-dimensional). This parameter can be used in `keepMatches` or `dropMatches` 
+#' and when it is used also the parameter `targetValues` must be passed. 
+#' `keepMatches` will return a `Matched` object with only the matches whose 
+#' `query` and  `target` values are equal respectivly to `targetValues[i]` and 
+#' `queryValues[i]` for some i. `dropMatches` will exclude those matches and 
+#' leave all the others.
 #' 
-#' @param targetValues
+#' @param targetValues vector of values to search for in `target` (if `target` 
+#' is 1-dimensional) or in column `targetColname` of `target` (if `target` is 
+#' 2-dimensional). 
 #' 
-#' @param queryColname
+#' @param queryColname if `query` is 2-dimensional: column of `query` against 
+#' which elements of `queryValues` are compared.
 #' 
-#' @param targetColname
+#' @param targetColname if `query` is 2-dimensional: column of `target` against 
+#' which elements of `targetValues` are compared.
 #'
 #' @param ... additional parameters.
 #'
@@ -248,6 +265,24 @@
 #' ## Reducing the target elements to only those that match at least one query row
 #' mo_sub <- pruneTarget(mo_sub)
 #' nrow(target(mo_sub))
+#'
+#' ## Removing certain matches directly with their indexes
+#' idxs <- c(1, 3, 5)
+#' mosub <- dropMatches(mo, idxs = idxs)
+#' mosub@matches
+#' mo@matches[-idxs, ]
+#'
+#' ## Removing matches using values of query and target
+#' queryValues <- c(q1[mo@matches[idxs, "query_idx"], "col1"], -1, - 2)
+#' targetValues <- c(t2[mo@matches[idxs, "target_idx"]], -2, -1)
+#' mosub <- dropMatches(mo, queryValues = queryValues, 
+#'                      targetValues = targetValues, queryColname = "col1")
+#' mosub@matches
+#'
+#' ## Keeping matches corresponding to certain values of query and target
+#' mosub <- keepMatches(mo, queryValues = queryValues, 
+#'                      targetValues = targetValues, queryColname = "col1")
+#' mosub@matches
 #'
 #'
 #'
@@ -706,7 +741,7 @@ setMethod("dropMatches", "Matched",
                    queryColname = character(), targetColname = character(),
                    idxs = integer(), ...) {
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
-              stop("some indexes in \"idxs\" are out of bound")
+              stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
               idxs  <- .findMatchesIdxs(object@query, object@target, object@matches, 
                                     queryValues, targetValues, queryColname, 

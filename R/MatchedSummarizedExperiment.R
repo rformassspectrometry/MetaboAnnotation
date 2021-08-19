@@ -74,16 +74,17 @@ setMethod("matchedData", "MatchedSummarizedExperiment",
 #' @export
 setMethod("keepMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
-                   queryColumnName = character(), targetColname = character(),
+                   queryColname = character(), targetColname = character(),
                    idxs = integer(), ...) {
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
-              stop("some indexes in \"idxs\" are out of bound")
+              stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
               idxs  <- .findMatchesIdxs(rowData(object@query), object@target, 
                                         object@matches, queryValues, 
-                                        targetValues, queryColumnName, 
+                                        targetValues, queryColname, 
                                         targetColname)
-            object@matches <- object@matches[seq_len(nrow(matches)) %in% idxs, ]
+            object@matches <- object@matches[seq_len(nrow(object@matches)) 
+                                             %in% idxs, ]
             validObject(object)
             object
           })
@@ -95,10 +96,10 @@ setMethod("keepMatches", "MatchedSummarizedExperiment",
 #' @export
 setMethod("dropMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
-                   queryColumnName = character(), targetColname = character(),
+                   queryColname = character(), targetColname = character(),
                    idxs = integer(), ...) {
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
-              stop("some indexes in \"idxs\" are out of bound")
+              stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
               idxs  <- .findMatchesIdxs(rowData(object@query), object@target, 
                                         object@matches, queryValues, 

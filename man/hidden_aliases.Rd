@@ -21,7 +21,7 @@
   object,
   queryValues = integer(),
   targetValues = integer(),
-  queryColumnName = character(),
+  queryColname = character(),
   targetColname = character(),
   idxs = integer(),
   ...
@@ -31,7 +31,7 @@
   object,
   queryValues = integer(),
   targetValues = integer(),
-  queryColumnName = character(),
+  queryColname = character(),
   targetColname = character(),
   idxs = integer(),
   ...

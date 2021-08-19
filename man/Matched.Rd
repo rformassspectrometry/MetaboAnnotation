@@ -113,15 +113,27 @@ mapping of elements between the \code{query} and the \code{target} objects.}
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
 
-\item{queryValues}{}
+\item{queryValues}{vector of values to search for in \code{query} (if \code{query}
+is 1-dimensional) or in column \code{queryColname} of \code{query} (if \code{query} is
+2-dimensional). This parameter can be used in \code{keepMatches} or \code{dropMatches}
+and when it is used also the parameter \code{targetValues} must be passed.
+\code{keepMatches} will return a \code{Matched} object with only the matches whose
+\code{query} and  \code{target} values are equal respectivly to \code{targetValues[i]} and
+\code{queryValues[i]} for some i. \code{dropMatches} will exclude those matches and
+leave all the others.}
 
-\item{targetValues}{}
+\item{targetValues}{vector of values to search for in \code{target} (if \code{target}
+is 1-dimensional) or in column \code{targetColname} of \code{target} (if \code{target} is
+2-dimensional).}
 
-\item{queryColname}{}
+\item{queryColname}{if \code{query} is 2-dimensional: column of \code{query} against
+which elements of \code{queryValues} are compared.}
 
-\item{targetColname}{}
+\item{targetColname}{if \code{query} is 2-dimensional: column of \code{target} against
+which elements of \code{targetValues} are compared.}
 
-\item{idxs}{for \code{keepMatches}: indexes of the matches to keep.}
+\item{idxs}{for \code{keepMatches}: indexes of the matches to keep;
+for \code{dropMatches}: indexes of the matches to drop.}
 }
 \value{
 See individual method description above for details.
@@ -166,6 +178,10 @@ for the selected query elements. The \code{target} object will by default be
 returned as-is.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
+\item \code{keepMatches} keeps only the matches corresponding to certain indexes or
+values of \code{query} and target.
+\item \code{dropMatches} drops the matches corresponding to certain indexes or
+values of \code{query} and target.
 }
 }
 
@@ -321,6 +337,24 @@ length(target(mo_sub))
 ## Reducing the target elements to only those that match at least one query row
 mo_sub <- pruneTarget(mo_sub)
 nrow(target(mo_sub))
+
+## Removing certain matches directly with their indexes
+idxs <- c(1, 3, 5)
+mosub <- dropMatches(mo, idxs = idxs)
+mosub@matches
+mo@matches[-idxs, ]
+
+## Removing matches using values of query and target
+queryValues <- c(q1[mo@matches[idxs, "query_idx"], "col1"], -1, - 2)
+targetValues <- c(t2[mo@matches[idxs, "target_idx"]], -2, -1)
+mosub <- dropMatches(mo, queryValues = queryValues, 
+                     targetValues = targetValues, queryColname = "col1")
+mosub@matches
+
+## Keeping matches corresponding to certain values of query and target
+mosub <- keepMatches(mo, queryValues = queryValues, 
+                     targetValues = targetValues, queryColname = "col1")
+mosub@matches
 
 
 
