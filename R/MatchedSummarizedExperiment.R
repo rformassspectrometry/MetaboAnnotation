@@ -72,7 +72,7 @@ setMethod("matchedData", "MatchedSummarizedExperiment",
 #' @rdname hidden_aliases
 #'
 #' @export
-setMethod("keepMatches", "MatchedSummarizedExperiment", 
+setMethod("filterMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
                    queryColname = character(), targetColname = character(),
                    idxs = integer(), ...) {
@@ -90,23 +90,18 @@ setMethod("keepMatches", "MatchedSummarizedExperiment",
           })
 
 #' @importFrom methods validObject
-#' 
-#' @rdname hidden_aliases
 #'
+#' @rdname hidden_aliases
+#' 
 #' @export
-setMethod("dropMatches", "MatchedSummarizedExperiment", 
+setMethod("addMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
-                   queryColname = character(), targetColname = character(),
-                   idxs = integer(), ...) {
-            if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
-              stop("some indexes in \"idxs\" are out of bounds")
-            if(!length(idxs) && length(queryValues))
-              idxs  <- .findMatchesIdxs(rowData(object@query), object@target, 
-                                        object@matches, queryValues, 
-                                        targetValues, queryColname, 
-                                        targetColname)
-            object@matches <- object@matches[!seq_len(nrow(object@matches)) 
-                                             %in% idxs, ]
+                   queryColname = character(), targetColname = character(), 
+                   scores = data.frame(), indexes = FALSE) {
+            object@matches <- .addMatches(rowData(object@query), object@target, 
+                                          object@matches, queryValues, 
+                                          targetValues, queryColname, 
+                                          targetColname, scores, indexes)
             validObject(object)
             object
           })
