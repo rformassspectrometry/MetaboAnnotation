@@ -75,7 +75,7 @@ setMethod("matchedData", "MatchedSummarizedExperiment",
 setMethod("filterMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
                    queryColname = character(), targetColname = character(),
-                   idxs = integer(), ...) {
+                   idxs = integer(), keep = TRUE, ...) {
             if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
               stop("some indexes in \"idxs\" are out of bounds")
             if(!length(idxs) && length(queryValues))
@@ -83,8 +83,9 @@ setMethod("filterMatches", "MatchedSummarizedExperiment",
                                         object@matches, queryValues, 
                                         targetValues, queryColname, 
                                         targetColname)
-            object@matches <- object@matches[seq_len(nrow(object@matches)) 
-                                             %in% idxs, ]
+            if(keep) to_keep <- seq_len(nrow(object@matches)) %in% idxs
+            else to_keep <- !seq_len(nrow(object@matches)) %in% idxs
+            object@matches <- object@matches[to_keep, , drop = FALSE]
             validObject(object)
             object
           })
@@ -97,11 +98,11 @@ setMethod("filterMatches", "MatchedSummarizedExperiment",
 setMethod("addMatches", "MatchedSummarizedExperiment", 
           function(object, queryValues = integer(), targetValues = integer(),
                    queryColname = character(), targetColname = character(), 
-                   scores = data.frame(), indexes = FALSE) {
+                   scores = data.frame(), isIndex = FALSE) {
             object@matches <- .addMatches(rowData(object@query), object@target, 
                                           object@matches, queryValues, 
                                           targetValues, queryColname, 
-                                          targetColname, scores, indexes)
+                                          targetColname, scores, isIndex)
             validObject(object)
             object
           })

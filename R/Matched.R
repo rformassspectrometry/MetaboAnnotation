@@ -47,14 +47,14 @@
 #'   **target** elements.
 #'   
 #' - `filterMatches` keeps only the matches corresponding to certain indexes or
-#'   values of `query` and target.
+#'   values of `query` and `target`.
 #'   
 #' It is possible to add new matches to a `Matched` or 
 #' `MatchedSummarizedExperiment` object via `addMatches`. With parameters 
 #' `queryValues` and `targetValues` it is possible to specify values of `query` 
 #' and `target` (if they are 1-dimensional) or one of their columns (specified 
-#' with parameters `queryColname` or `targetColname`) and these values are used to 
-#' establish new matches. By using parameter `use_idxs` it is possible to 
+#' with parameters `queryColname` or `targetColname`) and these values are used 
+#' to establish new matches. By using parameter `isIndex` it is possible to 
 #' interpret `queryValues` and `targetValues` as vector of indexes of the 
 #' elements of `query` and `target` to be matched together.
 #'
@@ -151,11 +151,11 @@
 #' @param keep for `filterMatches`: `logical`. If `keep = TRUE` the matches are 
 #' kept, if `keep = FALSE` they are removed.
 #' 
-#' @param use_idxs for `addMatches`: specifies if `queryValues` and 
+#' @param isIndex for `addMatches`: specifies if `queryValues` and 
 #' `targetValues` are expected to be vectors of indexes.
 #' 
-#' @param scores for `addMatches`: data.frame specifying the scores for the matches 
-#' to add.
+#' @param scores for `addMatches`: data.frame specifying the scores for the 
+#' matches to add.
 #' 
 #' @param ... additional parameters.
 #'
@@ -298,7 +298,14 @@
 #'                      targetValues = targetValues, queryColname = "col1")
 #' mosub@matches
 #'
-#'
+#' ## Manually adding matches using values of "col1" column in query and of 
+#' target
+#' moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"],
+#'                     targetValues = t2[c(1, 6)], queryColname = "col1",
+#'                     scores = data.frame(score = c(1, 1.1)))
+#' #' ## Manually adding matches using indexes of query and target values to match
+#' moadd <- addMatches(mo, queryValues = c(3L, 5L), targetValues = c(1L, 6L),
+#'                     scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
 #'
 #' ## Creating a MatchedSummarizedExperiment object.
 #' library(SummarizedExperiment)
@@ -711,16 +718,6 @@ pruneTarget <- function(object) {
 setGeneric("filterMatches", function(object, ...)
   standardGeneric("filterMatches"))
 
-# Here I used the parameter idxs to allow the user to specify which rows of
-# matches they want to remove but maybe the user doesn't know that directly so 
-# I'm not sure if it's helpful. Maybe it's better if I allow queryValues and 
-# targetValues (I'm not really sure these names are really good so if you have 
-# a best option feel free to tell me) to be indexes of query and target whose 
-# match we want to keep or drop. If I understood correctly you proposed something
-# similar but I think that in this case we would have to introduce a new logic 
-# variable to distinguish if we want queryValues and targetValues to be 
-# interpreted as indexes.
-
 #' @rdname Matched
 #' 
 #' @importFrom methods validObject
@@ -739,7 +736,7 @@ setMethod("filterMatches", "Matched",
                                         targetColname)
             if(keep) to_keep <- seq_len(nrow(object@matches)) %in% idxs
             else to_keep <- !seq_len(nrow(object@matches)) %in% idxs
-            object@matches <- object@matches[to_keep, ]
+            object@matches <- object@matches[to_keep, , drop = FALSE]
             validObject(object)
             object
           })
@@ -747,7 +744,7 @@ setMethod("filterMatches", "Matched",
 .addMatches <- function(query, target, matches, queryValues = integer(),
                         targetValues = integer(), queryColname = character(),
                         targetColname = character(), scores = data.frame(),
-                        use_idxs = FALSE) {
+                        isIndex = FALSE) {
   if(!is.data.frame(scores))
     stop("'scores' must be a data.frame")
   if(ncol(scores) != ncol(matches) - 2 || 
@@ -756,10 +753,10 @@ setMethod("filterMatches", "Matched",
   if(length(queryValues) != length(targetValues) || 
      length(queryValues) != nrow(scores))
     stop("'queryValues', 'targetValues' and 'scores' must have the same length")
-  if(use_idxs) {
+  if(isIndex) {
     if(!is.integer(queryValues) || !is.integer(targetValues))
       stop(paste0("'queryValues' and 'targetValues' must be integer ", 
-                  "vectors when 'use_idxs == TRUE'"))
+                  "vectors when 'isIndex == TRUE'"))
     if(any(!queryValues %in% seq_len(.nelements(query))))
       stop("Some of the provided indexes in 'queryValues' are out of bound")
     if(any(!targetValues %in% seq_len(.nelements(target))))
@@ -770,7 +767,7 @@ setMethod("filterMatches", "Matched",
     if(length(dim(query)) == 2)
       if(!queryColname %in% colnames(query))
         stop("\"", queryColname,"\" is not a column of 'query'")
-    if(length(dim(query)) == 2)
+    if(length(dim(target)) == 2)
       if(!targetColname %in% colnames(target))
         stop("\"", targetColname,"\" is not a column of 'target'")
     mq <- match(queryValues, .extract_elements(query, j = queryColname, 
@@ -803,11 +800,11 @@ setGeneric("addMatches", function(object, ...)
 setMethod("addMatches", "Matched", 
           function(object, queryValues = integer(), targetValues = integer(),
                    queryColname = character(), targetColname = character(), 
-                   scores = data.frame(), use_idxs = FALSE) {
+                   scores = data.frame(), isIndex = FALSE) {
             object@matches <- .addMatches(object@query, object@target, 
                                           object@matches, queryValues, 
                                           targetValues, queryColname, 
-                                          targetColname, scores, use_idxs)
+                                          targetColname, scores, isIndex)
             validObject(object)
             object
           })

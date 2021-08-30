@@ -502,7 +502,7 @@ test_that("filterMatches,Matched works", {
     expect_equal(mosub@matches, mo@matches[c(1, 2, 3), ])
 })
 
-test_that("filterMatches,Matched works", {
+test_that("addMatches,Matched works", {
     #### query and target data.frames
     mo <- Matched(
         q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
@@ -511,7 +511,7 @@ test_that("filterMatches,Matched works", {
     moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"], 
                         targetValues = t1[c(1, 6), "col2"],
                         queryColname = "col1", targetColname = "col2", 
-                        scores = data.frame(score = c(1, 1.1)), indexes = FALSE)
+                        scores = data.frame(score = c(1, 1.1)), isIndex = FALSE)
     expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
     expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
     expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
@@ -521,7 +521,7 @@ test_that("filterMatches,Matched works", {
     moadd <- addMatches(mo, queryValues = c(3L, 5L), 
                         targetValues = c(1L, 6L),
                         queryColname = "col1", targetColname = "col2", 
-                        scores = data.frame(score = c(1, 1.1)), indexes = TRUE)
+                        scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
     expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
     expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
     expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
@@ -529,14 +529,14 @@ test_that("filterMatches,Matched works", {
     expect_equal(target(moadd), target(mo))
     
     #### query vector and target data.frame
-    
     mo <- Matched(
         q1[, "col1"], t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = seq(0.5, 0.9, by = 0.1)))
-    moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"], 
-                        targetValues = t1[c(1, 6), "col2"], targetColname = "col2", 
-                        scores = data.frame(score = c(1, 1.1)), indexes = FALSE)
+    moadd <- addMatches(mo, queryValues = c(q1[c(3, 5), "col1"], 50), 
+                        targetValues = c(t1[c(1, 6), "col2"], 50), 
+                        targetColname = "col2", 
+                        scores = data.frame(score = c(1, 1.1, 2)))
     expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
     expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
     expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
@@ -545,7 +545,7 @@ test_that("filterMatches,Matched works", {
     
     moadd <- addMatches(mo, queryValues = c(3L, 5L), 
                         targetValues = c(1L, 6L), targetColname = "col2", 
-                        scores = data.frame(score = c(1, 1.1)), indexes = TRUE)
+                        scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
     expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
     expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
     expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))

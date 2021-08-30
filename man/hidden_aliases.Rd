@@ -24,6 +24,7 @@
   queryColname = character(),
   targetColname = character(),
   idxs = integer(),
+  keep = TRUE,
   ...
 )
 
@@ -34,7 +35,7 @@
   queryColname = character(),
   targetColname = character(),
   scores = data.frame(),
-  indexes = FALSE
+  isIndex = FALSE
 )
 }
 \value{

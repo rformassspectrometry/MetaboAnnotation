@@ -77,7 +77,7 @@ addMatches(object, ...)
   queryColname = character(),
   targetColname = character(),
   scores = data.frame(),
-  use_idxs = FALSE
+  isIndex = FALSE
 )
 
 MatchedSummarizedExperiment(
@@ -138,10 +138,10 @@ which elements of \code{targetValues} are compared.}
 \item{keep}{for \code{filterMatches}: \code{logical}. If \code{keep = TRUE} the matches are
 kept, if \code{keep = FALSE} they are removed.}
 
-\item{scores}{for \code{addMatches}: data.frame specifying the scores for the matches
-to add.}
+\item{scores}{for \code{addMatches}: data.frame specifying the scores for the
+matches to add.}
 
-\item{use_idxs}{for \code{addMatches}: specifies if \code{queryValues} and
+\item{isIndex}{for \code{addMatches}: specifies if \code{queryValues} and
 \code{targetValues} are expected to be vectors of indexes.}
 }
 \value{
@@ -188,15 +188,15 @@ returned as-is.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 \item \code{filterMatches} keeps only the matches corresponding to certain indexes or
-values of \code{query} and target.
+values of \code{query} and \code{target}.
 }
 
 It is possible to add new matches to a \code{Matched} or
 \code{MatchedSummarizedExperiment} object via \code{addMatches}. With parameters
 \code{queryValues} and \code{targetValues} it is possible to specify values of \code{query}
 and \code{target} (if they are 1-dimensional) or one of their columns (specified
-with parameters \code{queryColname} or \code{targetColname}) and these values are used to
-establish new matches. By using parameter \code{use_idxs} it is possible to
+with parameters \code{queryColname} or \code{targetColname}) and these values are used
+to establish new matches. By using parameter \code{isIndex} it is possible to
 interpret \code{queryValues} and \code{targetValues} as vector of indexes of the
 elements of \code{query} and \code{target} to be matched together.
 }
@@ -372,7 +372,14 @@ mosub <- filterMatches(mo, keep = FALSE, queryValues = queryValues,
                      targetValues = targetValues, queryColname = "col1")
 mosub@matches
 
-
+## Manually adding matches using values of "col1" column in query and of 
+target
+moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"],
+                    targetValues = t2[c(1, 6)], queryColname = "col1",
+                    scores = data.frame(score = c(1, 1.1)))
+#' ## Manually adding matches using indexes of query and target values to match
+moadd <- addMatches(mo, queryValues = c(3L, 5L), targetValues = c(1L, 6L),
+                    scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
 
 ## Creating a MatchedSummarizedExperiment object.
 library(SummarizedExperiment)
