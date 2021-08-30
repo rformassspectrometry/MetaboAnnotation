@@ -164,16 +164,16 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' - `MzRtParam`: match m/z and retention time values against reference
 #'   compounds for which m/z and retention time are known. `query` must be a
-#'   `data.frame` or a `SummarizedExperiment`. The `data.frame` in one case or 
-#'   the `SummarizedExperiment` `rowData` in the other must have columns 
+#'   `data.frame` or a `SummarizedExperiment`. The `data.frame` in one case or
+#'   the `SummarizedExperiment` `rowData` in the other must have columns
 #'   containing the m/z and retention times of the
 #'   features. The names of the respective columns can be specified with
 #'   parameters `mzColumn` and `rtColumn` which default to `"mz"` and `"rt"`,
-#'   respectively.`target` must be a `data.frame` again with the information on 
-#'   m/z and retention time.`MzRtParam` parameters `tolerance` and `ppm` allow 
-#'   to define the maximal acceptable (constant or m/z relative) difference 
-#'   between query and target m/z values; `MzRtParam` parameter `toleranceRt` 
-#'   allows to specify the maximal acceptable difference between query and 
+#'   respectively.`target` must be a `data.frame` again with the information on
+#'   m/z and retention time.`MzRtParam` parameters `tolerance` and `ppm` allow
+#'   to define the maximal acceptable (constant or m/z relative) difference
+#'   between query and target m/z values; `MzRtParam` parameter `toleranceRt`
+#'   allows to specify the maximal acceptable difference between query and
 #'   target retention time values.
 #'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
@@ -363,7 +363,7 @@ setMethod("matchMz",
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "numeric",
-                        target = "data.frame",
+                        target = "data.frameOrSimilar",
                         param = "Mass2MzParam"),
           function(query, target, param, massColumn = "exactmass",
                    BPPARAM = SerialParam()) {
@@ -375,10 +375,10 @@ setMethod("matchMz",
           })
 #' @rdname matchMz
 setMethod("matchMz",
-          signature = c(query = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
                         target = "numeric",
                         param = "Mass2MzParam"),
-          function(query, target, param, BPPARAM = SerialParam(), 
+          function(query, target, param, BPPARAM = SerialParam(),
                    mzColumn = "mz") {
             if (!mzColumn %in% colnames(query))
               stop("Missing column \"mz\" in query")
@@ -388,8 +388,8 @@ setMethod("matchMz",
           })
 #' @rdname matchMz
 setMethod("matchMz",
-          signature = c(query = "data.frame",
-                        target = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
                         param = "Mass2MzParam"),
           function(query, target, param, mzColumn = "mz",
                    massColumn = "exactmass", BPPARAM = SerialParam()) {
@@ -423,7 +423,7 @@ setMethod("matchMz",
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "numeric",
-                        target = "data.frame",
+                        target = "data.frameOrSimilar",
                         param = "MzParam"),
           function(query, target, param, mzColumn = "mz",
                    BPPARAM = SerialParam()) {
@@ -435,7 +435,7 @@ setMethod("matchMz",
           })
 #' @rdname matchMz
 setMethod("matchMz",
-          signature = c(query = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
                         target = "numeric",
                         param = "MzParam"),
           function(query, target, param, mzColumn = "mz",
@@ -448,8 +448,8 @@ setMethod("matchMz",
           })
 #' @rdname matchMz
 setMethod("matchMz",
-          signature = c(query = "data.frame",
-                        target = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
                         param = "MzParam"),
           function(query, target, param, mzColumn = c("mz", "mz"),
                    BPPARAM = SerialParam()) {
@@ -468,11 +468,11 @@ setMethod("matchMz",
 #'
 #' @importFrom BiocParallel bpmapply SerialParam
 setMethod("matchMz",
-          signature = c(query = "data.frame",
-                        target = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
                         param = "Mass2MzRtParam"),
-          function(query, target, param, massColumn = "exactmass", 
-                   mzColumn = "mz", rtColumn = c("rt", "rt"), 
+          function(query, target, param, massColumn = "exactmass",
+                   mzColumn = "mz", rtColumn = c("rt", "rt"),
                    BPPARAM = SerialParam()) {
             if(length(rtColumn) == 1)
               rtColumn <- rep(rtColumn, 2)
@@ -501,10 +501,10 @@ setMethod("matchMz",
 #'
 #' @importFrom BiocParallel bpmapply SerialParam
 setMethod("matchMz",
-          signature = c(query = "data.frame",
-                        target = "data.frame",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
                         param = "MzRtParam"),
-          function(query, target, param, mzColumn = c("mz", "mz"), 
+          function(query, target, param, mzColumn = c("mz", "mz"),
                    rtColumn = c("rt", "rt"), BPPARAM = SerialParam()) {
             if(length(mzColumn) == 1)
               mzColumn <- rep(mzColumn, 2)
@@ -534,13 +534,13 @@ setMethod("matchMz",
           })
 
 #' @rdname matchMz
-setMethod("matchMz", 
-          signature = c(query = "SummarizedExperiment", 
-                        target = "ANY", 
+setMethod("matchMz",
+          signature = c(query = "SummarizedExperiment",
+                        target = "ANY",
                         param = "Param"),
           function(query, target, param, mzColumn = "mz", rtColumn = "rt",
                    BPPARAM = SerialParam()) {
-            matches <- matchMz(data.frame(rowData(query)), target, param, 
+            matches <- matchMz(data.frame(rowData(query)), target, param,
                                mzColumn , rtColumn, BPPARAM)@matches
             MatchedSummarizedExperiment(query, target, matches)
           })

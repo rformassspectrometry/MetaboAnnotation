@@ -7,15 +7,15 @@
 \alias{MzRtParam}
 \alias{matchMz}
 \alias{matchMz,numeric,numeric,Mass2MzParam-method}
-\alias{matchMz,numeric,data.frame,Mass2MzParam-method}
-\alias{matchMz,data.frame,numeric,Mass2MzParam-method}
-\alias{matchMz,data.frame,data.frame,Mass2MzParam-method}
+\alias{matchMz,numeric,data.frameOrSimilar,Mass2MzParam-method}
+\alias{matchMz,data.frameOrSimilar,numeric,Mass2MzParam-method}
+\alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam-method}
 \alias{matchMz,numeric,numeric,MzParam-method}
-\alias{matchMz,numeric,data.frame,MzParam-method}
-\alias{matchMz,data.frame,numeric,MzParam-method}
-\alias{matchMz,data.frame,data.frame,MzParam-method}
-\alias{matchMz,data.frame,data.frame,Mass2MzRtParam-method}
-\alias{matchMz,data.frame,data.frame,MzRtParam-method}
+\alias{matchMz,numeric,data.frameOrSimilar,MzParam-method}
+\alias{matchMz,data.frameOrSimilar,numeric,MzParam-method}
+\alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,MzParam-method}
+\alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam-method}
+\alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,MzRtParam-method}
 \alias{matchMz,SummarizedExperiment,ANY,Param-method}
 \title{m/z matching}
 \usage{
@@ -31,7 +31,7 @@ matchMz(query, target, param, ...)
 
 \S4method{matchMz}{numeric,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam())
 
-\S4method{matchMz}{numeric,data.frame,Mass2MzParam}(
+\S4method{matchMz}{numeric,data.frameOrSimilar,Mass2MzParam}(
   query,
   target,
   param,
@@ -39,9 +39,9 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{data.frame,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam(), mzColumn = "mz")
+\S4method{matchMz}{data.frameOrSimilar,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam(), mzColumn = "mz")
 
-\S4method{matchMz}{data.frame,data.frame,Mass2MzParam}(
+\S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam}(
   query,
   target,
   param,
@@ -52,11 +52,11 @@ matchMz(query, target, param, ...)
 
 \S4method{matchMz}{numeric,numeric,MzParam}(query, target, param, BPPARAM = SerialParam())
 
-\S4method{matchMz}{numeric,data.frame,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
+\S4method{matchMz}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frame,numeric,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
+\S4method{matchMz}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frame,data.frame,MzParam}(
+\S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,MzParam}(
   query,
   target,
   param,
@@ -64,7 +64,7 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{data.frame,data.frame,Mass2MzRtParam}(
+\S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam}(
   query,
   target,
   param,
@@ -74,7 +74,7 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{data.frame,data.frame,MzRtParam}(
+\S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,MzRtParam}(
   query,
   target,
   param,
