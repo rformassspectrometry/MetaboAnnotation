@@ -443,3 +443,112 @@ test_that("pruneTarget,Matched works", {
     expect_equal(matchedData(res), matchedData(mo))
     expect_true(length(res@target) < length(mo@target))
 })
+
+test_that("filterMatches,Matched works", {
+    #### query and target data.frames
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = seq(0.5, 0.9, by = 0.1)))
+    ## out of bounds indexes
+    expect_error(filterMatches(mo, idxs = c(1, 10)), "out of bounds")
+    ## no index : every match is removed
+    idxs <- integer(0)
+    mosub <- filterMatches(mo, idxs = idxs)
+    expect_equal(mosub@matches, mo@matches[idxs, ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+    ## in range indexes
+    idxs <- c(1, 3, 5)
+    mosub <- filterMatches(mo, idxs = idxs)
+    expect_equal(mosub@matches, mo@matches[idxs, ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+    mosub <- filterMatches(mo, idxs = idxs, keep = FALSE)
+    expect_equal(mosub@matches, mo@matches[-idxs, ])
+    ## keep matches based on query and target input values
+    queryValues <- c(q1[mo@matches[idxs, "query_idx"], "col1"], -1, - 2)
+    targetValues <- c(t1[mo@matches[idxs, "target_idx"], "col2"], -2, -1)
+    mosub <- filterMatches(mo, queryValues = queryValues, 
+                         targetValues = targetValues, 
+                         queryColname = "col1", targetColname = "col2")
+    expect_equal(mosub@matches, mo@matches[idxs, ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+    mosub <- filterMatches(mo, queryValues = queryValues,
+                           targetValues = targetValues, queryColname = "col1", 
+                           targetColname = "col2", keep = FALSE)
+    expect_equal(mosub@matches, mo@matches[-idxs, ])
+    ## no matches corresponding to the input values
+    mosub <- filterMatches(mo, queryValues = queryValues + 100, 
+                         targetValues = targetValues + 100, 
+                         queryColname = "col1", targetColname = "col2")
+    expect_equal(mosub@matches, data.frame(query_idx = integer(), 
+                                           target_idx = integer(), 
+                                           score = numeric()))
+    
+    #### query and target vectors (multiple matches corresponding to a given
+    #### couple of query and target input values)
+    q3 <- c(1, 1, 2, 3, 4)
+    t3 <- c("A", "A", "A", "C", "D")
+    mo <- Matched(
+        q3, t3, matches = data.frame(query_idx = c(1L, 2L, 4L, 5L),
+                                     target_idx = c(1L, 2L, 4L, 5L),
+                                     score = seq(0.5, 0.8, by = 0.1)))
+    queryValues <- c(1, 3)
+    targetValues <- c("A", "C")
+    mosub <- filterMatches(mo, queryValues = queryValues, 
+                         targetValues = targetValues)
+    expect_equal(mosub@matches, mo@matches[c(1, 2, 3), ])
+})
+
+test_that("addMatches,Matched works", {
+    #### query and target data.frames
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = seq(0.5, 0.9, by = 0.1)))
+    moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"], 
+                        targetValues = t1[c(1, 6), "col2"],
+                        queryColname = "col1", targetColname = "col2", 
+                        scores = data.frame(score = c(1, 1.1)), isIndex = FALSE)
+    expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
+    expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
+    expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
+    expect_equal(query(moadd), query(mo))
+    expect_equal(target(moadd), target(mo))
+    
+    moadd <- addMatches(mo, queryValues = c(3L, 5L), 
+                        targetValues = c(1L, 6L),
+                        queryColname = "col1", targetColname = "col2", 
+                        scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
+    expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
+    expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
+    expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
+    expect_equal(query(moadd), query(mo))
+    expect_equal(target(moadd), target(mo))
+    
+    #### query vector and target data.frame
+    mo <- Matched(
+        q1[, "col1"], t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = seq(0.5, 0.9, by = 0.1)))
+    moadd <- addMatches(mo, queryValues = c(q1[c(3, 5), "col1"], 50), 
+                        targetValues = c(t1[c(1, 6), "col2"], 50), 
+                        targetColname = "col2", 
+                        scores = data.frame(score = c(1, 1.1, 2)))
+    expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
+    expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
+    expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
+    expect_equal(query(moadd), query(mo))
+    expect_equal(target(moadd), target(mo))
+    
+    moadd <- addMatches(mo, queryValues = c(3L, 5L), 
+                        targetValues = c(1L, 6L), targetColname = "col2", 
+                        scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
+    expect_equal(moadd@matches$query_idx, c(mo@matches$query_idx, 3, 5))
+    expect_equal(moadd@matches$target_idx, c(mo@matches$target_idx, 1, 6))
+    expect_equal(moadd@matches$score, c(mo@matches$score, 1, 1.1))
+    expect_equal(query(moadd), query(mo))
+    expect_equal(target(moadd), target(mo))
+})
