@@ -18,8 +18,10 @@
 \alias{matchedData}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
-\alias{removeMatches}
-\alias{keepMatches}
+\alias{filterMatches}
+\alias{filterMatches,Matched-method}
+\alias{addMatches}
+\alias{addMatches,Matched-method}
 \title{Representation of generic objects matches}
 \usage{
 Matched(
@@ -53,9 +55,30 @@ matchedData(object, ...)
 
 pruneTarget(object)
 
-removeMatches(object, idxs)
+filterMatches(object, ...)
 
-keepMatches(object, idxs)
+\S4method{filterMatches}{Matched}(
+  object,
+  queryValues = integer(),
+  targetValues = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  idxs = integer(),
+  keep = TRUE,
+  ...
+)
+
+addMatches(object, ...)
+
+\S4method{addMatches}{Matched}(
+  object,
+  queryValues = integer(),
+  targetValues = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  scores = data.frame(),
+  isIndex = FALSE
+)
 
 MatchedSummarizedExperiment(
   query = SummarizedExperiment(),
@@ -91,7 +114,35 @@ mapping of elements between the \code{query} and the \code{target} objects.}
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
 
-\item{idxs}{for \code{keepMatches}: indexes of the matches to keep.}
+\item{queryValues}{vector of values to search for in \code{query} (if \code{query}
+is 1-dimensional) or in column \code{queryColname} of \code{query} (if \code{query} is
+2-dimensional). This parameter can be used in \code{filterMatches}
+and when it is used also the parameter \code{targetValues} must be passed.
+\code{filterMatches} will return a \code{Matched} object with only the matches whose
+\code{query} and  \code{target} values are equal respectivly to \code{targetValues[i]} and
+\code{queryValues[i]} for some i.}
+
+\item{targetValues}{vector of values to search for in \code{target} (if \code{target}
+is 1-dimensional) or in column \code{targetColname} of \code{target} (if \code{target} is
+2-dimensional).}
+
+\item{queryColname}{if \code{query} is 2-dimensional: column of \code{query} against
+which elements of \code{queryValues} are compared.}
+
+\item{targetColname}{if \code{query} is 2-dimensional: column of \code{target} against
+which elements of \code{targetValues} are compared.}
+
+\item{idxs}{for \code{filterMatches}: indexes of the matches to keep (if
+\code{keep = TRUE}) or to drop if (\code{keep = FALSE}).}
+
+\item{keep}{for \code{filterMatches}: \code{logical}. If \code{keep = TRUE} the matches are
+kept, if \code{keep = FALSE} they are removed.}
+
+\item{scores}{for \code{addMatches}: data.frame specifying the scores for the
+matches to add.}
+
+\item{isIndex}{for \code{addMatches}: specifies if \code{queryValues} and
+\code{targetValues} are expected to be vectors of indexes.}
 }
 \value{
 See individual method description above for details.
@@ -136,7 +187,18 @@ for the selected query elements. The \code{target} object will by default be
 returned as-is.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
+\item \code{filterMatches} keeps only the matches corresponding to certain indexes or
+values of \code{query} and \code{target}.
 }
+
+It is possible to add new matches to a \code{Matched} or
+\code{MatchedSummarizedExperiment} object via \code{addMatches}. With parameters
+\code{queryValues} and \code{targetValues} it is possible to specify values of \code{query}
+and \code{target} (if they are 1-dimensional) or one of their columns (specified
+with parameters \code{queryColname} or \code{targetColname}) and these values are used
+to establish new matches. By using parameter \code{isIndex} it is possible to
+interpret \code{queryValues} and \code{targetValues} as vector of indexes of the
+elements of \code{query} and \code{target} to be matched together.
 }
 
 \section{Extracting data}{
@@ -292,7 +354,32 @@ length(target(mo_sub))
 mo_sub <- pruneTarget(mo_sub)
 nrow(target(mo_sub))
 
+## Keeping only certain matches through their indexes 
+idxs <- c(1, 3, 5)
+mosub <- filterMatches(mo, idxs = idxs)
+mosub@matches
+mo@matches[-idxs, ]
 
+## Keeping matches corresponding to certain values of query and target
+queryValues <- c(q1[mo@matches[idxs, "query_idx"], "col1"], -1, - 2)
+targetValues <- c(t2[mo@matches[idxs, "target_idx"]], -2, -1)
+mosub <- filterMatches(mo, queryValues = queryValues, 
+                     targetValues = targetValues, queryColname = "col1")
+mosub@matches
+
+## Removing matches using values of query and target
+mosub <- filterMatches(mo, keep = FALSE, queryValues = queryValues, 
+                     targetValues = targetValues, queryColname = "col1")
+mosub@matches
+
+## Manually adding matches using values of "col1" column in query and of 
+target
+moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"],
+                    targetValues = t2[c(1, 6)], queryColname = "col1",
+                    scores = data.frame(score = c(1, 1.1)))
+#' ## Manually adding matches using indexes of query and target values to match
+moadd <- addMatches(mo, queryValues = c(3L, 5L), targetValues = c(1L, 6L),
+                    scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
 
 ## Creating a MatchedSummarizedExperiment object.
 library(SummarizedExperiment)
