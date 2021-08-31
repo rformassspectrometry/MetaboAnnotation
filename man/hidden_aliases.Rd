@@ -19,22 +19,22 @@
 
 \S4method{filterMatches}{MatchedSummarizedExperiment}(
   object,
-  queryValues = integer(),
-  targetValues = integer(),
+  queryValue = integer(),
+  targetValue = integer(),
   queryColname = character(),
   targetColname = character(),
-  idxs = integer(),
+  index = integer(),
   keep = TRUE,
   ...
 )
 
 \S4method{addMatches}{MatchedSummarizedExperiment}(
   object,
-  queryValues = integer(),
-  targetValues = integer(),
+  queryValue = integer(),
+  targetValue = integer(),
   queryColname = character(),
   targetColname = character(),
-  scores = data.frame(),
+  score = data.frame(),
   isIndex = FALSE
 )
 }

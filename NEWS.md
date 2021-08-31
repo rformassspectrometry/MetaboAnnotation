@@ -3,6 +3,7 @@
 ## Changes in 0.2.4
 
 - Support `data.frame`, `DataFrame` and `matrix` in `matchMz`.
+- Add `addMatches` and `filterMatches` functions.
 
 ## Changes in 0.2.3
 
