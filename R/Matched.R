@@ -43,8 +43,8 @@
 #' - `addMatches`: add new matches to an existing object. Parameters
 #'   `queryValue` and `targetValue` allow to define which element(s) in
 #'   `query` and `target` should be considered matching. If `isIndex = TRUE`,
-#'   both `queryValue` and `targetValue` are considered to be integer indices in
-#'   `query` respectively `target` identifying the matching elements.
+#'   both `queryValue` and `targetValue` are considered to be integer indices
+#'   identifying the matching elements in `query` and `target`, respectively.
 #'   Alternatively (with `isIndex = FALSE`) `queryValue` and `targetValue` can
 #'   be elements in columns `queryColumn` or `targetColumn` which can be used to
 #'   identify the matching elements. Note that in this case
@@ -64,14 +64,6 @@
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
 #'
-#' It is possible to add new matches to a `Matched` or
-#' `MatchedSummarizedExperiment` object with `addMatches`. With parameters
-#' `queryValue` and `targetValue` it is possible to specify values of `query`
-#' and `target` (if they are 1-dimensional) or one of their columns (specified
-#' with parameters `queryColname` or `targetColname`) and these values are used
-#' to establish new matches. By using parameter `isIndex` it is possible to
-#' interpret `queryValue` and `targetValue` as vector of indexes of the
-#' elements of `query` and `target` to be matched together.
 #'
 #' @section Extracting data:
 #'

@@ -189,8 +189,8 @@ returned as-is.
 \item \code{addMatches}: add new matches to an existing object. Parameters
 \code{queryValue} and \code{targetValue} allow to define which element(s) in
 \code{query} and \code{target} should be considered matching. If \code{isIndex = TRUE},
-both \code{queryValue} and \code{targetValue} are considered to be integer indices in
-\code{query} respectively \code{target} identifying the matching elements.
+both \code{queryValue} and \code{targetValue} are considered to be integer indices
+identifying the matching elements in \code{query} and \code{target}, respectively.
 Alternatively (with \code{isIndex = FALSE}) \code{queryValue} and \code{targetValue} can
 be elements in columns \code{queryColumn} or \code{targetColumn} which can be used to
 identify the matching elements. Note that in this case
@@ -208,15 +208,6 @@ in the object. See examples below for more information.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }
-
-It is possible to add new matches to a \code{Matched} or
-\code{MatchedSummarizedExperiment} object with \code{addMatches}. With parameters
-\code{queryValue} and \code{targetValue} it is possible to specify values of \code{query}
-and \code{target} (if they are 1-dimensional) or one of their columns (specified
-with parameters \code{queryColname} or \code{targetColname}) and these values are used
-to establish new matches. By using parameter \code{isIndex} it is possible to
-interpret \code{queryValue} and \code{targetValue} as vector of indexes of the
-elements of \code{query} and \code{target} to be matched together.
 }
 
 \section{Extracting data}{
