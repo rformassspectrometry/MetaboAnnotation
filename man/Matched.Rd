@@ -59,11 +59,11 @@ filterMatches(object, ...)
 
 \S4method{filterMatches}{Matched}(
   object,
-  queryValues = integer(),
-  targetValues = integer(),
+  queryValue = integer(),
+  targetValue = integer(),
   queryColname = character(),
   targetColname = character(),
-  idxs = integer(),
+  index = integer(),
   keep = TRUE,
   ...
 )
@@ -72,11 +72,11 @@ addMatches(object, ...)
 
 \S4method{addMatches}{Matched}(
   object,
-  queryValues = integer(),
-  targetValues = integer(),
+  queryValue = integer(),
+  targetValue = integer(),
   queryColname = character(),
   targetColname = character(),
-  scores = data.frame(),
+  score = data.frame(),
   isIndex = FALSE
 )
 
@@ -114,35 +114,39 @@ mapping of elements between the \code{query} and the \code{target} objects.}
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
 
-\item{queryValues}{vector of values to search for in \code{query} (if \code{query}
-is 1-dimensional) or in column \code{queryColname} of \code{query} (if \code{query} is
-2-dimensional). This parameter can be used in \code{filterMatches}
-and when it is used also the parameter \code{targetValues} must be passed.
-\code{filterMatches} will return a \code{Matched} object with only the matches whose
-\code{query} and  \code{target} values are equal respectivly to \code{targetValues[i]} and
-\code{queryValues[i]} for some i.}
+\item{queryValue}{for \code{filterMatches}: vector of values to search for in
+\code{query} (if \code{query} is 1-dimensional) or in column \code{queryColname} of
+\code{query} (if \code{query} is 2-dimensional). For \code{addMatches}: either an index
+in \code{query} or value in column \code{queryColumn} of \code{query} defining (together
+with \code{targetValue}) the pair of query and target elements for which a
+match should be manually added. Lengths of \code{queryValue} and
+\code{targetValue} have to match.}
 
-\item{targetValues}{vector of values to search for in \code{target} (if \code{target}
-is 1-dimensional) or in column \code{targetColname} of \code{target} (if \code{target} is
-2-dimensional).}
+\item{targetValue}{for \code{filterMatches}: vector of values to search for in
+\code{target} (if \code{target} is 1-dimensional) or in column \code{targetColname} of
+\code{target} (if \code{target} is 2-dimensional). For \code{addMatches}: either an
+index in \code{target} or value in column \code{targetColumn} of \code{target} defining
+(together with \code{queryValue}) the pair of query and target elements for
+which a match should be manually added. Lengths of \code{queryValue} and
+\code{targetValue} have to match.}
 
 \item{queryColname}{if \code{query} is 2-dimensional: column of \code{query} against
-which elements of \code{queryValues} are compared.}
+which elements of \code{queryValue} are compared.}
 
 \item{targetColname}{if \code{query} is 2-dimensional: column of \code{target} against
-which elements of \code{targetValues} are compared.}
+which elements of \code{targetValue} are compared.}
 
-\item{idxs}{for \code{filterMatches}: indexes of the matches to keep (if
+\item{index}{for \code{filterMatches}: indices of the matches to keep (if
 \code{keep = TRUE}) or to drop if (\code{keep = FALSE}).}
 
 \item{keep}{for \code{filterMatches}: \code{logical}. If \code{keep = TRUE} the matches are
 kept, if \code{keep = FALSE} they are removed.}
 
-\item{scores}{for \code{addMatches}: data.frame specifying the scores for the
-matches to add.}
+\item{score}{for \code{addMatches}: \code{data.frame} (same number of rows than
+\code{queryValue}) specifying the scores for the matches to add.}
 
-\item{isIndex}{for \code{addMatches}: specifies if \code{queryValues} and
-\code{targetValues} are expected to be vectors of indexes.}
+\item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
+\code{targetValue} are expected to be vectors of indexes.}
 }
 \value{
 See individual method description above for details.
@@ -177,28 +181,33 @@ from \emph{query} match which element from \emph{target}.
 \code{MatchedSummarizedExperiment} objects can be created with the
 \code{MatchedSummarizedExperiment} function providing the \code{SummarizedExperiment}
 with the \code{query} parameter.
-
-A \code{Matched} or \code{MatchedSummarizedExperiment} object can be subsetted in the
-following ways:
 \itemize{
 \item \code{[} subset the object selecting \code{query} object elements to keep with
 parameter \code{i}. The resulting object will contain all the matches
 for the selected query elements. The \code{target} object will by default be
 returned as-is.
+\item \code{addMatches}: add new matches to an existing object. Parameters
+\code{queryValue} and \code{targetValue} allow to define which element(s) in
+\code{query} and \code{target} should be considered matching. If \code{isIndex = TRUE},
+both \code{queryValue} and \code{targetValue} are considered to be integer indices
+identifying the matching elements in \code{query} and \code{target}, respectively.
+Alternatively (with \code{isIndex = FALSE}) \code{queryValue} and \code{targetValue} can
+be elements in columns \code{queryColumn} or \code{targetColumn} which can be used to
+identify the matching elements. Note that in this case
+\strong{only the first} matching pair is added. Parameter \code{score} allows to
+provide the score for the match. It has to be a \code{data.frame} with the same
+columns than \verb{@matches} (except columns \code{"query_idx"} and \code{"target_idx"}).
+See examples below for more information.
+\item \code{filterMatches}: keeps or removes matches corresponding to certain indexes
+or values of \code{query} and \code{target}. If \code{queryValue} and \code{targetValue} are
+provided, matches for these value pairs are kept or removed. Parameter
+\code{index} allows to filter matches providing their index in the \verb{@matches}
+slot. Note that \code{filterMatches} removes only matches from the \verb{@matches}
+slot from the \code{Matched} object but thus not alter the \code{query} or \code{target}
+in the object. See examples below for more information.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
-\item \code{filterMatches} keeps only the matches corresponding to certain indexes or
-values of \code{query} and \code{target}.
 }
-
-It is possible to add new matches to a \code{Matched} or
-\code{MatchedSummarizedExperiment} object via \code{addMatches}. With parameters
-\code{queryValues} and \code{targetValues} it is possible to specify values of \code{query}
-and \code{target} (if they are 1-dimensional) or one of their columns (specified
-with parameters \code{queryColname} or \code{targetColname}) and these values are used
-to establish new matches. By using parameter \code{isIndex} it is possible to
-interpret \code{queryValues} and \code{targetValues} as vector of indexes of the
-elements of \code{query} and \code{target} to be matched together.
 }
 
 \section{Extracting data}{
@@ -252,7 +261,7 @@ t1 <- data.frame(col1 = 11:16, col2 = 17:22)
 ## with target rows 2,3,4 and query row 5 with target row 5.
 mo <- Matched(
     q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
-                                target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                 target_idx = c(2L, 2L, 3L, 4L, 5L),
                                  score = seq(0.5, 0.9, by = 0.1)))
 mo
 
@@ -309,6 +318,7 @@ nrow(target(mo_sub))
 mo_sub <- pruneTarget(mo_sub)
 nrow(target(mo_sub))
 
+########
 ## Creating a Matched object with a `data.frame` for `query` and a `vector`
 ## for `target`. The matches are specified in the same way as the example
 ## before.
@@ -332,7 +342,6 @@ res
 
 ## Note that the columns of the obtained `DataFrame` are the same as the
 ## corresponding vectors obtained with `$`
-
 res$col1
 res$target
 
@@ -352,34 +361,55 @@ length(target(mo_sub))
 
 ## Reducing the target elements to only those that match at least one query row
 mo_sub <- pruneTarget(mo_sub)
-nrow(target(mo_sub))
+length(target(mo_sub))
 
-## Keeping only certain matches through their indexes 
-idxs <- c(1, 3, 5)
-mosub <- filterMatches(mo, idxs = idxs)
-mosub@matches
-mo@matches[-idxs, ]
+########
+## Filtering `Matched` with `filterMatches`
 
-## Keeping matches corresponding to certain values of query and target
-queryValues <- c(q1[mo@matches[idxs, "query_idx"], "col1"], -1, - 2)
-targetValues <- c(t2[mo@matches[idxs, "target_idx"]], -2, -1)
-mosub <- filterMatches(mo, queryValues = queryValues, 
-                     targetValues = targetValues, queryColname = "col1")
-mosub@matches
+## Inspecting the matches in `mo`:
+mo$col1
+mo$target
 
-## Removing matches using values of query and target
-mosub <- filterMatches(mo, keep = FALSE, queryValues = queryValues, 
-                     targetValues = targetValues, queryColname = "col1")
-mosub@matches
+## We have thus target *12* matched to both query elements with values 1 and
+## 2, and query element 2 is matching 3 target elements. Let's assume we want
+## to resolve this multiple mappings to keep from them only the match between
+## query 1 (column `"col1"` containing value `1`) with target 1 (value `12`)
+## and query 2 (column `"col1"` containing value `2`) with target 2 (value
+## `13`). In addition we also want to keep query element 5 (value `5` in
+## column `"col1"`) with the target with value `15`:
+mo_sub <- filterMatches(mo, queryValue = c(1, 2, 5), queryColname = "col1",
+    targetValue = c(12, 13, 15))
+matchedData(mo_sub)
 
-## Manually adding matches using values of "col1" column in query and of 
-target
-moadd <- addMatches(mo, queryValues = q1[c(3, 5), "col1"],
-                    targetValues = t2[c(1, 6)], queryColname = "col1",
-                    scores = data.frame(score = c(1, 1.1)))
-#' ## Manually adding matches using indexes of query and target values to match
-moadd <- addMatches(mo, queryValues = c(3L, 5L), targetValues = c(1L, 6L),
-                    scores = data.frame(score = c(1, 1.1)), isIndex = TRUE)
+## Alternatively to specifying the matches to filter with `queryValue` and
+## `targetValue` it is also possible to specify directly the index of the
+## match(es) in the `@matches` `data.frame`:
+mo@matches
+
+## To keep only matches like in the example above we could use:
+mo_sub <- filterMatches(mo, index = c(1, 3, 5))
+matchedData(mo_sub)
+
+## Note also that, instead of keeping the specified matches, it would be
+## possible to remove them by setting `keep = FALSE`. Below we remove
+## selected matches from the object:
+mo_sub <- filterMatches(mo, queryValue = c(2, 2), queryColname = "col1",
+    targetValue = c(12, 14), keep = FALSE)
+mo_sub$col1
+mo_sub$target
+
+########
+## Adding matches using `addMatches`
+
+## `addMatches` allows to manually add matches. Below we add a new match
+## between the `query` element with a value of `1` in column `"col1"` and
+## the target element with a value of `15`. Parameter `score` allows to
+## assign a score value to the match.
+mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+    targetValue = 15, score = data.frame(score = 1.40))
+matchedData(mo_add)
+## Matches are always sorted by `query`, thus, the new match is listed as
+## second match.
 
 ## Creating a MatchedSummarizedExperiment object.
 library(SummarizedExperiment)

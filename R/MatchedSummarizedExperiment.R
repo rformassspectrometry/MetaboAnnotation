@@ -68,23 +68,23 @@ setMethod("matchedData", "MatchedSummarizedExperiment",
 })
 
 #' @importFrom methods validObject
-#' 
+#'
 #' @rdname hidden_aliases
 #'
 #' @export
-setMethod("filterMatches", "MatchedSummarizedExperiment", 
-          function(object, queryValues = integer(), targetValues = integer(),
+setMethod("filterMatches", "MatchedSummarizedExperiment",
+          function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
-                   idxs = integer(), keep = TRUE, ...) {
-            if(length(idxs) && any(!idxs%in%seq_len(nrow(object@matches))))
-              stop("some indexes in \"idxs\" are out of bounds")
-            if(!length(idxs) && length(queryValues))
-              idxs  <- .findMatchesIdxs(rowData(object@query), object@target, 
-                                        object@matches, queryValues, 
-                                        targetValues, queryColname, 
+                   index = integer(), keep = TRUE, ...) {
+            if(length(index) && any(!index%in%seq_len(nrow(object@matches))))
+              stop("some indexes in \"index\" are out of bounds")
+            if(!length(index) && length(queryValue))
+              index  <- .findMatchesIdxs(rowData(object@query), object@target,
+                                        object@matches, queryValue,
+                                        targetValue, queryColname,
                                         targetColname)
-            if(keep) to_keep <- seq_len(nrow(object@matches)) %in% idxs
-            else to_keep <- !seq_len(nrow(object@matches)) %in% idxs
+            if(keep) to_keep <- seq_len(nrow(object@matches)) %in% index
+            else to_keep <- !seq_len(nrow(object@matches)) %in% index
             object@matches <- object@matches[to_keep, , drop = FALSE]
             validObject(object)
             object
@@ -93,16 +93,16 @@ setMethod("filterMatches", "MatchedSummarizedExperiment",
 #' @importFrom methods validObject
 #'
 #' @rdname hidden_aliases
-#' 
+#'
 #' @export
-setMethod("addMatches", "MatchedSummarizedExperiment", 
-          function(object, queryValues = integer(), targetValues = integer(),
-                   queryColname = character(), targetColname = character(), 
-                   scores = data.frame(), isIndex = FALSE) {
-            object@matches <- .addMatches(rowData(object@query), object@target, 
-                                          object@matches, queryValues, 
-                                          targetValues, queryColname, 
-                                          targetColname, scores, isIndex)
+setMethod("addMatches", "MatchedSummarizedExperiment",
+          function(object, queryValue = integer(), targetValue = integer(),
+                   queryColname = character(), targetColname = character(),
+                   score = data.frame(), isIndex = FALSE) {
+            object@matches <- .addMatches(rowData(object@query), object@target,
+                                          object@matches, queryValue,
+                                          targetValue, queryColname,
+                                          targetColname, score, isIndex)
             validObject(object)
             object
           })
