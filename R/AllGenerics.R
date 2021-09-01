@@ -10,7 +10,7 @@ setGeneric("addMatches", function(object, ...)
 setGeneric("filterMatches", function(object, ...)
   standardGeneric("filterMatches"))
 
- #' @rdname Matched
+#' @rdname Matched
 #'
 #' @exportMethod matchedData
 setGeneric("matchedData", function(object, ...)
