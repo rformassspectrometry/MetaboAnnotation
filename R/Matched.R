@@ -49,9 +49,10 @@
 #'   be elements in columns `queryColumn` or `targetColumn` which can be used to
 #'   identify the matching elements. Note that in this case
 #'   **only the first** matching pair is added. Parameter `score` allows to
-#'   provide the score for the match. It has to be a `data.frame` with the same
-#'   columns than `@matches` (except columns `"query_idx"` and `"target_idx"`).
-#'   See examples below for more information.
+#'   provide the score for the match. It can be a numeric with the score or a
+#'   `data.frame` with additional information on the manually added matches. In
+#'   both cases its length (or number of rows) has to match the length of
+#'   `queryValue`. See examples below for more information.
 #'
 #' - `filterMatches`: keeps or removes matches corresponding to certain indexes
 #'   or values of `query` and `target`. If `queryValue` and `targetValue` are
@@ -136,8 +137,9 @@
 #'
 #' @param object a `Matched` object.
 #'
-#' @param score for `addMatches`: `data.frame` (same number of rows than
-#'     `queryValue`) specifying the scores for the matches to add.
+#' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
+#'   `data.frame` (same number of rows than `queryValue`) specifying the scores
+#'   for the matches to add. If not specified, a `NA` will be used as score.
 #'
 #' @param target object with the elements against which `query` has been
 #'   matched.
@@ -334,10 +336,24 @@
 #' ## the target element with a value of `15`. Parameter `score` allows to
 #' ## assign a score value to the match.
 #' mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
-#'     targetValue = 15, score = data.frame(score = 1.40))
+#'     targetValue = 15, score = 1.40)
 #' matchedData(mo_add)
 #' ## Matches are always sorted by `query`, thus, the new match is listed as
 #' ## second match.
+#'
+#' ## Alternatively, we can also provide a `data.frame` with parameter `score`
+#' ## which enables us to add additional information to the added match. Below
+#' ## we define the score and an additional column specifying that this match
+#' ## was added manually. This information will then also be available in the
+#' ## `matchedData`.
+#' mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+#'     targetValue = 15, score = data.frame(score = 5, manual = TRUE))
+#' matchedData(mo_add)
+#'
+#' ## The match will get a score of NA if we're not providing any score.
+#' mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+#'     targetValue = 15)
+#' matchedData(mo_add)
 #'
 #' ## Creating a MatchedSummarizedExperiment object.
 #' library(SummarizedExperiment)
@@ -528,12 +544,6 @@ setMethod("$", "Matched", function(x, name) {
 setMethod("colnames", "Matched", function(x) {
   .colnames(x@query, x@target, x@matches)
 })
-
-#' @rdname Matched
-#'
-#' @exportMethod matchedData
-setGeneric("matchedData", function(object, ...)
-    standardGeneric("matchedData"))
 
 #' @importMethodsFrom S4Vectors cbind
 #'
@@ -746,12 +756,6 @@ pruneTarget <- function(object) {
 
 #' @rdname Matched
 #'
-#' @exportMethod filterMatches
-setGeneric("filterMatches", function(object, ...)
-  standardGeneric("filterMatches"))
-
-#' @rdname Matched
-#'
 #' @importFrom methods validObject
 #'
 #' @export
@@ -773,57 +777,52 @@ setMethod("filterMatches", "Matched",
             object
           })
 
+#' @importFrom MsCoreUtils rbindFill
 .addMatches <- function(query, target, matches, queryValue = integer(),
                         targetValue = integer(), queryColname = character(),
                         targetColname = character(),
-                        score = data.frame(),
+                        score = rep(NA_real_, length(queryValue)),
                         isIndex = FALSE) {
-  if (!is.data.frame(score))
-    stop("'score' must be a data.frame")
-  if (ncol(score) != ncol(matches) - 2 ||
-     any(!colnames(score) %in% colnames(matches)))
-    stop("columns of 'score' incompatible with object matches")
-  if (length(queryValue) != length(targetValue) ||
-      length(queryValue) != nrow(score))
-    stop("'queryValue', 'targetValue' and 'score' must have the same length")
-  if (isIndex) {
-    if (!is.integer(queryValue) || !is.integer(targetValue))
-      stop(paste0("'queryValue' and 'targetValue' must be integer ",
-                  "vectors when 'isIndex == TRUE'"))
-    if (any(!queryValue %in% seq_len(.nelements(query))))
-      stop("Some of the provided indexes in 'queryValue' are out of bound")
-    if (any(!targetValue %in% seq_len(.nelements(target))))
-      stop("Some of the provided indexes in 'queryValue' are out of bound")
-    query_idx <- queryValue
-    target_idx <- targetValue
-  } else {
-    if (length(dim(query)) == 2)
-      if (!queryColname %in% colnames(query))
-        stop("\"", queryColname,"\" is not a column of 'query'")
-    if (length(dim(target)) == 2)
-      if (!targetColname %in% colnames(target))
-        stop("\"", targetColname,"\" is not a column of 'target'")
-    mq <- match(queryValue, .extract_elements(query, j = queryColname,
-                                               drop = TRUE))
-    mt <- match(targetValue, .extract_elements(target, j = targetColname,
-                                                drop = TRUE))
-    to_keep <- !is.na(mq) & !is.na(mt)
-    query_idx <- mq[to_keep]
-    target_idx <- mt[to_keep]
-    score <- score[to_keep, ]
-  }
-  new_matches <- rbind(matches, data.frame(query_idx = query_idx,
-                                           target_idx = target_idx,
-                                           score = score))
-  # remove possible matches that were already in matches
-  new_matches[!duplicated(new_matches[, c("query_idx", "target_idx")]), ]
+    if (!is.data.frame(score))
+        score <- data.frame(score = score)
+    if (!is.data.frame(score))
+        stop("'score' needs to be either a 'data.frame' or a numeric")
+    if (length(queryValue) != length(targetValue) ||
+        length(queryValue) != nrow(score))
+        stop("'queryValue', 'targetValue' and 'score' must have the same length")
+    if (isIndex) {
+        if (!is.integer(queryValue) || !is.integer(targetValue))
+            stop(paste0("'queryValue' and 'targetValue' must be integer ",
+                        "vectors when 'isIndex = TRUE'"))
+        if (any(!queryValue %in% seq_len(.nelements(query))))
+            stop("Provided indices in 'queryValue' are out of bounds.")
+        if (any(!targetValue %in% seq_len(.nelements(target))))
+            stop("Provided indices in 'queryValue' are out of bounds.")
+        query_idx <- queryValue
+        target_idx <- targetValue
+    } else {
+        if (length(dim(query)) == 2)
+            if (!queryColname %in% colnames(query))
+                stop("\"", queryColname,"\" is not a column of 'query'")
+        if (length(dim(target)) == 2)
+            if (!targetColname %in% colnames(target))
+                stop("\"", targetColname,"\" is not a column of 'target'")
+        mq <- match(queryValue, .extract_elements(query, j = queryColname,
+                                                  drop = TRUE))
+        mt <- match(targetValue, .extract_elements(target, j = targetColname,
+                                                   drop = TRUE))
+        to_keep <- !is.na(mq) & !is.na(mt)
+        query_idx <- mq[to_keep]
+        target_idx <- mt[to_keep]
+        score <- score[to_keep, ]
+    }
+    new_matches <- cbind(
+        data.frame(query_idx = query_idx, target_idx = target_idx),
+        score)
+    new_matches <- rbindFill(matches, new_matches)
+    ## remove possible matches that were already in matches
+    new_matches[!duplicated(new_matches[, c("query_idx", "target_idx")]), ]
 }
-
-#' @rdname Matched
-#'
-#' @exportMethod addMatches
-setGeneric("addMatches", function(object, ...)
-  standardGeneric("addMatches"))
 
 #' @rdname Matched
 #'
@@ -833,11 +832,11 @@ setGeneric("addMatches", function(object, ...)
 setMethod("addMatches", "Matched",
           function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
-                   score = data.frame(), isIndex = FALSE) {
-            object@matches <- .addMatches(object@query, object@target,
-                                          object@matches, queryValue,
-                                          targetValue, queryColname,
-                                          targetColname, score, isIndex)
-            validObject(object)
-            object
+                   score = rep(NA_real_, length(queryValue)), isIndex = FALSE) {
+              object@matches <- .addMatches(object@query, object@target,
+                                            object@matches, queryValue,
+                                            targetValue, queryColname,
+                                            targetColname, score, isIndex)
+              validObject(object)
+              object
           })
