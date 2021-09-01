@@ -277,10 +277,10 @@ test_that("matchMz, MzRtParam works", {
   library(SummarizedExperiment)
   qry <- SummarizedExperiment(
     assays = data.frame(matrix(NA, 4, 2)),
-    colData = data.frame(cD1 = c(NA, NA), cD2 = c(NA, NA)), 
+    colData = data.frame(cD1 = c(NA, NA), cD2 = c(NA, NA)),
     rowData = data.frame(mz = c(13, 14.1, 17, 18), rt = c(23, 24, 26.8, 23)))
   trgt <- data.frame(mz = 11:17, rt = 21:27)
-  
+
   par <- MzRtParam(tolerance = 0, ppm = 0, toleranceRt = 0)
   res <- matchMz(qry, trgt, par)
   expect_equal(query(res), qry)
@@ -289,21 +289,21 @@ test_that("matchMz, MzRtParam works", {
   expect_equal(res@matches$target_idx, c(3))
   expect_equal(res@matches$score, c(0))
   expect_equal(res@matches$score_rt, c(0))
-  
+
   par <- MzRtParam(tolerance = 0.1, ppm = 0, toleranceRt = 0)
   res <- matchMz(qry, trgt, par)
   expect_equal(res@matches$query_idx, c(1, 2))
   expect_equal(res@matches$target_idx, c(3, 4))
   expect_equal(res@matches$score, c(0, 0.1))
   expect_equal(res@matches$score_rt, c(0, 0))
-  
+
   par <- MzRtParam(tolerance = 0.1, ppm = 0, toleranceRt = 0.2)
   res <- matchMz(qry, trgt, par)
   expect_equal(res@matches$query_idx, c(1, 2, 3))
   expect_equal(res@matches$target_idx, c(3, 4, 7))
   expect_equal(res@matches$score, c(0, 0.1, 0))
   expect_equal(res@matches$score_rt, c(0, 0, 0.2))
-  
+
   ## no matches
   res <- matchMz(qry , trgt + 0.5, par)
   expect_true(is(res, "Matched"))

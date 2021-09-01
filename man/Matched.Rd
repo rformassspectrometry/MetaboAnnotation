@@ -118,7 +118,7 @@ variables that should be extracted.}
 \item{queryValue}{for \code{filterMatches}: vector of values to search for in
 \code{query} (if \code{query} is 1-dimensional) or in column \code{queryColname} of
 \code{query} (if \code{query} is 2-dimensional). For \code{addMatches}: either an index
-in \code{query} or value in column \code{queryColumn} of \code{query} defining (together
+in \code{query} or value in column \code{queryColname} of \code{query} defining (together
 with \code{targetValue}) the pair of query and target elements for which a
 match should be manually added. Lengths of \code{queryValue} and
 \code{targetValue} have to match.}
@@ -126,7 +126,7 @@ match should be manually added. Lengths of \code{queryValue} and
 \item{targetValue}{for \code{filterMatches}: vector of values to search for in
 \code{target} (if \code{target} is 1-dimensional) or in column \code{targetColname} of
 \code{target} (if \code{target} is 2-dimensional). For \code{addMatches}: either an
-index in \code{target} or value in column \code{targetColumn} of \code{target} defining
+index in \code{target} or value in column \code{targetColname} of \code{target} defining
 (together with \code{queryValue}) the pair of query and target elements for
 which a match should be manually added. Lengths of \code{queryValue} and
 \code{targetValue} have to match.}
@@ -194,8 +194,8 @@ returned as-is.
 both \code{queryValue} and \code{targetValue} are considered to be integer indices
 identifying the matching elements in \code{query} and \code{target}, respectively.
 Alternatively (with \code{isIndex = FALSE}) \code{queryValue} and \code{targetValue} can
-be elements in columns \code{queryColumn} or \code{targetColumn} which can be used to
-identify the matching elements. Note that in this case
+be elements in columns \code{queryColname} or \code{targetColname} which can be used
+to identify the matching elements. Note that in this case
 \strong{only the first} matching pair is added. Parameter \code{score} allows to
 provide the score for the match. It can be a numeric with the score or a
 \code{data.frame} with additional information on the manually added matches. In

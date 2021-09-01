@@ -46,8 +46,8 @@
 #'   both `queryValue` and `targetValue` are considered to be integer indices
 #'   identifying the matching elements in `query` and `target`, respectively.
 #'   Alternatively (with `isIndex = FALSE`) `queryValue` and `targetValue` can
-#'   be elements in columns `queryColumn` or `targetColumn` which can be used to
-#'   identify the matching elements. Note that in this case
+#'   be elements in columns `queryColname` or `targetColname` which can be used
+#'   to identify the matching elements. Note that in this case
 #'   **only the first** matching pair is added. Parameter `score` allows to
 #'   provide the score for the match. It can be a numeric with the score or a
 #'   `data.frame` with additional information on the manually added matches. In
@@ -150,7 +150,7 @@
 #' @param targetValue for `filterMatches`: vector of values to search for in
 #'   `target` (if `target` is 1-dimensional) or in column `targetColname` of
 #'   `target` (if `target` is 2-dimensional). For `addMatches`: either an
-#'   index in `target` or value in column `targetColumn` of `target` defining
+#'   index in `target` or value in column `targetColname` of `target` defining
 #'   (together with `queryValue`) the pair of query and target elements for
 #'   which a match should be manually added. Lengths of `queryValue` and
 #'   `targetValue` have to match.
@@ -163,7 +163,7 @@
 #' @param queryValue for `filterMatches`: vector of values to search for in
 #'   `query` (if `query` is 1-dimensional) or in column `queryColname` of
 #'   `query` (if `query` is 2-dimensional). For `addMatches`: either an index
-#'   in `query` or value in column `queryColumn` of `query` defining (together
+#'   in `query` or value in column `queryColname` of `query` defining (together
 #'   with `targetValue`) the pair of query and target elements for which a
 #'   match should be manually added. Lengths of `queryValue` and
 #'   `targetValue` have to match.

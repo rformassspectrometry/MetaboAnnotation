@@ -35,32 +35,32 @@ matchMz(query, target, param, ...)
   query,
   target,
   param,
-  massColumn = "exactmass",
+  massColname = "exactmass",
   BPPARAM = SerialParam()
 )
 
-\S4method{matchMz}{data.frameOrSimilar,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam(), mzColumn = "mz")
+\S4method{matchMz}{data.frameOrSimilar,numeric,Mass2MzParam}(query, target, param, BPPARAM = SerialParam(), mzColname = "mz")
 
 \S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam}(
   query,
   target,
   param,
-  mzColumn = "mz",
-  massColumn = "exactmass",
+  mzColname = "mz",
+  massColname = "exactmass",
   BPPARAM = SerialParam()
 )
 
 \S4method{matchMz}{numeric,numeric,MzParam}(query, target, param, BPPARAM = SerialParam())
 
-\S4method{matchMz}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
+\S4method{matchMz}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColname = "mz", BPPARAM = SerialParam())
 
-\S4method{matchMz}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColumn = "mz", BPPARAM = SerialParam())
+\S4method{matchMz}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColname = "mz", BPPARAM = SerialParam())
 
 \S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,MzParam}(
   query,
   target,
   param,
-  mzColumn = c("mz", "mz"),
+  mzColname = c("mz", "mz"),
   BPPARAM = SerialParam()
 )
 
@@ -68,9 +68,9 @@ matchMz(query, target, param, ...)
   query,
   target,
   param,
-  massColumn = "exactmass",
-  mzColumn = "mz",
-  rtColumn = c("rt", "rt"),
+  massColname = "exactmass",
+  mzColname = "mz",
+  rtColname = c("rt", "rt"),
   BPPARAM = SerialParam()
 )
 
@@ -78,8 +78,8 @@ matchMz(query, target, param, ...)
   query,
   target,
   param,
-  mzColumn = c("mz", "mz"),
-  rtColumn = c("rt", "rt"),
+  mzColname = c("mz", "mz"),
+  rtColname = c("rt", "rt"),
   BPPARAM = SerialParam()
 )
 
@@ -87,8 +87,8 @@ matchMz(query, target, param, ...)
   query,
   target,
   param,
-  mzColumn = "mz",
-  rtColumn = "rt",
+  mzColname = "mz",
+  rtColname = "rt",
   BPPARAM = SerialParam()
 )
 }
@@ -124,14 +124,14 @@ the settings for that approach. See description above for details.}
 \item{BPPARAM}{parallel processing setup. See \code{BiocParallel::bpparam()} for
 details.}
 
-\item{massColumn}{\code{character(1)} with the name of the column containing the
-mass of compounds. Defaults to \code{massColumn = "exactmass"}.}
+\item{massColname}{\code{character(1)} with the name of the column containing the
+mass of compounds. Defaults to \code{massColname = "exactmass"}.}
 
-\item{mzColumn}{\code{character(1)} with the name of the column containing the
-m/z values. Defaults to \code{mzColumn = "mz"}.}
+\item{mzColname}{\code{character(1)} with the name of the column containing the
+m/z values. Defaults to \code{mzColname = "mz"}.}
 
-\item{rtColumn}{\code{character(1)} with the name of the column containing the
-retention times of the compounds. Defaults to \code{rtColumn = "rt"}.}
+\item{rtColname}{\code{character(1)} with the name of the column containing the
+retention times of the compounds. Defaults to \code{rtColname = "rt"}.}
 }
 \value{
 \link{Matched} object representing the result
@@ -150,11 +150,11 @@ which the (exact) mass is known. Before matching, m/z values are calculated
 from the mass of the compounds in the \emph{target} table for the specified
 adducts (parameter \code{adduct} in the parameter object).
 \code{query} must be a \code{data.frame} with a column containing m/z values (column
-name can be specified with parameter \code{mzColumn} which defaults to \code{"mz"})
+name can be specified with parameter \code{mzColname} which defaults to \code{"mz"})
 or a \code{numeric} with the m/z values of the features.
 If \code{target} is a \code{data.frame} it must
 contain a column with the (monoisotopic) mass of the compounds (the column
-name can be specified with parameter \code{massColumn} which defaults to
+name can be specified with parameter \code{massColname} which defaults to
 \code{"exactmass"}) \code{Mass2MzParam}'s parameter \code{adducts} allows to define
 the expected adducts (defaults to \code{adducts = "[M+H]+"} but any adducts
 available in \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter
@@ -168,11 +168,11 @@ compounds in the \emph{target} table for the specified adducts (parameter
 for different adducts of the same compound. \code{query} must be a \code{data.frame}
 with m/z and retention time values of the features. The names of the
 columns containing these information can be specified with parameters
-\code{mzColumn} and \code{rtColumn} which default to \code{"mz"} and \code{"rt"},
+\code{mzColname} and \code{rtColname} which default to \code{"mz"} and \code{"rt"},
 respectively). \code{target} must be a \code{data.frame} with the (monoisotopic)
 mass and retention time for each compound. The names of the columns
-containing these information can be specified with parameters \code{massColumn}
-and \code{rtColumn} which default to \code{"exactmass"} and \code{"rt"}, respectively.
+containing these information can be specified with parameters \code{massColname}
+and \code{rtColname} which default to \code{"exactmass"} and \code{"rt"}, respectively.
 \code{Mass2MzRtParam}'s parameter \code{adducts} allows to define the expected
 adducts (defaults to \code{adducts = "[M+H]+"} but any adducts available in
 \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter \code{tolerance} and
@@ -182,8 +182,8 @@ allows to specify the maximal acceptable difference between query and
 target retention time values.
 \item \code{MzParam}: match m/z values against reference compounds for which the m/z
 is known. \code{query} must be either a \code{data.frame} with a column containing
-m/z values (which name can be specified with parameter \code{mzColumn},
-default being \code{mzColumn = "mz"}) or a \code{numeric} with the m/z values of
+m/z values (which name can be specified with parameter \code{mzColname},
+default being \code{mzColname = "mz"}) or a \code{numeric} with the m/z values of
 the features. The same holds for \code{target}. \code{MzParam} parameters
 \code{tolerance} and \code{ppm} allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.
@@ -193,7 +193,7 @@ compounds for which m/z and retention time are known. \code{query} must be a
 the \code{SummarizedExperiment} \code{rowData} in the other must have columns
 containing the m/z and retention times of the
 features. The names of the respective columns can be specified with
-parameters \code{mzColumn} and \code{rtColumn} which default to \code{"mz"} and \code{"rt"},
+parameters \code{mzColname} and \code{rtColname} which default to \code{"mz"} and \code{"rt"},
 respectively.\code{target} must be a \code{data.frame} again with the information on
 m/z and retention time.\code{MzRtParam} parameters \code{tolerance} and \code{ppm} allow
 to define the maximal acceptable (constant or m/z relative) difference
