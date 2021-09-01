@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.5
+
+- Improve performance of `matchMz`.
+- Rename `queryColumn` and `targetColumn` to `queryColname` and `targetColname`.
+
 ## Changes in 0.2.4
 
 - Support `data.frame`, `DataFrame` and `matrix` in `matchMz`.

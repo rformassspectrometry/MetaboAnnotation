@@ -412,13 +412,15 @@ setMethod("matchMz",
           function(query, target, param, BPPARAM = SerialParam()) {
             target_mz <- data.frame(index = seq_along(target),
                                     mz = target)
-            matches <- do.call(
-              rbind, bpmapply(seq_along(query), query, FUN = .getMatches,
-                              MoreArgs = list(target = target_mz,
-                                              tolerance = param@tolerance,
-                                              ppm = param@ppm),
-                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches)
+            queryl <- length(query)
+            res <- vector("list", queryl)
+            for (i in seq_len(queryl)) {
+                res[[i]] <- .getMatches(i, query[i], target = target_mz,
+                                        tolerance = param@tolerance,
+                                        ppm = param@ppm)
+            }
+            Matched(query = query, target = target,
+                    matches = do.call(rbind, res))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -486,16 +488,19 @@ setMethod("matchMz",
               stop("Missing column \"", rtColumn[2], "\" in target")
             target_mz <- .mass_to_mz_df(target[, massColumn], param@adducts)
             target_mz$rt <- rep(target[, rtColumn[2]], length(param@adducts))
-            matches <- do.call(
-                rbind, bpmapply(seq_len(nrow(query)), query[, mzColumn],
-                                query[, rtColumn[1]],
-                                FUN = .getMatchesMzRt,
-                                MoreArgs = list(target = target_mz,
+            queryl <- nrow(query)
+            matches <- vector("list", queryl)
+            query_mz <- query[, mzColumn]
+            query_rt <- query[, rtColumn[1L]]
+            for (i in seq_len(queryl)) {
+                matches[[i]] <- .getMatchesMzRt(i, query_mz[i], query_rt[i],
+                                                target = target_mz,
                                                 tolerance = param@tolerance,
                                                 ppm = param@ppm,
-                                                toleranceRt = param@toleranceRt),
-                                BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches)
+                                                toleranceRt = param@toleranceRt)
+            }
+            Matched(query = query, target = target,
+                    matches = do.call(rbind, matches))
           })
 #' @rdname matchMz
 #'
@@ -521,16 +526,20 @@ setMethod("matchMz",
             target_mz <- data.frame(index = seq_len(nrow(target)),
                                     mz = target[, mzColumn[2]],
                                     rt = target[, rtColumn[2]])
-            matches <- do.call(
-                rbind, bpmapply(seq_len(nrow(query)), query[, mzColumn[1]],
-                                query[, rtColumn[1]],
-                                FUN = .getMatchesMzRt,
-                                MoreArgs = list(target = target_mz,
+            queryl <- nrow(query)
+            matches <- vector("list", queryl)
+            query_mz <- query[, mzColumn[1L]]
+            query_rt <- query[, rtColumn[1L]]
+            for (i in seq_len(queryl)) {
+                matches[[i]] <- .getMatchesMzRt(i, query_mz[i],
+                                                query_rt[i],
+                                                target = target_mz,
                                                 tolerance = param@tolerance,
                                                 ppm = param@ppm,
-                                                toleranceRt = param@toleranceRt),
-                                BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches)
+                                                toleranceRt = param@toleranceRt)
+            }
+            Matched(query = query, target = target,
+                    matches = do.call(rbind, matches))
           })
 
 #' @rdname matchMz
@@ -546,6 +555,13 @@ setMethod("matchMz",
           })
 
 #' @author Andrea Vicini
+#'
+#' @param queryIndex `integer(1)` with the index of the query.
+#'
+#' @param queryMz `numeric(1)` with the m/z of the query.
+#'
+#' @param target `data.frame` with columns `"index"`, `"mz"` and optionally
+#'     `"adduct"`.
 #'
 #' @noRd
 .getMatches <- function(queryIndex, queryMz, target, tolerance, ppm){
@@ -578,7 +594,8 @@ setMethod("matchMz",
   diffs_rt <- abs(queryRt - target$rt)
   cls_rt <- which(abs(queryRt - target$rt) <= toleranceRt)
   diffs <- abs(queryMz - target$mz[cls_rt])
-  cls <- which(abs(queryMz - target$mz[cls_rt]) <= (tolerance + ppm(queryMz, ppm)))
+  cls <- which(abs(queryMz - target$mz[cls_rt]) <=
+               (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
     if (length(cls))
       data.frame(query_idx = queryIndex,
