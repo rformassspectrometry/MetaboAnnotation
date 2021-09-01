@@ -170,14 +170,14 @@ in retention times. We use the settings from the previous section and allow a
 difference of 10 seconds in retention times. The retention times are provided in
 columns named `"rtime"` which is different from the default (`"rt"`). We thus
 specify the name of the column containing the retention times with parameter
-`rtColumn`.
+`rtColname`.
 
 ```{r}
 parm <- Mass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
                        tolerance = 0.005, ppm = 0,
                        toleranceRt = 10)
 matched_features <- matchMz(ms1_subset, target_df, param = parm,
-                            rtColumn = "rtime")
+                            rtColname = "rtime")
 matched_features
 ```
 
