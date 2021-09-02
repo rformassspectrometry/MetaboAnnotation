@@ -731,27 +731,27 @@ pruneTarget <- function(object) {
                          targetValue = integer(),
                          queryColname = character(),
                          targetColname = character()) {
-  if(length(queryValue) != length(targetValue))
-    stop("'queryValue' and 'targetValue' must have the same length")
-  if(length(dim(query)) == 2) {
-    if(length(queryColname) == 0)
-      stop("\"", queryColname,"\" must be set when 'query' is 2-dimensional")
-    if(!queryColname %in% colnames(query))
-      stop("\"", queryColname,"\" is not a column of 'query'")
-  }
-  targetColname <- sub("target_", "", targetColname)
-  if(length(dim(target)) == 2) {
-    if(length(targetColname) == 0)
-      stop("\"", targetColname,"\" must be set when 'target' is 2-dimensional")
-    if(!targetColname %in% colnames(target))
-      stop("\"", targetColname,"\" is not a column of 'target'")
-  }
-  mq <- .extract_elements(query, matches$query_idx, queryColname,
-                          drop = TRUE)
-  mt <- .extract_elements(target, matches$target_idx, targetColname,
-                          drop = TRUE)
-  unlist(sapply(seq_along(queryValue), function(i)
-    which(mq == queryValue[i] & mt == targetValue[i])))
+    if (length(queryValue) != length(targetValue))
+        stop("'queryValue' and 'targetValue' must have the same length")
+    if (length(dim(query)) == 2) {
+        if (length(queryColname) == 0)
+            stop("\"", queryColname,"\" must be set when 'query' is 2-dimensional")
+        if (!queryColname %in% colnames(query))
+            stop("\"", queryColname,"\" is not a column of 'query'")
+    }
+    targetColname <- sub("target_", "", targetColname)
+    if (length(dim(target)) == 2) {
+        if(length(targetColname) == 0)
+            stop("\"", targetColname,"\" must be set when 'target' is 2-dimensional")
+        if (!targetColname %in% colnames(target))
+            stop("\"", targetColname,"\" is not a column of 'target'")
+    }
+    mq <- .extract_elements(query, matches$query_idx, queryColname,
+                            drop = TRUE)
+    mt <- .extract_elements(target, matches$target_idx, targetColname,
+                                               drop = TRUE)
+    unlist(sapply(seq_along(queryValue), function(i)
+        which(mq == queryValue[i] & mt == targetValue[i])))
 }
 
 #' @rdname Matched
@@ -759,23 +759,25 @@ pruneTarget <- function(object) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("filterMatches", "Matched",
-          function(object, queryValue = integer(), targetValue = integer(),
-                   queryColname = character(), targetColname = character(),
-                   index = integer(), keep = TRUE, ...) {
-            if(length(index) && any(!index %in% seq_len(nrow(object@matches))))
-              stop("some indexes in \"index\" are out of bounds")
-            if(!length(index) && length(queryValue))
-              index  <- .findMatchesIdxs(object@query, object@target,
-                                        object@matches, queryValue,
-                                        targetValue, queryColname,
-                                        targetColname)
-            if(keep) to_keep <- seq_len(nrow(object@matches)) %in% index
-            else to_keep <- !seq_len(nrow(object@matches)) %in% index
-            object@matches <- object@matches[to_keep, , drop = FALSE]
-            validObject(object)
-            object
-          })
+setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
+                                                targetValue = integer(),
+                                                queryColname = character(),
+                                                targetColname = character(),
+                                                index = integer(),
+                                                keep = TRUE, ...) {
+    if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
+        stop("some indexes in \"index\" are out of bounds")
+    if (!length(index) && length(queryValue))
+        index  <- .findMatchesIdxs(object@query, object@target,
+                                   object@matches, queryValue,
+                                   targetValue, queryColname,
+                                   targetColname)
+    if (keep) to_keep <- seq_len(nrow(object@matches)) %in% index
+    else to_keep <- !seq_len(nrow(object@matches)) %in% index
+    object@matches <- object@matches[to_keep, , drop = FALSE]
+    validObject(object)
+    object
+})
 
 #' @importFrom MsCoreUtils rbindFill
 .addMatches <- function(query, target, matches, queryValue = integer(),
