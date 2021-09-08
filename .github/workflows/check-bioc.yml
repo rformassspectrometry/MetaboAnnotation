@@ -191,6 +191,7 @@ jobs:
           BiocManager::install('rhdf5', dependencies = TRUE, ask = FALSE, update = FALSE, INSTALL_opts = '--force-biarch')
           BiocManager::install("mzR", dependencies = TRUE, ask = FALSE, update = FALSE)
           BiocManager::install("msdata")
+          BiocManager::install("HenrikBengtsson/matrixStats")
           BiocManager::install("SummarizedExperiment", dependencies = TRUE, ask = FALSE, update = FALSE)
 
           message(paste('****', Sys.time(), 'force installation of selected packages ****'))
