@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -132,7 +132,30 @@ colnames(x)
 $(x, name)
 
 # S4 method for MatchedSummarizedExperiment
-matchedData(object, columns = colnames(object), ...)</code></pre></div>
+matchedData(object, columns = colnames(object), ...)
+
+# S4 method for MatchedSummarizedExperiment
+filterMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE,
+  ...
+)
+
+# S4 method for MatchedSummarizedExperiment
+addMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  score = data.frame(),
+  isIndex = FALSE
+)</code></pre></div>
 
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Representation of generic objects matches — Matched • MetaboAnnotation</title>
+<title>Representation of generic objects matches — addMatches • MetaboAnnotation</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Representation of generic objects matches — Matched" />
+<meta property="og:title" content="Representation of generic objects matches — addMatches" />
 <meta property="og:description" content="Matches between query and target generic objects can be represented by the
 Matched object. By default, all data accessors work as
 left joins between the query and the target object, i.e. values are
@@ -92,7 +92,7 @@ the matched SummarizedExperiment." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
       </span>
     </div>
 
@@ -129,7 +129,7 @@ the matched SummarizedExperiment." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Representation of generic objects matches</h1>
-    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/Matched.R'><code>R/Matched.R</code></a>, <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/MatchedSummarizedExperiment.R'><code>R/MatchedSummarizedExperiment.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/AllGenerics.R'><code>R/AllGenerics.R</code></a>, <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/Matched.R'><code>R/Matched.R</code></a>, <a href='https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/R/MatchedSummarizedExperiment.R'><code>R/MatchedSummarizedExperiment.R</code></a></small>
     <div class="hidden name"><code>Matched.Rd</code></div>
     </div>
 
@@ -149,7 +149,13 @@ target, hence, <code>colnames</code> and <code>matchedData</code> will access th
 the matched <code>SummarizedExperiment</code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre><code>Matched(
+    <div class="ref-usage sourceCode"><pre><code>addMatches(object, ...)
+
+filterMatches(object, ...)
+
+matchedData(object, ...)
+
+Matched(
   query = list(),
   target = list(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
@@ -179,16 +185,33 @@ $(x, name)
 # S4 method for Matched
 colnames(x)
 
-matchedData(object, ...)
-
 # S4 method for Matched
 matchedData(object, columns = colnames(object), ...)
 
 pruneTarget(object)
 
-removeMatches(object, idxs)
+# S4 method for Matched
+filterMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE,
+  ...
+)
 
-keepMatches(object, idxs)
+# S4 method for Matched
+addMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  score = rep(NA_real_, length(queryValue)),
+  isIndex = FALSE
+)
 
 MatchedSummarizedExperiment(
   query = SummarizedExperiment(),
@@ -200,6 +223,14 @@ MatchedSummarizedExperiment(
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>a <code>Matched</code> object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional parameters.</p></td>
+    </tr>
     <tr>
       <th>query</th>
       <td><p>object with the query elements.</p></td>
@@ -220,20 +251,12 @@ mapping of elements between the <code>query</code> and the <code>target</code> o
       <td><p><code>Matched</code> object.</p></td>
     </tr>
     <tr>
-      <th>object</th>
-      <td><p>a <code>Matched</code> object.</p></td>
-    </tr>
-    <tr>
       <th>i</th>
       <td><p><code>integer</code> or <code>logical</code> defining the <code>query</code> elements to keep.</p></td>
     </tr>
     <tr>
       <th>j</th>
       <td><p>for <code>[</code>: ignored.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>additional parameters.</p></td>
     </tr>
     <tr>
       <th>drop</th>
@@ -249,8 +272,55 @@ mapping of elements between the <code>query</code> and the <code>target</code> o
 variables that should be extracted.</p></td>
     </tr>
     <tr>
-      <th>idxs</th>
-      <td><p>for <code>keepMatches</code>: indexes of the matches to keep.</p></td>
+      <th>queryValue</th>
+      <td><p>for <code>filterMatches</code>: vector of values to search for in
+<code>query</code> (if <code>query</code> is 1-dimensional) or in column <code>queryColname</code> of
+<code>query</code> (if <code>query</code> is 2-dimensional). For <code>addMatches</code>: either an index
+in <code>query</code> or value in column <code>queryColname</code> of <code>query</code> defining (together
+with <code>targetValue</code>) the pair of query and target elements for which a
+match should be manually added. Lengths of <code>queryValue</code> and
+<code>targetValue</code> have to match.</p></td>
+    </tr>
+    <tr>
+      <th>targetValue</th>
+      <td><p>for <code>filterMatches</code>: vector of values to search for in
+<code>target</code> (if <code>target</code> is 1-dimensional) or in column <code>targetColname</code> of
+<code>target</code> (if <code>target</code> is 2-dimensional). For <code>addMatches</code>: either an
+index in <code>target</code> or value in column <code>targetColname</code> of <code>target</code> defining
+(together with <code>queryValue</code>) the pair of query and target elements for
+which a match should be manually added. Lengths of <code>queryValue</code> and
+<code>targetValue</code> have to match.</p></td>
+    </tr>
+    <tr>
+      <th>queryColname</th>
+      <td><p>if <code>query</code> is 2-dimensional: column of <code>query</code> against
+which elements of <code>queryValue</code> are compared.</p></td>
+    </tr>
+    <tr>
+      <th>targetColname</th>
+      <td><p>if <code>query</code> is 2-dimensional: column of <code>target</code> against
+which elements of <code>targetValue</code> are compared.</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>for <code>filterMatches</code>: indices of the matches to keep (if
+<code>keep = TRUE</code>) or to drop if (<code>keep = FALSE</code>).</p></td>
+    </tr>
+    <tr>
+      <th>keep</th>
+      <td><p>for <code>filterMatches</code>: <code>logical</code>. If <code>keep = TRUE</code> the matches are
+kept, if <code>keep = FALSE</code> they are removed.</p></td>
+    </tr>
+    <tr>
+      <th>score</th>
+      <td><p>for <code>addMatches</code>: <code>numeric</code> (same length than <code>queryValue</code>) or
+<code>data.frame</code> (same number of rows than <code>queryValue</code>) specifying the scores
+for the matches to add. If not specified, a <code>NA</code> will be used as score.</p></td>
+    </tr>
+    <tr>
+      <th>isIndex</th>
+      <td><p>for <code>addMatches</code>: specifies if <code>queryValue</code> and
+<code>targetValue</code> are expected to be vectors of indexes.</p></td>
     </tr>
     </table>
 
@@ -270,13 +340,31 @@ function providing the <code>query</code> and <code>target</code> object as well
 from <em>query</em> match which element from <em>target</em>.</p>
 <p><code>MatchedSummarizedExperiment</code> objects can be created with the
 <code>MatchedSummarizedExperiment</code> function providing the <code>SummarizedExperiment</code>
-with the <code>query</code> parameter.</p>
-<p>A <code>Matched</code> or <code>MatchedSummarizedExperiment</code> object can be subsetted in the
-following ways:</p><ul>
+with the <code>query</code> parameter.</p><ul>
 <li><p><code>[</code> subset the object selecting <code>query</code> object elements to keep with
 parameter <code>i</code>. The resulting object will contain all the matches
 for the selected query elements. The <code>target</code> object will by default be
 returned as-is.</p></li>
+<li><p><code>addMatches</code>: add new matches to an existing object. Parameters
+<code>queryValue</code> and <code>targetValue</code> allow to define which element(s) in
+<code>query</code> and <code>target</code> should be considered matching. If <code>isIndex = TRUE</code>,
+both <code>queryValue</code> and <code>targetValue</code> are considered to be integer indices
+identifying the matching elements in <code>query</code> and <code>target</code>, respectively.
+Alternatively (with <code>isIndex = FALSE</code>) <code>queryValue</code> and <code>targetValue</code> can
+be elements in columns <code>queryColname</code> or <code>targetColname</code> which can be used
+to identify the matching elements. Note that in this case
+<strong>only the first</strong> matching pair is added. Parameter <code>score</code> allows to
+provide the score for the match. It can be a numeric with the score or a
+<code>data.frame</code> with additional information on the manually added matches. In
+both cases its length (or number of rows) has to match the length of
+<code>queryValue</code>. See examples below for more information.</p></li>
+<li><p><code>filterMatches</code>: keeps or removes matches corresponding to certain indexes
+or values of <code>query</code> and <code>target</code>. If <code>queryValue</code> and <code>targetValue</code> are
+provided, matches for these value pairs are kept or removed. Parameter
+<code>index</code> allows to filter matches providing their index in the <code>@matches</code>
+slot. Note that <code>filterMatches</code> removes only matches from the <code>@matches</code>
+slot from the <code>Matched</code> object but thus not alter the <code>query</code> or <code>target</code>
+in the object. See examples below for more information.</p></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
 </ul>
@@ -340,7 +428,7 @@ as the <em>query</em> data frame.</p></li>
 <span class='r-in'><span class='co'>## with target rows 2,3,4 and query row 5 with target row 5.</span></span>
 <span class='r-in'><span class='va'>mo</span> <span class='op'>&lt;-</span> <span class='fu'>Matched</span><span class='op'>(</span></span>
 <span class='r-in'>    <span class='va'>q1</span>, <span class='va'>t1</span>, matches <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>query_idx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>5L</span><span class='op'>)</span>,</span>
-<span class='r-in'>                                target_idx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>, <span class='fl'>5L</span><span class='op'>)</span>,</span>
+<span class='r-in'>                                 target_idx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2L</span>, <span class='fl'>2L</span>, <span class='fl'>3L</span>, <span class='fl'>4L</span>, <span class='fl'>5L</span><span class='op'>)</span>,</span>
 <span class='r-in'>                                 score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.9</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-in'><span class='va'>mo</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class Matched </span>
@@ -422,6 +510,7 @@ as the <em>query</em> data frame.</p></li>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'>########</span></span>
 <span class='r-in'><span class='co'>## Creating a Matched object with a `data.frame` for `query` and a `vector`</span></span>
 <span class='r-in'><span class='co'>## for `target`. The matches are specified in the same way as the example</span></span>
 <span class='r-in'><span class='co'>## before.</span></span>
@@ -457,7 +546,6 @@ as the <em>query</em> data frame.</p></li>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Note that the columns of the obtained `DataFrame` are the same as the</span></span>
 <span class='r-in'><span class='co'>## corresponding vectors obtained with `$`</span></span>
-<span class='r-in'></span>
 <span class='r-in'><span class='va'>res</span><span class='op'>$</span><span class='va'>col1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 2 2 3 4 5</span>
 <span class='r-in'><span class='va'>res</span><span class='op'>$</span><span class='va'>target</span></span>
@@ -483,10 +571,129 @@ as the <em>query</em> data frame.</p></li>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Reducing the target elements to only those that match at least one query row</span></span>
 <span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>pruneTarget</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span></span>
-<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> NULL</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'>target</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 4</span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'>########</span></span>
+<span class='r-in'><span class='co'>## Filtering `Matched` with `filterMatches`</span></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'>## Inspecting the matches in `mo`:</span></span>
+<span class='r-in'><span class='va'>mo</span><span class='op'>$</span><span class='va'>col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 2 2 3 4 5</span>
+<span class='r-in'><span class='va'>mo</span><span class='op'>$</span><span class='va'>target</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## We have thus target *12* matched to both query elements with values 1 and</span></span>
+<span class='r-in'><span class='co'>## 2, and query element 2 is matching 3 target elements. Let's assume we want</span></span>
+<span class='r-in'><span class='co'>## to resolve this multiple mappings to keep from them only the match between</span></span>
+<span class='r-in'><span class='co'>## query 1 (column `"col1"` containing value `1`) with target 1 (value `12`)</span></span>
+<span class='r-in'><span class='co'>## and query 2 (column `"col1"` containing value `2`) with target 2 (value</span></span>
+<span class='r-in'><span class='co'>## `13`). In addition we also want to keep query element 5 (value `5` in</span></span>
+<span class='r-in'><span class='co'>## column `"col1"`) with the target with value `15`:</span></span>
+<span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>filterMatches</span><span class='op'>(</span><span class='va'>mo</span>, queryValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>5</span><span class='op'>)</span>, queryColname <span class='op'>=</span> <span class='st'>"col1"</span>,</span>
+<span class='r-in'>    targetValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>12</span>, <span class='fl'>13</span>, <span class='fl'>15</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        col1      col2    target     score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         1         6        12       0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         7        13       0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         3         8        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         4         9        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5         5        10        15       0.9</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Alternatively to specifying the matches to filter with `queryValue` and</span></span>
+<span class='r-in'><span class='co'>## `targetValue` it is also possible to specify directly the index of the</span></span>
+<span class='r-in'><span class='co'>## match(es) in the `@matches` `data.frame`:</span></span>
+<span class='r-in'><span class='va'>mo</span><span class='op'>@</span><span class='va'>matches</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   query_idx target_idx score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         1          2   0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2          2   0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         2          3   0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         2          4   0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5         5          5   0.9</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## To keep only matches like in the example above we could use:</span></span>
+<span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>filterMatches</span><span class='op'>(</span><span class='va'>mo</span>, index <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>3</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo_sub</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 5 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        col1      col2    target     score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         1         6        12       0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         7        13       0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         3         8        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         4         9        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5         5        10        15       0.9</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Note also that, instead of keeping the specified matches, it would be</span></span>
+<span class='r-in'><span class='co'>## possible to remove them by setting `keep = FALSE`. Below we remove</span></span>
+<span class='r-in'><span class='co'>## selected matches from the object:</span></span>
+<span class='r-in'><span class='va'>mo_sub</span> <span class='op'>&lt;-</span> <span class='fu'>filterMatches</span><span class='op'>(</span><span class='va'>mo</span>, queryValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>2</span><span class='op'>)</span>, queryColname <span class='op'>=</span> <span class='st'>"col1"</span>,</span>
+<span class='r-in'>    targetValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>c</a></span><span class='op'>(</span><span class='fl'>12</span>, <span class='fl'>14</span><span class='op'>)</span>, keep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mo_sub</span><span class='op'>$</span><span class='va'>col1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 1 2 3 4 5</span>
+<span class='r-in'><span class='va'>mo_sub</span><span class='op'>$</span><span class='va'>target</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 12 13 NA NA 15</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>########</span></span>
+<span class='r-in'><span class='co'>## Adding matches using `addMatches`</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## `addMatches` allows to manually add matches. Below we add a new match</span></span>
+<span class='r-in'><span class='co'>## between the `query` element with a value of `1` in column `"col1"` and</span></span>
+<span class='r-in'><span class='co'>## the target element with a value of `15`. Parameter `score` allows to</span></span>
+<span class='r-in'><span class='co'>## assign a score value to the match.</span></span>
+<span class='r-in'><span class='va'>mo_add</span> <span class='op'>&lt;-</span> <span class='fu'>addMatches</span><span class='op'>(</span><span class='va'>mo</span>, queryValue <span class='op'>=</span> <span class='fl'>1</span>, queryColname <span class='op'>=</span> <span class='st'>"col1"</span>,</span>
+<span class='r-in'>    targetValue <span class='op'>=</span> <span class='fl'>15</span>, score <span class='op'>=</span> <span class='fl'>1.40</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo_add</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 8 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          col1      col2    target     score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           1         6        12       0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.1         1         6        15       1.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           2         7        12       0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.1         2         7        13       0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.2         2         7        14       0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3           3         8        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4           4         9        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5           5        10        15       0.9</span>
+<span class='r-in'><span class='co'>## Matches are always sorted by `query`, thus, the new match is listed as</span></span>
+<span class='r-in'><span class='co'>## second match.</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Alternatively, we can also provide a `data.frame` with parameter `score`</span></span>
+<span class='r-in'><span class='co'>## which enables us to add additional information to the added match. Below</span></span>
+<span class='r-in'><span class='co'>## we define the score and an additional column specifying that this match</span></span>
+<span class='r-in'><span class='co'>## was added manually. This information will then also be available in the</span></span>
+<span class='r-in'><span class='co'>## `matchedData`.</span></span>
+<span class='r-in'><span class='va'>mo_add</span> <span class='op'>&lt;-</span> <span class='fu'>addMatches</span><span class='op'>(</span><span class='va'>mo</span>, queryValue <span class='op'>=</span> <span class='fl'>1</span>, queryColname <span class='op'>=</span> <span class='st'>"col1"</span>,</span>
+<span class='r-in'>    targetValue <span class='op'>=</span> <span class='fl'>15</span>, score <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>score <span class='op'>=</span> <span class='fl'>5</span>, manual <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo_add</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 8 rows and 5 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          col1      col2    target     score    manual</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt; &lt;logical&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           1         6        12       0.5        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.1         1         6        15       5.0      TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           2         7        12       0.6        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.1         2         7        13       0.7        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.2         2         7        14       0.8        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3           3         8        NA        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4           4         9        NA        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5           5        10        15       0.9        NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## The match will get a score of NA if we're not providing any score.</span></span>
+<span class='r-in'><span class='va'>mo_add</span> <span class='op'>&lt;-</span> <span class='fu'>addMatches</span><span class='op'>(</span><span class='va'>mo</span>, queryValue <span class='op'>=</span> <span class='fl'>1</span>, queryColname <span class='op'>=</span> <span class='st'>"col1"</span>,</span>
+<span class='r-in'>    targetValue <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>matchedData</span><span class='op'>(</span><span class='va'>mo_add</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 8 rows and 4 columns</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          col1      col2    target     score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; &lt;numeric&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           1         6        12       0.5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1.1         1         6        15        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2           2         7        12       0.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.1         2         7        13       0.7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2.2         2         7        14       0.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3           3         8        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4           4         9        NA        NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5           5        10        15       0.9</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## Creating a MatchedSummarizedExperiment object.</span></span>
 <span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://bioconductor.org/packages/SummarizedExperiment'>SummarizedExperiment</a></span><span class='op'>)</span></span>
