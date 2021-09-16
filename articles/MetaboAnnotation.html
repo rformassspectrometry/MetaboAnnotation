@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Wed Sep 8 12:10:28 2021</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Thu Sep 16 08:14:11 2021</p>
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h1>
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
 ## file(s):
 ## PestMix1_DDA.mzML
 ## Processing:
-##  Filter: select MS level(s) 2 [Wed Sep  8 12:10:39 2021]</code></pre>
+##  Filter: select MS level(s) 2 [Thu Sep 16 08:14:20 2021]</code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -583,9 +583,9 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="session-information" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#session-information" class="anchor" aria-hidden="true"></a>Session information</h1>
-<pre><code>## R version 4.1.0 (2021-05-18)
+<pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.2 LTS
+## Running under: Ubuntu 20.04.3 LTS
 ## 
 ## Matrix products: default
 ## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
@@ -603,14 +603,14 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] msdata_0.33.0          Spectra_1.3.8          ProtGenerics_1.25.1   
-## [4] BiocParallel_1.27.5    S4Vectors_0.31.3       BiocGenerics_0.39.2   
-## [7] MetaboAnnotation_0.2.5 BiocStyle_2.21.3      
+## [1] msdata_0.33.0          Spectra_1.3.9          ProtGenerics_1.25.1   
+## [4] BiocParallel_1.27.7    S4Vectors_0.31.3       BiocGenerics_0.39.2   
+## [7] MetaboAnnotation_0.2.6 BiocStyle_2.21.3      
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] SummarizedExperiment_1.23.4 xfun_0.25                  
-##  [3] bslib_0.2.5.1               lattice_0.20-44            
-##  [5] htmltools_0.5.1.1           yaml_2.2.1                 
+##  [3] bslib_0.3.0                 lattice_0.20-44            
+##  [5] htmltools_0.5.2             yaml_2.2.1                 
 ##  [7] rlang_0.4.11                pkgdown_1.6.1.9001         
 ##  [9] jquerylib_0.1.4             mzR_2.27.1                 
 ## [11] MetaboCoreUtils_1.1.1       matrixStats_0.60.1-9001    
@@ -618,25 +618,25 @@ document.addEventListener("DOMContentLoaded", function() {
 ## [15] MatrixGenerics_1.5.4        zlibbioc_1.39.0            
 ## [17] ragg_1.1.3                  codetools_0.2-18           
 ## [19] memoise_2.0.0               evaluate_0.14              
-## [21] Biobase_2.53.0              knitr_1.33                 
+## [21] Biobase_2.53.0              knitr_1.34                 
 ## [23] IRanges_2.27.2              fastmap_1.1.0              
-## [25] GenomeInfoDb_1.29.8         parallel_4.1.0             
+## [25] GenomeInfoDb_1.29.8         parallel_4.1.1             
 ## [27] highr_0.9                   Rcpp_1.0.7                 
-## [29] BiocManager_1.30.16         cachem_1.0.5               
-## [31] DelayedArray_0.19.2         desc_1.3.0                 
+## [29] BiocManager_1.30.16         cachem_1.0.6               
+## [31] DelayedArray_0.19.3         desc_1.3.0                 
 ## [33] jsonlite_1.7.2              XVector_0.33.0             
 ## [35] MsCoreUtils_1.5.0           systemfonts_1.0.2          
 ## [37] fs_1.5.0                    textshaping_0.3.5          
-## [39] digest_0.6.27               stringi_1.7.3              
-## [41] bookdown_0.22               ncdf4_1.17                 
+## [39] digest_0.6.27               stringi_1.7.4              
+## [41] bookdown_0.24               ncdf4_1.17                 
 ## [43] GenomicRanges_1.45.0        rprojroot_2.0.2            
-## [45] grid_4.1.0                  clue_0.3-59                
-## [47] tools_4.1.0                 bitops_1.0-7               
+## [45] grid_4.1.1                  clue_0.3-59                
+## [47] tools_4.1.1                 bitops_1.0-7               
 ## [49] magrittr_2.0.1              sass_0.4.0                 
-## [51] RCurl_1.98-1.3              cluster_2.1.2              
+## [51] RCurl_1.98-1.4              cluster_2.1.2              
 ## [53] crayon_1.4.1                MASS_7.3-54                
 ## [55] Matrix_1.3-4                rmarkdown_2.10             
-## [57] R6_2.5.0                    compiler_4.1.0</code></pre>
+## [57] R6_2.5.1                    compiler_4.1.1</code></pre>
 </div>
   </div>
 
