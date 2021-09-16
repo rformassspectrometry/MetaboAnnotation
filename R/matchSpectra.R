@@ -272,7 +272,7 @@ setMethod(
             qi <- qry[i]
             if (precMz) {
                 pmz <- precursorMz(qi)
-                pmz <- pmz + c(-1, 1) * ppm(pmz, parms$ppm) + parms$tolerance
+                pmz <- pmz + c(-1, 1) * (ppm(pmz, parms$ppm) + parms$tolerance)
                 trgt <- filterPrecursorMz(trgt, mz = pmz)
             }
             if (precMzPeak)

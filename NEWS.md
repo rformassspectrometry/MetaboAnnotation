@@ -1,5 +1,12 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.6
+
+- Fix bug in `matchSpectra` that was wrongly calculating the acceptable m/z
+  difference if `tolerance` was > 0 (issue
+  [#34](https://github.com/rformassspectrometry/MetaboAnnotation/issues/34)).
+  Fix proposed by Hugo Varet (@hvaret).
+
 ## Changes in 0.2.5
 
 - Improve performance of `matchMz`.
