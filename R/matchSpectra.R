@@ -67,7 +67,8 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   peak matching). This is reported as spectra variable `"reverse_score"`.
 #'   In addition, the ratio between the number of matched peaks and the total
 #'   number of peaks in the target (reference) spectra is reported as the
-#'   *presence ratio* (spectra variable `"presence_ratio"`). See examples below
+#'   *presence ratio* (spectra variable `"presence_ratio"`) and the total
+#'   number of matched peaks as `"matched_peaks_count"`. See examples below
 #'   for details.
 #'
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
@@ -315,6 +316,7 @@ setMethod(
         nm <- nrow(res@matches)
         res@matches$reverse_score <- rep(NA_real_, nm)
         res@matches$presence_ratio <- rep(NA_real_, nm)
+        res@matches$matched_peaks_count <- rep(NA_real_, nm)
         parms_rv <- .compare_spectra_parms_list(param)
         parms_rv$type <- "right"
         for (i in seq_len(nm)) {
@@ -327,8 +329,10 @@ setMethod(
             spl$y <- map$y
             cor <- do.call(param@FUN, spl)
             res@matches$reverse_score[i] <- cor
-            res@matches$presence_ratio[i] <- sum(!is.na(map$x[, 1L])) /
+            nmatched <- sum(!is.na(map$x[, 1L]))
+            res@matches$presence_ratio[i] <- nmatched /
                 nrow(map$y)
+            res@matches$matched_peaks_count <- nmatched
         }
         res@metadata$param <- param
         res

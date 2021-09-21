@@ -119,7 +119,8 @@ present in the target (reference) spectrum (i.e. using a \emph{right join}-based
 peak matching). This is reported as spectra variable \code{"reverse_score"}.
 In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
-\emph{presence ratio} (spectra variable \code{"presence_ratio"}). See examples below
+\emph{presence ratio} (spectra variable \code{"presence_ratio"}) and the total
+number of matched peaks as \code{"matched_peaks_count"}. See examples below
 for details.
 }
 }
