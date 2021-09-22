@@ -335,7 +335,7 @@ setMethod(
 .match_spectra_without_precursor <- function(query, target, param) {
     parlist <- .compare_spectra_parms_list(param)
     cor <- do.call(compareSpectra, c(list(x = query, y = target), parlist))
-    res <- apply(cor, MARGIN = 1, param@THRESHFUN, simplify = FALSE)
+    res <- base::apply(cor, MARGIN = 1, FUN = param@THRESHFUN, simplify = FALSE)
     if (is.logical(res[[1L]]))
         res <- lapply(res, which)
     tidx <- unlist(res, use.names = FALSE)
