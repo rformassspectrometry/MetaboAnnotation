@@ -70,7 +70,8 @@ present in the target (reference) spectrum (i.e. using a right join-based
 peak matching). This is reported as spectra variable &quot;reverse_score&quot;.
 In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
-presence ratio (spectra variable &quot;presence_ratio&quot;). See examples below
+presence ratio (spectra variable &quot;presence_ratio&quot;) and the total
+number of matched peaks as &quot;matched_peaks_count&quot;. See examples below
 for details.
 
 " />
@@ -113,7 +114,7 @@ for details.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -185,7 +186,8 @@ present in the target (reference) spectrum (i.e. using a <em>right join</em>-bas
 peak matching). This is reported as spectra variable <code>"reverse_score"</code>.
 In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
-<em>presence ratio</em> (spectra variable <code>"presence_ratio"</code>). See examples below
+<em>presence ratio</em> (spectra variable <code>"presence_ratio"</code>) and the total
+number of matched peaks as <code>"matched_peaks_count"</code>. See examples below
 for details.</p></li>
 </ul>
 
@@ -253,14 +255,17 @@ considered in the similarity calculation with a precursor m/z that matches
 the precursor m/z of the query spectrum (considering also <code>ppm</code> and
 <code>tolerance</code>). With <code>requirePrecursor = TRUE</code> (the default) the function
 will complete much faster, but will not find any hits for target (or query
-spectra) with missing precursor m/z.</p></td>
+spectra) with missing precursor m/z. It is suggested to check first the
+availability of the precursor m/z in <code>target</code> and <code>query</code>.</p></td>
     </tr>
     <tr>
       <th>requirePrecursorPeak</th>
       <td><p><code>logical(1)</code> whether only target spectra will be
 considered in the spectra similarity calculation that have a peak with an
 m/z matching the precursor m/z of the query spectrum. Defaults to
-<code>requirePrecursorPeak = FALSE</code>.</p></td>
+<code>requirePrecursorPeak = FALSE</code>. It is suggested to check first the
+availability of the precursor m/z in <code>query</code>, as no match will be reported
+for query spectra with missing precursor m/z.</p></td>
     </tr>
     <tr>
       <th>THRESHFUN</th>
@@ -269,8 +274,10 @@ target spectra are considered <em>matching</em>. Defaults to
 <code>THRESHFUN = function(x) which(x &gt;= 0.7)</code> hence selects
 all target spectra matching a query spectrum with a similarity higher or
 equal than <code>0.7</code>. Any function that takes a numeric vector with similarity
-scores (as returned by <code>compareSpectra()</code>) as input and returns a
-<code>logical</code> or <code>integer</code> vector with the matches is supported.</p></td>
+scores from the comparison of a query spectrum with all target spectra (as
+returned by <code>compareSpectra()</code>) as input and returns a
+<code>logical</code> vector (same dimensions as the similarity scores) or an integer
+with the matches is supported.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -294,8 +301,8 @@ to the <code>compareSpectra()</code> call.</p></td>
     <tr>
       <th>BPPARAM</th>
       <td><p>for <code>matchSpectra</code>: parallel processing setup (see the
-<code>BiocParallel</code> package for more information). By default parallel
-processing is disabled.</p></td>
+<code>BiocParallel</code> package for more information). Parallel processing is
+disabled by default.</p></td>
     </tr>
     </table>
 
@@ -379,6 +386,36 @@ processing is disabled.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  [8] 0.7577286        NA 0.7433718 0.7019807 0.7081274        NA 0.7320465</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [15] 0.8106258 0.7290458 0.8168876 0.7247800 0.7412586 0.7198787        NA</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> [22]        NA        NA        NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Below we use a THRESHFUN that returns for each query spectrum the (first)</span></span>
+<span class='r-in'><span class='co'>## best matching target spectrum.</span></span>
+<span class='r-in'><span class='va'>csp</span> <span class='op'>&lt;-</span> <span class='fu'>CompareSpectraParam</span><span class='op'>(</span>requirePrecursor <span class='op'>=</span> <span class='cn'>FALSE</span>, ppm <span class='op'>=</span> <span class='fl'>10</span>,</span>
+<span class='r-in'>    THRESHFUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/which.min.html'>which.max</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mtches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchSpectra.html'>matchSpectra</a></span><span class='op'>(</span><span class='va'>pest_ms2</span>, <span class='va'>minimb</span>, <span class='va'>csp</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mtches</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSpectra </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 13 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 13 (13 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 100 (10 matched)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Each of the query spectra is matched to one target spectrum</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>mtches</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 13</span>
+<span class='r-in'><span class='fu'><a href='Matched.html'>matches</a></span><span class='op'>(</span><span class='va'>mtches</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    query_idx target_idx        score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1          1          1 0.000000e+00</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2          2         73 8.855473e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3          3          2 6.313687e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4          4         44 7.769746e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5          5         74 1.772117e-05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6          6          2 7.433718e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7          7          5 1.906998e-03</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8          8         53 8.168876e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9          9         44 7.412586e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10        10         86 4.085289e-04</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11        11         53 4.323403e-01</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12        12         47 3.469648e-03</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13        13         71 7.612480e-06</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## See the package vignette for details, descriptions and more examples.</span></span>
 </code></pre></div>

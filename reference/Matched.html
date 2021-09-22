@@ -92,7 +92,7 @@ the matched SummarizedExperiment." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
       </span>
     </div>
 
@@ -170,6 +170,8 @@ show(object)
 
 # S4 method for Matched,ANY,ANY,ANY
 [(x, i, j, ..., drop = FALSE)
+
+matches(object)
 
 target(object)
 
@@ -404,6 +406,10 @@ elements) and the values for the target elements matched to the respective
 query elements (or <code>NA</code> if the target element is not matched to any query
 element). For <code>MatchedSummarizedExperiment</code> the object's <code>rowData</code> is used
 as the <em>query</em> data frame.</p></li>
+<li><p><code>matches</code> returns a <code>data.frame</code> with the actual matching information with
+columns <code>"query_idx"</code> (index of the element in <code>query</code>), <code>"target_idx"</code>
+(index of the element in <code>target</code>) <code>"score"</code> (the score of the match) and
+eventual additional columns.</p></li>
 <li><p><code>target</code> returns the <em>target</em> object.</p></li>
 <li><p><code>query</code> returns the <em>query</em> object.</p></li>
 <li><p><code>whichTarget</code> returns an <code>integer</code> with the indices of the elements in
