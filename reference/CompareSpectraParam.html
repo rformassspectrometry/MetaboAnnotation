@@ -72,7 +72,11 @@ In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
 presence ratio (spectra variable &quot;presence_ratio&quot;) and the total
 number of matched peaks as &quot;matched_peaks_count&quot;. See examples below
-for details.
+for details. Parameter THRESHFUN_REVERSE allows to define an additional
+threshold function to filter matches. If THRESHFUN_REVERSE is defined
+only matches with a spectra similarity fulfilling both THRESHFUN and
+THRESHFUN_REVERSE are returned. With the default
+THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
 
 " />
 
@@ -114,7 +118,7 @@ for details.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
       </span>
     </div>
 
@@ -188,7 +192,11 @@ In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
 <em>presence ratio</em> (spectra variable <code>"presence_ratio"</code>) and the total
 number of matched peaks as <code>"matched_peaks_count"</code>. See examples below
-for details.</p></li>
+for details. Parameter <code>THRESHFUN_REVERSE</code> allows to define an additional
+<em>threshold function</em> to filter matches. If <code>THRESHFUN_REVERSE</code> is defined
+only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <strong>and</strong>
+<code>THRESHFUN_REVERSE</code> are returned. With the default
+<code>THRESHFUN_REVERSE = NULL</code> all matches passing <code>THRESHFUN</code> are reported.</p></li>
 </ul>
 
     </div>
@@ -212,6 +220,7 @@ for details.</p></li>
   requirePrecursor <span class='op'>=</span> <span class='cn'>TRUE</span>,
   requirePrecursorPeak <span class='op'>=</span> <span class='cn'>FALSE</span>,
   THRESHFUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>&gt;=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
+  THRESHFUN_REVERSE <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -283,6 +292,12 @@ with the matches is supported.</p></td>
       <th>...</th>
       <td><p>for <code>CompareSpectraParam</code>: additional parameters passed along
 to the <code>compareSpectra()</code> call.</p></td>
+    </tr>
+    <tr>
+      <th>THRESHFUN_REVERSE</th>
+      <td><p>for <code>MatchForwardReverseParam</code>: optional additional
+<em>thresholding function</em> to filter the results on the reverse score. If
+specified the same format than <code>THRESHFUN</code> is expected.</p></td>
     </tr>
     <tr>
       <th>query</th>
