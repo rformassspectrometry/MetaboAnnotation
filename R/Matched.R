@@ -101,6 +101,11 @@
 #'   element). For `MatchedSummarizedExperiment` the object's `rowData` is used
 #'   as the *query* data frame.
 #'
+#' - `matches` returns a `data.frame` with the actual matching information with
+#'   columns `"query_idx"` (index of the element in `query`), `"target_idx"`
+#'   (index of the element in `target`) `"score"` (the score of the match) and
+#'   eventual additional columns.
+#'
 #' - `target` returns the *target* object.
 #'
 #' - `query` returns the *query* object.
@@ -498,6 +503,13 @@ setMethod("[", "Matched", function(x, i, j, ..., drop = FALSE) {
         i <- which(i)
     .subset_matches_nodim(x, i)
 })
+
+#' @rdname Matched
+#'
+#' @export
+matches <- function(object) {
+    object@matches
+}
 
 #' @rdname Matched
 #'

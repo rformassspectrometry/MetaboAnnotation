@@ -13,6 +13,7 @@
 \alias{length,Matched-method}
 \alias{show,Matched-method}
 \alias{[,Matched,ANY,ANY,ANY-method}
+\alias{matches}
 \alias{target}
 \alias{query}
 \alias{whichTarget}
@@ -43,6 +44,8 @@ Matched(
 \S4method{show}{Matched}(object)
 
 \S4method{[}{Matched,ANY,ANY,ANY}(x, i, j, ..., drop = FALSE)
+
+matches(object)
 
 target(object)
 
@@ -246,6 +249,10 @@ elements) and the values for the target elements matched to the respective
 query elements (or \code{NA} if the target element is not matched to any query
 element). For \code{MatchedSummarizedExperiment} the object's \code{rowData} is used
 as the \emph{query} data frame.
+\item \code{matches} returns a \code{data.frame} with the actual matching information with
+columns \code{"query_idx"} (index of the element in \code{query}), \code{"target_idx"}
+(index of the element in \code{target}) \code{"score"} (the score of the match) and
+eventual additional columns.
 \item \code{target} returns the \emph{target} object.
 \item \code{query} returns the \emph{query} object.
 \item \code{whichTarget} returns an \code{integer} with the indices of the elements in

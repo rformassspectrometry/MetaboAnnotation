@@ -2,6 +2,9 @@
 
 ## Changes in 0.2.7
 
+- Performance improvement in `matchSpectra` if no precursor m/z filter is used
+  (issue
+  [#38](https://github.com/rformassspectrometry/MetaboAnnotation/issues/38)).
 - Report number of matching peaks in `matchSpectra,MatchForwardReverseParam`
   (issue
   [#36](https://github.com/rformassspectrometry/MetaboAnnotation/issues/36)).
