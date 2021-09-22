@@ -57,20 +57,25 @@ considered in the similarity calculation with a precursor m/z that matches
 the precursor m/z of the query spectrum (considering also \code{ppm} and
 \code{tolerance}). With \code{requirePrecursor = TRUE} (the default) the function
 will complete much faster, but will not find any hits for target (or query
-spectra) with missing precursor m/z.}
+spectra) with missing precursor m/z. It is suggested to check first the
+availability of the precursor m/z in \code{target} and \code{query}.}
 
 \item{requirePrecursorPeak}{\code{logical(1)} whether only target spectra will be
 considered in the spectra similarity calculation that have a peak with an
 m/z matching the precursor m/z of the query spectrum. Defaults to
-\code{requirePrecursorPeak = FALSE}.}
+\code{requirePrecursorPeak = FALSE}. It is suggested to check first the
+availability of the precursor m/z in \code{query}, as no match will be reported
+for query spectra with missing precursor m/z.}
 
 \item{THRESHFUN}{\code{function} applied to the similarity score to define which
 target spectra are considered \emph{matching}. Defaults to
 \code{THRESHFUN = function(x) which(x >= 0.7)} hence selects
 all target spectra matching a query spectrum with a similarity higher or
 equal than \code{0.7}. Any function that takes a numeric vector with similarity
-scores (as returned by \code{\link[=compareSpectra]{compareSpectra()}}) as input and returns a
-\code{logical} or \code{integer} vector with the matches is supported.}
+scores from the comparison of a query spectrum with all target spectra (as
+returned by \code{\link[=compareSpectra]{compareSpectra()}}) as input and returns a
+\code{logical} vector (same dimensions as the similarity scores) or an integer
+with the matches is supported.}
 
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
 to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
@@ -84,8 +89,8 @@ to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
 \code{CompareSpectraParam}) defining the settings for the matching.}
 
 \item{BPPARAM}{for \code{matchSpectra}: parallel processing setup (see the
-\code{BiocParallel} package for more information). By default parallel
-processing is disabled.}
+\code{BiocParallel} package for more information). Parallel processing is
+disabled by default.}
 }
 \description{
 \code{matchSpectra} with both \code{query} and \code{target} being a \link{Spectra} object
@@ -119,7 +124,8 @@ present in the target (reference) spectrum (i.e. using a \emph{right join}-based
 peak matching). This is reported as spectra variable \code{"reverse_score"}.
 In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
-\emph{presence ratio} (spectra variable \code{"presence_ratio"}). See examples below
+\emph{presence ratio} (spectra variable \code{"presence_ratio"}) and the total
+number of matched peaks as \code{"matched_peaks_count"}. See examples below
 for details.
 }
 }
@@ -154,6 +160,17 @@ mtches[2]$score
 
 ## To access the score for the full data set
 mtches$score
+
+## Below we use a THRESHFUN that returns for each query spectrum the (first)
+## best matching target spectrum.
+csp <- CompareSpectraParam(requirePrecursor = FALSE, ppm = 10,
+    THRESHFUN = function(x) which.max(x))
+mtches <- matchSpectra(pest_ms2, minimb, csp)
+mtches
+
+## Each of the query spectra is matched to one target spectrum
+length(mtches)
+matches(mtches)
 
 ## See the package vignette for details, descriptions and more examples.
 }
