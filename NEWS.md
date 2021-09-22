@@ -1,5 +1,11 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.8
+
+- Add parameter `THRESHFUN_REVERSE` to `MatchForwardReverseParam` to allow
+  filtering results on forward **and** reverse score (issue
+  [#37](https://github.com/rformassspectrometry/MetaboAnnotation/issues/37)).
+
 ## Changes in 0.2.7
 
 - Performance improvement in `matchSpectra` if no precursor m/z filter is used

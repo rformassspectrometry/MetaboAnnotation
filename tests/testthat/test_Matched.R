@@ -392,7 +392,8 @@ test_that("matchedData,Matched works", {
     ## Only query object variables
     res <- matchedData(mo, columns = c("query"))
     expect_equal(colnames(res), c("query"))
-    expect_equal(res$col1, mo$col1)
+    expect_equal(res$query, mo$query)
+    expect_equal(res$query, q2)
 
     ## Only target object variables
     res <- matchedData(mo, columns = c("target_col1", "target_col2"))
@@ -451,7 +452,7 @@ test_that("filterMatches,Matched works", {
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = seq(0.5, 0.9, by = 0.1)))
     ## out of bounds indexes
-    expect_error(filterMatches(mo, index = c(1, 10)), "out of bounds")
+    expect_error(filterMatches(mo, index = c(1, 10)), "out-of-bounds")
     ## no index : every match is removed
     idxs <- integer(0)
     mosub <- filterMatches(mo, index = idxs)

@@ -69,7 +69,11 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   number of peaks in the target (reference) spectra is reported as the
 #'   *presence ratio* (spectra variable `"presence_ratio"`) and the total
 #'   number of matched peaks as `"matched_peaks_count"`. See examples below
-#'   for details.
+#'   for details. Parameter `THRESHFUN_REVERSE` allows to define an additional
+#'   *threshold function* to filter matches. If `THRESHFUN_REVERSE` is defined
+#'   only matches with a spectra similarity fulfilling both `THRESHFUN` **and**
+#'   `THRESHFUN_REVERSE` are returned. With the default
+#'   `THRESHFUN_REVERSE = NULL` all matches passing `THRESHFUN` are reported.
 #'
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
 #'   `BiocParallel` package for more information). Parallel processing is
@@ -123,6 +127,10 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   returned by [compareSpectra()]) as input and returns a
 #'   `logical` vector (same dimensions as the similarity scores) or an integer
 #'   with the matches is supported.
+#'
+#' @param THRESHFUN_REVERSE for `MatchForwardReverseParam`: optional additional
+#'   *thresholding function* to filter the results on the reverse score. If
+#'   specified the same format than `THRESHFUN` is expected.
 #'
 #' @param ... for `CompareSpectraParam`: additional parameters passed along
 #'   to the [compareSpectra()] call.
@@ -214,12 +222,19 @@ setClass("CompareSpectraParam",
                  msg <- c("'tolerance' has to be a positive number of length 1")
              if (length(object@ppm) != 1 || object@ppm < 0)
                  msg <- c("'ppm' has to be a positive number of length 1")
+             msg <- c(msg, .valid_threshfun(object@THRESHFUN))
              msg
          })
 
 setClass("MatchForwardReverseParam",
-         contains = "CompareSpectraParam"
-         )
+         slots = c(THRESHFUN_REVERSE = "ANY"),
+         contains = "CompareSpectraParam",
+         prototype = prototype(
+             THRESHFUN_REVERSE = NULL
+         ),
+         validity = function(object) {
+             .valid_threshfun(object@THRESHFUN_REVERSE, "THRESHFUN_REVERSE")
+         })
 
 #' @rdname CompareSpectraParam
 #'
@@ -252,6 +267,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                      requirePrecursor = TRUE,
                                      requirePrecursorPeak = FALSE,
                                      THRESHFUN = function(x) which(x >= 0.7),
+                                     THRESHFUN_REVERSE = NULL,
                                      ...) {
     dots <- list(...)
     if (any(names(dots) == "type")) {
@@ -262,7 +278,27 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
     new("MatchForwardReverseParam", MAPFUN = MAPFUN, tolerance = tolerance,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
-        THRESHFUN = THRESHFUN, dots = dots)
+        THRESHFUN = THRESHFUN, THRESHFUN_REVERSE = THRESHFUN_REVERSE,
+        dots = dots)
+}
+
+.valid_threshfun <- function(x, variable = "THRESHFUN") {
+    msg <- NULL
+    if (length(x)) {
+        if (!is.function(x))
+            return(paste0(variable, " needs to be a function."))
+        res <- x(1:10)
+        if (!is.logical(res) & !is.integer(res))
+            return(paste0(variable,
+                          " needs to return integer or logical vector."))
+        if (is.logical(res) && length(res) != 10)
+            return(paste0(variable, " needs to return a logical vector with",
+                          " the same length than target spectra."))
+        if (is.integer(res) && any(res < 1 | res > 10))
+            return(paste0(variable, " needs to return an integer vector with ",
+                          "values between 1 and the length of target spectra."))
+    }
+    msg
 }
 
 .compare_spectra_parms_list <- function(x) {
@@ -414,6 +450,10 @@ setMethod(
                 nrow(map$y)
             res@matches$matched_peaks_count <- nmatched
         }
+        if (length(param@THRESHFUN_REVERSE))
+            res@matches <- res@matches[param@THRESHFUN_REVERSE(
+                                                 res@matches$reverse_score), ,
+                                       drop = FALSE]
         res@metadata$param <- param
         res
     })
