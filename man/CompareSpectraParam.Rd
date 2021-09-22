@@ -28,6 +28,7 @@ MatchForwardReverseParam(
   requirePrecursor = TRUE,
   requirePrecursorPeak = FALSE,
   THRESHFUN = function(x) which(x >= 0.7),
+  THRESHFUN_REVERSE = NULL,
   ...
 )
 
@@ -80,6 +81,10 @@ with the matches is supported.}
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
 to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
 
+\item{THRESHFUN_REVERSE}{for \code{MatchForwardReverseParam}: optional additional
+\emph{thresholding function} to filter the results on the reverse score. If
+specified the same format than \code{THRESHFUN} is expected.}
+
 \item{query}{for \code{matchSpectra}: \link{Spectra} object with the query spectra.}
 
 \item{target}{for \code{matchSpectra}: \link{Spectra} object with the target
@@ -126,7 +131,11 @@ In addition, the ratio between the number of matched peaks and the total
 number of peaks in the target (reference) spectra is reported as the
 \emph{presence ratio} (spectra variable \code{"presence_ratio"}) and the total
 number of matched peaks as \code{"matched_peaks_count"}. See examples below
-for details.
+for details. Parameter \code{THRESHFUN_REVERSE} allows to define an additional
+\emph{threshold function} to filter matches. If \code{THRESHFUN_REVERSE} is defined
+only matches with a spectra similarity fulfilling both \code{THRESHFUN} \strong{and}
+\code{THRESHFUN_REVERSE} are returned. With the default
+\code{THRESHFUN_REVERSE = NULL} all matches passing \code{THRESHFUN} are reported.
 }
 }
 \examples{

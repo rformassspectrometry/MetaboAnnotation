@@ -640,9 +640,9 @@ setMethod("matchedData", "Matched", function(object,
 .validate_matches_content <- function(x, nquery, ntarget) {
     msg <- NULL
     if (!all(x$query_idx %in% seq_len(nquery)))
-        msg <- c(msg, "indices in \"query_idx\" are out of bounds")
+        msg <- c(msg, "indices in \"query_idx\" are out-of-bounds")
     if (!all(x$target_idx %in% seq_len(ntarget)))
-        msg <- c(msg, "indices in \"target_idx\" are out of bounds")
+        msg <- c(msg, "indices in \"target_idx\" are out-of-bounds")
     msg
 }
 
@@ -778,7 +778,7 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
                                                 index = integer(),
                                                 keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out of bounds")
+        stop("some indexes in \"index\" are out-of-bounds")
     if (!length(index) && length(queryValue))
         index  <- .findMatchesIdxs(object@query, object@target,
                                    object@matches, queryValue,
@@ -809,9 +809,9 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
             stop(paste0("'queryValue' and 'targetValue' must be integer ",
                         "vectors when 'isIndex = TRUE'"))
         if (any(!queryValue %in% seq_len(.nelements(query))))
-            stop("Provided indices in 'queryValue' are out of bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.")
         if (any(!targetValue %in% seq_len(.nelements(target))))
-            stop("Provided indices in 'queryValue' are out of bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.")
         query_idx <- queryValue
         target_idx <- targetValue
     } else {

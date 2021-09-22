@@ -81,7 +81,7 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@query, ms@query[c(10, 3)])
     expect_equal(res@target, ms@target)
 
-    expect_error(.subset_matches_nodim(ms, 12), "out of bounds")
+    expect_error(.subset_matches_nodim(ms, 12), "out-of-bounds")
 
     res <- .subset_matches_nodim(ms, c(2, 4))
     expect_equal(res@query, ms@query[c(2, 4)])
@@ -241,5 +241,6 @@ test_that("pruneTarget,MatchedSpectra works", {
 })
 
 test_that("plotSpectraMirror throws an error", {
+    ms <- MatchedSpectra()
     expect_error(plotSpectraMirror(ms), "Length")
 })
