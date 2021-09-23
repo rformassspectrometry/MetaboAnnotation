@@ -448,7 +448,7 @@ setMethod(
             nmatched <- sum(!is.na(map$x[, 1L]))
             res@matches$presence_ratio[i] <- nmatched /
                 nrow(map$y)
-            res@matches$matched_peaks_count <- nmatched
+            res@matches$matched_peaks_count[i] <- nmatched
         }
         if (length(param@THRESHFUN_REVERSE))
             res@matches <- res@matches[param@THRESHFUN_REVERSE(
