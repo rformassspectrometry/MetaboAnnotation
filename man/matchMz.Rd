@@ -101,8 +101,13 @@ acceptable m/z-dependent difference (in parts-per-million) in m/z values
 to consider them to be \emph{matching}.}
 
 \item{adducts}{for \code{Mass2MzParam} or \code{Mass2MzRtParam}:
-\code{character} with the names of adducts to calculate m/z from target
-compounds' masses. Use \code{MetaboCoreUtils::adductNames("positive")} and
+either \code{character} with the names of adducts or \code{data.frame} with the
+adduct definition. This parameter is used to calculate m/z from target
+compounds' masses. Custom adduct definitions can be passed to the adduct
+parameter in form of a \code{data.frame}. This \code{data.frame} is expected to
+have columns \code{"mass_add"} and \code{"mass_multi"} defining the \emph{additive} and
+\emph{multiplicative} part of the calculation. Use
+\code{MetaboCoreUtils::adductNames("positive")} and
 \code{MetaboCoreUtils::adductNames("negative")} for valid names.}
 
 \item{toleranceRt}{for \code{Mass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
