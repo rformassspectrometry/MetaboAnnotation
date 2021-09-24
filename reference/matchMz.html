@@ -142,7 +142,7 @@ target retention time values.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
       </span>
     </div>
 
@@ -355,9 +355,10 @@ adduct definition. This parameter is used to calculate m/z from target
 compounds' masses. Custom adduct definitions can be passed to the adduct
 parameter in form of a <code>data.frame</code>. This <code>data.frame</code> is expected to
 have columns <code>"mass_add"</code> and <code>"mass_multi"</code> defining the <em>additive</em> and
-<em>multiplicative</em> part of the calculation. Use
+<em>multiplicative</em> part of the calculation. See
+<code><a href='https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html'>MetaboCoreUtils::adducts()</a></code> for the expected format or use
 <code>MetaboCoreUtils::adductNames("positive")</code> and
-<code>MetaboCoreUtils::adductNames("negative")</code> for valid names.</p></td>
+<code>MetaboCoreUtils::adductNames("negative")</code> for valid adduct names.</p></td>
     </tr>
     <tr>
       <th>toleranceRt</th>
@@ -617,10 +618,10 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> DataFrame with 4 rows and 3 columns</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        query    target       score</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         12   11.9991 0.000860081</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2        343  343.0009 0.000921172</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> NA        23        NA          NA</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        231  231.0016 0.001639484</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> NA        12        NA          NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1        343  342.9999 0.000115016</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         23   22.9992 0.000807437</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3        231  231.0015 0.001457556</span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
