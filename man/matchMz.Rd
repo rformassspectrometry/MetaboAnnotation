@@ -106,9 +106,10 @@ adduct definition. This parameter is used to calculate m/z from target
 compounds' masses. Custom adduct definitions can be passed to the adduct
 parameter in form of a \code{data.frame}. This \code{data.frame} is expected to
 have columns \code{"mass_add"} and \code{"mass_multi"} defining the \emph{additive} and
-\emph{multiplicative} part of the calculation. Use
+\emph{multiplicative} part of the calculation. See
+\code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} for the expected format or use
 \code{MetaboCoreUtils::adductNames("positive")} and
-\code{MetaboCoreUtils::adductNames("negative")} for valid names.}
+\code{MetaboCoreUtils::adductNames("negative")} for valid adduct names.}
 
 \item{toleranceRt}{for \code{Mass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
 defining the maximal acceptable absolute difference in retention time

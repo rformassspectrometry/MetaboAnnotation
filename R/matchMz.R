@@ -38,7 +38,7 @@ setClass("Mass2MzParam",
            msg <- NULL
            if (is(object@adducts, "data.frame")) {
              if(any(!c("mass_add", "mass_multi") %in% colnames(object@adducts)))
-               msg <- paste0("Columns \"mass_add\" and \"mass_multi\" must be ", 
+               msg <- paste0("Columns \"mass_add\" and \"mass_multi\" must be ",
                              "present when adducts is a data.frame")
            } else {
              if (!all(object@adducts %in% c(adductNames("positive"),
@@ -183,14 +183,15 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   target retention time values.
 #'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
-#'     either `character` with the names of adducts or `data.frame` with the 
+#'     either `character` with the names of adducts or `data.frame` with the
 #'     adduct definition. This parameter is used to calculate m/z from target
-#'     compounds' masses. Custom adduct definitions can be passed to the adduct 
-#'     parameter in form of a `data.frame`. This `data.frame` is expected to 
-#'     have columns `"mass_add"` and `"mass_multi"` defining the *additive* and 
-#'     *multiplicative* part of the calculation. Use 
-#'     `MetaboCoreUtils::adductNames("positive")` and 
-#'     `MetaboCoreUtils::adductNames("negative")` for valid names. 
+#'     compounds' masses. Custom adduct definitions can be passed to the adduct
+#'     parameter in form of a `data.frame`. This `data.frame` is expected to
+#'     have columns `"mass_add"` and `"mass_multi"` defining the *additive* and
+#'     *multiplicative* part of the calculation. See
+#'     [MetaboCoreUtils::adducts()] for the expected format or use
+#'     `MetaboCoreUtils::adductNames("positive")` and
+#'     `MetaboCoreUtils::adductNames("negative")` for valid adduct names.
 #'
 #' @param BPPARAM parallel processing setup. See `BiocParallel::bpparam()` for
 #'     details.

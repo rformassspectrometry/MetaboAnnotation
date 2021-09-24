@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.9
+
+- Add support for manually defined adducts to `Mass2MzParam` (issue
+  [#41](https://github.com/rformassspectrometry/MetaboAnnotation/issues/41)).
+
 ## Changes in 0.2.8
 
 - Add parameter `THRESHFUN_REVERSE` to `MatchForwardReverseParam` to allow
