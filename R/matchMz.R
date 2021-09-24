@@ -30,17 +30,23 @@ MzParam <- function(tolerance = 0, ppm = 5) {
 #' @noRd
 setClass("Mass2MzParam",
          slots = c(
-           adducts = "character"),
+           adducts = "adductClass"),
          contains = "MzParam",
          prototype = prototype(
            adducts = c("[M+H]+")),
          validity = function(object) {
            msg <- NULL
-           if (!all(object@adducts %in% c(adductNames("positive"),
-                                          adductNames("negative"))))
-             msg <- paste0("Unknown adducts, please check MetaboCoreUtils",
-                           " for valid adducts")
-           msg
+           if (is(object@adducts, "data.frame")) {
+             if(any(!c("mass_add", "mass_multi") %in% colnames(object@adducts)))
+               msg <- paste0("Columns \"mass_add\" and \"mass_multi\" must be ", 
+                             "present when adducts is a data.frame")
+           } else {
+             if (!all(object@adducts %in% c(adductNames("positive"),
+                                            adductNames("negative"))))
+               msg <- paste0("Unknown adducts, please check MetaboCoreUtils",
+                             " for valid adducts")
+           }
+             msg
          })
 
 #' @rdname matchMz
@@ -177,9 +183,14 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   target retention time values.
 #'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
-#'     `character` with the names of adducts to calculate m/z from target
-#'     compounds' masses. Use `MetaboCoreUtils::adductNames("positive")` and
-#'     `MetaboCoreUtils::adductNames("negative")` for valid names.
+#'     either `character` with the names of adducts or `data.frame` with the 
+#'     adduct definition. This parameter is used to calculate m/z from target
+#'     compounds' masses. Custom adduct definitions can be passed to the adduct 
+#'     parameter in form of a `data.frame`. This `data.frame` is expected to 
+#'     have columns `"mass_add"` and `"mass_multi"` defining the *additive* and 
+#'     *multiplicative* part of the calculation. Use 
+#'     `MetaboCoreUtils::adductNames("positive")` and 
+#'     `MetaboCoreUtils::adductNames("negative")` for valid names. 
 #'
 #' @param BPPARAM parallel processing setup. See `BiocParallel::bpparam()` for
 #'     details.
@@ -487,7 +498,7 @@ setMethod("matchMz",
             if (!rtColname[2] %in% colnames(target))
               stop("Missing column \"", rtColname[2], "\" in target")
             target_mz <- .mass_to_mz_df(target[, massColname], param@adducts)
-            target_mz$rt <- rep(target[, rtColname[2]], length(param@adducts))
+            target_mz$rt <- rep(target[, rtColname[2]], .nelements(param@adducts))
             queryl <- nrow(query)
             matches <- vector("list", queryl)
             query_mz <- query[, mzColname]
@@ -630,7 +641,7 @@ setMethod("matchMz",
 #' @noRd
 .mass_to_mz_df <- function(x, adducts) {
   mz <- mass2mz(x, adducts)
-  data.frame(index = rep(seq_along(x), length(adducts)),
+  data.frame(index = rep(seq_along(x), .nelements(adducts)),
              adduct = rep(colnames(mz), each = length(x)),
              mz = as.numeric(mz))
 }

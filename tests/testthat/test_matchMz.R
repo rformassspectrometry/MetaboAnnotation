@@ -5,6 +5,11 @@ test_that("Mass2MzParam works", {
   expect_error(Mass2MzParam(tolerance = 1:3), "positive number")
   expect_error(Mass2MzParam(ppm = -4), "positive number")
   expect_error(Mass2MzParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
+  
+  adds <- data.frame(mass_add = c(1, 2, 3), mass_multi = c(1, 2, 0.5))
+  rownames(adds) <- c("a", "b", "c")
+  res <- Mass2MzParam(adducts = adds)
+  expect_true(is(res, "Mass2MzParam"))
 })
 
 test_that("Mass2MzRtParam works", {
@@ -68,6 +73,39 @@ test_that("matchMz,Mass2MzParam works", {
 
   ## no matches
   adducts <- c("[M+Li]+", "[M+K]+")
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
+  res <- matchMz(x, cmpds, par)
+  expect_true(is(res, "Matched"))
+  expect_equal(query(res), x)
+  expect_equal(target(res), cmpds)
+  expect_true(nrow(res@matches) == 0)
+
+  ## with a custom adduct definition
+  adducts <- data.frame(mass_add = c(1, 3), mass_multi = c(1, 0.5))
+  rownames(adducts) <- c("a", "b")
+  x <- data.frame(
+    mz = c(mass2mz(204.089878, adducts["a", ]),
+           mass2mz(131.094629, adducts["a", ]),
+           mass2mz(204.089878, adducts["b", ]) + 1e-6)
+  )
+
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
+  res <- matchMz(x, cmpds, par)
+  expect_equal(query(res), x)
+  expect_equal(target(res), cmpds)
+  expect_equal(res@matches$query_idx, c(1, 2, 2, 3))
+  expect_equal(res@matches$target_idx, c(1, 2, 3, 1))
+  expect_equal(res@matches$score, c(0, 0, 0, 1e-6))
+
+  par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
+  res <- matchMz(x, cmpds, par)
+  expect_equal(query(res), x)
+  expect_equal(target(res), cmpds)
+  expect_equal(res@matches$query_idx, c(1, 2, 2))
+  expect_equal(res@matches$target_idx, c(1, 2, 3))
+  expect_equal(res@matches$score, c(0, 0, 0))
+ 
+  adducts <- data.frame(mass_add = c(2, 4), mass_multi = c(2, 1))
   par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
   res <- matchMz(x, cmpds, par)
   expect_true(is(res, "Matched"))
@@ -200,6 +238,13 @@ test_that(".mass_to_mz_df works", {
     expect_equal(colnames(res), c("index", "adduct", "mz"))
     expect_equal(res$index, rep(1:4, length(adds)))
     expect_equal(res$adduct, rep(adds, each = 4))
+
+    adds <- MetaboCoreUtils::adducts()
+    res1 <- .mass_to_mz_df(mass, adducts = adds)
+    expect_true(is.data.frame(res))
+    expect_equal(colnames(res), c("index", "adduct", "mz"))
+    expect_equal(res$index, rep(1:4, nrow(adds)))
+    expect_equal(res$adduct, rep(adds$name, each = 4))
 })
 
 test_that("matchMz, MzParam works", {
