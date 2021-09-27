@@ -51,7 +51,16 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   information on these parameters. Parameters `requirePrecursor` (default
 #'   `TRUE`) and `requirePrecursorPeak` (default `FALSE`) allow to pre-filter
 #'   the target spectra prior to the actual similarity calculation for each
-#'   individual query spectrum. This can considerably improve performance.
+#'   individual query spectrum. Target spectra can also be pre-filtered based on
+#'   retention time if parameter `toleranceRt` is set to a value different than
+#'   the default `toleranceRt = Inf`. Only target spectra with a retention time
+#'   within the query's retention time +/- `toleranceRt` are considered. While
+#'   these pre-filters can considerably improve performance, it should be noted
+#'   that no matches will be found between query and target spectra with missing
+#'   values in the considered variable (precursor m/z or retention time). For
+#'   target spectra without retention times (such as for `Spectra` from a
+#'   public reference database such as MassBank) the default `toleranceRt = Inf`
+#'   should thus be used.
 #'   Finally, parameter `THRESHFUN` allows to define a function to be applied to
 #'   the similarity scores to define which matches to report. See below for more
 #'   details.
@@ -117,6 +126,11 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
 #'   between m/z values. This will be used in `compareSpectra` as well as for
 #'   eventual precursor m/z matching.
+#'
+#' @param toleranceRt `numeric(1)` defining the maximal accepted (absolute)
+#'   difference in retention time between query and target spectra. By default
+#'   (with `toleranceRt = Inf`) this filter is not considered. See help of
+#'   `CompareSpectraParam` above for more information.
 #'
 #' @param THRESHFUN `function` applied to the similarity score to define which
 #'   target spectra are considered *matching*. Defaults to
@@ -204,7 +218,9 @@ setClass("CompareSpectraParam",
              dots = "list",
              requirePrecursor = "logical",
              requirePrecursorPeak = "logical",
-             THRESHFUN = "function"),
+             THRESHFUN = "function",
+             toleranceRt = "numeric"
+             ),
          contains = "Param",
          prototype = prototype(
              MAPFUN = joinPeaks,
@@ -214,7 +230,8 @@ setClass("CompareSpectraParam",
              dots = list(),
              requirePrecursor = TRUE,
              requirePrecursorPeak = FALSE,
-             THRESHFUN = function(x) which(x >= 0.7)
+             THRESHFUN = function(x) which(x >= 0.7),
+             toleranceRt = Inf
          ),
          validity = function(object) {
              msg <- NULL
@@ -223,6 +240,9 @@ setClass("CompareSpectraParam",
              if (length(object@ppm) != 1 || object@ppm < 0)
                  msg <- c("'ppm' has to be a positive number of length 1")
              msg <- c(msg, .valid_threshfun(object@THRESHFUN))
+             if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
+                 msg <- c("'toleranceRt' has to be a positive number of",
+                          " length 1")
              msg
          })
 
@@ -252,11 +272,11 @@ CompareSpectraParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                 requirePrecursor = TRUE,
                                 requirePrecursorPeak = FALSE,
                                 THRESHFUN = function(x) which(x >= 0.7),
-                                ...) {
+                                toleranceRt = Inf, ...) {
     new("CompareSpectraParam", MAPFUN = MAPFUN, tolerance = tolerance,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
-        THRESHFUN = THRESHFUN, dots = list(...))
+        THRESHFUN = THRESHFUN, toleranceRt = toleranceRt, dots = list(...))
 }
 
 #' @rdname CompareSpectraParam
@@ -268,7 +288,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                      requirePrecursorPeak = FALSE,
                                      THRESHFUN = function(x) which(x >= 0.7),
                                      THRESHFUN_REVERSE = NULL,
-                                     ...) {
+                                     toleranceRt = Inf, ...) {
     dots <- list(...)
     if (any(names(dots) == "type")) {
         warning("Specifying a join type with parameter 'type' is not ",
@@ -279,7 +299,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
         THRESHFUN = THRESHFUN, THRESHFUN_REVERSE = THRESHFUN_REVERSE,
-        dots = dots)
+        toleranceRt = toleranceRt, dots = dots)
 }
 
 .valid_threshfun <- function(x, variable = "THRESHFUN") {
@@ -303,7 +323,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
 
 .compare_spectra_parms_list <- function(x) {
     c(list(MAPFUN = x@MAPFUN, tolerance = x@tolerance, ppm = x@ppm,
-           FUN = x@FUN), x@dots)
+           FUN = x@FUN, toleranceRt = x@toleranceRt), x@dots)
 }
 
 #' @importMethodsFrom Spectra spectraNames containsMz filterPrecursorMz
@@ -317,7 +337,7 @@ setMethod(
               param = "CompareSpectraParam"),
     function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
         if (length(query) == 1 || param@requirePrecursor ||
-            param@requirePrecursorPeak) {
+            param@requirePrecursorPeak || is.finite(param@toleranceRt)) {
             if (is(BPPARAM, "SerialParam"))
                 .match_spectra(query, target, param)
             else .match_spectra_parallel(query, target, param, BPPARAM)
@@ -337,6 +357,7 @@ setMethod(
                                          param@THRESHFUN,
                                          param@requirePrecursor,
                                          param@requirePrecursorPeak,
+                                         param@toleranceRt,
                                          sn = snames)
     }
     maps <- do.call(rbind, res)
@@ -357,6 +378,7 @@ setMethod(
                      THRESHFUN = param@THRESHFUN,
                      precMz = param@requirePrecursor,
                      precMzPeak = param@requirePrecursorPeak,
+                     toleranceRt = param@toleranceRt,
                      sn = snames, BPPARAM = BPPARAM)
     maps <- do.call(rbind, maps)
     res <- MatchedSpectra(query, target, maps)
@@ -387,9 +409,15 @@ setMethod(
     res
 }
 
+#' @importMethodsFrom Spectra filterRt rtime
+#'
+#' @noRd
 .get_matches_spectra <- function(i, query, target, parlist, THRESHFUN, precMz,
-                                 precMzPeak, sn) {
+                                 precMzPeak, toleranceRt = Inf, sn) {
     qi <- query[i]
+    if (is.finite(toleranceRt))
+        target <- filterRt(
+            target, rt = rtime(qi) + c(-toleranceRt, toleranceRt))
     if (precMz) {
         pmz <- precursorMz(qi)
         pmz <- pmz + c(-1, 1) * (ppm(pmz, parlist$ppm) + parlist$tolerance)

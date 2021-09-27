@@ -17,6 +17,7 @@ CompareSpectraParam(
   requirePrecursor = TRUE,
   requirePrecursorPeak = FALSE,
   THRESHFUN = function(x) which(x >= 0.7),
+  toleranceRt = Inf,
   ...
 )
 
@@ -29,6 +30,7 @@ MatchForwardReverseParam(
   requirePrecursorPeak = FALSE,
   THRESHFUN = function(x) which(x >= 0.7),
   THRESHFUN_REVERSE = NULL,
+  toleranceRt = Inf,
   ...
 )
 
@@ -78,6 +80,11 @@ returned by \code{\link[=compareSpectra]{compareSpectra()}}) as input and return
 \code{logical} vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.}
 
+\item{toleranceRt}{\code{numeric(1)} defining the maximal accepted (absolute)
+difference in retention time between query and target spectra. By default
+(with \code{toleranceRt = Inf}) this filter is not considered. See help of
+\code{CompareSpectraParam} above for more information.}
+
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
 to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
 
@@ -114,7 +121,16 @@ can be passed along with \code{...}. See the help of \code{\link[=Spectra]{Spect
 information on these parameters. Parameters \code{requirePrecursor} (default
 \code{TRUE}) and \code{requirePrecursorPeak} (default \code{FALSE}) allow to pre-filter
 the target spectra prior to the actual similarity calculation for each
-individual query spectrum. This can considerably improve performance.
+individual query spectrum. Target spectra can also be pre-filtered based on
+retention time if parameter \code{toleranceRt} is set to a value different than
+the default \code{toleranceRt = Inf}. Only target spectra with a retention time
+within the query's retention time +/- \code{toleranceRt} are considered. While
+these pre-filters can considerably improve performance, it should be noted
+that no matches will be found between query and target spectra with missing
+values in the considered variable (precursor m/z or retention time). For
+target spectra without retention times (such as for \code{Spectra} from a
+public reference database such as MassBank) the default \code{toleranceRt = Inf}
+should thus be used.
 Finally, parameter \code{THRESHFUN} allows to define a function to be applied to
 the similarity scores to define which matches to report. See below for more
 details.

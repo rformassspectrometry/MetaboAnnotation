@@ -4,6 +4,7 @@ test_that("CompareSpectraParam works", {
 
     expect_error(CompareSpectraParam(tolerance = 1:3), "positive number")
     expect_error(CompareSpectraParam(ppm = -4), "positive number")
+    expect_error(CompareSpectraParam(toleranceRt = 1:3), "positive number")
 
     res <- CompareSpectraParam(other_param = 5, b = 3)
     expect_equal(res@dots, list(other_param = 5, b = 3))
@@ -13,6 +14,7 @@ test_that("CompareSpectraParam works", {
     expect_equal(res$other_param, 5L)
     expect_equal(res$b, 3L)
     expect_equal(res$ppm, 5)
+    expect_equal(res$toleranceRt, Inf)
 })
 
 test_that(".valid_threshfun works", {
@@ -78,7 +80,7 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
         2, pest_ms2, mb2,
         MetaboAnnotation:::.compare_spectra_parms_list(csp),
         csp@THRESHFUN, precMz = csp@requirePrecursor,
-        precMzPeak = csp@requirePrecursorPeak, spectraNames(mb2))
+        precMzPeak = csp@requirePrecursorPeak, sn = spectraNames(mb2))
     expect_true(is.data.frame(res))
     expect_equal(res$query_idx, 2L)
 
@@ -92,6 +94,24 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
     res <- matchSpectra(pest_ms2, minimb, csp)
     expect_equal(unique(res@matches$query_idx), c(2, 4, 6, 8))
     expect_true(anyDuplicated(res@matches$query_idx) == 2)
+
+    csp <- CompareSpectraParam(toleranceRt = 10)
+    res <- matchSpectra(pest_ms2, minimb, csp)
+    expect_true(nrow(MetaboAnnotation::matches(res)) == 0)
+
+    mb2 <- minimb
+    mb2$rtime <- 350
+    csp <- CompareSpectraParam(toleranceRt = Inf)
+    res <- matchSpectra(pest_ms2, mb2, csp)
+    csp <- CompareSpectraParam(toleranceRt = 100)
+    res_2 <- matchSpectra(pest_ms2, mb2, csp)
+    expect_equal(MetaboAnnotation::matches(res),
+                 MetaboAnnotation::matches(res_2))
+    mb2$rtime <- 361
+    csp <- CompareSpectraParam(toleranceRt = 1)
+    res <- matchSpectra(pest_ms2, mb2, csp)
+    expect_true(all(res@matches$query_idx == 2))
+    expect_equal(res@matches$target_idx, c(70, 73, 75))
 })
 
 test_that("MatchForwardReverseParam works", {
