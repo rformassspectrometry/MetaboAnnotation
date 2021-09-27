@@ -290,16 +290,20 @@ setMethod("$", "MatchedSpectra", function(x, name) {
 #' @rdname MatchedSpectra
 setMethod("spectraData", "MatchedSpectra",
           function(object, columns = spectraVariables(object)) {
+              mtches <- object@matches
+              ## Better to subset target Spectra before passing it on.
               cols_trg <- grep("^target_", columns)
-              if (length(cols_trg))
-                  trg <- spectraData(
-                      object@target, sub("^target_", "", columns[cols_trg]))
-              else
+              if (length(cols_trg)) {
+                  trg <- as.data.frame(
+                      spectraData(object@target[mtches$target_idx],
+                                  sub("^target_", "", columns[cols_trg])))
+                  mtches$target_idx <- seq_len(nrow(mtches))
+              } else
                   trg <- data.frame()
               cols_qry <- columns[columns %in% spectraVariables(object@query)]
               .matchedData(
                   spectraData(object@query, unique(c("msLevel", cols_qry))),
-                  trg, object@matches, columns)
+                  trg, mtches, columns)
           })
 
 #' @rdname MatchedSpectra

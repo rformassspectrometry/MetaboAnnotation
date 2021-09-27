@@ -73,6 +73,7 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
         THRESHFUN = function(x) which.max(x))
     res <- matchSpectra(pest_ms2, minimb, csp)
     expect_equal(res@matches$query_idx, 1:13)
+    expect_equal(length(unique(res$target_spectrum_id)), 11)
 
     mb2 <- minimb
     spectraNames(mb2) <- seq_along(mb2)
