@@ -4,7 +4,8 @@ test_that("CompareSpectraParam works", {
 
     expect_error(CompareSpectraParam(tolerance = 1:3), "positive number")
     expect_error(CompareSpectraParam(ppm = -4), "positive number")
-    expect_error(CompareSpectraParam(toleranceRt = 1:3), "positive number")
+    expect_error(CompareSpectraParam(toleranceRt = -1), "positive")
+    expect_error(CompareSpectraParam(percentRt = c(-1, 1, 1)), "positive")
 
     res <- CompareSpectraParam(other_param = 5, b = 3)
     expect_equal(res@dots, list(other_param = 5, b = 3))
@@ -14,7 +15,6 @@ test_that("CompareSpectraParam works", {
     expect_equal(res$other_param, 5L)
     expect_equal(res$b, 3L)
     expect_equal(res$ppm, 5)
-    expect_equal(res$toleranceRt, Inf)
 })
 
 test_that(".valid_threshfun works", {
@@ -113,6 +113,24 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
     res <- matchSpectra(pest_ms2, mb2, csp)
     expect_true(all(res@matches$query_idx == 2))
     expect_equal(res@matches$target_idx, c(70, 73, 75))
+
+    csp <- CompareSpectraParam(toleranceRt = c(1, 4))
+    expect_error(matchSpectra(pest_ms2, mb2, csp), "equal to the number")
+    csp <- CompareSpectraParam(toleranceRt = c(1, 2, 10, 0, 0, 0, 4,
+                                               Inf, 4, 0, 0, 0, 0))
+    res <- matchSpectra(pest_ms2, mb2, csp)
+    expect_equal(res@matches$target_idx, c(70, 73, 75, 47, 51, 53, 59))
+
+    csp <- CompareSpectraParam(percentRt = 3, toleranceRt = 0)
+    res <- matchSpectra(pest_ms2, mb2, csp)
+    expect_true(all(res@matches$query_idx == 2))
+    expect_equal(res@matches$target_idx, c(70, 73, 75))
+
+    csp <- CompareSpectraParam(percentRt = c(5, 3, 0, 0.1, 0.1, 0.1, 0,
+                                             10, 0.1, 0, 0.1, 0, 0.1),
+                               toleranceRt = 0)
+    res <- matchSpectra(pest_ms2, mb2, csp)
+    expect_equal(res@matches$target_idx, c(70, 73, 75, 47, 51, 53, 59))
 })
 
 test_that("MatchForwardReverseParam works", {
