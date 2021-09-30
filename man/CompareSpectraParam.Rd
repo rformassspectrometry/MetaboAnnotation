@@ -17,6 +17,8 @@ CompareSpectraParam(
   requirePrecursor = TRUE,
   requirePrecursorPeak = FALSE,
   THRESHFUN = function(x) which(x >= 0.7),
+  toleranceRt = Inf,
+  percentRt = 0,
   ...
 )
 
@@ -29,6 +31,8 @@ MatchForwardReverseParam(
   requirePrecursorPeak = FALSE,
   THRESHFUN = function(x) which(x >= 0.7),
   THRESHFUN_REVERSE = NULL,
+  toleranceRt = Inf,
+  percentRt = 0,
   ...
 )
 
@@ -78,6 +82,23 @@ returned by \code{\link[=compareSpectra]{compareSpectra()}}) as input and return
 \code{logical} vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.}
 
+\item{toleranceRt}{\code{numeric} of length 1 or equal to the number of query
+spectra defining the maximal accepted (absolute) difference in retention
+time between query and target spectra. By default
+(with \code{toleranceRt = Inf}) the retention time-based filter is not
+considered. See help of \code{CompareSpectraParam} above for more
+information.}
+
+\item{percentRt}{\code{numeric} of length 1 or equal to the number of query
+spectra defining the maximal accepted relative difference in retention
+time between query and target spectra expressed in percentage of the query
+rt. For \code{percentRt = 10}, similarities are defined between the query
+spectrum and all target spectra with a retention time within query rt
++/- 10\% of the query. By default (with \code{toleranceRt = Inf}) the retention
+time-based filter is not considered. Thus, to consider the \code{percentRt}
+parameter, \code{toleranceRt} should be set to a value different than that.
+See help of \code{CompareSpectraParam} above for more information.}
+
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
 to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
 
@@ -114,7 +135,20 @@ can be passed along with \code{...}. See the help of \code{\link[=Spectra]{Spect
 information on these parameters. Parameters \code{requirePrecursor} (default
 \code{TRUE}) and \code{requirePrecursorPeak} (default \code{FALSE}) allow to pre-filter
 the target spectra prior to the actual similarity calculation for each
-individual query spectrum. This can considerably improve performance.
+individual query spectrum. Target spectra can also be pre-filtered based on
+retention time if parameter \code{toleranceRt} is set to a value different than
+the default \code{toleranceRt = Inf}. Only target spectra with a retention time
+within the query's retention time +/- (\code{toleranceRt} + \code{percentRt}\% of the
+query's retention time) are considered. Note that while for \code{ppm} and
+\code{tolerance} only a single value is accepted, \code{toleranceRt} and \code{percentRt}
+can be also of length equal to the number of query spectra hence allowing
+to define different rt boundaries for each query spectrum.
+While these pre-filters can considerably improve performance, it should be
+noted that no matches will be found between query and target spectra with
+missing values in the considered variable (precursor m/z or retention
+time). For target spectra without retention times (such as for \code{Spectra}
+from a public reference database such as MassBank) the default
+\code{toleranceRt = Inf} should thus be used.
 Finally, parameter \code{THRESHFUN} allows to define a function to be applied to
 the similarity scores to define which matches to report. See below for more
 details.
@@ -179,6 +213,24 @@ mtches
 
 ## Each of the query spectra is matched to one target spectrum
 length(mtches)
+matches(mtches)
+
+## Match spectra considering also measured retention times. This requires
+## that both query and target spectra have non-missing retention times.
+rtime(pest_ms2)
+rtime(minimb)
+
+## Target spectra don't have retention times. Below we artificially set
+## retention times to show how an additional retention time filter would
+## work.
+rtime(minimb) <- rep(361, length(minimb))
+
+## Matching spectra requiring a matching precursor m/z and the difference
+## of retention times between query and target spectra to be <= 2 seconds.
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
+    toleranceRt = 2)
+mtches <- matchSpectra(pest_ms2, minimb, csp)
+mtches
 matches(mtches)
 
 ## See the package vignette for details, descriptions and more examples.

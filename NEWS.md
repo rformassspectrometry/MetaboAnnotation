@@ -1,5 +1,11 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.10
+
+- Add parameter `toleranceRt` to `CompareSpectraParam` to enable retention
+  time-based pre-filtering (issue
+  [#35](https://github.com/rformassspectrometry/MetaboAnnotation/issues/35)).
+
 ## Changes in 0.2.9
 
 - Add support for manually defined adducts to `Mass2MzParam` (issue

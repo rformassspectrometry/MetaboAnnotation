@@ -51,7 +51,20 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   information on these parameters. Parameters `requirePrecursor` (default
 #'   `TRUE`) and `requirePrecursorPeak` (default `FALSE`) allow to pre-filter
 #'   the target spectra prior to the actual similarity calculation for each
-#'   individual query spectrum. This can considerably improve performance.
+#'   individual query spectrum. Target spectra can also be pre-filtered based on
+#'   retention time if parameter `toleranceRt` is set to a value different than
+#'   the default `toleranceRt = Inf`. Only target spectra with a retention time
+#'   within the query's retention time +/- (`toleranceRt` + `percentRt`% of the
+#'   query's retention time) are considered. Note that while for `ppm` and
+#'   `tolerance` only a single value is accepted, `toleranceRt` and `percentRt`
+#'   can be also of length equal to the number of query spectra hence allowing
+#'   to define different rt boundaries for each query spectrum.
+#'   While these pre-filters can considerably improve performance, it should be
+#'   noted that no matches will be found between query and target spectra with
+#'   missing values in the considered variable (precursor m/z or retention
+#'   time). For target spectra without retention times (such as for `Spectra`
+#'   from a public reference database such as MassBank) the default
+#'   `toleranceRt = Inf` should thus be used.
 #'   Finally, parameter `THRESHFUN` allows to define a function to be applied to
 #'   the similarity scores to define which matches to report. See below for more
 #'   details.
@@ -90,6 +103,16 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @param param for `matchSpectra`: parameter object (such as
 #'   `CompareSpectraParam`) defining the settings for the matching.
 #'
+#' @param percentRt `numeric` of length 1 or equal to the number of query
+#'   spectra defining the maximal accepted relative difference in retention
+#'   time between query and target spectra expressed in percentage of the query
+#'   rt. For `percentRt = 10`, similarities are defined between the query
+#'   spectrum and all target spectra with a retention time within query rt
+#'   +/- 10% of the query. By default (with `toleranceRt = Inf`) the retention
+#'   time-based filter is not considered. Thus, to consider the `percentRt`
+#'   parameter, `toleranceRt` should be set to a value different than that.
+#'   See help of `CompareSpectraParam` above for more information.
+#'
 #' @param ppm `numeric(1)` for a relative, m/z-dependent, maximal accepted
 #'   difference between m/z values. This will be used in `compareSpectra` as
 #'   well as for eventual precursor m/z matching.
@@ -117,6 +140,13 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
 #'   between m/z values. This will be used in `compareSpectra` as well as for
 #'   eventual precursor m/z matching.
+#'
+#' @param toleranceRt `numeric` of length 1 or equal to the number of query
+#'   spectra defining the maximal accepted (absolute) difference in retention
+#'   time between query and target spectra. By default
+#'   (with `toleranceRt = Inf`) the retention time-based filter is not
+#'   considered. See help of `CompareSpectraParam` above for more
+#'   information.
 #'
 #' @param THRESHFUN `function` applied to the similarity score to define which
 #'   target spectra are considered *matching*. Defaults to
@@ -192,6 +222,24 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' length(mtches)
 #' matches(mtches)
 #'
+#' ## Match spectra considering also measured retention times. This requires
+#' ## that both query and target spectra have non-missing retention times.
+#' rtime(pest_ms2)
+#' rtime(minimb)
+#'
+#' ## Target spectra don't have retention times. Below we artificially set
+#' ## retention times to show how an additional retention time filter would
+#' ## work.
+#' rtime(minimb) <- rep(361, length(minimb))
+#'
+#' ## Matching spectra requiring a matching precursor m/z and the difference
+#' ## of retention times between query and target spectra to be <= 2 seconds.
+#' csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
+#'     toleranceRt = 2)
+#' mtches <- matchSpectra(pest_ms2, minimb, csp)
+#' mtches
+#' matches(mtches)
+#'
 #' ## See the package vignette for details, descriptions and more examples.
 NULL
 
@@ -204,7 +252,10 @@ setClass("CompareSpectraParam",
              dots = "list",
              requirePrecursor = "logical",
              requirePrecursorPeak = "logical",
-             THRESHFUN = "function"),
+             THRESHFUN = "function",
+             toleranceRt = "numeric",
+             percentRt = "numeric"
+             ),
          contains = "Param",
          prototype = prototype(
              MAPFUN = joinPeaks,
@@ -214,15 +265,21 @@ setClass("CompareSpectraParam",
              dots = list(),
              requirePrecursor = TRUE,
              requirePrecursorPeak = FALSE,
-             THRESHFUN = function(x) which(x >= 0.7)
+             THRESHFUN = function(x) which(x >= 0.7),
+             toleranceRt = Inf,
+             percentRt = 0
          ),
          validity = function(object) {
              msg <- NULL
-             if (length(object@tolerance) != 1 || object@tolerance < 0)
+             if (length(object@tolerance) > 1 || object@tolerance < 0)
                  msg <- c("'tolerance' has to be a positive number of length 1")
-             if (length(object@ppm) != 1 || object@ppm < 0)
-                 msg <- c("'ppm' has to be a positive number of length 1")
+             if (length(object@ppm) > 1 || object@ppm < 0)
+                 msg <- c("'ppm' has to be positive number of length 1")
              msg <- c(msg, .valid_threshfun(object@THRESHFUN))
+             if (any(object@toleranceRt < 0))
+                 msg <- c("'toleranceRt' has to be positive")
+             if (any(object@percentRt < 0))
+                 msg <- c("'percentRt' has to be positive")
              msg
          })
 
@@ -252,11 +309,12 @@ CompareSpectraParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                 requirePrecursor = TRUE,
                                 requirePrecursorPeak = FALSE,
                                 THRESHFUN = function(x) which(x >= 0.7),
-                                ...) {
+                                toleranceRt = Inf, percentRt = 0, ...) {
     new("CompareSpectraParam", MAPFUN = MAPFUN, tolerance = tolerance,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
-        THRESHFUN = THRESHFUN, dots = list(...))
+        THRESHFUN = THRESHFUN, toleranceRt = toleranceRt,
+        percentRt = percentRt, dots = list(...))
 }
 
 #' @rdname CompareSpectraParam
@@ -268,7 +326,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                      requirePrecursorPeak = FALSE,
                                      THRESHFUN = function(x) which(x >= 0.7),
                                      THRESHFUN_REVERSE = NULL,
-                                     ...) {
+                                     toleranceRt = Inf, percentRt = 0, ...) {
     dots <- list(...)
     if (any(names(dots) == "type")) {
         warning("Specifying a join type with parameter 'type' is not ",
@@ -279,7 +337,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
         ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
         THRESHFUN = THRESHFUN, THRESHFUN_REVERSE = THRESHFUN_REVERSE,
-        dots = dots)
+        toleranceRt = toleranceRt, percentRt = percentRt, dots = dots)
 }
 
 .valid_threshfun <- function(x, variable = "THRESHFUN") {
@@ -317,7 +375,8 @@ setMethod(
               param = "CompareSpectraParam"),
     function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
         if (length(query) == 1 || param@requirePrecursor ||
-            param@requirePrecursorPeak) {
+            param@requirePrecursorPeak || any(is.finite(param@toleranceRt)) ||
+            any(param@percentRt != 0)) {
             if (is(BPPARAM, "SerialParam"))
                 .match_spectra(query, target, param)
             else .match_spectra_parallel(query, target, param, BPPARAM)
@@ -327,16 +386,27 @@ setMethod(
 
 .match_spectra <- function(query, target, param) {
     parms <- .compare_spectra_parms_list(param)
+    queryl <- length(query)
+    toleranceRt <- param@toleranceRt
+    percentRt <- param@percentRt
+    if (length(toleranceRt) == 1L)
+        toleranceRt <- rep(toleranceRt, queryl)
+    if (length(percentRt) == 1L)
+        percentRt <- rep(percentRt, queryl)
+    if (length(percentRt) != queryl || length(toleranceRt) != queryl)
+        stop("Length of 'toleranceRt' and 'percentRt' has to be either 1 or ",
+             "equal to the number of query spectra")
     if (is.null(spectraNames(target)))
         spectraNames(target) <- seq_along(target)
     snames <- spectraNames(target)
-    queryl <- length(query)
     res <- vector("list", queryl)
     for (i in seq_len(queryl)) {
         res[[i]] <- .get_matches_spectra(i, query, target, parms,
                                          param@THRESHFUN,
                                          param@requirePrecursor,
                                          param@requirePrecursorPeak,
+                                         toleranceRt = toleranceRt,
+                                         percentRt = percentRt,
                                          sn = snames)
     }
     maps <- do.call(rbind, res)
@@ -347,6 +417,16 @@ setMethod(
 
 .match_spectra_parallel <- function(query, target, param, BPPARAM) {
     parms <- .compare_spectra_parms_list(param)
+    queryl <- length(query)
+    toleranceRt <- param@toleranceRt
+    percentRt <- param@percentRt
+    if (length(toleranceRt) == 1L)
+        toleranceRt <- rep(toleranceRt, queryl)
+    if (length(percentRt) == 1L)
+        percentRt <- rep(percentRt, queryl)
+    if (length(percentRt) != queryl || length(toleranceRt) != queryl)
+        stop("Length of 'toleranceRt' and 'percentRt' has to be either 1 or ",
+             "equal to the number of query spectra")
     if (is.null(spectraNames(target)))
         spectraNames(target) <- seq_along(target)
     snames <- spectraNames(target)
@@ -357,6 +437,8 @@ setMethod(
                      THRESHFUN = param@THRESHFUN,
                      precMz = param@requirePrecursor,
                      precMzPeak = param@requirePrecursorPeak,
+                     toleranceRt = toleranceRt,
+                     percentRt = percentRt,
                      sn = snames, BPPARAM = BPPARAM)
     maps <- do.call(rbind, maps)
     res <- MatchedSpectra(query, target, maps)
@@ -387,9 +469,21 @@ setMethod(
     res
 }
 
+#' @importMethodsFrom Spectra filterRt rtime
+#'
+#' @noRd
 .get_matches_spectra <- function(i, query, target, parlist, THRESHFUN, precMz,
-                                 precMzPeak, sn) {
+                                 precMzPeak, toleranceRt = Inf,
+                                 percentRt = 0, sn) {
     qi <- query[i]
+    if (is.finite(toleranceRt[i])) {
+        if (toleranceRt[i] == 0 && percentRt[i] == 0)
+            trt <- 0.0000001
+        else
+            trt <- toleranceRt[i] + rtime(qi) * percentRt[i] / 100
+        target <- filterRt(
+            target, rt = rtime(qi) + c(-trt, trt))
+    }
     if (precMz) {
         pmz <- precursorMz(qi)
         pmz <- pmz + c(-1, 1) * (ppm(pmz, parlist$ppm) + parlist$tolerance)
