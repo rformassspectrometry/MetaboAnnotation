@@ -55,7 +55,20 @@ can be passed along with .... See the help of Spectra() for more
 information on these parameters. Parameters requirePrecursor (default
 TRUE) and requirePrecursorPeak (default FALSE) allow to pre-filter
 the target spectra prior to the actual similarity calculation for each
-individual query spectrum. This can considerably improve performance.
+individual query spectrum. Target spectra can also be pre-filtered based on
+retention time if parameter toleranceRt is set to a value different than
+the default toleranceRt = Inf. Only target spectra with a retention time
+within the query's retention time +/- (toleranceRt + percentRt% of the
+query's retention time) are considered. Note that while for ppm and
+tolerance only a single value is accepted, toleranceRt and percentRt
+can be also of length equal to the number of query spectra hence allowing
+to define different rt boundaries for each query spectrum.
+While these pre-filters can considerably improve performance, it should be
+noted that no matches will be found between query and target spectra with
+missing values in the considered variable (precursor m/z or retention
+time). For target spectra without retention times (such as for Spectra
+from a public reference database such as MassBank) the default
+toleranceRt = Inf should thus be used.
 Finally, parameter THRESHFUN allows to define a function to be applied to
 the similarity scores to define which matches to report. See below for more
 details.
@@ -118,7 +131,7 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.10</span>
       </span>
     </div>
 
@@ -175,7 +188,20 @@ can be passed along with <code>...</code>. See the help of <code>Spectra()</code
 information on these parameters. Parameters <code>requirePrecursor</code> (default
 <code>TRUE</code>) and <code>requirePrecursorPeak</code> (default <code>FALSE</code>) allow to pre-filter
 the target spectra prior to the actual similarity calculation for each
-individual query spectrum. This can considerably improve performance.
+individual query spectrum. Target spectra can also be pre-filtered based on
+retention time if parameter <code>toleranceRt</code> is set to a value different than
+the default <code>toleranceRt = Inf</code>. Only target spectra with a retention time
+within the query's retention time +/- (<code>toleranceRt</code> + <code>percentRt</code>% of the
+query's retention time) are considered. Note that while for <code>ppm</code> and
+<code>tolerance</code> only a single value is accepted, <code>toleranceRt</code> and <code>percentRt</code>
+can be also of length equal to the number of query spectra hence allowing
+to define different rt boundaries for each query spectrum.
+While these pre-filters can considerably improve performance, it should be
+noted that no matches will be found between query and target spectra with
+missing values in the considered variable (precursor m/z or retention
+time). For target spectra without retention times (such as for <code>Spectra</code>
+from a public reference database such as MassBank) the default
+<code>toleranceRt = Inf</code> should thus be used.
 Finally, parameter <code>THRESHFUN</code> allows to define a function to be applied to
 the similarity scores to define which matches to report. See below for more
 details.</p></li>
@@ -209,6 +235,8 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
   requirePrecursor <span class='op'>=</span> <span class='cn'>TRUE</span>,
   requirePrecursorPeak <span class='op'>=</span> <span class='cn'>FALSE</span>,
   THRESHFUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>&gt;=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
+  toleranceRt <span class='op'>=</span> <span class='cn'>Inf</span>,
+  percentRt <span class='op'>=</span> <span class='fl'>0</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -221,6 +249,8 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
   requirePrecursorPeak <span class='op'>=</span> <span class='cn'>FALSE</span>,
   THRESHFUN <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>x</span> <span class='op'>&gt;=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
   THRESHFUN_REVERSE <span class='op'>=</span> <span class='cn'>NULL</span>,
+  toleranceRt <span class='op'>=</span> <span class='cn'>Inf</span>,
+  percentRt <span class='op'>=</span> <span class='fl'>0</span>,
   <span class='va'>...</span>
 <span class='op'>)</span>
 
@@ -287,6 +317,27 @@ scores from the comparison of a query spectrum with all target spectra (as
 returned by <code>compareSpectra()</code>) as input and returns a
 <code>logical</code> vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.</p></td>
+    </tr>
+    <tr>
+      <th>toleranceRt</th>
+      <td><p><code>numeric</code> of length 1 or equal to the number of query
+spectra defining the maximal accepted (absolute) difference in retention
+time between query and target spectra. By default
+(with <code>toleranceRt = Inf</code>) the retention time-based filter is not
+considered. See help of <code>CompareSpectraParam</code> above for more
+information.</p></td>
+    </tr>
+    <tr>
+      <th>percentRt</th>
+      <td><p><code>numeric</code> of length 1 or equal to the number of query
+spectra defining the maximal accepted relative difference in retention
+time between query and target spectra expressed in percentage of the query
+rt. For <code>percentRt = 10</code>, similarities are defined between the query
+spectrum and all target spectra with a retention time within query rt
++/- 10% of the query. By default (with <code>toleranceRt = Inf</code>) the retention
+time-based filter is not considered. Thus, to consider the <code>percentRt</code>
+parameter, <code>toleranceRt</code> should be set to a value different than that.
+See help of <code>CompareSpectraParam</code> above for more information.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -431,6 +482,39 @@ disabled by default.</p></td>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 11        11         53 4.323403e-01</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 12        12         47 3.469648e-03</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 13        13         71 7.612480e-06</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Match spectra considering also measured retention times. This requires</span></span>
+<span class='r-in'><span class='co'>## that both query and target spectra have non-missing retention times.</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html'>rtime</a></span><span class='op'>(</span><span class='va'>pest_ms2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [1] 361.651 361.741 377.609 377.699 378.120 378.539 378.779 378.869 378.959</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [10] 379.379 380.059 380.609 381.029</span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html'>rtime</a></span><span class='op'>(</span><span class='va'>minimb</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [26] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [51] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  [76] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Target spectra don't have retention times. Below we artificially set</span></span>
+<span class='r-in'><span class='co'>## retention times to show how an additional retention time filter would</span></span>
+<span class='r-in'><span class='co'>## work.</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html'>rtime</a></span><span class='op'>(</span><span class='va'>minimb</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/S4Vectors/man/Vector-class.html'>rep</a></span><span class='op'>(</span><span class='fl'>361</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>minimb</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>## Matching spectra requiring a matching precursor m/z and the difference</span></span>
+<span class='r-in'><span class='co'>## of retention times between query and target spectra to be &lt;= 2 seconds.</span></span>
+<span class='r-in'><span class='va'>csp</span> <span class='op'>&lt;-</span> <span class='fu'>CompareSpectraParam</span><span class='op'>(</span>requirePrecursor <span class='op'>=</span> <span class='cn'>TRUE</span>, ppm <span class='op'>=</span> <span class='fl'>10</span>,</span>
+<span class='r-in'>    toleranceRt <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mtches</span> <span class='op'>&lt;-</span> <span class='fu'><a href='matchSpectra.html'>matchSpectra</a></span><span class='op'>(</span><span class='va'>pest_ms2</span>, <span class='va'>minimb</span>, <span class='va'>csp</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>mtches</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Object of class MatchedSpectra </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total number of matches: 4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of query objects: 13 (1 matched)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of target objects: 100 (4 matched)</span>
+<span class='r-in'><span class='fu'><a href='Matched.html'>matches</a></span><span class='op'>(</span><span class='va'>mtches</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   query_idx target_idx     score</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1         2         70 0.7869556</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2         2         73 0.8855473</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3         2         75 0.7234894</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4         2         76 0.7219942</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'>## See the package vignette for details, descriptions and more examples.</span></span>
 </code></pre></div>
