@@ -118,6 +118,10 @@ specified the same format than \code{THRESHFUN} is expected.}
 \code{BiocParallel} package for more information). Parallel processing is
 disabled by default.}
 }
+\value{
+\code{matchSpectra} returns a \code{\link[=MatchedSpectra]{MatchedSpectra()}} object. Constructor
+functions return an instance of the class.
+}
 \description{
 \code{matchSpectra} with both \code{query} and \code{target} being a \link{Spectra} object
 matches each spectra in \code{query} against all spectra in \code{target} and reports

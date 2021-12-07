@@ -177,6 +177,9 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'
 #' @rdname CompareSpectraParam
 #'
+#' @return `matchSpectra` returns a [MatchedSpectra()] object. Constructor
+#'     functions return an instance of the class.
+#'
 #' @exportClass CompareSpectraParam
 #'
 #' @examples

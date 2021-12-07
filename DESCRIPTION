@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 0.2.11
+Version: 0.99.0
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -35,7 +35,8 @@ Imports:
     S4Vectors,
     Spectra (>= 1.1.18),
     BiocParallel,
-    SummarizedExperiment
+    SummarizedExperiment,
+    graphics
 Suggests:
     testthat,
     knitr,
@@ -43,7 +44,6 @@ Suggests:
     BiocStyle,
     rmarkdown
 License: Artistic-2.0
-LazyData: yes
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
 URL: https://github.com/RforMassSpectrometry/MetaboAnnotation
