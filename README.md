@@ -5,6 +5,10 @@
 [![codecov.io](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation/coverage.svg?branch=master)](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation?branch=master)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 
+<img
+src="https://raw.githubusercontent.com/rformassspectrometry/stickers/master/MetaboAnnotation/MetaboAnnotation.png"
+height="150">
+
 High level functions to assist in annotation of (metabolomics) data sets. These
 include functions to perform simple tentative annotations based on mass matching
 but also functions to consider m/z and retention times for annotation of LC-MS

@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.2
 
+## Changes in 0.2.11
+
+- Fix calculation of correct number of rows/columns of the plot in
+  `plotSpectraMirror`.
+
 ## Changes in 0.2.10
 
 - Add parameter `toleranceRt` to `CompareSpectraParam` to enable retention

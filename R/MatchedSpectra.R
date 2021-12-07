@@ -344,8 +344,8 @@ setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
     y <- x@target[x@matches$target_idx]
     if (!length(y))
         y <- Spectra(DataFrame(msLevel = 2L))
-    nr <- ceiling(sqrt(max(length(y), 1)))
-    par(mfrow = c(nr, nr))
+    nr <- sqrt(max(length(y), 1))
+    par(mfrow = c(floor(nr), ceiling(nr)))
     for (i in seq_along(y))
         plotSpectraMirror(x = query(x)[1L], y = y[i],
                           xlab = xlab, ylab = ylab, main = main)
