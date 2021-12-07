@@ -72,7 +72,7 @@
       <h1 data-toc-skip>Annotation of MS-based Metabolomics Data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/master/vignettes/MetaboAnnotation.Rmd" class="external-link"><code>vignettes/MetaboAnnotation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/HEAD/vignettes/MetaboAnnotation.Rmd" class="external-link"><code>vignettes/MetaboAnnotation.Rmd</code></a></small>
       <div class="hidden name"><code>MetaboAnnotation.Rmd</code></div>
 
     </div>
@@ -90,26 +90,26 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.14/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Mon Oct 4 14:13:39 2021</p>
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h1>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Tue Dec 7 10:43:12 2021</p>
+<div class="section level1">
+<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h1>
 <p>The <code>MetaboAnnotation</code> package defines high-level user functionality to support and facilitate annotation of MS-based metabolomics data.</p>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h1>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
 <p>The package can be installed with the <code>BiocManager</code> package. To install <code>BiocManager</code> use <code>install.packages("BiocManager")</code> and, after that, <code>BiocManager::install("MetaboAnnotation")</code> to install this package.</p>
 </div>
-<div id="example-use-cases" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-use-cases" class="anchor" aria-hidden="true"></a>Example use cases</h1>
+<div class="section level1">
+<h1 id="example-use-cases">Example use cases<a class="anchor" aria-label="anchor" href="#example-use-cases"></a>
+</h1>
 <p>The following sections illustrate example use cases of the functionality provided by the <code>MetaboAnnotation</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboAnnotation" class="external-link">MetaboAnnotation</a></span><span class="op">)</span></code></pre></div>
-<div id="matching-of-mz-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#matching-of-mz-values" class="anchor" aria-hidden="true"></a>Matching of m/z values</h2>
+<div class="section level2">
+<h2 id="matching-of-mz-values">Matching of m/z values<a class="anchor" aria-label="anchor" href="#matching-of-mz-values"></a>
+</h2>
 <p>In this section a simple matching of feature m/z values against theoretical m/z values is performed. This is the lowest level of confidence in metabolite anno- tation. However, it gives ideas about potential metabolites that can be analyzed in further downstream experiments and analyses.</p>
 <p>The following example loads the feature table from a lipidomics experiments and matches the measured m/z values against reference masses from LipidMaps. Below we use a <code>data.frame</code> as <em>reference</em> database, but a <a href="https://github.com/EuracBiomedicalResearch/CompoundDb" class="external-link"><code>CompDb</code></a> compound database instance would also be supported.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -117,25 +117,25 @@ document.addEventListener("DOMContentLoaded", function() {
                                        package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span>,
                            header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ms1_features</span><span class="op">)</span></code></pre></div>
-<pre><code>##     feature_id       mz    rtime
-## 1 Cluster_0001 102.1281 1.560147
-## 2 Cluster_0002 102.1279 2.153590
-## 3 Cluster_0003 102.1281 2.925570
-## 4 Cluster_0004 102.1281 3.419617
-## 5 Cluster_0005 102.1270 5.801039
-## 6 Cluster_0006 102.1230 8.137535</code></pre>
+<pre><code><span class="co">##     feature_id       mz    rtime</span>
+<span class="co">## 1 Cluster_0001 102.1281 1.560147</span>
+<span class="co">## 2 Cluster_0002 102.1279 2.153590</span>
+<span class="co">## 3 Cluster_0003 102.1281 2.925570</span>
+<span class="co">## 4 Cluster_0004 102.1281 3.419617</span>
+<span class="co">## 5 Cluster_0005 102.1270 5.801039</span>
+<span class="co">## 6 Cluster_0006 102.1230 8.137535</span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">target_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"LipidMaps_CompDB.txt"</span>,
                                     package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span>,
                         header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="va">target_df</span><span class="op">)</span></code></pre></div>
-<pre><code>##   headgroup        name exactmass    formula chain_type
-## 1       NAE  NAE 20:4;O  363.2773  C22H37NO3       even
-## 2       NAT  NAT 20:4;O  427.2392 C22H37NO5S       even
-## 3       NAE NAE 20:3;O2  381.2879  C22H39NO4       even
-## 4       NAE    NAE 20:4  347.2824  C22H37NO2       even
-## 5       NAE    NAE 18:2  323.2824  C20H37NO2       even
-## 6       NAE    NAE 18:3  321.2668  C20H35NO2       even</code></pre>
+<pre><code><span class="co">##   headgroup        name exactmass    formula chain_type</span>
+<span class="co">## 1       NAE  NAE 20:4;O  363.2773  C22H37NO3       even</span>
+<span class="co">## 2       NAT  NAT 20:4;O  427.2392 C22H37NO5S       even</span>
+<span class="co">## 3       NAE NAE 20:3;O2  381.2879  C22H39NO4       even</span>
+<span class="co">## 4       NAE    NAE 20:4  347.2824  C22H37NO2       even</span>
+<span class="co">## 5       NAE    NAE 18:2  323.2824  C20H37NO2       even</span>
+<span class="co">## 6       NAE    NAE 18:3  321.2668  C20H35NO2       even</span></code></pre>
 <p>For reference (target) compounds we have only the mass available. We need to convert this mass to m/z values in order to match the m/z values from the features (i.e. the query m/z values) against them. For this we need to define the <em>most likely</em> ions/adducts that would be generated from the compounds based on the ionization used in the experiment. We assume the most abundant adducts from the compounds being <code>"[M+H]+"</code> and <code>"[M+Na]+</code>. We next perform the matching with the <code>matchMz</code> function providing the query and target data as well as a parameter object (in our case a <code>Mass2MzParam</code>) with the settings for the matching. With the <code>Mass2MzParam</code>, the mass or target compounds get first converted to m/z values, based on the defined adducts, and these are then matched against the query m/z values (i.e. the m/z values for the features). To get a full list of supported adducts the <code>MetaboCoreUtils::adductNames(polarity = "positive")</code> or <code>MetaboCoreUtils::adductNames(polarity = "negative")</code> can be used). Note also, to keep the runtime of this vignette short, we match only the first 100 features.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">Mass2MzParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,
@@ -143,85 +143,85 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_features</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span>
 <span class="va">matched_features</span></code></pre></div>
-<pre><code>## Object of class Matched 
-## Total number of matches: 55 
-## Number of query objects: 100 (55 matched)
-## Number of target objects: 57599 (1 matched)</code></pre>
+<pre><code><span class="co">## Object of class Matched </span>
+<span class="co">## Total number of matches: 55 </span>
+<span class="co">## Number of query objects: 100 (55 matched)</span>
+<span class="co">## Number of target objects: 57599 (1 matched)</span></code></pre>
 <p>From the tested 100 features 55 were matched against at least one target compound (all matches are against a single compound). The result object (of type <code>Matched</code>) contains the full query data frame and target data frames as well as the matching information. We can access the original query data with <code>query</code> and the original target data with <code>target</code> function:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/Matched.html">query</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##     feature_id       mz    rtime
-## 1 Cluster_0001 102.1281 1.560147
-## 2 Cluster_0002 102.1279 2.153590
-## 3 Cluster_0003 102.1281 2.925570
-## 4 Cluster_0004 102.1281 3.419617
-## 5 Cluster_0005 102.1270 5.801039
-## 6 Cluster_0006 102.1230 8.137535</code></pre>
+<pre><code><span class="co">##     feature_id       mz    rtime</span>
+<span class="co">## 1 Cluster_0001 102.1281 1.560147</span>
+<span class="co">## 2 Cluster_0002 102.1279 2.153590</span>
+<span class="co">## 3 Cluster_0003 102.1281 2.925570</span>
+<span class="co">## 4 Cluster_0004 102.1281 3.419617</span>
+<span class="co">## 5 Cluster_0005 102.1270 5.801039</span>
+<span class="co">## 6 Cluster_0006 102.1230 8.137535</span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/Matched.html">target</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##   headgroup        name exactmass    formula chain_type
-## 1       NAE  NAE 20:4;O  363.2773  C22H37NO3       even
-## 2       NAT  NAT 20:4;O  427.2392 C22H37NO5S       even
-## 3       NAE NAE 20:3;O2  381.2879  C22H39NO4       even
-## 4       NAE    NAE 20:4  347.2824  C22H37NO2       even
-## 5       NAE    NAE 18:2  323.2824  C20H37NO2       even
-## 6       NAE    NAE 18:3  321.2668  C20H35NO2       even</code></pre>
+<pre><code><span class="co">##   headgroup        name exactmass    formula chain_type</span>
+<span class="co">## 1       NAE  NAE 20:4;O  363.2773  C22H37NO3       even</span>
+<span class="co">## 2       NAT  NAT 20:4;O  427.2392 C22H37NO5S       even</span>
+<span class="co">## 3       NAE NAE 20:3;O2  381.2879  C22H39NO4       even</span>
+<span class="co">## 4       NAE    NAE 20:4  347.2824  C22H37NO2       even</span>
+<span class="co">## 5       NAE    NAE 18:2  323.2824  C20H37NO2       even</span>
+<span class="co">## 6       NAE    NAE 18:3  321.2668  C20H35NO2       even</span></code></pre>
 <p>Functions <code>whichQuery</code> and <code>whichTarget</code> can be used to identify the rows in the query and target data that could be matched:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1]  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64
-## [20]  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83
-## [39]  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</code></pre>
+<pre><code><span class="co">##  [1]  46  47  48  49  50  51  52  53  54  55  56  57  58  59  60  61  62  63  64</span>
+<span class="co">## [20]  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83</span>
+<span class="co">## [39]  84  85  86  87  88  89  90  91  92  93  94  95  96  97  98  99 100</span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">whichTarget</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 3149</code></pre>
+<pre><code><span class="co">## [1] 3149</span></code></pre>
 <p>We can extract the full matching table with <code>matchedData</code>. This returns a <code>DataFrame</code> with all rows in <em>query</em> the corresponding matches in <em>target</em> along with the matching adduct (column <code>"adduct"</code>) and the difference in m/z (column <code>"score"</code>). Note that if a row in <em>query</em> matches multiple elements in <em>target</em>, this row will be duplicated in the <code>DataFrame</code> returned by <code>data</code>. For rows that can not be matched <code>NA</code> values are reported.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></code></pre></div>
-<pre><code>## DataFrame with 100 rows and 10 columns
-##       feature_id        mz     rtime target_headgroup target_name
-##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;
-## 1   Cluster_0001   102.128   1.56015               NA          NA
-## 2   Cluster_0002   102.128   2.15359               NA          NA
-## 3   Cluster_0003   102.128   2.92557               NA          NA
-## 4   Cluster_0004   102.128   3.41962               NA          NA
-## 5   Cluster_0005   102.127   5.80104               NA          NA
-## ...          ...       ...       ...              ...         ...
-## 96  Cluster_0096   201.113   11.2722               FA  FA 10:2;O2
-## 97  Cluster_0097   201.113   11.4081               FA  FA 10:2;O2
-## 98  Cluster_0098   201.113   11.4760               FA  FA 10:2;O2
-## 99  Cluster_0099   201.114   11.5652               FA  FA 10:2;O2
-## 100 Cluster_0100   201.114   11.7752               FA  FA 10:2;O2
-##     target_exactmass target_formula target_chain_type      adduct     score
-##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt; &lt;character&gt; &lt;numeric&gt;
-## 1                 NA             NA                NA          NA        NA
-## 2                 NA             NA                NA          NA        NA
-## 3                 NA             NA                NA          NA        NA
-## 4                 NA             NA                NA          NA        NA
-## 5                 NA             NA                NA          NA        NA
-## ...              ...            ...               ...         ...       ...
-## 96           200.105       C10H16O4              even      [M+H]+ 0.0007312
-## 97           200.105       C10H16O4              even      [M+H]+ 0.0005444
-## 98           200.105       C10H16O4              even      [M+H]+ 0.0005328
-## 99           200.105       C10H16O4              even      [M+H]+ 0.0014619
-## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</code></pre>
+<pre><code><span class="co">## DataFrame with 100 rows and 10 columns</span>
+<span class="co">##       feature_id        mz     rtime target_headgroup target_name</span>
+<span class="co">##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## 1   Cluster_0001   102.128   1.56015               NA          NA</span>
+<span class="co">## 2   Cluster_0002   102.128   2.15359               NA          NA</span>
+<span class="co">## 3   Cluster_0003   102.128   2.92557               NA          NA</span>
+<span class="co">## 4   Cluster_0004   102.128   3.41962               NA          NA</span>
+<span class="co">## 5   Cluster_0005   102.127   5.80104               NA          NA</span>
+<span class="co">## ...          ...       ...       ...              ...         ...</span>
+<span class="co">## 96  Cluster_0096   201.113   11.2722               FA  FA 10:2;O2</span>
+<span class="co">## 97  Cluster_0097   201.113   11.4081               FA  FA 10:2;O2</span>
+<span class="co">## 98  Cluster_0098   201.113   11.4760               FA  FA 10:2;O2</span>
+<span class="co">## 99  Cluster_0099   201.114   11.5652               FA  FA 10:2;O2</span>
+<span class="co">## 100 Cluster_0100   201.114   11.7752               FA  FA 10:2;O2</span>
+<span class="co">##     target_exactmass target_formula target_chain_type      adduct     score</span>
+<span class="co">##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
+<span class="co">## 1                 NA             NA                NA          NA        NA</span>
+<span class="co">## 2                 NA             NA                NA          NA        NA</span>
+<span class="co">## 3                 NA             NA                NA          NA        NA</span>
+<span class="co">## 4                 NA             NA                NA          NA        NA</span>
+<span class="co">## 5                 NA             NA                NA          NA        NA</span>
+<span class="co">## ...              ...            ...               ...         ...       ...</span>
+<span class="co">## 96           200.105       C10H16O4              even      [M+H]+ 0.0007312</span>
+<span class="co">## 97           200.105       C10H16O4              even      [M+H]+ 0.0005444</span>
+<span class="co">## 98           200.105       C10H16O4              even      [M+H]+ 0.0005328</span>
+<span class="co">## 99           200.105       C10H16O4              even      [M+H]+ 0.0014619</span>
+<span class="co">## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</span></code></pre>
 <p>See also the help page for <code><a href="../reference/Matched.html">?Matched</a></code> for more details and information. In addition to the matching of query m/z against target exact masses as described above it would also be possible to match directly query m/z against target m/z values by using the <code>MzParam</code> instead of the <code>Mass2MzParam</code>.</p>
 </div>
-<div id="matching-of-mz-and-retention-time-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#matching-of-mz-and-retention-time-values" class="anchor" aria-hidden="true"></a>Matching of m/z and retention time values</h2>
+<div class="section level2">
+<h2 id="matching-of-mz-and-retention-time-values">Matching of m/z and retention time values<a class="anchor" aria-label="anchor" href="#matching-of-mz-and-retention-time-values"></a>
+</h2>
 <p>If expected retention time values were available for the target compounds, an annotation with higher confidence could be performed with <code>matchMz</code> and a <code>Mass2MzRtParam</code> parameter object. To illustrate this we randomly assign retention times from query features to the target compounds adding also 2 seconds difference. In a real use case the target <code>data.frame</code> would contain masses (or m/z values) for standards along with the retention times when ions of these standards were measured on the same LC-MS setup from which the query data derives.</p>
 <p>Below we subset our data table with the MS1 features to the first 100 rows (to keep the runtime of the vignette short).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ms1_subset</span> <span class="op">&lt;-</span> <span class="va">ms1_features</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="op">]</span>
 <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ms1_subset</span><span class="op">)</span></code></pre></div>
-<pre><code>##     feature_id       mz    rtime
-## 1 Cluster_0001 102.1281 1.560147
-## 2 Cluster_0002 102.1279 2.153590
-## 3 Cluster_0003 102.1281 2.925570
-## 4 Cluster_0004 102.1281 3.419617
-## 5 Cluster_0005 102.1270 5.801039
-## 6 Cluster_0006 102.1230 8.137535</code></pre>
+<pre><code><span class="co">##     feature_id       mz    rtime</span>
+<span class="co">## 1 Cluster_0001 102.1281 1.560147</span>
+<span class="co">## 2 Cluster_0002 102.1279 2.153590</span>
+<span class="co">## 3 Cluster_0003 102.1281 2.925570</span>
+<span class="co">## 4 Cluster_0004 102.1281 3.419617</span>
+<span class="co">## 5 Cluster_0005 102.1270 5.801039</span>
+<span class="co">## 6 Cluster_0006 102.1230 8.137535</span></code></pre>
 <p>The table contains thus retention times of the features in a column named <code>"rtime"</code>.</p>
 <p>Next we randomly assign retention times of the features to compounds in our target data adding a deviation of 2 seconds. As described above, in a real use case retention times are supposed to be determined by measuring the compounds with the same LC-MS setup.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -236,58 +236,58 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchMz.html">matchMz</a></span><span class="op">(</span><span class="va">ms1_subset</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span>,
                             rtColname <span class="op">=</span> <span class="st">"rtime"</span><span class="op">)</span>
 <span class="va">matched_features</span></code></pre></div>
-<pre><code>## Object of class Matched 
-## Total number of matches: 31 
-## Number of query objects: 100 (31 matched)
-## Number of target objects: 57599 (1 matched)</code></pre>
+<pre><code><span class="co">## Object of class Matched </span>
+<span class="co">## Total number of matches: 31 </span>
+<span class="co">## Number of query objects: 100 (31 matched)</span>
+<span class="co">## Number of target objects: 57599 (1 matched)</span></code></pre>
 <p>Less features were matched based on m/z and retention times.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
-<pre><code>## DataFrame with 31 rows and 12 columns
-##       feature_id        mz     rtime target_headgroup target_name
-##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;
-## 1   Cluster_0070   201.113   5.87206               FA  FA 10:2;O2
-## 2   Cluster_0071   201.113   5.93346               FA  FA 10:2;O2
-## 3   Cluster_0072   201.113   6.03653               FA  FA 10:2;O2
-## 4   Cluster_0073   201.114   6.16709               FA  FA 10:2;O2
-## 5   Cluster_0074   201.113   6.31781               FA  FA 10:2;O2
-## ...          ...       ...       ...              ...         ...
-## 27  Cluster_0096   201.113   11.2722               FA  FA 10:2;O2
-## 28  Cluster_0097   201.113   11.4081               FA  FA 10:2;O2
-## 29  Cluster_0098   201.113   11.4760               FA  FA 10:2;O2
-## 30  Cluster_0099   201.114   11.5652               FA  FA 10:2;O2
-## 31  Cluster_0100   201.114   11.7752               FA  FA 10:2;O2
-##     target_exactmass target_formula target_chain_type target_rtime      adduct
-##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt;    &lt;numeric&gt; &lt;character&gt;
-## 1            200.105       C10H16O4              even      15.8624      [M+H]+
-## 2            200.105       C10H16O4              even      15.8624      [M+H]+
-## 3            200.105       C10H16O4              even      15.8624      [M+H]+
-## 4            200.105       C10H16O4              even      15.8624      [M+H]+
-## 5            200.105       C10H16O4              even      15.8624      [M+H]+
-## ...              ...            ...               ...          ...         ...
-## 27           200.105       C10H16O4              even      15.8624      [M+H]+
-## 28           200.105       C10H16O4              even      15.8624      [M+H]+
-## 29           200.105       C10H16O4              even      15.8624      [M+H]+
-## 30           200.105       C10H16O4              even      15.8624      [M+H]+
-## 31           200.105       C10H16O4              even      15.8624      [M+H]+
-##         score  score_rt
-##     &lt;numeric&gt; &lt;numeric&gt;
-## 1   0.0004538   9.99030
-## 2   0.0004407   9.92890
-## 3   0.0005655   9.82583
-## 4   0.0015560   9.69527
-## 5   0.0006845   9.54455
-## ...       ...       ...
-## 27  0.0007312   4.59014
-## 28  0.0005444   4.45431
-## 29  0.0005328   4.38634
-## 30  0.0014619   4.29719
-## 31  0.0020342   4.08719</code></pre>
+<pre><code><span class="co">## DataFrame with 31 rows and 12 columns</span>
+<span class="co">##       feature_id        mz     rtime target_headgroup target_name</span>
+<span class="co">##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;</span>
+<span class="co">## 1   Cluster_0070   201.113   5.87206               FA  FA 10:2;O2</span>
+<span class="co">## 2   Cluster_0071   201.113   5.93346               FA  FA 10:2;O2</span>
+<span class="co">## 3   Cluster_0072   201.113   6.03653               FA  FA 10:2;O2</span>
+<span class="co">## 4   Cluster_0073   201.114   6.16709               FA  FA 10:2;O2</span>
+<span class="co">## 5   Cluster_0074   201.113   6.31781               FA  FA 10:2;O2</span>
+<span class="co">## ...          ...       ...       ...              ...         ...</span>
+<span class="co">## 27  Cluster_0096   201.113   11.2722               FA  FA 10:2;O2</span>
+<span class="co">## 28  Cluster_0097   201.113   11.4081               FA  FA 10:2;O2</span>
+<span class="co">## 29  Cluster_0098   201.113   11.4760               FA  FA 10:2;O2</span>
+<span class="co">## 30  Cluster_0099   201.114   11.5652               FA  FA 10:2;O2</span>
+<span class="co">## 31  Cluster_0100   201.114   11.7752               FA  FA 10:2;O2</span>
+<span class="co">##     target_exactmass target_formula target_chain_type target_rtime      adduct</span>
+<span class="co">##            &lt;numeric&gt;    &lt;character&gt;       &lt;character&gt;    &lt;numeric&gt; &lt;character&gt;</span>
+<span class="co">## 1            200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 2            200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 3            200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 4            200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 5            200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## ...              ...            ...               ...          ...         ...</span>
+<span class="co">## 27           200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 28           200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 29           200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 30           200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">## 31           200.105       C10H16O4              even      15.8624      [M+H]+</span>
+<span class="co">##         score  score_rt</span>
+<span class="co">##     &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="co">## 1   0.0004538   9.99030</span>
+<span class="co">## 2   0.0004407   9.92890</span>
+<span class="co">## 3   0.0005655   9.82583</span>
+<span class="co">## 4   0.0015560   9.69527</span>
+<span class="co">## 5   0.0006845   9.54455</span>
+<span class="co">## ...       ...       ...</span>
+<span class="co">## 27  0.0007312   4.59014</span>
+<span class="co">## 28  0.0005444   4.45431</span>
+<span class="co">## 29  0.0005328   4.38634</span>
+<span class="co">## 30  0.0014619   4.29719</span>
+<span class="co">## 31  0.0020342   4.08719</span></code></pre>
 </div>
-<div id="matching-of-msms-spectra" class="section level2">
-<h2 class="hasAnchor">
-<a href="#matching-of-msms-spectra" class="anchor" aria-hidden="true"></a>Matching of MS/MS spectra</h2>
-<p>In this section we match experimental MS/MS spectra against reference spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.14/Spectra" class="external-link">Spectra</a></em> package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>, but the functions and concepts used here are more suitable to the <em>end user</em> as they simplify the handling of the spectra matching results.</p>
+<div class="section level2">
+<h2 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
+</h2>
+<p>In this section we match experimental MS/MS spectra against reference spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.15/Spectra" class="external-link">Spectra</a></em> package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>, but the functions and concepts used here are more suitable to the <em>end user</em> as they simplify the handling of the spectra matching results.</p>
 <p>Below we load spectra from a file from a reversed-phase (DDA) LC-MS/MS run of the Agilent Pesticide mix. With <code>filterMsLevel</code> we subset the data set to only MS2 spectra. To reduce processing time of the example we further subset the <code>Spectra</code> to a small set of selected MS2 spectra. In addition we assign <em>feature identifiers</em> to each spectrum (again, for this example these are arbitrary IDs, but in a <em>real</em> data analysis such identifiers could indicate to which LC-MS feature these spectra belong).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span>
@@ -303,159 +303,159 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## assign also *spectra IDs* to each</span>
 <span class="va">pest_ms2</span><span class="op">$</span><span class="va">spectrum_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"sp_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">pest_ms2</span><span class="op">)</span><span class="op">)</span>
 <span class="va">pest_ms2</span></code></pre></div>
-<pre><code>## MSn data (Spectra) with 13 spectra in a MsBackendMzR backend:
-##       msLevel     rtime scanIndex
-##     &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;
-## 1           2   361.651      2853
-## 2           2   361.741      2854
-## 3           2   377.609      3030
-## 4           2   377.699      3031
-## 5           2   378.120      3033
-## ...       ...       ...       ...
-## 9           2   378.959      3039
-## 10          2   379.379      3041
-## 11          2   380.059      3045
-## 12          2   380.609      3048
-## 13          2   381.029      3050
-##  ... 35 more variables/columns.
-## 
-## file(s):
-## PestMix1_DDA.mzML
-## Processing:
-##  Filter: select MS level(s) 2 [Mon Oct  4 14:13:46 2021]</code></pre>
+<pre><code><span class="co">## MSn data (Spectra) with 13 spectra in a MsBackendMzR backend:</span>
+<span class="co">##       msLevel     rtime scanIndex</span>
+<span class="co">##     &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;</span>
+<span class="co">## 1           2   361.651      2853</span>
+<span class="co">## 2           2   361.741      2854</span>
+<span class="co">## 3           2   377.609      3030</span>
+<span class="co">## 4           2   377.699      3031</span>
+<span class="co">## 5           2   378.120      3033</span>
+<span class="co">## ...       ...       ...       ...</span>
+<span class="co">## 9           2   378.959      3039</span>
+<span class="co">## 10          2   379.379      3041</span>
+<span class="co">## 11          2   380.059      3045</span>
+<span class="co">## 12          2   380.609      3048</span>
+<span class="co">## 13          2   381.029      3050</span>
+<span class="co">##  ... 35 more variables/columns.</span>
+<span class="co">## </span>
+<span class="co">## file(s):</span>
+<span class="co">## PestMix1_DDA.mzML</span>
+<span class="co">## Processing:</span>
+<span class="co">##  Filter: select MS level(s) 2 [Tue Dec  7 10:43:21 2021]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">minimb</span></code></pre></div>
-<pre><code>## MSn data (Spectra) with 100 spectra in a MsBackendDataFrame backend:
-##       msLevel     rtime scanIndex
-##     &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;
-## 1           2        NA        NA
-## 2           2        NA        NA
-## 3           2        NA        NA
-## 4           2        NA        NA
-## 5           2        NA        NA
-## ...       ...       ...       ...
-## 96         NA        NA        NA
-## 97          2        NA        NA
-## 98          2        NA        NA
-## 99          2        NA        NA
-## 100         2        NA        NA
-##  ... 42 more variables/columns.
-## Processing:
-##  Filter: select spectra with polarity 1 [Wed Mar 31 10:06:28 2021]
-##  Switch backend from MsBackendMassbankSql to MsBackendDataFrame [Wed Mar 31 10:07:59 2021]</code></pre>
-<p>We can now use the <code>matchSpectra</code> function to match each of our experimental <em>query</em> spectra against the <em>target</em> (reference) spectra. Settings for this matching can be defined with a dedicated <em>param</em> object. We use below the <code>CompareSpectraParam</code> that uses the <code>compareSpectra</code> function from the <code>Spectra</code> package to calculate similarities between each query spectrum and all target spectra. <code>CompareSpectraParam</code> allows to set all individual settings for the <code>compareSpectra</code> call with parameters <code>MAPFUN</code>, <code>ppm</code>, <code>tolerance</code> and <code>FUN</code> (see the help on <code>compareSpectra</code> in the <em><a href="https://bioconductor.org/packages/3.14/Spectra" class="external-link">Spectra</a></em> package for more details). In addition, we can <em>pre-filter</em> the target spectra for each individual query spectrum to speed-up the calculations. By setting <code>requirePrecursor = TRUE</code> we compare below each query spectrum only to target spectra with matching precursor m/z (accepting a deviation defined by parameters <code>ppm</code> and <code>tolerance</code>). By default, <code>matchSpectra</code> with <code>CompareSpectraParam</code> considers spectra with a similarity score higher than 0.7 as <em>matching</em> and these are thus reported.</p>
+<pre><code><span class="co">## MSn data (Spectra) with 100 spectra in a MsBackendDataFrame backend:</span>
+<span class="co">##       msLevel     rtime scanIndex</span>
+<span class="co">##     &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;</span>
+<span class="co">## 1           2        NA        NA</span>
+<span class="co">## 2           2        NA        NA</span>
+<span class="co">## 3           2        NA        NA</span>
+<span class="co">## 4           2        NA        NA</span>
+<span class="co">## 5           2        NA        NA</span>
+<span class="co">## ...       ...       ...       ...</span>
+<span class="co">## 96         NA        NA        NA</span>
+<span class="co">## 97          2        NA        NA</span>
+<span class="co">## 98          2        NA        NA</span>
+<span class="co">## 99          2        NA        NA</span>
+<span class="co">## 100         2        NA        NA</span>
+<span class="co">##  ... 42 more variables/columns.</span>
+<span class="co">## Processing:</span>
+<span class="co">##  Filter: select spectra with polarity 1 [Wed Mar 31 10:06:28 2021]</span>
+<span class="co">##  Switch backend from MsBackendMassbankSql to MsBackendDataFrame [Wed Mar 31 10:07:59 2021]</span></code></pre>
+<p>We can now use the <code>matchSpectra</code> function to match each of our experimental <em>query</em> spectra against the <em>target</em> (reference) spectra. Settings for this matching can be defined with a dedicated <em>param</em> object. We use below the <code>CompareSpectraParam</code> that uses the <code>compareSpectra</code> function from the <code>Spectra</code> package to calculate similarities between each query spectrum and all target spectra. <code>CompareSpectraParam</code> allows to set all individual settings for the <code>compareSpectra</code> call with parameters <code>MAPFUN</code>, <code>ppm</code>, <code>tolerance</code> and <code>FUN</code> (see the help on <code>compareSpectra</code> in the <em><a href="https://bioconductor.org/packages/3.15/Spectra" class="external-link">Spectra</a></em> package for more details). In addition, we can <em>pre-filter</em> the target spectra for each individual query spectrum to speed-up the calculations. By setting <code>requirePrecursor = TRUE</code> we compare below each query spectrum only to target spectra with matching precursor m/z (accepting a deviation defined by parameters <code>ppm</code> and <code>tolerance</code>). By default, <code>matchSpectra</code> with <code>CompareSpectraParam</code> considers spectra with a similarity score higher than 0.7 as <em>matching</em> and these are thus reported.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>,
                        param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,
                                                    ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 <span class="va">mtches</span></code></pre></div>
-<pre><code>## Object of class MatchedSpectra 
-## Total number of matches: 16 
-## Number of query objects: 13 (5 matched)
-## Number of target objects: 100 (11 matched)</code></pre>
+<pre><code><span class="co">## Object of class MatchedSpectra </span>
+<span class="co">## Total number of matches: 16 </span>
+<span class="co">## Number of query objects: 13 (5 matched)</span>
+<span class="co">## Number of target objects: 100 (11 matched)</span></code></pre>
 <p>The results are reported as a <code>MatchedSpectra</code> object which represents the matching results for all query spectra. This type of object contains all query spectra, all target spectra, the matching information and the parameter object with the settings of the matching. The object can be subsetted to e.g. matching results for a specific query spectrum:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
-<pre><code>## Object of class MatchedSpectra 
-## Total number of matches: 0 
-## Number of query objects: 1 (0 matched)
-## Number of target objects: 100 (0 matched)</code></pre>
+<pre><code><span class="co">## Object of class MatchedSpectra </span>
+<span class="co">## Total number of matches: 0 </span>
+<span class="co">## Number of query objects: 1 (0 matched)</span>
+<span class="co">## Number of target objects: 100 (0 matched)</span></code></pre>
 <p>In this case, for the first query spectrum, no match was found among the target spectra. Below we subset the <code>MatchedSpectra</code> to results for the second query spectrum:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
-<pre><code>## Object of class MatchedSpectra 
-## Total number of matches: 4 
-## Number of query objects: 1 (1 matched)
-## Number of target objects: 100 (4 matched)</code></pre>
+<pre><code><span class="co">## Object of class MatchedSpectra </span>
+<span class="co">## Total number of matches: 4 </span>
+<span class="co">## Number of query objects: 1 (1 matched)</span>
+<span class="co">## Number of target objects: 100 (4 matched)</span></code></pre>
 <p>The second query spectrum could be matched to 4 target spectra. The matching between query and target spectra can be n:m, i.e. each query spectrum can match no or multiple target spectra and each target spectrum can be matched to none, one or multiple query spectra.</p>
 <p>Data (spectra variables of either the query and/or the target spectra) can be extracted from the result object with the <code>spectraData</code> function or with <code>$</code> (similar to a <code>Spectra</code> object). The <code>spectraVariables</code> function can be used to list all available spectra variables in the result object:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraVariables</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></code></pre></div>
-<pre><code>##  [1] "msLevel"                        "rtime"                         
-##  [3] "acquisitionNum"                 "scanIndex"                     
-##  [5] "dataStorage"                    "dataOrigin"                    
-##  [7] "centroided"                     "smoothed"                      
-##  [9] "polarity"                       "precScanNum"                   
-## [11] "precursorMz"                    "precursorIntensity"            
-## [13] "precursorCharge"                "collisionEnergy"               
-## [15] "isolationWindowLowerMz"         "isolationWindowTargetMz"       
-## [17] "isolationWindowUpperMz"         "peaksCount"                    
-## [19] "totIonCurrent"                  "basePeakMZ"                    
-## [21] "basePeakIntensity"              "ionisationEnergy"              
-## [23] "lowMZ"                          "highMZ"                        
-## [25] "mergedScan"                     "mergedResultScanNum"           
-## [27] "mergedResultStartScanNum"       "mergedResultEndScanNum"        
-## [29] "injectionTime"                  "filterString"                  
-## [31] "spectrumId"                     "ionMobilityDriftTime"          
-## [33] "scanWindowLowerLimit"           "scanWindowUpperLimit"          
-## [35] "feature_id"                     "spectrum_id"                   
-## [37] "target_msLevel"                 "target_rtime"                  
-## [39] "target_acquisitionNum"          "target_scanIndex"              
-## [41] "target_dataStorage"             "target_dataOrigin"             
-## [43] "target_centroided"              "target_smoothed"               
-## [45] "target_polarity"                "target_precScanNum"            
-## [47] "target_precursorMz"             "target_precursorIntensity"     
-## [49] "target_precursorCharge"         "target_collisionEnergy"        
-## [51] "target_isolationWindowLowerMz"  "target_isolationWindowTargetMz"
-## [53] "target_isolationWindowUpperMz"  "target_spectrum_id"            
-## [55] "target_spectrum_name"           "target_date"                   
-## [57] "target_authors"                 "target_license"                
-## [59] "target_copyright"               "target_publication"            
-## [61] "target_splash"                  "target_compound_id"            
-## [63] "target_adduct"                  "target_ionization"             
-## [65] "target_ionization_voltage"      "target_fragmentation_mode"     
-## [67] "target_collision_energy_text"   "target_instrument"             
-## [69] "target_instrument_type"         "target_formula"                
-## [71] "target_exactmass"               "target_smiles"                 
-## [73] "target_inchi"                   "target_inchikey"               
-## [75] "target_cas"                     "target_pubchem"                
-## [77] "target_synonym"                 "target_precursor_mz_text"      
-## [79] "target_compound_name"           "score"</code></pre>
+<pre><code><span class="co">##  [1] "msLevel"                        "rtime"                         </span>
+<span class="co">##  [3] "acquisitionNum"                 "scanIndex"                     </span>
+<span class="co">##  [5] "dataStorage"                    "dataOrigin"                    </span>
+<span class="co">##  [7] "centroided"                     "smoothed"                      </span>
+<span class="co">##  [9] "polarity"                       "precScanNum"                   </span>
+<span class="co">## [11] "precursorMz"                    "precursorIntensity"            </span>
+<span class="co">## [13] "precursorCharge"                "collisionEnergy"               </span>
+<span class="co">## [15] "isolationWindowLowerMz"         "isolationWindowTargetMz"       </span>
+<span class="co">## [17] "isolationWindowUpperMz"         "peaksCount"                    </span>
+<span class="co">## [19] "totIonCurrent"                  "basePeakMZ"                    </span>
+<span class="co">## [21] "basePeakIntensity"              "ionisationEnergy"              </span>
+<span class="co">## [23] "lowMZ"                          "highMZ"                        </span>
+<span class="co">## [25] "mergedScan"                     "mergedResultScanNum"           </span>
+<span class="co">## [27] "mergedResultStartScanNum"       "mergedResultEndScanNum"        </span>
+<span class="co">## [29] "injectionTime"                  "filterString"                  </span>
+<span class="co">## [31] "spectrumId"                     "ionMobilityDriftTime"          </span>
+<span class="co">## [33] "scanWindowLowerLimit"           "scanWindowUpperLimit"          </span>
+<span class="co">## [35] "feature_id"                     "spectrum_id"                   </span>
+<span class="co">## [37] "target_msLevel"                 "target_rtime"                  </span>
+<span class="co">## [39] "target_acquisitionNum"          "target_scanIndex"              </span>
+<span class="co">## [41] "target_dataStorage"             "target_dataOrigin"             </span>
+<span class="co">## [43] "target_centroided"              "target_smoothed"               </span>
+<span class="co">## [45] "target_polarity"                "target_precScanNum"            </span>
+<span class="co">## [47] "target_precursorMz"             "target_precursorIntensity"     </span>
+<span class="co">## [49] "target_precursorCharge"         "target_collisionEnergy"        </span>
+<span class="co">## [51] "target_isolationWindowLowerMz"  "target_isolationWindowTargetMz"</span>
+<span class="co">## [53] "target_isolationWindowUpperMz"  "target_spectrum_id"            </span>
+<span class="co">## [55] "target_spectrum_name"           "target_date"                   </span>
+<span class="co">## [57] "target_authors"                 "target_license"                </span>
+<span class="co">## [59] "target_copyright"               "target_publication"            </span>
+<span class="co">## [61] "target_splash"                  "target_compound_id"            </span>
+<span class="co">## [63] "target_adduct"                  "target_ionization"             </span>
+<span class="co">## [65] "target_ionization_voltage"      "target_fragmentation_mode"     </span>
+<span class="co">## [67] "target_collision_energy_text"   "target_instrument"             </span>
+<span class="co">## [69] "target_instrument_type"         "target_formula"                </span>
+<span class="co">## [71] "target_exactmass"               "target_smiles"                 </span>
+<span class="co">## [73] "target_inchi"                   "target_inchikey"               </span>
+<span class="co">## [75] "target_cas"                     "target_pubchem"                </span>
+<span class="co">## [77] "target_synonym"                 "target_precursor_mz_text"      </span>
+<span class="co">## [79] "target_compound_name"           "score"</span></code></pre>
 <p>This lists the spectra variables from both the <em>query</em> <strong>and</strong> the <em>target</em> spectra, with the prefix <code>"target_"</code> being used for spectra variable names of the target spectra. Spectra variable <code>"score"</code> contains the similarity score.</p>
 <p>We could thus use <code>$target_compound_name</code> to extract the compound name of the matching target spectra for the second query spectrum:</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
-<pre><code>## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</code></pre>
+<pre><code><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></code></pre>
 <p>The same information can also be extracted on the <em>full</em> <code>MatchedSpectra</code>. Below we use <code>$spectrum_id</code> to extract the query spectra identifiers we added above from the full result object.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">$</span><span class="va">spectrum_id</span></code></pre></div>
-<pre><code>##  [1] "sp_1"  "sp_2"  "sp_2"  "sp_2"  "sp_2"  "sp_3"  "sp_4"  "sp_4"  "sp_5" 
-## [10] "sp_6"  "sp_6"  "sp_6"  "sp_7"  "sp_8"  "sp_8"  "sp_8"  "sp_8"  "sp_8" 
-## [19] "sp_9"  "sp_9"  "sp_10" "sp_11" "sp_12" "sp_13"</code></pre>
+<pre><code><span class="co">##  [1] "sp_1"  "sp_2"  "sp_2"  "sp_2"  "sp_2"  "sp_3"  "sp_4"  "sp_4"  "sp_5" </span>
+<span class="co">## [10] "sp_6"  "sp_6"  "sp_6"  "sp_7"  "sp_8"  "sp_8"  "sp_8"  "sp_8"  "sp_8" </span>
+<span class="co">## [19] "sp_9"  "sp_9"  "sp_10" "sp_11" "sp_12" "sp_13"</span></code></pre>
 <p>Because of the n:m mapping between query and target spectra, the number of values returned by <code>$</code> (or <code>spectraData</code>) can be larger than the total number of query spectra. Also in the example above, some of the spectra IDs are present more than once in the result returned by <code>$spectrum_id</code>. The respective spectra could be matched to more than one target spectrum (based on our settings) and hence their IDs are reported multiple times. Both <code>spectraData</code> and <code>$</code> for <code>MatchedSpectra</code> use a <em>left join</em> strategy to report/return values: a value (row) is reported for each query spectrum (even if it does <strong>not</strong> match any target spectrum) with eventually duplicated values (rows) if the query spectrum matches more than one target spectrum (each value for a query spectrum is repeated as many times as it matches target spectra). To illustrate this we use below the <code>spectraData</code> function to extract specific data from our result object, i.e. the spectrum and feature IDs for the query spectra we defined above, the MS2 spectra similarity score, and the target spectra’s ID and compound name.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"feature_id"</span>,
                                              <span class="st">"score"</span>, <span class="st">"target_spectrum_id"</span>,
                                              <span class="st">"target_compound_name"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">mtches_df</span><span class="op">)</span></code></pre></div>
-<pre><code>##    spectrum_id feature_id     score target_spectrum_id    target_compound_name
-## 1         sp_1      FT001        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 2         sp_2      FT001 0.7869556           LU056604             Azaconazole
-## 3         sp_2      FT001 0.8855473           LU056603             Azaconazole
-## 4         sp_2      FT001 0.7234894           LU056602             Azaconazole
-## 5         sp_2      FT001 0.7219942           LU056605             Azaconazole
-## 6         sp_3      FT002        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 7         sp_4      FT003 0.7769746           KW108103 triphenylphosphineoxide
-## 8         sp_4      FT003 0.7577286           KW108102 triphenylphosphineoxide
-## 9         sp_5      FT003        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 10        sp_6      FT003 0.7433718           SM839501            Dimethachlor
-## 11        sp_6      FT003 0.7019807           EA070705            Dimethachlor
-## 12        sp_6      FT003 0.7081274           EA070711            Dimethachlor
-## 13        sp_7      FT004        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 14        sp_8      FT004 0.7320465           SM839501            Dimethachlor
-## 15        sp_8      FT004 0.8106258           EA070705            Dimethachlor
-## 16        sp_8      FT004 0.7290458           EA070710            Dimethachlor
-## 17        sp_8      FT004 0.8168876           EA070711            Dimethachlor
-## 18        sp_8      FT004 0.7247800           EA070704            Dimethachlor
-## 19        sp_9      FT004 0.7412586           KW108103 triphenylphosphineoxide
-## 20        sp_9      FT004 0.7198787           KW108102 triphenylphosphineoxide
-## 21       sp_10      FT005        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 22       sp_11      FT005        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 23       sp_12      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;
-## 24       sp_13      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</code></pre>
+<pre><code><span class="co">##    spectrum_id feature_id     score target_spectrum_id    target_compound_name</span>
+<span class="co">## 1         sp_1      FT001        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 2         sp_2      FT001 0.7869556           LU056604             Azaconazole</span>
+<span class="co">## 3         sp_2      FT001 0.8855473           LU056603             Azaconazole</span>
+<span class="co">## 4         sp_2      FT001 0.7234894           LU056602             Azaconazole</span>
+<span class="co">## 5         sp_2      FT001 0.7219942           LU056605             Azaconazole</span>
+<span class="co">## 6         sp_3      FT002        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 7         sp_4      FT003 0.7769746           KW108103 triphenylphosphineoxide</span>
+<span class="co">## 8         sp_4      FT003 0.7577286           KW108102 triphenylphosphineoxide</span>
+<span class="co">## 9         sp_5      FT003        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 10        sp_6      FT003 0.7433718           SM839501            Dimethachlor</span>
+<span class="co">## 11        sp_6      FT003 0.7019807           EA070705            Dimethachlor</span>
+<span class="co">## 12        sp_6      FT003 0.7081274           EA070711            Dimethachlor</span>
+<span class="co">## 13        sp_7      FT004        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 14        sp_8      FT004 0.7320465           SM839501            Dimethachlor</span>
+<span class="co">## 15        sp_8      FT004 0.8106258           EA070705            Dimethachlor</span>
+<span class="co">## 16        sp_8      FT004 0.7290458           EA070710            Dimethachlor</span>
+<span class="co">## 17        sp_8      FT004 0.8168876           EA070711            Dimethachlor</span>
+<span class="co">## 18        sp_8      FT004 0.7247800           EA070704            Dimethachlor</span>
+<span class="co">## 19        sp_9      FT004 0.7412586           KW108103 triphenylphosphineoxide</span>
+<span class="co">## 20        sp_9      FT004 0.7198787           KW108102 triphenylphosphineoxide</span>
+<span class="co">## 21       sp_10      FT005        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 22       sp_11      FT005        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 23       sp_12      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
+<span class="co">## 24       sp_13      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</span></code></pre>
 <p>Using the <code>plotSpectraMirror</code> function we can visualize the matching results for one query spectrum. Below we call this function to show all matches for the second spectrum.</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
@@ -472,72 +472,72 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>The query spectrum seems to nicely match the identified target spectra. Below we extract the compound name of the target spectra for this second query spectrum.</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
-<pre><code>## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</code></pre>
+<pre><code><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></code></pre>
 <p>As alternative to the <code>CompareSpectraParam</code> we could also use the <code>MatchForwardReverseParam</code> with <code>matchSpectra</code>. This has the same settings and performs the same spectra similarity search than <code>CompareSpectraParam</code>, but reports in addition (similar to MS-DIAL) to the (<em>forward</em>) similarity score also the <em>reverse</em> spectra similarity score as well as the <em>presence ratio</em> for matching spectra. While the default <em>forward</em> score is calculated considering all peaks from the query and the target spectrum (the peak mapping is performed using an <em>outer join</em> strategy), the <em>reverse score</em> is calculated only on peaks that are present in the target spectrum and the matching peaks from the query spectrum (the peak mapping is performed using a <em>right join</em> strategy). The <em>presence ratio</em> is the ratio between the number of mapped peaks between the query and the target spectrum and the total number of peaks in the target spectrum. These values are available as spectra variables <code>"reverse_score"</code> and <code>"presence_ratio"</code> in the result object). Below we perform the same spectra matching as above, but using the <code>MatchForwardReverseParam</code>.</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">MatchForwardReverseParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">mp</span><span class="op">)</span>
 <span class="va">mtches</span></code></pre></div>
-<pre><code>## Object of class MatchedSpectra 
-## Total number of matches: 16 
-## Number of query objects: 13 (5 matched)
-## Number of target objects: 100 (11 matched)</code></pre>
+<pre><code><span class="co">## Object of class MatchedSpectra </span>
+<span class="co">## Total number of matches: 16 </span>
+<span class="co">## Number of query objects: 13 (5 matched)</span>
+<span class="co">## Number of target objects: 100 (11 matched)</span></code></pre>
 <p>Below we extract the query and target spectra IDs, the compound name and all scores.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"target_spectrum_id"</span>,
                           <span class="st">"target_compound_name"</span>, <span class="st">"score"</span>, <span class="st">"reverse_score"</span>,
                           <span class="st">"presence_ratio"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##    spectrum_id target_spectrum_id    target_compound_name     score
-## 1         sp_1               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 2         sp_2           LU056604             Azaconazole 0.7869556
-## 3         sp_2           LU056603             Azaconazole 0.8855473
-## 4         sp_2           LU056602             Azaconazole 0.7234894
-## 5         sp_2           LU056605             Azaconazole 0.7219942
-## 6         sp_3               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 7         sp_4           KW108103 triphenylphosphineoxide 0.7769746
-## 8         sp_4           KW108102 triphenylphosphineoxide 0.7577286
-## 9         sp_5               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 10        sp_6           SM839501            Dimethachlor 0.7433718
-## 11        sp_6           EA070705            Dimethachlor 0.7019807
-## 12        sp_6           EA070711            Dimethachlor 0.7081274
-## 13        sp_7               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 14        sp_8           SM839501            Dimethachlor 0.7320465
-## 15        sp_8           EA070705            Dimethachlor 0.8106258
-## 16        sp_8           EA070710            Dimethachlor 0.7290458
-## 17        sp_8           EA070711            Dimethachlor 0.8168876
-## 18        sp_8           EA070704            Dimethachlor 0.7247800
-## 19        sp_9           KW108103 triphenylphosphineoxide 0.7412586
-## 20        sp_9           KW108102 triphenylphosphineoxide 0.7198787
-## 21       sp_10               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 22       sp_11               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 23       sp_12               &lt;NA&gt;                    &lt;NA&gt;        NA
-## 24       sp_13               &lt;NA&gt;                    &lt;NA&gt;        NA
-##    reverse_score presence_ratio
-## 1             NA             NA
-## 2      0.8764394      0.5833333
-## 3      0.9239592      0.6250000
-## 4      0.7573541      0.6250000
-## 5      0.9519647      0.4285714
-## 6             NA             NA
-## 7      0.9025051      0.7500000
-## 8      0.9164348      0.5000000
-## 9             NA             NA
-## 10     0.8915201      0.5000000
-## 11     0.8687003      0.3333333
-## 12     0.8687472      0.3703704
-## 13            NA             NA
-## 14     0.8444402      0.5000000
-## 15     0.9267965      0.5000000
-## 16     0.8765496      0.7500000
-## 17     0.9236674      0.4814815
-## 18     0.8714208      0.8571429
-## 19     0.8743130      0.7500000
-## 20     0.8937751      0.5000000
-## 21            NA             NA
-## 22            NA             NA
-## 23            NA             NA
-## 24            NA             NA</code></pre>
+<pre><code><span class="co">##    spectrum_id target_spectrum_id    target_compound_name     score</span>
+<span class="co">## 1         sp_1               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 2         sp_2           LU056604             Azaconazole 0.7869556</span>
+<span class="co">## 3         sp_2           LU056603             Azaconazole 0.8855473</span>
+<span class="co">## 4         sp_2           LU056602             Azaconazole 0.7234894</span>
+<span class="co">## 5         sp_2           LU056605             Azaconazole 0.7219942</span>
+<span class="co">## 6         sp_3               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 7         sp_4           KW108103 triphenylphosphineoxide 0.7769746</span>
+<span class="co">## 8         sp_4           KW108102 triphenylphosphineoxide 0.7577286</span>
+<span class="co">## 9         sp_5               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 10        sp_6           SM839501            Dimethachlor 0.7433718</span>
+<span class="co">## 11        sp_6           EA070705            Dimethachlor 0.7019807</span>
+<span class="co">## 12        sp_6           EA070711            Dimethachlor 0.7081274</span>
+<span class="co">## 13        sp_7               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 14        sp_8           SM839501            Dimethachlor 0.7320465</span>
+<span class="co">## 15        sp_8           EA070705            Dimethachlor 0.8106258</span>
+<span class="co">## 16        sp_8           EA070710            Dimethachlor 0.7290458</span>
+<span class="co">## 17        sp_8           EA070711            Dimethachlor 0.8168876</span>
+<span class="co">## 18        sp_8           EA070704            Dimethachlor 0.7247800</span>
+<span class="co">## 19        sp_9           KW108103 triphenylphosphineoxide 0.7412586</span>
+<span class="co">## 20        sp_9           KW108102 triphenylphosphineoxide 0.7198787</span>
+<span class="co">## 21       sp_10               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 22       sp_11               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 23       sp_12               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">## 24       sp_13               &lt;NA&gt;                    &lt;NA&gt;        NA</span>
+<span class="co">##    reverse_score presence_ratio</span>
+<span class="co">## 1             NA             NA</span>
+<span class="co">## 2      0.8764394      0.5833333</span>
+<span class="co">## 3      0.9239592      0.6250000</span>
+<span class="co">## 4      0.7573541      0.6250000</span>
+<span class="co">## 5      0.9519647      0.4285714</span>
+<span class="co">## 6             NA             NA</span>
+<span class="co">## 7      0.9025051      0.7500000</span>
+<span class="co">## 8      0.9164348      0.5000000</span>
+<span class="co">## 9             NA             NA</span>
+<span class="co">## 10     0.8915201      0.5000000</span>
+<span class="co">## 11     0.8687003      0.3333333</span>
+<span class="co">## 12     0.8687472      0.3703704</span>
+<span class="co">## 13            NA             NA</span>
+<span class="co">## 14     0.8444402      0.5000000</span>
+<span class="co">## 15     0.9267965      0.5000000</span>
+<span class="co">## 16     0.8765496      0.7500000</span>
+<span class="co">## 17     0.9236674      0.4814815</span>
+<span class="co">## 18     0.8714208      0.8571429</span>
+<span class="co">## 19     0.8743130      0.7500000</span>
+<span class="co">## 20     0.8937751      0.5000000</span>
+<span class="co">## 21            NA             NA</span>
+<span class="co">## 22            NA             NA</span>
+<span class="co">## 23            NA             NA</span>
+<span class="co">## 24            NA             NA</span></code></pre>
 <p>In these examples we matched query spectra only to target spectra if their precursor m/z is ~ equal and reported only matches with a similarity higher than 0.7. <code>CompareSpectraParam</code>, through its parameter <code>THRESHFUN</code> would however also allow other types of analyses. We could for example also report the <em>best matching</em> target spectrum for each query spectrum, independently of whether the similarity score is higher than a certain threshold. Below we perform such an analysis defining a <code>THRESHFUN</code> that selects always the best match.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">select_top_match</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
@@ -549,94 +549,95 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"target_spectrum_id"</span>,
                                        <span class="st">"target_compound_name"</span>, <span class="st">"score"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
-<pre><code>##    spectrum_id target_spectrum_id                   target_compound_name
-## 1         sp_1           SM839603                             Flufenacet
-## 2         sp_2           LU056603                            Azaconazole
-## 3         sp_3           SM839501                           Dimethachlor
-## 4         sp_4           KW108103                triphenylphosphineoxide
-## 5         sp_5           LU100202        2,2'-(Tetradecylimino)diethanol
-## 6         sp_6           SM839501                           Dimethachlor
-## 7         sp_7           RP005503              Glycoursodeoxycholic acid
-## 8         sp_8           EA070711                           Dimethachlor
-## 9         sp_9           KW108103                triphenylphosphineoxide
-## 10       sp_10           JP006901                  1-PHENYLETHYL ACETATE
-## 11       sp_11           EA070711                           Dimethachlor
-## 12       sp_12           EA070705                           Dimethachlor
-## 13       sp_13           LU101704 2-Ethylhexyl 4-(dimethylamino)benzoate
-##           score
-## 1  0.000000e+00
-## 2  8.855473e-01
-## 3  6.313687e-01
-## 4  7.769746e-01
-## 5  1.772117e-05
-## 6  7.433718e-01
-## 7  1.906998e-03
-## 8  8.168876e-01
-## 9  7.412586e-01
-## 10 4.085289e-04
-## 11 4.323403e-01
-## 12 3.469648e-03
-## 13 7.612480e-06</code></pre>
-<p>Note that this whole example would work on any <code>Spectra</code> object with MS2 spectra. Such objects could also be extracted from an <code>xcms</code>-based LC-MS/MS data analysis with the <code>chromPeaksSpectra</code> or <code>featureSpectra</code> functions from the <em><a href="https://bioconductor.org/packages/3.14/xcms" class="external-link">xcms</a></em> package. Also,</p>
+<pre><code><span class="co">##    spectrum_id target_spectrum_id                   target_compound_name</span>
+<span class="co">## 1         sp_1           SM839603                             Flufenacet</span>
+<span class="co">## 2         sp_2           LU056603                            Azaconazole</span>
+<span class="co">## 3         sp_3           SM839501                           Dimethachlor</span>
+<span class="co">## 4         sp_4           KW108103                triphenylphosphineoxide</span>
+<span class="co">## 5         sp_5           LU100202        2,2'-(Tetradecylimino)diethanol</span>
+<span class="co">## 6         sp_6           SM839501                           Dimethachlor</span>
+<span class="co">## 7         sp_7           RP005503              Glycoursodeoxycholic acid</span>
+<span class="co">## 8         sp_8           EA070711                           Dimethachlor</span>
+<span class="co">## 9         sp_9           KW108103                triphenylphosphineoxide</span>
+<span class="co">## 10       sp_10           JP006901                  1-PHENYLETHYL ACETATE</span>
+<span class="co">## 11       sp_11           EA070711                           Dimethachlor</span>
+<span class="co">## 12       sp_12           EA070705                           Dimethachlor</span>
+<span class="co">## 13       sp_13           LU101704 2-Ethylhexyl 4-(dimethylamino)benzoate</span>
+<span class="co">##           score</span>
+<span class="co">## 1  0.000000e+00</span>
+<span class="co">## 2  8.855473e-01</span>
+<span class="co">## 3  6.313687e-01</span>
+<span class="co">## 4  7.769746e-01</span>
+<span class="co">## 5  1.772117e-05</span>
+<span class="co">## 6  7.433718e-01</span>
+<span class="co">## 7  1.906998e-03</span>
+<span class="co">## 8  8.168876e-01</span>
+<span class="co">## 9  7.412586e-01</span>
+<span class="co">## 10 4.085289e-04</span>
+<span class="co">## 11 4.323403e-01</span>
+<span class="co">## 12 3.469648e-03</span>
+<span class="co">## 13 7.612480e-06</span></code></pre>
+<p>Note that this whole example would work on any <code>Spectra</code> object with MS2 spectra. Such objects could also be extracted from an <code>xcms</code>-based LC-MS/MS data analysis with the <code>chromPeaksSpectra</code> or <code>featureSpectra</code> functions from the <em><a href="https://bioconductor.org/packages/3.15/xcms" class="external-link">xcms</a></em> package. Also,</p>
 </div>
 </div>
-<div id="session-information" class="section level1 unnumbered">
-<h1 class="hasAnchor">
-<a href="#session-information" class="anchor" aria-hidden="true"></a>Session information</h1>
-<pre><code>## R version 4.1.1 (2021-08-10)
-## Platform: x86_64-pc-linux-gnu (64-bit)
-## Running under: Ubuntu 20.04.3 LTS
-## 
-## Matrix products: default
-## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so
-## 
-## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
-##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
-## 
-## attached base packages:
-## [1] stats4    stats     graphics  grDevices utils     datasets  methods  
-## [8] base     
-## 
-## other attached packages:
-## [1] msdata_0.33.0           Spectra_1.3.10          ProtGenerics_1.25.1    
-## [4] BiocParallel_1.27.12    S4Vectors_0.31.5        BiocGenerics_0.39.2    
-## [7] MetaboAnnotation_0.2.11 BiocStyle_2.21.3       
-## 
-## loaded via a namespace (and not attached):
-##  [1] SummarizedExperiment_1.23.4 xfun_0.26                  
-##  [3] bslib_0.3.0                 lattice_0.20-45            
-##  [5] htmltools_0.5.2             yaml_2.2.1                 
-##  [7] rlang_0.4.11                pkgdown_1.9000.9000.9000   
-##  [9] jquerylib_0.1.4             mzR_2.27.1                 
-## [11] MetaboCoreUtils_1.1.1       matrixStats_0.61.0-9001    
-## [13] GenomeInfoDbData_1.2.7      stringr_1.4.0              
-## [15] MatrixGenerics_1.5.4        zlibbioc_1.39.0            
-## [17] ragg_1.1.3                  codetools_0.2-18           
-## [19] memoise_2.0.0               evaluate_0.14              
-## [21] Biobase_2.53.0              knitr_1.36                 
-## [23] IRanges_2.27.2              fastmap_1.1.0              
-## [25] GenomeInfoDb_1.29.8         parallel_4.1.1             
-## [27] highr_0.9                   Rcpp_1.0.7                 
-## [29] BiocManager_1.30.16         cachem_1.0.6               
-## [31] DelayedArray_0.19.4         desc_1.4.0                 
-## [33] jsonlite_1.7.2              XVector_0.33.0             
-## [35] MsCoreUtils_1.5.0           systemfonts_1.0.2          
-## [37] fs_1.5.0                    textshaping_0.3.5          
-## [39] digest_0.6.28               stringi_1.7.4              
-## [41] bookdown_0.24               ncdf4_1.17                 
-## [43] GenomicRanges_1.45.0        rprojroot_2.0.2            
-## [45] grid_4.1.1                  clue_0.3-59                
-## [47] tools_4.1.1                 bitops_1.0-7               
-## [49] magrittr_2.0.1              sass_0.4.0                 
-## [51] RCurl_1.98-1.5              cluster_2.1.2              
-## [53] crayon_1.4.1                MASS_7.3-54                
-## [55] Matrix_1.3-4                rmarkdown_2.11             
-## [57] R6_2.5.1                    compiler_4.1.1</code></pre>
+<div class="section level1 unnumbered">
+<h1 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h1>
+<pre><code><span class="co">## R Under development (unstable) (2021-11-16 r81199)</span>
+<span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
+<span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
+<span class="co">## </span>
+<span class="co">## Matrix products: default</span>
+<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## </span>
+<span class="co">## locale:</span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span>
+<span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
+<span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
+<span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
+<span class="co">## </span>
+<span class="co">## attached base packages:</span>
+<span class="co">## [1] stats4    stats     graphics  grDevices utils     datasets  methods  </span>
+<span class="co">## [8] base     </span>
+<span class="co">## </span>
+<span class="co">## other attached packages:</span>
+<span class="co">## [1] msdata_0.35.2           Spectra_1.5.2           ProtGenerics_1.27.0    </span>
+<span class="co">## [4] BiocParallel_1.29.4     S4Vectors_0.33.6        BiocGenerics_0.41.2    </span>
+<span class="co">## [7] MetaboAnnotation_0.2.11 BiocStyle_2.23.0       </span>
+<span class="co">## </span>
+<span class="co">## loaded via a namespace (and not attached):</span>
+<span class="co">##  [1] SummarizedExperiment_1.25.2 xfun_0.28                  </span>
+<span class="co">##  [3] bslib_0.3.1                 purrr_0.3.4                </span>
+<span class="co">##  [5] lattice_0.20-45             htmltools_0.5.2            </span>
+<span class="co">##  [7] yaml_2.2.1                  rlang_0.4.12               </span>
+<span class="co">##  [9] pkgdown_2.0.1.9000          jquerylib_0.1.4            </span>
+<span class="co">## [11] mzR_2.29.1                  MetaboCoreUtils_1.3.2      </span>
+<span class="co">## [13] matrixStats_0.61.0-9001     GenomeInfoDbData_1.2.7     </span>
+<span class="co">## [15] stringr_1.4.0               MatrixGenerics_1.7.0       </span>
+<span class="co">## [17] zlibbioc_1.41.0             ragg_1.2.1                 </span>
+<span class="co">## [19] codetools_0.2-18            memoise_2.0.1              </span>
+<span class="co">## [21] evaluate_0.14               Biobase_2.55.0             </span>
+<span class="co">## [23] knitr_1.36                  IRanges_2.29.1             </span>
+<span class="co">## [25] fastmap_1.1.0               GenomeInfoDb_1.31.1        </span>
+<span class="co">## [27] parallel_4.2.0              highr_0.9                  </span>
+<span class="co">## [29] Rcpp_1.0.7                  BiocManager_1.30.16        </span>
+<span class="co">## [31] cachem_1.0.6                DelayedArray_0.21.2        </span>
+<span class="co">## [33] desc_1.4.0                  jsonlite_1.7.2             </span>
+<span class="co">## [35] XVector_0.35.0              MsCoreUtils_1.7.1          </span>
+<span class="co">## [37] systemfonts_1.0.3           fs_1.5.1                   </span>
+<span class="co">## [39] textshaping_0.3.6           digest_0.6.29              </span>
+<span class="co">## [41] stringi_1.7.6               bookdown_0.24              </span>
+<span class="co">## [43] ncdf4_1.18                  GenomicRanges_1.47.5       </span>
+<span class="co">## [45] rprojroot_2.0.2             grid_4.2.0                 </span>
+<span class="co">## [47] clue_0.3-60                 tools_4.2.0                </span>
+<span class="co">## [49] bitops_1.0-7                magrittr_2.0.1             </span>
+<span class="co">## [51] sass_0.4.0                  RCurl_1.98-1.5             </span>
+<span class="co">## [53] cluster_2.1.2               crayon_1.4.2               </span>
+<span class="co">## [55] MASS_7.3-54                 Matrix_1.3-4               </span>
+<span class="co">## [57] rmarkdown_2.11              R6_2.5.1                   </span>
+<span class="co">## [59] compiler_4.2.0</span></code></pre>
 </div>
   </div>
 
@@ -657,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
 </div>
 
       </footer>

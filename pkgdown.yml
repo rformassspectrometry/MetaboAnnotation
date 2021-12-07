@@ -1,7 +1,7 @@
 pandoc: 2.14.0.3
-pkgdown: 1.9000.9000.9000
-pkgdown_sha: 2720abc02fbddbb761104d44d30ce7a3d0c26812
+pkgdown: 2.0.1.9000
+pkgdown_sha: 1c2bedc10283fe39c5e539083021cb87f208903a
 articles:
   MetaboAnnotation: MetaboAnnotation.html
-last_built: 2021-10-04T14:13Z
+last_built: 2021-12-07T10:42Z
 
