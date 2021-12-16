@@ -553,3 +553,20 @@ test_that("addMatches,Matched works", {
     expect_equal(query(moadd), query(mo))
     expect_equal(target(moadd), target(mo))
 })
+
+test_that(".extract_elements works", {
+    a <- data.frame(a = 1:5)
+    expect_equal(.extract_elements(a, 3)[, 1], 3)
+    expect_equal(.extract_elements(a, c(3, 6))[, 1], c(3, NA))
+    expect_equal(.extract_elements(a, c(NA, 1))[, 1], c(NA, 1))
+
+    a <- 1:5
+    expect_equal(.extract_elements(a, 3), 3)
+    expect_equal(.extract_elements(a, c(3, 6)), c(3, NA))
+    expect_equal(.extract_elements(a, c(NA, 1)), c(NA, 1))
+
+    a <- list(1, 2, 3, 4, 5)
+    expect_equal(.extract_elements(a, 3), list(3))
+    expect_equal(.extract_elements(a, c(3, 6)), list(3, NULL))
+    expect_equal(.extract_elements(a, c(NA, 1)), list(NA, 1))
+})

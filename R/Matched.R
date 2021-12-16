@@ -582,7 +582,7 @@ setMethod("matchedData", "Matched", function(object,
         if (missing(j)) j <- seq_len(dim(x)[2])
         res <- x[i, j, drop = drop]
     } else res <- x[i]
-    if(is(x)[1] == "list" && any(na <- is.na(i)))
+    if (is(x, "list") && any(na <- is.na(i)))
         res[na] <- NA
     res
 }
