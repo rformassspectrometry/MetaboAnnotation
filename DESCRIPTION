@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 0.99.0
+Version: 0.99.1
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -10,16 +10,13 @@ Description:
     simplify matching of LC-MS/MS spectra against spectral libraries and objects
     and functionality to represent and manage such matched data.
 Authors@R:
-    c(person(given = "RforMassSpectrometry Package Maintainer",
-             email = "maintainer@rformassspectrometry.org",
-             role = "cre"),
-      person(given = "Michael", family = "Witting",
+    c(person(given = "Michael", family = "Witting",
              role = c("aut"),
              email = "michael.witting@helmholtz-muenchen.de",
              comment = c(ORCID = "0000-0002-1462-4426")),
       person(given = "Johannes", family = "Rainer",
              email = "Johannes.Rainer@eurac.edu",
-             role = "aut",
+             role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-6977-7147")),
       person(given = "Andrea", family = "Vicini",
 	     email = "andrea.vicini@eurac.edu",
