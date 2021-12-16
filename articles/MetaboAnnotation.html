@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.2</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: RforMassSpectrometry Package Maintainer [cre], Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Tue Dec 7 11:07:28 2021</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Thu Dec 16 08:00:03 2021</p>
 <div class="section level1">
 <h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h1>
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Tue Dec  7 11:07:37 2021]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Thu Dec 16 08:00:12 2021]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -583,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="section level1 unnumbered">
 <h1 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h1>
-<pre><code><span class="co">## R Under development (unstable) (2021-11-16 r81199)</span>
+<pre><code><span class="co">## R Under development (unstable) (2021-12-10 r81318)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -603,12 +603,12 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [8] base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">## [1] msdata_0.35.2           Spectra_1.5.2           ProtGenerics_1.27.0    </span>
-<span class="co">## [4] BiocParallel_1.29.4     S4Vectors_0.33.6        BiocGenerics_0.41.2    </span>
-<span class="co">## [7] MetaboAnnotation_0.99.0 BiocStyle_2.23.0       </span>
+<span class="co">## [1] msdata_0.35.2           Spectra_1.5.2           ProtGenerics_1.27.1    </span>
+<span class="co">## [4] BiocParallel_1.29.5     S4Vectors_0.33.8        BiocGenerics_0.41.2    </span>
+<span class="co">## [7] MetaboAnnotation_0.99.2 BiocStyle_2.23.0       </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
-<span class="co">##  [1] SummarizedExperiment_1.25.2 xfun_0.28                  </span>
+<span class="co">##  [1] SummarizedExperiment_1.25.3 xfun_0.29                  </span>
 <span class="co">##  [3] bslib_0.3.1                 purrr_0.3.4                </span>
 <span class="co">##  [5] lattice_0.20-45             htmltools_0.5.2            </span>
 <span class="co">##  [7] yaml_2.2.1                  rlang_0.4.12               </span>
@@ -626,16 +626,16 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [31] cachem_1.0.6                DelayedArray_0.21.2        </span>
 <span class="co">## [33] desc_1.4.0                  jsonlite_1.7.2             </span>
 <span class="co">## [35] XVector_0.35.0              MsCoreUtils_1.7.1          </span>
-<span class="co">## [37] systemfonts_1.0.3           fs_1.5.1                   </span>
+<span class="co">## [37] systemfonts_1.0.3           fs_1.5.2                   </span>
 <span class="co">## [39] textshaping_0.3.6           digest_0.6.29              </span>
 <span class="co">## [41] stringi_1.7.6               bookdown_0.24              </span>
-<span class="co">## [43] ncdf4_1.18                  GenomicRanges_1.47.5       </span>
+<span class="co">## [43] ncdf4_1.19                  GenomicRanges_1.47.5       </span>
 <span class="co">## [45] rprojroot_2.0.2             grid_4.2.0                 </span>
 <span class="co">## [47] clue_0.3-60                 tools_4.2.0                </span>
 <span class="co">## [49] bitops_1.0-7                magrittr_2.0.1             </span>
 <span class="co">## [51] sass_0.4.0                  RCurl_1.98-1.5             </span>
 <span class="co">## [53] cluster_2.1.2               crayon_1.4.2               </span>
-<span class="co">## [55] MASS_7.3-54                 Matrix_1.3-4               </span>
+<span class="co">## [55] MASS_7.3-54                 Matrix_1.4-0               </span>
 <span class="co">## [57] rmarkdown_2.11              R6_2.5.1                   </span>
 <span class="co">## [59] compiler_4.2.0</span></code></pre>
 </div>
@@ -653,7 +653,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by RforMassSpectrometry Package Maintainer, Michael Witting, Johannes Rainer, Andrea Vicini.</p>
+<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini.</p>
 </div>
 
 <div class="pkgdown">
