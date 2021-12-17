@@ -370,7 +370,8 @@ setMethod("matchMz",
                                               tolerance = param@tolerance,
                                               ppm = param@ppm),
                               BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches)
+            Matched(query = query, target = target, matches = matches,
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -432,7 +433,8 @@ setMethod("matchMz",
                                         ppm = param@ppm)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, res))
+                    matches = do.call(rbind, res),
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -512,7 +514,8 @@ setMethod("matchMz",
                                                 toleranceRt = param@toleranceRt)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, matches))
+                    matches = do.call(rbind, matches),
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 #'
@@ -551,7 +554,8 @@ setMethod("matchMz",
                                                 toleranceRt = param@toleranceRt)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, matches))
+                    matches = do.call(rbind, matches),
+                    metadata = list(param = param))
           })
 
 #' @rdname matchMz
@@ -563,7 +567,8 @@ setMethod("matchMz",
                    BPPARAM = SerialParam()) {
             matches <- matchMz(data.frame(rowData(query)), target, param,
                                mzColname , rtColname, BPPARAM)@matches
-            MatchedSummarizedExperiment(query, target, matches)
+            MatchedSummarizedExperiment(query, target, matches,
+                                        metadata = list(param = param))
           })
 
 #' @author Andrea Vicini

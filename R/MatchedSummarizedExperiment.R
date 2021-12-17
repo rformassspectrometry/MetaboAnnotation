@@ -17,9 +17,10 @@ MatchedSummarizedExperiment <- function(query = SummarizedExperiment(),
                                         matches = data.frame(
                                           query_idx = integer(),
                                           target_idx = integer(),
-                                          score = numeric())) {
+                                          score = numeric()),
+                                        metadata = list()) {
   new("MatchedSummarizedExperiment", query = query, target = target,
-      matches = matches)
+      matches = matches, metadata = metadata)
 }
 
 setValidity("MatchedSummarizedExperiment", function(object) {

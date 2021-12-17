@@ -36,7 +36,8 @@ Matched(
   query = list(),
   target = list(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric())
+    numeric()),
+  metadata = list()
 )
 
 \S4method{length}{Matched}(x)
@@ -88,7 +89,8 @@ MatchedSummarizedExperiment(
   query = SummarizedExperiment(),
   target = data.frame(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric())
+    numeric()),
+  metadata = list()
 )
 }
 \arguments{
@@ -104,6 +106,8 @@ matched.}
 \item{matches}{\code{data.frame} with columns \code{"query_idx"} (\code{integer}),
 \code{"target_idx"} (\code{integer}) and \code{"score"} (\code{numeric}) representing the n:m
 mapping of elements between the \code{query} and the \code{target} objects.}
+
+\item{metadata}{\code{list} with optional additional metadata.}
 
 \item{x}{\code{Matched} object.}
 

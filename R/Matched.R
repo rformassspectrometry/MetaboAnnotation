@@ -138,6 +138,8 @@
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
 #'   mapping of elements between the `query` and the `target` objects.
 #'
+#' @param metadata `list` with optional additional metadata.
+#'
 #' @param name for `$`: the name of the column (or variable) to extract.
 #'
 #' @param object a `Matched` object.
@@ -455,8 +457,10 @@ setClass(
 Matched <- function(query = list(), target = list(),
                     matches = data.frame(query_idx = integer(),
                                          target_idx = integer(),
-                                         score = numeric())) {
-    new("Matched", query = query, target = target, matches = matches)
+                                         score = numeric()),
+                    metadata = list()) {
+    new("Matched", query = query, target = target, matches = matches,
+        metadata = metadata)
 }
 
 setValidity("Matched", function(object) {
