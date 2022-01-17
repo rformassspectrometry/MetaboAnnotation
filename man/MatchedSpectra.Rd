@@ -3,17 +3,11 @@
 \name{MatchedSpectra}
 \alias{MatchedSpectra}
 \alias{MatchedSpectra-class}
-\alias{length,MatchedSpectra-method}
-\alias{show,MatchedSpectra-method}
-\alias{[,MatchedSpectra,ANY-method}
-\alias{target}
-\alias{query}
-\alias{whichTarget}
-\alias{whichQuery}
 \alias{spectraVariables,MatchedSpectra-method}
+\alias{colnames,MatchedSpectra-method}
 \alias{$,MatchedSpectra-method}
 \alias{spectraData,MatchedSpectra-method}
-\alias{pruneTarget}
+\alias{matchedData,MatchedSpectra-method}
 \alias{addProcessing,MatchedSpectra-method}
 \alias{plotSpectraMirror,MatchedSpectra-method}
 \title{Representation of Spectra matches}
@@ -25,27 +19,15 @@ MatchedSpectra(
     numeric())
 )
 
-\S4method{length}{MatchedSpectra}(x)
-
-\S4method{show}{MatchedSpectra}(object)
-
-\S4method{[}{MatchedSpectra,ANY}(x, i, j, ..., drop = FALSE)
-
-target(object)
-
-query(object)
-
-whichTarget(object)
-
-whichQuery(object)
-
 \S4method{spectraVariables}{MatchedSpectra}(object)
+
+\S4method{colnames}{MatchedSpectra}(x)
 
 \S4method{$}{MatchedSpectra}(x, name)
 
 \S4method{spectraData}{MatchedSpectra}(object, columns = spectraVariables(object))
 
-pruneTarget(object)
+\S4method{matchedData}{MatchedSpectra}(object, columns = spectraVariables(object), ...)
 
 \S4method{addProcessing}{MatchedSpectra}(object, FUN, ..., spectraVariables = character())
 
@@ -61,27 +43,21 @@ matched.}
 \code{"target_idx"} (\code{integer}) and \code{"score"} (\code{numeric}) representing the
 \emph{n:m} mapping of elements between the \code{query} and the \code{target} \code{Spectra}.}
 
-\item{x}{\code{MatchedSpectra} object.}
-
 \item{object}{\code{MatchedSpectra} object.}
 
-\item{i}{\code{integer} or \code{logical} defining the \code{query} spectra to keep.}
-
-\item{j}{for \code{[}: ignored.}
-
-\item{...}{for \code{addProcessing}: additional parameters for the function \code{FUN}.}
-
-\item{drop}{for \code{[}: ignored.}
+\item{x}{\code{MatchedSpectra} object.}
 
 \item{name}{for \code{$}: the name of the spectra variable to extract.}
 
 \item{columns}{for \code{spectraData}: \code{character} vector with spectra variable
 names that should be extracted.}
 
-\item{FUN}{For \code{addProcessing}: function to be applied to the peak matrix
+\item{...}{for \code{addProcessing}: additional parameters for the function \code{FUN}.}
+
+\item{FUN}{for \code{addProcessing}: function to be applied to the peak matrix
 of each spectrum in \code{object}. See \code{\link[=Spectra]{Spectra()}} for more details.}
 
-\item{spectraVariables}{For \code{addProcessing}: \code{character} with additional
+\item{spectraVariables}{for \code{addProcessing}: \code{character} with additional
 spectra variables that should be passed along to the function defined
 with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
 
@@ -130,6 +106,7 @@ from the target spectra are extracted, an \code{NA} is reported for \emph{query}
 spectra that don't match any target spectra. See examples below for more
 details.
 \item \code{length} returns the number of \strong{query} spectra.
+\item \code{matchedData} same as \code{spectraData} below.
 \item \code{spectraData} returns spectra variables from the query and/or target
 \code{Spectra} as a \code{DataFrame}. Parameter \code{columns} allows to define which
 variables should be returned (defaults to
@@ -254,6 +231,9 @@ length(target(ms_sub))
 ## only those that match at least one query spectrum
 ms_sub <- pruneTarget(ms_sub)
 length(target(ms_sub))
+}
+\seealso{
+\code{\link[=Matched]{Matched()}} for additional functions available for \code{MatchedSpectra}.
 }
 \author{
 Johannes Rainer

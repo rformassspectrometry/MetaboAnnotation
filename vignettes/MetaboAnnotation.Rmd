@@ -43,35 +43,155 @@ provided by the `MetaboAnnotation` package.
 library(MetaboAnnotation)
 ```
 
+
 ## Matching of m/z values
 
 In this section a simple matching of feature m/z values against theoretical m/z
 values is performed. This is the lowest level of confidence in metabolite anno-
-tation. However, it gives ideas about potential metabolites that can analyzed 
-in further downstream analysis.
+tation. However, it gives ideas about potential metabolites that can be analyzed
+in further downstream experiments and analyses.
 
 The following example loads the feature table from a lipidomics experiments and
-matches the measured m/z values against the CompDB from LipidMaps.
+matches the measured m/z values against reference masses from LipidMaps. Below
+we use a `data.frame` as *reference* database, but a
+[`CompDb`](https://github.com/EuracBiomedicalResearch/CompoundDb) compound
+database instance would also be supported.
 
 ```{r, message = FALSE}
-ms1_features <- read.table(system.file("extdata", "MS1_example.txt", package = "MetaboAnnotation"),
+ms1_features <- read.table(system.file("extdata", "MS1_example.txt",
+                                       package = "MetaboAnnotation"),
                            header = TRUE, sep = "\t")
+head(ms1_features)
+target_df <- read.table(system.file("extdata", "LipidMaps_CompDB.txt",
+                                    package = "MetaboAnnotation"),
+                        header = TRUE, sep = "\t")
+head(target_df)
+```
 
-compDb <- read.table(system.file("extdata", "LipidMaps_CompDB.txt", package = "MetaboAnnotation"),
-                           header = TRUE, sep = "\t")
+For reference (target) compounds we have only the mass available. We need to
+convert this mass to m/z values in order to match the m/z values from the
+features (i.e. the query m/z values) against them. For this we need to define
+the *most likely* ions/adducts that would be generated from the compounds based
+on the ionization used in the experiment. We assume the most abundant adducts
+from the compounds being `"[M+H]+"` and `"[M+Na]+`. We next perform the matching
+with the `matchMz` function providing the query and target data as well as a
+parameter object (in our case a `Mass2MzParam`) with the settings for the
+matching. With the `Mass2MzParam`, the mass or target compounds get first
+converted to m/z values, based on the defined adducts, and these are then
+matched against the query m/z values (i.e. the m/z values for the features). To
+get a full list of supported adducts the `MetaboCoreUtils::adductNames(polarity
+= "positive")` or `MetaboCoreUtils::adductNames(polarity = "negative")` can be
+used). Note also, to keep the runtime of this vignette short, we match only the
+first 100 features.
 
-##
-annotations <- matchMz(ms1_features, compDb,
-                       adducts = c("[M+H]+", "[M+Na]+"),
-                       tolerance = 0.005, ppm = 0)
+```{r}
+parm <- Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+                           tolerance = 0.005, ppm = 0)
 
+matched_features <- matchMz(ms1_features[1:100, ], target_df, parm)
+matched_features
+```
+
+From the tested 100 features 55 were matched against at least one target
+compound (all matches are against a single compound). The result object (of type
+`Matched`) contains the full query data frame and target data frames as well as
+the matching information. We can access the original query data with `query` and
+the original target data with `target` function:
+
+```{r}
+head(query(matched_features))
+head(target(matched_features))
+```
+
+Functions `whichQuery` and `whichTarget` can be used to identify the rows in the
+query and target data that could be matched:
+
+```{r}
+whichQuery(matched_features)
+whichTarget(matched_features)
+```
+
+We can extract the full matching table with `matchedData`. This returns a
+`DataFrame` with all rows in *query* the corresponding matches in *target*
+along with the matching adduct (column `"adduct"`) and the difference in m/z
+(column `"score"`). Note that if a row in *query* matches multiple elements in
+*target*, this row will be duplicated in the `DataFrame` returned by `data`.
+For rows that can not be matched `NA` values are reported.
+
+```{r}
+matchedData(matched_features)
+```
+
+See also the help page for `?Matched` for more details and information. In
+addition to the matching of query m/z against target exact masses as described
+above it would also be possible to match directly query m/z against target m/z
+values by using the `MzParam` instead of the `Mass2MzParam`.
+
+
+## Matching of m/z and retention time values
+
+If expected retention time values were available for the target compounds, an
+annotation with higher confidence could be performed with `matchMz` and a
+`Mass2MzRtParam` parameter object. To illustrate this we randomly assign
+retention times from query features to the target compounds adding also 2
+seconds difference. In a real use case the target `data.frame` would contain
+masses (or m/z values) for standards along with the retention times when ions of
+these standards were measured on the same LC-MS setup from which the query data
+derives.
+
+Below we subset our data table with the MS1 features to the first 100 rows (to
+keep the runtime of the vignette short).
+
+```{r}
+ms1_subset <- ms1_features[1:100, ]
+head(ms1_subset)
+```
+
+The table contains thus retention times of the features in a column named
+`"rtime"`.
+
+Next we randomly assign retention times of the features to compounds in our
+target data adding a deviation of 2 seconds. As described above, in a real use
+case retention times are supposed to be determined by measuring the compounds
+with the same LC-MS setup.
+
+```{r}
+set.seed(123)
+target_df$rtime <- sample(ms1_subset$rtime,
+                          nrow(target_df), replace = TRUE) + 2
+```
+
+We have now retention times available for both the query and the target data and
+can thus perform a matching based on m/z **and** retention times. We use the
+`Mass2MzRtParam` which allows us to specify (as for the
+`Mass2MzParam`) the expected adducts, the maximal acceptable m/z relative
+and absolute deviation as well as the maximal acceptable (absolute) difference
+in retention times. We use the settings from the previous section and allow a
+difference of 10 seconds in retention times. The retention times are provided in
+columns named `"rtime"` which is different from the default (`"rt"`). We thus
+specify the name of the column containing the retention times with parameter
+`rtColname`.
+
+```{r}
+parm <- Mass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
+                       tolerance = 0.005, ppm = 0,
+                       toleranceRt = 10)
+matched_features <- matchMz(ms1_subset, target_df, param = parm,
+                            rtColname = "rtime")
+matched_features
+```
+
+Less features were matched based on m/z and retention times.
+
+```{r}
+matchedData(matched_features)[whichQuery(matched_features), ]
 ```
 
 
 ## Matching of MS/MS spectra
 
 In this section we match experimental MS/MS spectra against reference
-spectra. This can also be performed with functions from the 
+spectra. This can also be performed with functions from the
 `r BiocStyle::Biocpkg("Spectra")` package (see
 [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/), but the
 functions and concepts used here are more suitable to the *end user* as they
@@ -110,7 +230,7 @@ subset of [MassBank](https://massbank.eu/MassBank/) release *2021.03*. This
 small `Spectra` object is provided within this package but it would be possible
 to use any other `Spectra` object instead (see the
 [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/) for different
-ways and options to provide access to spectral libraries/databases *via* 
+ways and options to provide access to spectral libraries/databases *via*
 `Spectra`).
 
 ```{r}
@@ -152,7 +272,7 @@ mtches[1]
 ```
 
 In this case, for the first query spectrum, no match was found among the target
-spectra. Below we subset the `MatchedSpectra` to results for the second query 
+spectra. Below we subset the `MatchedSpectra` to results for the second query
 spectrum:
 
 ```{r}
@@ -231,7 +351,7 @@ peak values) it is not ideal for visualization. Thus, we apply below a
 spectra again afterwards (see the help for `addProcessing` in the `Spectra`
 package for more details on spectra data manipulations). This function will
 replace the absolute spectra intensities with intensities relative to the
-maximum intensity of the spectrum. 
+maximum intensity of the spectrum.
 
 ```{r}
 norm_int <- function(x) {
@@ -305,7 +425,7 @@ as.data.frame(res)
 Note that this whole example would work on any `Spectra` object with MS2
 spectra. Such objects could also be extracted from an `xcms`-based LC-MS/MS data
 analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
-`r Biocpkg("xcms")` package. Also, 
+`r Biocpkg("xcms")` package. Also,
 
 
 
