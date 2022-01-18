@@ -3,29 +3,84 @@
 \name{matchFormula}
 \alias{matchFormula}
 \alias{matchFormula,character,character-method}
+\alias{matchFormula,data.frameOrSimilar,data.frameOrSimilar-method}
+\alias{matchFormula,character,data.frameOrSimilar-method}
+\alias{matchFormula,data.frameOrSimilar,character-method}
 \title{formula matching}
 \usage{
 matchFormula(query, target, ...)
 
 \S4method{matchFormula}{character,character}(query, target, BPPARAM = SerialParam())
+
+\S4method{matchFormula}{data.frameOrSimilar,data.frameOrSimilar}(
+  query,
+  target,
+  formulaColname = c("formula", "formula"),
+  BPPARAM = SerialParam()
+)
+
+\S4method{matchFormula}{character,data.frameOrSimilar}(
+  query,
+  target,
+  formulaColname = "formula",
+  BBPARAM = SerialParam()
+)
+
+\S4method{matchFormula}{data.frameOrSimilar,character}(
+  query,
+  target,
+  formulaColname = "formula",
+  BBPARAM = SerialParam()
+)
 }
 \arguments{
-\item{query}{}
+\item{query}{chemical formulas to search}
 
-\item{target}{}
+\item{target}{compound table to compare against}
 
 \item{...}{currently ignored}
+
+\item{formulaColname}{name of the column contain chemical formula. Only used
+if a \code{data.frame} is supplied.}
 }
 \value{
 \link{Matched} object representing the result
 }
 \description{
-XXX
+The \code{matchFormula} method matches chemical formula from different inputs
+(parameter \code{query} and \code{target}). Before comparison all formulas are
+normalized using \code{\link[MetaboCoreUtils:standardizeFormula]{MetaboCoreUtils::standardizeFormula()}}. Inputs can be either
+a \code{character} or \code{data.frame} containing a column with formulas. In case of
+a \code{data.frame} as input the parameter \code{formulaColName} needs to specified.
 }
 \examples{
 
-XXX
+## input formula
+query <- c("H12C6O6", "C11H12O2", "HN3")
+target <- c("HCl", "C2H4O", "C6H12O6")
 
+query_df <- data.frame(
+    formula = c("H12C6O6", "C11H12O2", "HN3"),
+    name = c("A", "B", "C")
+)
+target_df <- data.frame(
+    formula = c("HCl", "C2H4O", "C6H12O6"),
+    name = c("D", "E", "F")
+)
+
+## character vs character
+matches <- matchFormula(query, target)
+matchedData(matches)
+
+## data.frame vs data.frame
+matches <- matchFormula(query_df, target_df)
+matchedData(matches)
+## data.frame vs character
+matches <- matchFormula(query_df, target)
+matchedData(matches)
+## character vs data.frame
+matches <- matchFormula(query, target_df)
+matchedData(matches)
 }
 \author{
 Michael Witting

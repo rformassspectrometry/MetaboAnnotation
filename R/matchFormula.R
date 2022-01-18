@@ -4,11 +4,18 @@
 #'
 #' @description
 #'
-#' XXX
+#' The `matchFormula` method matches chemical formula from different inputs
+#' (parameter `query` and `target`). Before comparison all formulas are
+#' normalized using [MetaboCoreUtils::standardizeFormula()]. Inputs can be either
+#' a `character` or `data.frame` containing a column with formulas. In case of
+#' a `data.frame` as input the parameter `formulaColName` needs to specified.
 #'
-#' @param query
+#' @param query chemical formulas to search
 #'
-#' @param target
+#' @param target compound table to compare against
+#'
+#' @param formulaColname name of the column contain chemical formula. Only used
+#'     if a `data.frame` is supplied.
 #'
 #' @param ... currently ignored
 #'
@@ -18,8 +25,32 @@
 #'
 #' @examples
 #'
-#' XXX
+#' ## input formula
+#' query <- c("H12C6O6", "C11H12O2", "HN3")
+#' target <- c("HCl", "C2H4O", "C6H12O6")
 #'
+#' query_df <- data.frame(
+#'     formula = c("H12C6O6", "C11H12O2", "HN3"),
+#'     name = c("A", "B", "C")
+#' )
+#' target_df <- data.frame(
+#'     formula = c("HCl", "C2H4O", "C6H12O6"),
+#'     name = c("D", "E", "F")
+#' )
+#'
+#' ## character vs character
+#' matches <- matchFormula(query, target)
+#' matchedData(matches)
+#'
+#' ## data.frame vs data.frame
+#' matches <- matchFormula(query_df, target_df)
+#' matchedData(matches)
+#' ## data.frame vs character
+#' matches <- matchFormula(query_df, target)
+#' matchedData(matches)
+#' ## character vs data.frame
+#' matches <- matchFormula(query, target_df)
+#' matchedData(matches)
 NULL
 
 #' @rdname matchFormula
