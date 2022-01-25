@@ -244,3 +244,18 @@ test_that("plotSpectraMirror throws an error", {
     ms <- MatchedSpectra()
     expect_error(plotSpectraMirror(ms), "Length")
 })
+
+test_that("adProcessing works", {
+    ms <- MatchedSpectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    res <- addProcessing(ms)
+    expect_equal(res, ms)
+    FUN <- function(x, ...) {
+        x - 4
+    }
+    res <- addProcessing(ms, FUN = FUN)
+    expect_equal(res@query@processingQueue, list(ProcessingStep(FUN)))
+    expect_equal(res@target@processingQueue, list(ProcessingStep(FUN)))
+})

@@ -218,3 +218,17 @@ test_that("filterMatches,Matched works", {
                                          target_idx = integer(),
                                          score = numeric()))
 })
+
+test_that("addMatches,MatchedSummarizedExperiment works", {
+    mo <- MatchedSummarizedExperiment(
+        query = q1, target = t1,
+        matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                             target_idx = c(2L, 2L, 3L, 4L, 5L),
+                             score = seq(0.5, 0.9, by = 0.1)))
+
+    moadd <- addMatches(mo, queryValue = 2L, targetValue = 1L, isIndex = TRUE,
+                        score = data.frame(score = 100))
+    expect_true(matches(moadd)$query_idx[6] == 2)
+    expect_true(matches(moadd)$target_idx[6] == 1)
+    expect_true(matches(moadd)$score[6] == 100)
+})

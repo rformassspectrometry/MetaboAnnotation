@@ -5,7 +5,7 @@ test_that("Mass2MzParam works", {
   expect_error(Mass2MzParam(tolerance = 1:3), "positive number")
   expect_error(Mass2MzParam(ppm = -4), "positive number")
   expect_error(Mass2MzParam(adducts = c("[M+H]+", "adduct2")), "Unknown")
-  
+
   adds <- data.frame(mass_add = c(1, 2, 3), mass_multi = c(1, 2, 0.5))
   rownames(adds) <- c("a", "b", "c")
   res <- Mass2MzParam(adducts = adds)
@@ -104,7 +104,29 @@ test_that("matchMz,Mass2MzParam works", {
   expect_equal(res@matches$query_idx, c(1, 2, 2))
   expect_equal(res@matches$target_idx, c(1, 2, 3))
   expect_equal(res@matches$score, c(0, 0, 0))
- 
+
+  expect_error(matchMz(x, cmpds, par, massColname = "other"), "other")
+
+  ## numeric, data.frame
+  res <- matchMz(x$mz, cmpds, par)
+  expect_equal(query(res), x$mz)
+  expect_equal(target(res), cmpds)
+  expect_equal(res@matches$query_idx, c(1, 2, 2))
+  expect_equal(res@matches$target_idx, c(1, 2, 3))
+  expect_equal(res@matches$score, c(0, 0, 0))
+
+  expect_error(matchMz(x$mz, cmpds, par, massColname = "other"), "other")
+
+  ## data.frame, numeric
+  res <- matchMz(x, cmpds$exactmass, par)
+  expect_equal(query(res), x)
+  expect_equal(target(res), cmpds$exactmass)
+  expect_equal(res@matches$query_idx, c(1, 2, 2))
+  expect_equal(res@matches$target_idx, c(1, 2, 3))
+  expect_equal(res@matches$score, c(0, 0, 0))
+
+  expect_error(matchMz(x, cmpds$exactmass, par, mzColname = "other"), "other")
+
   adducts <- data.frame(mass_add = c(2, 4), mass_multi = c(2, 1))
   par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
   res <- matchMz(x, cmpds, par)
