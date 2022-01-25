@@ -90,26 +90,26 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Thu Dec 16 08:00:03 2021</p>
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Tue Jan 25 14:54:57 2022</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>The <code>MetaboAnnotation</code> package defines high-level user functionality to support and facilitate annotation of MS-based metabolomics data.</p>
 </div>
-<div class="section level1">
-<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h1>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>The package can be installed with the <code>BiocManager</code> package. To install <code>BiocManager</code> use <code>install.packages("BiocManager")</code> and, after that, <code>BiocManager::install("MetaboAnnotation")</code> to install this package.</p>
 </div>
-<div class="section level1">
-<h1 id="example-use-cases">Example use cases<a class="anchor" aria-label="anchor" href="#example-use-cases"></a>
-</h1>
+<div class="section level2">
+<h2 id="example-use-cases">Example use cases<a class="anchor" aria-label="anchor" href="#example-use-cases"></a>
+</h2>
 <p>The following sections illustrate example use cases of the functionality provided by the <code>MetaboAnnotation</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboAnnotation" class="external-link">MetaboAnnotation</a></span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="matching-of-mz-values">Matching of m/z values<a class="anchor" aria-label="anchor" href="#matching-of-mz-values"></a>
-</h2>
+<div class="section level3">
+<h3 id="matching-of-mz-values">Matching of m/z values<a class="anchor" aria-label="anchor" href="#matching-of-mz-values"></a>
+</h3>
 <p>In this section a simple matching of feature m/z values against theoretical m/z values is performed. This is the lowest level of confidence in metabolite anno- tation. However, it gives ideas about potential metabolites that can be analyzed in further downstream experiments and analyses.</p>
 <p>The following example loads the feature table from a lipidomics experiments and matches the measured m/z values against reference masses from LipidMaps. Below we use a <code>data.frame</code> as <em>reference</em> database, but a <a href="https://github.com/EuracBiomedicalResearch/CompoundDb" class="external-link"><code>CompDb</code></a> compound database instance would also be supported.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -207,9 +207,9 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</span></code></pre>
 <p>See also the help page for <code><a href="../reference/Matched.html">?Matched</a></code> for more details and information. In addition to the matching of query m/z against target exact masses as described above it would also be possible to match directly query m/z against target m/z values by using the <code>MzParam</code> instead of the <code>Mass2MzParam</code>.</p>
 </div>
-<div class="section level2">
-<h2 id="matching-of-mz-and-retention-time-values">Matching of m/z and retention time values<a class="anchor" aria-label="anchor" href="#matching-of-mz-and-retention-time-values"></a>
-</h2>
+<div class="section level3">
+<h3 id="matching-of-mz-and-retention-time-values">Matching of m/z and retention time values<a class="anchor" aria-label="anchor" href="#matching-of-mz-and-retention-time-values"></a>
+</h3>
 <p>If expected retention time values were available for the target compounds, an annotation with higher confidence could be performed with <code>matchMz</code> and a <code>Mass2MzRtParam</code> parameter object. To illustrate this we randomly assign retention times from query features to the target compounds adding also 2 seconds difference. In a real use case the target <code>data.frame</code> would contain masses (or m/z values) for standards along with the retention times when ions of these standards were measured on the same LC-MS setup from which the query data derives.</p>
 <p>Below we subset our data table with the MS1 features to the first 100 rows (to keep the runtime of the vignette short).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -284,9 +284,9 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 30  0.0014619   4.29719</span>
 <span class="co">## 31  0.0020342   4.08719</span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
-</h2>
+<div class="section level3">
+<h3 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
+</h3>
 <p>In this section we match experimental MS/MS spectra against reference spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.15/Spectra" class="external-link">Spectra</a></em> package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>, but the functions and concepts used here are more suitable to the <em>end user</em> as they simplify the handling of the spectra matching results.</p>
 <p>Below we load spectra from a file from a reversed-phase (DDA) LC-MS/MS run of the Agilent Pesticide mix. With <code>filterMsLevel</code> we subset the data set to only MS2 spectra. To reduce processing time of the example we further subset the <code>Spectra</code> to a small set of selected MS2 spectra. In addition we assign <em>feature identifiers</em> to each spectrum (again, for this example these are arbitrary IDs, but in a <em>real</em> data analysis such identifiers could indicate to which LC-MS feature these spectra belong).</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Thu Dec 16 08:00:12 2021]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Tue Jan 25 14:55:06 2022]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -350,21 +350,60 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>,
                        param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,
-                                                   ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="va">mtches</span></code></pre></div>
+                                                   ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mtches</span></code></pre></div>
 <pre><code><span class="co">## Object of class MatchedSpectra </span>
 <span class="co">## Total number of matches: 16 </span>
 <span class="co">## Number of query objects: 13 (5 matched)</span>
 <span class="co">## Number of target objects: 100 (11 matched)</span></code></pre>
 <p>The results are reported as a <code>MatchedSpectra</code> object which represents the matching results for all query spectra. This type of object contains all query spectra, all target spectra, the matching information and the parameter object with the settings of the matching. The object can be subsetted to e.g. matching results for a specific query spectrum:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></code></pre></div>
 <pre><code><span class="co">## Object of class MatchedSpectra </span>
 <span class="co">## Total number of matches: 0 </span>
 <span class="co">## Number of query objects: 1 (0 matched)</span>
 <span class="co">## Number of target objects: 100 (0 matched)</span></code></pre>
 <p>In this case, for the first query spectrum, no match was found among the target spectra. Below we subset the <code>MatchedSpectra</code> to results for the second query spectrum:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></code></pre></div>
 <pre><code><span class="co">## Object of class MatchedSpectra </span>
 <span class="co">## Total number of matches: 4 </span>
@@ -372,7 +411,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## Number of target objects: 100 (4 matched)</span></code></pre>
 <p>The second query spectrum could be matched to 4 target spectra. The matching between query and target spectra can be n:m, i.e. each query spectrum can match no or multiple target spectra and each target spectrum can be matched to none, one or multiple query spectra.</p>
 <p>Data (spectra variables of either the query and/or the target spectra) can be extracted from the result object with the <code>spectraData</code> function or with <code>$</code> (similar to a <code>Spectra</code> object). The <code>spectraVariables</code> function can be used to list all available spectra variables in the result object:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraVariables</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##  [1] "msLevel"                        "rtime"                         </span>
 <span class="co">##  [3] "acquisitionNum"                 "scanIndex"                     </span>
@@ -416,17 +455,17 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [79] "target_compound_name"           "score"</span></code></pre>
 <p>This lists the spectra variables from both the <em>query</em> <strong>and</strong> the <em>target</em> spectra, with the prefix <code>"target_"</code> being used for spectra variable names of the target spectra. Spectra variable <code>"score"</code> contains the similarity score.</p>
 <p>We could thus use <code>$target_compound_name</code> to extract the compound name of the matching target spectra for the second query spectrum:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
 <pre><code><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></code></pre>
 <p>The same information can also be extracted on the <em>full</em> <code>MatchedSpectra</code>. Below we use <code>$spectrum_id</code> to extract the query spectra identifiers we added above from the full result object.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">$</span><span class="va">spectrum_id</span></code></pre></div>
 <pre><code><span class="co">##  [1] "sp_1"  "sp_2"  "sp_2"  "sp_2"  "sp_2"  "sp_3"  "sp_4"  "sp_4"  "sp_5" </span>
 <span class="co">## [10] "sp_6"  "sp_6"  "sp_6"  "sp_7"  "sp_8"  "sp_8"  "sp_8"  "sp_8"  "sp_8" </span>
 <span class="co">## [19] "sp_9"  "sp_9"  "sp_10" "sp_11" "sp_12" "sp_13"</span></code></pre>
 <p>Because of the n:m mapping between query and target spectra, the number of values returned by <code>$</code> (or <code>spectraData</code>) can be larger than the total number of query spectra. Also in the example above, some of the spectra IDs are present more than once in the result returned by <code>$spectrum_id</code>. The respective spectra could be matched to more than one target spectrum (based on our settings) and hence their IDs are reported multiple times. Both <code>spectraData</code> and <code>$</code> for <code>MatchedSpectra</code> use a <em>left join</em> strategy to report/return values: a value (row) is reported for each query spectrum (even if it does <strong>not</strong> match any target spectrum) with eventually duplicated values (rows) if the query spectrum matches more than one target spectrum (each value for a query spectrum is repeated as many times as it matches target spectra). To illustrate this we use below the <code>spectraData</code> function to extract specific data from our result object, i.e. the spectrum and feature IDs for the query spectra we defined above, the MS2 spectra similarity score, and the target spectra’s ID and compound name.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"feature_id"</span>,
                                              <span class="st">"score"</span>, <span class="st">"target_spectrum_id"</span>,
                                              <span class="st">"target_compound_name"</span><span class="op">)</span><span class="op">)</span>
@@ -457,11 +496,11 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 23       sp_12      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</span>
 <span class="co">## 24       sp_13      FT006        NA               &lt;NA&gt;                    &lt;NA&gt;</span></code></pre>
 <p>Using the <code>plotSpectraMirror</code> function we can visualize the matching results for one query spectrum. Below we call this function to show all matches for the second spectrum.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
 <p>Not unexpectedly, the peak intensities of query and target spectra are on different scales. While this was no problem for the similarity calculation (the normalized dot-product which is used by default is independent of the absolute peak values) it is not ideal for visualization. Thus, we apply below a <em>normalization</em> function to both the query and target spectra and plot the spectra again afterwards (see the help for <code>addProcessing</code> in the <code>Spectra</code> package for more details on spectra data manipulations). This function will replace the absolute spectra intensities with intensities relative to the maximum intensity of the spectrum.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">norm_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
     <span class="va">x</span>
@@ -470,20 +509,59 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
 <p>The query spectrum seems to nicely match the identified target spectra. Below we extract the compound name of the target spectra for this second query spectrum.</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></code></pre></div>
 <pre><code><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></code></pre>
 <p>As alternative to the <code>CompareSpectraParam</code> we could also use the <code>MatchForwardReverseParam</code> with <code>matchSpectra</code>. This has the same settings and performs the same spectra similarity search than <code>CompareSpectraParam</code>, but reports in addition (similar to MS-DIAL) to the (<em>forward</em>) similarity score also the <em>reverse</em> spectra similarity score as well as the <em>presence ratio</em> for matching spectra. While the default <em>forward</em> score is calculated considering all peaks from the query and the target spectrum (the peak mapping is performed using an <em>outer join</em> strategy), the <em>reverse score</em> is calculated only on peaks that are present in the target spectrum and the matching peaks from the query spectrum (the peak mapping is performed using a <em>right join</em> strategy). The <em>presence ratio</em> is the ratio between the number of mapped peaks between the query and the target spectrum and the total number of peaks in the target spectrum. These values are available as spectra variables <code>"reverse_score"</code> and <code>"presence_ratio"</code> in the result object). Below we perform the same spectra matching as above, but using the <code>MatchForwardReverseParam</code>.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">MatchForwardReverseParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">mp</span><span class="op">)</span>
-<span class="va">mtches</span></code></pre></div>
+<span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">mp</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span>
+
+<span class="co">## Warning: 'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange'</span>
+<span class="co">## instead.</span></code></pre>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mtches</span></code></pre></div>
 <pre><code><span class="co">## Object of class MatchedSpectra </span>
 <span class="co">## Total number of matches: 16 </span>
 <span class="co">## Number of query objects: 13 (5 matched)</span>
 <span class="co">## Number of target objects: 100 (11 matched)</span></code></pre>
 <p>Below we extract the query and target spectra IDs, the compound name and all scores.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span>
     <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"target_spectrum_id"</span>,
                           <span class="st">"target_compound_name"</span>, <span class="st">"score"</span>, <span class="st">"reverse_score"</span>,
@@ -539,7 +617,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 23            NA             NA</span>
 <span class="co">## 24            NA             NA</span></code></pre>
 <p>In these examples we matched query spectra only to target spectra if their precursor m/z is ~ equal and reported only matches with a similarity higher than 0.7. <code>CompareSpectraParam</code>, through its parameter <code>THRESHFUN</code> would however also allow other types of analyses. We could for example also report the <em>best matching</em> target spectrum for each query spectrum, independently of whether the similarity score is higher than a certain threshold. Below we perform such an analysis defining a <code>THRESHFUN</code> that selects always the best match.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">select_top_match</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="op">}</span>
@@ -580,10 +658,10 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>Note that this whole example would work on any <code>Spectra</code> object with MS2 spectra. Such objects could also be extracted from an <code>xcms</code>-based LC-MS/MS data analysis with the <code>chromPeaksSpectra</code> or <code>featureSpectra</code> functions from the <em><a href="https://bioconductor.org/packages/3.15/xcms" class="external-link">xcms</a></em> package. Also,</p>
 </div>
 </div>
-<div class="section level1 unnumbered">
-<h1 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
-</h1>
-<pre><code><span class="co">## R Under development (unstable) (2021-12-10 r81318)</span>
+<div class="section level2">
+<h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
+</h2>
+<pre><code><span class="co">## R Under development (unstable) (2022-01-20 r81529)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -593,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## locale:</span>
 <span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
 <span class="co">##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
-<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span>
+<span class="co">##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
 <span class="co">##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span>
 <span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
 <span class="co">## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span>
@@ -603,39 +681,39 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [8] base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">## [1] msdata_0.35.2           Spectra_1.5.2           ProtGenerics_1.27.1    </span>
-<span class="co">## [4] BiocParallel_1.29.5     S4Vectors_0.33.8        BiocGenerics_0.41.2    </span>
-<span class="co">## [7] MetaboAnnotation_0.99.2 BiocStyle_2.23.0       </span>
+<span class="co">## [1] msdata_0.35.2           Spectra_1.5.7           ProtGenerics_1.27.2    </span>
+<span class="co">## [4] BiocParallel_1.29.12    S4Vectors_0.33.10       BiocGenerics_0.41.2    </span>
+<span class="co">## [7] MetaboAnnotation_0.99.2 BiocStyle_2.23.1       </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] SummarizedExperiment_1.25.3 xfun_0.29                  </span>
 <span class="co">##  [3] bslib_0.3.1                 purrr_0.3.4                </span>
 <span class="co">##  [5] lattice_0.20-45             htmltools_0.5.2            </span>
-<span class="co">##  [7] yaml_2.2.1                  rlang_0.4.12               </span>
-<span class="co">##  [9] pkgdown_2.0.1.9000          jquerylib_0.1.4            </span>
-<span class="co">## [11] mzR_2.29.1                  MetaboCoreUtils_1.3.2      </span>
+<span class="co">##  [7] yaml_2.2.2                  rlang_0.4.12               </span>
+<span class="co">##  [9] pkgdown_2.0.2.9000          jquerylib_0.1.4            </span>
+<span class="co">## [11] mzR_2.29.1                  MetaboCoreUtils_1.3.4      </span>
 <span class="co">## [13] matrixStats_0.61.0-9001     GenomeInfoDbData_1.2.7     </span>
 <span class="co">## [15] stringr_1.4.0               MatrixGenerics_1.7.0       </span>
 <span class="co">## [17] zlibbioc_1.41.0             ragg_1.2.1                 </span>
 <span class="co">## [19] codetools_0.2-18            memoise_2.0.1              </span>
 <span class="co">## [21] evaluate_0.14               Biobase_2.55.0             </span>
-<span class="co">## [23] knitr_1.36                  IRanges_2.29.1             </span>
-<span class="co">## [25] fastmap_1.1.0               GenomeInfoDb_1.31.1        </span>
+<span class="co">## [23] knitr_1.37                  IRanges_2.29.1             </span>
+<span class="co">## [25] fastmap_1.1.0               GenomeInfoDb_1.31.2        </span>
 <span class="co">## [27] parallel_4.2.0              highr_0.9                  </span>
-<span class="co">## [29] Rcpp_1.0.7                  BiocManager_1.30.16        </span>
+<span class="co">## [29] Rcpp_1.0.8                  BiocManager_1.30.16        </span>
 <span class="co">## [31] cachem_1.0.6                DelayedArray_0.21.2        </span>
-<span class="co">## [33] desc_1.4.0                  jsonlite_1.7.2             </span>
+<span class="co">## [33] desc_1.4.0                  jsonlite_1.7.3             </span>
 <span class="co">## [35] XVector_0.35.0              MsCoreUtils_1.7.1          </span>
 <span class="co">## [37] systemfonts_1.0.3           fs_1.5.2                   </span>
 <span class="co">## [39] textshaping_0.3.6           digest_0.6.29              </span>
 <span class="co">## [41] stringi_1.7.6               bookdown_0.24              </span>
-<span class="co">## [43] ncdf4_1.19                  GenomicRanges_1.47.5       </span>
+<span class="co">## [43] ncdf4_1.19                  GenomicRanges_1.47.6       </span>
 <span class="co">## [45] rprojroot_2.0.2             grid_4.2.0                 </span>
 <span class="co">## [47] clue_0.3-60                 tools_4.2.0                </span>
 <span class="co">## [49] bitops_1.0-7                magrittr_2.0.1             </span>
 <span class="co">## [51] sass_0.4.0                  RCurl_1.98-1.5             </span>
 <span class="co">## [53] cluster_2.1.2               crayon_1.4.2               </span>
-<span class="co">## [55] MASS_7.3-54                 Matrix_1.4-0               </span>
+<span class="co">## [55] MASS_7.3-55                 Matrix_1.4-0               </span>
 <span class="co">## [57] rmarkdown_2.11              R6_2.5.1                   </span>
 <span class="co">## [59] compiler_4.2.0</span></code></pre>
 </div>
@@ -658,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>
