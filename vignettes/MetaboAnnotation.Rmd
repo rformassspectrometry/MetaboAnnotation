@@ -1,13 +1,13 @@
 ---
 title: "Annotation of MS-based Metabolomics Data"
-package: MetaboCoreUtils
+package: MetaboAnnotation
 output:
   BiocStyle::html_document:
     toc_float: true
 vignette: >
   %\VignetteIndexEntry{Annotation of MS-based Metabolomics Data}
   %\VignetteEngine{knitr::rmarkdown}
-  %%\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
+  %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation}
 ---

@@ -394,7 +394,7 @@ setMethod("matchMz",
           function(query, target, param, BPPARAM = SerialParam(),
                    mzColname = "mz") {
             if (!mzColname %in% colnames(query))
-              stop("Missing column \"mz\" in query")
+              stop("Missing column \"", mzColname, "\" in query")
             res <- matchMz(query$mz, target, param)
             res@query <- query
             res

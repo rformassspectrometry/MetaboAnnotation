@@ -211,9 +211,9 @@ both cases its length (or number of rows) has to match the length of
 \item \code{filterMatches}: keeps or removes matches corresponding to certain indexes
 or values of \code{query} and \code{target}. If \code{queryValue} and \code{targetValue} are
 provided, matches for these value pairs are kept or removed. Parameter
-\code{index} allows to filter matches providing their index in the \verb{@matches}
-slot. Note that \code{filterMatches} removes only matches from the \verb{@matches}
-slot from the \code{Matched} object but thus not alter the \code{query} or \code{target}
+\code{index} allows to filter matches providing their index in the \code{\link[=matches]{matches()}}
+matrix. Note that \code{filterMatches} removes only matches from the \code{\link[=matches]{matches()}}
+matrix from the \code{Matched} object but thus not alter the \code{query} or \code{target}
 in the object. See examples below for more information.
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
@@ -397,8 +397,8 @@ matchedData(mo_sub)
 
 ## Alternatively to specifying the matches to filter with `queryValue` and
 ## `targetValue` it is also possible to specify directly the index of the
-## match(es) in the `@matches` `data.frame`:
-mo@matches
+## match(es) in the `matches` `data.frame`:
+matches(mo)
 
 ## To keep only matches like in the example above we could use:
 mo_sub <- filterMatches(mo, index = c(1, 3, 5))
