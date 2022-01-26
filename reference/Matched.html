@@ -90,7 +90,8 @@ Matched(
   query = list(),
   target = list(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric())
+    numeric()),
+  metadata = list()
 )
 
 # S4 method for Matched
@@ -150,7 +151,8 @@ MatchedSummarizedExperiment(
   query = SummarizedExperiment(),
   target = data.frame(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric())
+    numeric()),
+  metadata = list()
 )</code></pre></div>
     </div>
 
@@ -169,6 +171,8 @@ matched.</p></dd>
 <dd><p><code>data.frame</code> with columns <code>"query_idx"</code> (<code>integer</code>),
 <code>"target_idx"</code> (<code>integer</code>) and <code>"score"</code> (<code>numeric</code>) representing the n:m
 mapping of elements between the <code>query</code> and the <code>target</code> objects.</p></dd>
+<dt>metadata</dt>
+<dd><p><code>list</code> with optional additional metadata.</p></dd>
 <dt>x</dt>
 <dd><p><code>Matched</code> object.</p></dd>
 <dt>i</dt>
