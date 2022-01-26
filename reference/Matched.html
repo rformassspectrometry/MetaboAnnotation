@@ -29,7 +29,7 @@ the matched SummarizedExperiment."><!-- mathjax --><script src="https://cdnjs.cl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
       </span>
     </div>
 
@@ -255,9 +255,9 @@ both cases its length (or number of rows) has to match the length of
 <li><p><code>filterMatches</code>: keeps or removes matches corresponding to certain indexes
 or values of <code>query</code> and <code>target</code>. If <code>queryValue</code> and <code>targetValue</code> are
 provided, matches for these value pairs are kept or removed. Parameter
-<code>index</code> allows to filter matches providing their index in the <code>@matches</code>
-slot. Note that <code>filterMatches</code> removes only matches from the <code>@matches</code>
-slot from the <code>Matched</code> object but thus not alter the <code>query</code> or <code>target</code>
+<code>index</code> allows to filter matches providing their index in the <code>matches()</code>
+matrix. Note that <code>filterMatches</code> removes only matches from the <code>matches()</code>
+matrix from the <code>Matched</code> object but thus not alter the <code>query</code> or <code>target</code>
 in the object. See examples below for more information.</p></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
@@ -502,8 +502,8 @@ eventual additional columns.</p></li>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Alternatively to specifying the matches to filter with `queryValue` and</span></span>
 <span class="r-in"><span class="co">## `targetValue` it is also possible to specify directly the index of the</span></span>
-<span class="r-in"><span class="co">## match(es) in the `@matches` `data.frame`:</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">@</span><span class="va">matches</span></span>
+<span class="r-in"><span class="co">## match(es) in the `matches` `data.frame`:</span></span>
+<span class="r-in"><span class="fu">matches</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   query_idx target_idx score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1          2   0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2          2   0.6</span>

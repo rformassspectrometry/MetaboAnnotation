@@ -68,7 +68,7 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
       </span>
     </div>
 
@@ -332,19 +332,6 @@ functions return an instance of the class.</p>
 <span class="r-in"><span class="co">## Match spectra with the default similarity score (normalized dot product)</span></span>
 <span class="r-in"><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">mtches</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
@@ -429,19 +416,6 @@ functions return an instance of the class.</p>
 <span class="r-in"><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span>
 <span class="r-in">    toleranceRt <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'filterPrecursorMz' is deprecated. Please use 'filterPrecursorMzRange' instead.</span>
 <span class="r-in"><span class="va">mtches</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
