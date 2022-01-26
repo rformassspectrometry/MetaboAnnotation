@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.3
+
+- Address Herve's comments.
+
 
 # MetaboAnnotation 0.2
 

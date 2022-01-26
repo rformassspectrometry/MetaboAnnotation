@@ -367,7 +367,7 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
            FUN = x@FUN), x@dots)
 }
 
-#' @importMethodsFrom Spectra spectraNames containsMz filterPrecursorMz
+#' @importMethodsFrom Spectra spectraNames containsMz filterPrecursorMzRange
 #'
 #' @rdname CompareSpectraParam
 #'
@@ -490,7 +490,7 @@ setMethod(
     if (precMz) {
         pmz <- precursorMz(qi)
         pmz <- pmz + c(-1, 1) * (ppm(pmz, parlist$ppm) + parlist$tolerance)
-        target <- filterPrecursorMz(target, mz = pmz)
+        target <- filterPrecursorMzRange(target, mz = pmz)
     }
     if (precMzPeak)
         target <- target[containsMz(target, mz = precursorMz(qi),
