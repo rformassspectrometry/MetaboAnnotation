@@ -112,14 +112,12 @@ setMethod("matchIonMode",
   if (length(cls)) {
     data.frame(query_idx = queryIndex,
                target_idx = target$index[cls],
-               #query_adduct = queryAdduct,
-               #target_adduct = target$adduct[cls],
+               adduct = paste0(queryAdduct, " / ", target$adduct[cls]),
                score = diffs[cls])
   } else {
     data.frame(query_idx = integer(),
                target_idx = integer(),
-               #query_adduct = character(),
-               #target_adduct = character(),
+               adduct = character(),
                score = numeric())
   }
 }
