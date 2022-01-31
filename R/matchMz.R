@@ -229,8 +229,9 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @param ... currently ignored.
 #'
 #' @return [Matched] object representing the result. To evaluate each match the
-#' object contains the `ppm` variable with their m/z error in ppm (in addition
-#' to `score` variable)
+#' object contains contains the m/z error in ppm (variable `"ppm_error"`) as 
+#' well as the absolute difference between the target and query m/z (variable 
+#' `"score"`).
 #'
 #' @author Andrea Vicini, Michael Witting
 #'
@@ -593,7 +594,7 @@ setMethod("matchMz",
                  target_idx = target$index[cls],
                  adduct = target$adduct[cls],
                  score = absdiffs[cls],
-                 ppm = diffs[cls] / target[cls, "mz"] * 10^6)
+                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
@@ -604,7 +605,7 @@ setMethod("matchMz",
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
                  score = absdiffs[cls],
-                 ppm = diffs[cls] / target[cls, "mz"] * 10^6)
+                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
@@ -626,7 +627,7 @@ setMethod("matchMz",
                  target_idx = target$index[cls_rt[cls]],
                  adduct = target$adduct[cls_rt[cls]],
                  score = absdiffs[cls],
-                 ppm = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
                  score_rt = absdiffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
@@ -639,7 +640,7 @@ setMethod("matchMz",
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
                  score = absdiffs[cls],
-                 ppm = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
                  score_rt = absdiffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
