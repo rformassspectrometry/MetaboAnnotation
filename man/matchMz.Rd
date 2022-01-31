@@ -140,7 +140,9 @@ m/z values. Defaults to \code{mzColname = "mz"}.}
 retention times of the compounds. Defaults to \code{rtColname = "rt"}.}
 }
 \value{
-\link{Matched} object representing the result
+\link{Matched} object representing the result. To evaluate each match the
+object contains the \code{ppm} variable with their m/z error in ppm (in addition
+to \code{score} variable)
 }
 \description{
 The \code{matchMz} method matches (compares) m/z values from a MS1 data table
