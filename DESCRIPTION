@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 0.99.3
+Version: 0.99.4
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -19,8 +19,9 @@ Authors@R:
              role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-6977-7147")),
       person(given = "Andrea", family = "Vicini",
-	     email = "andrea.vicini@eurac.edu",
-	     role = "aut"))
+             email = "andrea.vicini@eurac.edu",
+             role = c("aut"),
+             comment = c(ORCID = "0000-0001-9438-6909")))
 Depends:
     R (>= 4.0.0)
 Imports:

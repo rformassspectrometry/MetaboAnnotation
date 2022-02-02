@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.4
+
+- Add matches m/z error (variable `"ppm_error"`) to the `Matched` object
+  returned by `matchMz`.  
+
 ## Changes in 0.99.3
 
 - Address Herve's comments.

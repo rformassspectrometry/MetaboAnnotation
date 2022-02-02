@@ -228,7 +228,10 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' @param ... currently ignored.
 #'
-#' @return [Matched] object representing the result
+#' @return [Matched] object representing the result. To evaluate each match the
+#' object contains contains the m/z error in ppm (variable `"ppm_error"`) as 
+#' well as the absolute difference between the target and query m/z (variable 
+#' `"score"`).
 #'
 #' @author Andrea Vicini, Michael Witting
 #'
@@ -582,58 +585,67 @@ setMethod("matchMz",
 #'
 #' @noRd
 .getMatches <- function(queryIndex, queryMz, target, tolerance, ppm){
-  diffs <- abs(queryMz - target$mz)
-  cls <- which(diffs <= (tolerance + ppm(queryMz, ppm)))
+  diffs <- queryMz - target$mz
+  absdiffs <- abs(diffs)
+  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
                  adduct = target$adduct[cls],
-                 score = diffs[cls])
+                 score = absdiffs[cls],
+                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
-                    score = numeric())
+                    score = numeric(),
+                    ppm = numeric())
   } else {
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
-                 score = diffs[cls])
+                 score = absdiffs[cls],
+                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
-                    score = numeric())
+                    score = numeric(),
+                    ppm = numeric())
   }
 }
 
 #' @noRd
 .getMatchesMzRt <- function(queryIndex, queryMz, queryRt, target, tolerance,
                             ppm, toleranceRt){
-  diffs_rt <- abs(queryRt - target$rt)
-  cls_rt <- which(abs(queryRt - target$rt) <= toleranceRt)
-  diffs <- abs(queryMz - target$mz[cls_rt])
-  cls <- which(abs(queryMz - target$mz[cls_rt]) <=
-               (tolerance + ppm(queryMz, ppm)))
+  absdiffs_rt <- abs(queryRt - target$rt)
+  cls_rt <- which(absdiffs_rt <= toleranceRt)
+  diffs <- queryMz - target$mz[cls_rt]
+  absdiffs <- abs(diffs)
+  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
                  adduct = target$adduct[cls_rt[cls]],
-                 score = diffs[cls],
-                 score_rt = diffs_rt[cls_rt[cls]])
+                 score = absdiffs[cls],
+                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 score_rt = absdiffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
                     score = numeric(),
+                    ppm = numeric(),
                     score_rt = numeric())
   } else {
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
-                 score = diffs[cls],
-                 score_rt = diffs_rt[cls_rt[cls]])
+                 score = absdiffs[cls],
+                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 score_rt = absdiffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
+                    ppm = numeric(),
                     score_rt = numeric())
   }
 }
