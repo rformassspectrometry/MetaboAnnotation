@@ -18,10 +18,10 @@ Authors@R:
              email = "Johannes.Rainer@eurac.edu",
              role = c("aut", "cre"),
              comment = c(ORCID = "0000-0002-6977-7147")),
-             person(given = "Andrea", family = "Vicini",
+      person(given = "Andrea", family = "Vicini",
              email = "andrea.vicini@eurac.edu",
              role = c("aut"),
-             comment = c(ORCID = "0000-0001-9438-6909"))
+             comment = c(ORCID = "0000-0001-9438-6909")))
 Depends:
     R (>= 4.0.0)
 Imports:
