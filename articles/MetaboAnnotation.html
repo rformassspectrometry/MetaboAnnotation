@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.4</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut]<br><strong>Compiled</strong>: Wed Jan 26 13:34:57 2022</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>)<br><strong>Compiled</strong>: Wed Feb 2 10:12:09 2022</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>We can extract the full matching table with <code>matchedData</code>. This returns a <code>DataFrame</code> with all rows in <em>query</em> the corresponding matches in <em>target</em> along with the matching adduct (column <code>"adduct"</code>) and the difference in m/z (column <code>"score"</code>). Note that if a row in <em>query</em> matches multiple elements in <em>target</em>, this row will be duplicated in the <code>DataFrame</code> returned by <code>data</code>. For rows that can not be matched <code>NA</code> values are reported.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 100 rows and 10 columns</span>
+<pre><code><span class="co">## DataFrame with 100 rows and 11 columns</span>
 <span class="co">##       feature_id        mz     rtime target_headgroup target_name</span>
 <span class="co">##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;</span>
 <span class="co">## 1   Cluster_0001   102.128   1.56015               NA          NA</span>
@@ -204,7 +204,20 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 97           200.105       C10H16O4              even      [M+H]+ 0.0005444</span>
 <span class="co">## 98           200.105       C10H16O4              even      [M+H]+ 0.0005328</span>
 <span class="co">## 99           200.105       C10H16O4              even      [M+H]+ 0.0014619</span>
-<span class="co">## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</span></code></pre>
+<span class="co">## 100          200.105       C10H16O4              even      [M+H]+ 0.0020342</span>
+<span class="co">##     ppm_error</span>
+<span class="co">##     &lt;numeric&gt;</span>
+<span class="co">## 1          NA</span>
+<span class="co">## 2          NA</span>
+<span class="co">## 3          NA</span>
+<span class="co">## 4          NA</span>
+<span class="co">## 5          NA</span>
+<span class="co">## ...       ...</span>
+<span class="co">## 96    3.63578</span>
+<span class="co">## 97    2.70695</span>
+<span class="co">## 98    2.64927</span>
+<span class="co">## 99    7.26908</span>
+<span class="co">## 100  10.11476</span></code></pre>
 <p>See also the help page for <code><a href="../reference/Matched.html">?Matched</a></code> for more details and information. In addition to the matching of query m/z against target exact masses as described above it would also be possible to match directly query m/z against target m/z values by using the <code>MzParam</code> instead of the <code>Mass2MzParam</code>.</p>
 </div>
 <div class="section level3">
@@ -243,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <p>Less features were matched based on m/z and retention times.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span>, <span class="op">]</span></code></pre></div>
-<pre><code><span class="co">## DataFrame with 31 rows and 12 columns</span>
+<pre><code><span class="co">## DataFrame with 31 rows and 13 columns</span>
 <span class="co">##       feature_id        mz     rtime target_headgroup target_name</span>
 <span class="co">##      &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;      &lt;character&gt; &lt;character&gt;</span>
 <span class="co">## 1   Cluster_0070   201.113   5.87206               FA  FA 10:2;O2</span>
@@ -270,19 +283,19 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 29           200.105       C10H16O4              even      15.8624      [M+H]+</span>
 <span class="co">## 30           200.105       C10H16O4              even      15.8624      [M+H]+</span>
 <span class="co">## 31           200.105       C10H16O4              even      15.8624      [M+H]+</span>
-<span class="co">##         score  score_rt</span>
-<span class="co">##     &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="co">## 1   0.0004538   9.99030</span>
-<span class="co">## 2   0.0004407   9.92890</span>
-<span class="co">## 3   0.0005655   9.82583</span>
-<span class="co">## 4   0.0015560   9.69527</span>
-<span class="co">## 5   0.0006845   9.54455</span>
-<span class="co">## ...       ...       ...</span>
-<span class="co">## 27  0.0007312   4.59014</span>
-<span class="co">## 28  0.0005444   4.45431</span>
-<span class="co">## 29  0.0005328   4.38634</span>
-<span class="co">## 30  0.0014619   4.29719</span>
-<span class="co">## 31  0.0020342   4.08719</span></code></pre>
+<span class="co">##         score ppm_error  score_rt</span>
+<span class="co">##     &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="co">## 1   0.0004538   2.25645   9.99030</span>
+<span class="co">## 2   0.0004407   2.19131   9.92890</span>
+<span class="co">## 3   0.0005655   2.81186   9.82583</span>
+<span class="co">## 4   0.0015560   7.73698   9.69527</span>
+<span class="co">## 5   0.0006845   3.40357   9.54455</span>
+<span class="co">## ...       ...       ...       ...</span>
+<span class="co">## 27  0.0007312   3.63578   4.59014</span>
+<span class="co">## 28  0.0005444   2.70695   4.45431</span>
+<span class="co">## 29  0.0005328   2.64927   4.38634</span>
+<span class="co">## 30  0.0014619   7.26908   4.29719</span>
+<span class="co">## 31  0.0020342  10.11476   4.08719</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
@@ -322,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Wed Jan 26 13:35:05 2022]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Wed Feb  2 10:12:19 2022]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -583,7 +596,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span class="co">## R Under development (unstable) (2022-01-20 r81529)</span>
+<pre><code><span class="co">## R Under development (unstable) (2022-01-29 r81593)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -605,22 +618,22 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## other attached packages:</span>
 <span class="co">## [1] msdata_0.35.2           Spectra_1.5.7           ProtGenerics_1.27.2    </span>
 <span class="co">## [4] BiocParallel_1.29.12    S4Vectors_0.33.10       BiocGenerics_0.41.2    </span>
-<span class="co">## [7] MetaboAnnotation_0.99.3 BiocStyle_2.23.1       </span>
+<span class="co">## [7] MetaboAnnotation_0.99.4 BiocStyle_2.23.1       </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] SummarizedExperiment_1.25.3 xfun_0.29                  </span>
 <span class="co">##  [3] bslib_0.3.1                 purrr_0.3.4                </span>
 <span class="co">##  [5] lattice_0.20-45             htmltools_0.5.2            </span>
-<span class="co">##  [7] yaml_2.2.2                  rlang_0.4.12               </span>
+<span class="co">##  [7] yaml_2.2.2                  rlang_1.0.0                </span>
 <span class="co">##  [9] pkgdown_2.0.2.9000          jquerylib_0.1.4            </span>
-<span class="co">## [11] mzR_2.29.1                  MetaboCoreUtils_1.3.4      </span>
+<span class="co">## [11] mzR_2.29.3                  MetaboCoreUtils_1.3.4      </span>
 <span class="co">## [13] matrixStats_0.61.0-9001     GenomeInfoDbData_1.2.7     </span>
 <span class="co">## [15] stringr_1.4.0               MatrixGenerics_1.7.0       </span>
 <span class="co">## [17] zlibbioc_1.41.0             ragg_1.2.1                 </span>
 <span class="co">## [19] codetools_0.2-18            memoise_2.0.1              </span>
 <span class="co">## [21] evaluate_0.14               Biobase_2.55.0             </span>
 <span class="co">## [23] knitr_1.37                  IRanges_2.29.1             </span>
-<span class="co">## [25] fastmap_1.1.0               GenomeInfoDb_1.31.2        </span>
+<span class="co">## [25] fastmap_1.1.0               GenomeInfoDb_1.31.4        </span>
 <span class="co">## [27] parallel_4.2.0              highr_0.9                  </span>
 <span class="co">## [29] Rcpp_1.0.8                  BiocManager_1.30.16        </span>
 <span class="co">## [31] cachem_1.0.6                DelayedArray_0.21.2        </span>
@@ -629,15 +642,15 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [37] systemfonts_1.0.3           fs_1.5.2                   </span>
 <span class="co">## [39] textshaping_0.3.6           digest_0.6.29              </span>
 <span class="co">## [41] stringi_1.7.6               bookdown_0.24              </span>
-<span class="co">## [43] ncdf4_1.19                  GenomicRanges_1.47.6       </span>
-<span class="co">## [45] rprojroot_2.0.2             grid_4.2.0                 </span>
-<span class="co">## [47] clue_0.3-60                 tools_4.2.0                </span>
-<span class="co">## [49] bitops_1.0-7                magrittr_2.0.1             </span>
-<span class="co">## [51] sass_0.4.0                  RCurl_1.98-1.5             </span>
-<span class="co">## [53] cluster_2.1.2               crayon_1.4.2               </span>
-<span class="co">## [55] MASS_7.3-55                 Matrix_1.4-0               </span>
-<span class="co">## [57] rmarkdown_2.11              R6_2.5.1                   </span>
-<span class="co">## [59] compiler_4.2.0</span></code></pre>
+<span class="co">## [43] ncdf4_1.19                  grid_4.2.0                 </span>
+<span class="co">## [45] GenomicRanges_1.47.6        rprojroot_2.0.2            </span>
+<span class="co">## [47] clue_0.3-60                 cli_3.1.1                  </span>
+<span class="co">## [49] tools_4.2.0                 bitops_1.0-7               </span>
+<span class="co">## [51] magrittr_2.0.2              sass_0.4.0                 </span>
+<span class="co">## [53] RCurl_1.98-1.5              cluster_2.1.2              </span>
+<span class="co">## [55] crayon_1.4.2                MASS_7.3-55                </span>
+<span class="co">## [57] Matrix_1.4-0                rmarkdown_2.11             </span>
+<span class="co">## [59] R6_2.5.1                    compiler_4.2.0</span></code></pre>
 </div>
   </div>
 

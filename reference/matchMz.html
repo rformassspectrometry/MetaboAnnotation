@@ -79,7 +79,7 @@ target retention time values.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MetaboAnnotation</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.4</span>
       </span>
     </div>
 
@@ -313,7 +313,9 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><a href="Matched.html">Matched</a> object representing the result</p>
+    <p><a href="Matched.html">Matched</a> object representing the result. To evaluate each match the
+object contains the <code>ppm</code> variable with their m/z error in ppm (in addition
+to <code>score</code> variable)</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -357,19 +359,19 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Get the full matching result:</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 7 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         FT001   205.097  Tryptophan     C11H12N2O2          204.090</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         FT002   132.102     Leucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       FT002   132.102  Isoleucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         FT003   227.079  Tryptophan     C11H12N2O2          204.090</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          adduct     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        [M+H]+     0e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+     0e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+     0e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       [M+Na]+     1e-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          adduct     score  ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt;  &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        [M+H]+     0e+00 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+     0e+00 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+     0e+00 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       [M+Na]+     1e-06 0.00440375</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## We have thus matches of FT002 to two different compounds (but with the</span></span>
 <span class="r-in"><span class="co">## same mass).</span></span>
@@ -387,19 +389,19 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 7 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         FT001   205.097  Tryptophan     C11H12N2O2          204.090</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         FT002   132.102     Leucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       FT002   132.102  Isoleucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         FT003   227.079          NA             NA               NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          adduct     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        [M+H]+         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          adduct     score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        [M+H]+         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            NA        NA        NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## The last feature could thus not be matched to any compound.</span></span>
 <span class="r-in"></span>
@@ -416,17 +418,17 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (0 matched)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 7 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature_id        mz target_name target_formula target_exactmass      adduct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt; &lt;character&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       FT001   205.097          NA             NA               NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       FT002   132.102          NA             NA               NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       FT003   227.079          NA             NA               NA          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       score       ppm</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA        NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## No matches were found.</span></span>
 <span class="r-in"></span>
@@ -463,19 +465,19 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Get the full matching result:</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 10 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 11 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         FT001   205.097     150.0  Tryptophan     C11H12N2O2          204.090</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         FT002   132.102     140.0     Leucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       FT002   132.102     140.0  Isoleucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         FT003   227.079     150.1          NA             NA               NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     target_rt      adduct     score  score_rt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         150      [M+H]+         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+         0         0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          NA          NA        NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     target_rt      adduct     score ppm_error  score_rt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         150      [M+H]+         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+         0         0         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          NA          NA        NA        NA        NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## FT003 could not be matched to any compound, FT002 was matched to two</span></span>
 <span class="r-in"><span class="co">## different compounds (but with the same mass).</span></span>
@@ -499,19 +501,19 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Get the full matching result:</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 10 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 11 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         FT001   205.097     150.0  Tryptophan     C11H12N2O2          204.090</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         FT002   132.102     140.0     Leucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       FT002   132.102     140.0  Isoleucine       C6H13NO2          131.095</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         FT003   227.079     150.1  Tryptophan     C11H12N2O2          204.090</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     target_rt      adduct     score  score_rt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         150      [M+H]+     0e+00       0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+     0e+00       0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+     0e+00       0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         150     [M+Na]+     1e-06       0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     target_rt      adduct     score  ppm_error  score_rt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;numeric&gt; &lt;character&gt; &lt;numeric&gt;  &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         150      [M+H]+     0e+00 0.00000000       0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+     0e+00 0.00000000       0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+     0e+00 0.00000000       0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         150     [M+Na]+     1e-06 0.00440375       0.1</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Also FT003 was matched in this case</span></span>
 <span class="r-in"></span>
@@ -522,13 +524,13 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
 <span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchMz</span><span class="op">(</span><span class="va">mz1</span>, <span class="va">mz2</span>, <span class="fu">MzParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 3 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        query    target       score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         12   12.0007 0.000653482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        343  342.9997 0.000328610</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA        23        NA          NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        231  231.0007 0.000718533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        query    target       score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         12   11.9993 0.000656363 54.699888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        343  342.9997 0.000311662  0.908637</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA        23        NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        231  231.0011 0.001088407 -4.711698</span>
 </code></pre></div>
     </div>
   </div>
