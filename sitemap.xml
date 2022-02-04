@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/404.html</loc>
   </url>
   <url>
-    <loc>/articles/MetaboAnnotation.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/articles/MetaboAnnotation.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/articles/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/CompareSpectraParam.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/CompareSpectraParam.html</loc>
   </url>
   <url>
-    <loc>/reference/Matched.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/Matched.html</loc>
   </url>
   <url>
-    <loc>/reference/MatchedSpectra.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/MatchedSpectra.html</loc>
   </url>
   <url>
-    <loc>/reference/hidden_aliases.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/hidden_aliases.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/matchMz.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/matchMz.html</loc>
   </url>
   <url>
-    <loc>/reference/matchSpectra.html</loc>
+    <loc>https://rformassspectrometry.github.io/Spectra/reference/matchSpectra.html</loc>
   </url>
 </urlset>
