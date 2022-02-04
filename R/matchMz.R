@@ -229,9 +229,10 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @param ... currently ignored.
 #'
 #' @return [Matched] object representing the result. To evaluate each match the
-#' object contains contains the m/z error in ppm (variable `"ppm_error"`) as 
-#' well as the absolute difference between the target and query m/z (variable 
-#' `"score"`).
+#' object contains the m/z error in ppm (variable `"ppm_error"`) as well as the
+#' difference between the target and query m/z (variable `"score"`). The
+#' difference between the target and query retention time (variable `"score_rt"`
+#' is also present if retention time is considered for the match.
 #'
 #' @author Andrea Vicini, Michael Witting
 #'
@@ -593,8 +594,8 @@ setMethod("matchMz",
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
                  adduct = target$adduct[cls],
-                 score = absdiffs[cls],
-                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
@@ -604,8 +605,8 @@ setMethod("matchMz",
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
-                 score = absdiffs[cls],
-                 ppm_error = diffs[cls] / target[cls, "mz"] * 10^6)
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
@@ -616,8 +617,8 @@ setMethod("matchMz",
 #' @noRd
 .getMatchesMzRt <- function(queryIndex, queryMz, queryRt, target, tolerance,
                             ppm, toleranceRt){
-  absdiffs_rt <- abs(queryRt - target$rt)
-  cls_rt <- which(absdiffs_rt <= toleranceRt)
+  diffs_rt <- queryRt - target$rt
+  cls_rt <- which(abs(diffs_rt) <= toleranceRt)
   diffs <- queryMz - target$mz[cls_rt]
   absdiffs <- abs(diffs)
   cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
@@ -626,9 +627,9 @@ setMethod("matchMz",
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
                  adduct = target$adduct[cls_rt[cls]],
-                 score = absdiffs[cls],
-                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
-                 score_rt = absdiffs_rt[cls_rt[cls]])
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 score_rt = diffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
@@ -639,9 +640,9 @@ setMethod("matchMz",
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
-                 score = absdiffs[cls],
-                 ppm_error = diffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
-                 score_rt = absdiffs_rt[cls_rt[cls]])
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
+                 score_rt = diffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
