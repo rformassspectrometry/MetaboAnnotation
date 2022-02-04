@@ -4,6 +4,10 @@
 [![R-CMD-check-bioc](https://github.com/RforMassSpectrometry/MetaboAnnotation/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RforMassSpectrometry/MetaboAnnotation/actions?query=workflow%3AR-CMD-check-bioc)
 [![codecov.io](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation/coverage.svg?branch=master)](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation?branch=master)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
+[![years in bioc](http://bioconductor.org/shields/years-in-bioc/MetaboAnnotation.svg)](https://bioconductor.org/packages/release/bioc/html/MetaboAnnotation.html)
+[![Ranking by downloads](http://bioconductor.org/shields/downloads/release/MetaboAnnotation.svg)](https://bioconductor.org/packages/stats/bioc/MetaboAnnotation/)
+Release: [![build release](http://bioconductor.org/shields/build/release/bioc/MetaboAnnotation.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MetaboAnnotation/)
+Devel: [![build devel](http://bioconductor.org/shields/build/devel/bioc/MetaboAnnotation.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/MetaboAnnotation/)
 
 High level functions to assist in annotation of (metabolomics) data sets. These
 include functions to perform simple tentative annotations based on mass matching
