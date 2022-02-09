@@ -134,7 +134,7 @@ target retention time values.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -374,8 +374,9 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><a href="Matched.html">Matched</a> object representing the result. To evaluate each match the
-object contains the <code>ppm</code> variable with their m/z error in ppm (in addition
-to <code>score</code> variable)</p>
+object contains the m/z error in ppm (variable <code>"ppm_error"</code>) as well as the
+difference between the target and query m/z (variable <code>"score"</code>). The
+difference between the target and query retention time (variable <code>"score_rt"</code>is also present if retention time is considered for the match.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -585,12 +586,12 @@ to <code>score</code> variable)</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          query    target       score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           12   12.0002 0.000207109 -17.25875</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          343  342.9992 0.000814882   2.37576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA          23        NA          NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1       231        NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        query    target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;numeric&gt; &lt;numeric&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA        12        NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        343  343.0004 -4.27504e-04  1.246366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         23   23.0003 -3.27186e-04 14.225297</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        231  231.0000  2.94528e-05  0.127501</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

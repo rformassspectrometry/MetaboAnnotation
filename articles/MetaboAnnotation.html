@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>)<br><strong>Compiled</strong>: Fri Feb 4 10:40:02 2022</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>)<br><strong>Compiled</strong>: Wed Feb 9 10:29:25 2022</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -290,17 +290,17 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## 31           200.105       C10H16O4              even      15.8624      [M+H]+</span>
 <span class="co">##         score ppm_error  score_rt</span>
 <span class="co">##     &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="co">## 1   0.0004538   2.25645   9.99030</span>
-<span class="co">## 2   0.0004407   2.19131   9.92890</span>
-<span class="co">## 3   0.0005655   2.81186   9.82583</span>
-<span class="co">## 4   0.0015560   7.73698   9.69527</span>
-<span class="co">## 5   0.0006845   3.40357   9.54455</span>
+<span class="co">## 1   0.0004538   2.25645  -9.99030</span>
+<span class="co">## 2   0.0004407   2.19131  -9.92890</span>
+<span class="co">## 3   0.0005655   2.81186  -9.82583</span>
+<span class="co">## 4   0.0015560   7.73698  -9.69527</span>
+<span class="co">## 5   0.0006845   3.40357  -9.54455</span>
 <span class="co">## ...       ...       ...       ...</span>
-<span class="co">## 27  0.0007312   3.63578   4.59014</span>
-<span class="co">## 28  0.0005444   2.70695   4.45431</span>
-<span class="co">## 29  0.0005328   2.64927   4.38634</span>
-<span class="co">## 30  0.0014619   7.26908   4.29719</span>
-<span class="co">## 31  0.0020342  10.11476   4.08719</span></code></pre>
+<span class="co">## 27  0.0007312   3.63578  -4.59014</span>
+<span class="co">## 28  0.0005444   2.70695  -4.45431</span>
+<span class="co">## 29  0.0005328   2.64927  -4.38634</span>
+<span class="co">## 30  0.0014619   7.26908  -4.29719</span>
+<span class="co">## 31  0.0020342  10.11476  -4.08719</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Fri Feb  4 10:40:10 2022]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Wed Feb  9 10:29:34 2022]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -601,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span class="co">## R Under development (unstable) (2022-01-29 r81593)</span>
+<pre><code><span class="co">## R Under development (unstable) (2022-02-03 r81650)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.3 LTS</span>
 <span class="co">## </span>
@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## other attached packages:</span>
 <span class="co">## [1] msdata_0.35.2           Spectra_1.5.8           ProtGenerics_1.27.2    </span>
 <span class="co">## [4] BiocParallel_1.29.12    S4Vectors_0.33.10       BiocGenerics_0.41.2    </span>
-<span class="co">## [7] MetaboAnnotation_0.99.4 BiocStyle_2.23.1       </span>
+<span class="co">## [7] MetaboAnnotation_0.99.5 BiocStyle_2.23.1       </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] SummarizedExperiment_1.25.3 xfun_0.29                  </span>
@@ -652,7 +652,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [47] clue_0.3-60                 cli_3.1.1                  </span>
 <span class="co">## [49] tools_4.2.0                 bitops_1.0-7               </span>
 <span class="co">## [51] magrittr_2.0.2              sass_0.4.0                 </span>
-<span class="co">## [53] RCurl_1.98-1.5              cluster_2.1.2              </span>
+<span class="co">## [53] RCurl_1.98-1.6              cluster_2.1.2              </span>
 <span class="co">## [55] crayon_1.4.2                MASS_7.3-55                </span>
 <span class="co">## [57] Matrix_1.4-0                rmarkdown_2.11             </span>
 <span class="co">## [59] R6_2.5.1                    compiler_4.2.0</span></code></pre>
