@@ -230,9 +230,12 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' @return [Matched] object representing the result. To evaluate each match the
 #' object contains the m/z error in ppm (variable `"ppm_error"`) as well as the
-#' difference between the target and query m/z (variable `"score"`). The
-#' difference between the target and query retention time (variable `"score_rt"`
-#' is also present if retention time is considered for the match.
+#' difference between the query and target m/z (variable `"score"`). The
+#' difference between the query and target retention time (variable `"score_rt"`
+#' is also present if retention time is considered for the match. Thus, for
+#' a match, a negative value of `"score"` (or `"score_rt"`) indicates that the
+#' m/z (or retention time) of the query element is smaller than that in the
+#' matched target element.
 #'
 #' @author Andrea Vicini, Michael Witting
 #'

@@ -3,7 +3,7 @@
 ## Changes in 0.99.5
 
 - Definitions of "`score`", "`score_rt`" changed to be the difference
-  (with sign) between target and query m/z or retention time respectively.
+  (with sign) between query and target m/z or retention time respectively.
 - `"ppm_error"` becomes error without sign.
 
 ## Changes in 0.99.4
