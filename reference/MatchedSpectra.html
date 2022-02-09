@@ -95,7 +95,7 @@ matchedData(object, columns = spectraVariables(object), ...)
 addProcessing(object, FUN, ..., spectraVariables = character())
 
 # S4 method for MatchedSpectra
-plotSpectraMirror(x, xlab = "m/z", ylab = "intensity", main = "")</code></pre></div>
+plotSpectraMirror(x, xlab = "m/z", ylab = "intensity", main = "", ...)</code></pre></div>
     </div>
 
     <div class="section level2">
@@ -119,7 +119,9 @@ matched.</p></dd>
 <dd><p>for <code>spectraData</code>: <code>character</code> vector with spectra variable
 names that should be extracted.</p></dd>
 <dt>...</dt>
-<dd><p>for <code>addProcessing</code>: additional parameters for the function <code>FUN</code>.</p></dd>
+<dd><p>for <code>addProcessing</code>: additional parameters for the function <code>FUN</code>.
+For <code>plotSpectraMirror</code>: additional parameters passed to the plotting
+functions.</p></dd>
 <dt>FUN</dt>
 <dd><p>for <code>addProcessing</code>: function to be applied to the peak matrix
 of each spectrum in <code>object</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
@@ -199,7 +201,8 @@ MS level of target spectra is called <code>"target_msLevel"</code>).</p></li>
 information.</p></li>
 <li><p><code>plotSpectraMirror</code>: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a <code>MatchedSpectra</code> with a
-single query spectrum.</p></li>
+single query spectrum. Additional plotting parameters can be passed through
+<code>...</code>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

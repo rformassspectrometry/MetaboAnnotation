@@ -375,8 +375,11 @@ retention times of the compounds. Defaults to <code>rtColname = "rt"</code>.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p><a href="Matched.html">Matched</a> object representing the result. To evaluate each match the
 object contains the m/z error in ppm (variable <code>"ppm_error"</code>) as well as the
-difference between the target and query m/z (variable <code>"score"</code>). The
-difference between the target and query retention time (variable <code>"score_rt"</code>is also present if retention time is considered for the match.</p>
+difference between the query and target m/z (variable <code>"score"</code>). The
+difference between the query and target retention time (variable <code>"score_rt"</code>is also present if retention time is considered for the match. Thus, for
+a match, a negative value of <code>"score"</code> (or <code>"score_rt"</code>) indicates that the
+m/z (or retention time) of the query element is smaller than that in the
+matched target element.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -586,12 +589,12 @@ difference between the target and query retention time (variable <code>"score_rt
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        query    target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;numeric&gt; &lt;numeric&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA        12        NA           NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        343  343.0004 -4.27504e-04  1.246366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         23   23.0003 -3.27186e-04 14.225297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        231  231.0000  2.94528e-05  0.127501</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          query    target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;numeric&gt; &lt;numeric&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA          12        NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          343   342.999  0.001070344   3.12055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1        23        NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2          231   231.000 -0.000437243   1.89282</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
