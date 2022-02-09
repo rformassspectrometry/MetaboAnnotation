@@ -141,9 +141,13 @@ retention times of the compounds. Defaults to \code{rtColname = "rt"}.}
 }
 \value{
 \link{Matched} object representing the result. To evaluate each match the
-object contains contains the m/z error in ppm (variable \code{"ppm_error"}) as
-well as the absolute difference between the target and query m/z (variable
-\code{"score"}).
+object contains the m/z error in ppm (variable \code{"ppm_error"}) as well as the
+difference between the query and target m/z (variable \code{"score"}). The
+difference between the query and target retention time (variable \code{"score_rt"}
+is also present if retention time is considered for the match. Thus, for
+a match, a negative value of \code{"score"} (or \code{"score_rt"}) indicates that the
+m/z (or retention time) of the query element is smaller than that in the
+matched target element.
 }
 \description{
 The \code{matchMz} method matches (compares) m/z values from a MS1 data table

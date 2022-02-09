@@ -2,6 +2,7 @@
 
 ## Changes in 0.99.5
 
+- Add parameter `...` to `plotSpectraMirror`.
 - Definitions of "`score`", "`score_rt`" changed to be the difference
   (with sign) between query and target m/z or retention time respectively.
 - `"ppm_error"` becomes error without sign.
@@ -9,7 +10,7 @@
 ## Changes in 0.99.4
 
 - Add matches m/z error (variable `"ppm_error"`) to the `Matched` object
-  returned by `matchMz`.  
+  returned by `matchMz`.
 
 ## Changes in 0.99.3
 
