@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,11 +95,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>)<br><strong>Compiled</strong>: Wed Feb 9 10:31:35 2022</p>
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>)<br><strong>Compiled</strong>: Fri Feb 11 16:03:00 2022</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <code>MetaboAnnotation</code> package defines high-level user functionality to support and facilitate annotation of MS-based metabolomics data.</p>
+<p>The <code>MetaboAnnotation</code> package defines high-level user functionality to support and facilitate annotation of MS-based metabolomics data <span class="citation">(Rainer et al. 2022)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Wed Feb  9 10:31:44 2022]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Fri Feb 11 16:03:10 2022]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated with LC-MS features from an untargeted LC-MS/MS experiment that we would like to annotate by matching them against a spectral reference library.</p>
 <p>We thus load below a <code>Spectra</code> object that represents MS2 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release <em>2021.03</em>. This small <code>Spectra</code> object is provided within this package but it would be possible to use any other <code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a> for different ways and options to provide access to spectral libraries/databases <em>via</em> <code>Spectra</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
@@ -623,7 +623,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## other attached packages:</span>
 <span class="co">## [1] msdata_0.35.2           Spectra_1.5.8           ProtGenerics_1.27.2    </span>
 <span class="co">## [4] BiocParallel_1.29.12    S4Vectors_0.33.10       BiocGenerics_0.41.2    </span>
-<span class="co">## [7] MetaboAnnotation_0.99.5 BiocStyle_2.23.1       </span>
+<span class="co">## [7] MetaboAnnotation_0.99.6 BiocStyle_2.23.1       </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] SummarizedExperiment_1.25.3 xfun_0.29                  </span>
@@ -631,7 +631,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">##  [5] lattice_0.20-45             htmltools_0.5.2            </span>
 <span class="co">##  [7] yaml_2.2.2                  rlang_1.0.1                </span>
 <span class="co">##  [9] pkgdown_2.0.2.9000          jquerylib_0.1.4            </span>
-<span class="co">## [11] mzR_2.29.3                  MetaboCoreUtils_1.3.4      </span>
+<span class="co">## [11] mzR_2.29.3                  MetaboCoreUtils_1.3.6      </span>
 <span class="co">## [13] matrixStats_0.61.0-9001     GenomeInfoDbData_1.2.7     </span>
 <span class="co">## [15] stringr_1.4.0               MatrixGenerics_1.7.0       </span>
 <span class="co">## [17] zlibbioc_1.41.0             ragg_1.2.1                 </span>
@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [31] cachem_1.0.6                DelayedArray_0.21.2        </span>
 <span class="co">## [33] desc_1.4.0                  jsonlite_1.7.3             </span>
 <span class="co">## [35] XVector_0.35.0              MsCoreUtils_1.7.1          </span>
-<span class="co">## [37] systemfonts_1.0.3           fs_1.5.2                   </span>
+<span class="co">## [37] systemfonts_1.0.4           fs_1.5.2                   </span>
 <span class="co">## [39] textshaping_0.3.6           digest_0.6.29              </span>
 <span class="co">## [41] stringi_1.7.6               bookdown_0.24              </span>
 <span class="co">## [43] ncdf4_1.19                  grid_4.2.0                 </span>
@@ -656,6 +656,15 @@ document.addEventListener("DOMContentLoaded", function() {
 <span class="co">## [55] crayon_1.4.2                MASS_7.3-55                </span>
 <span class="co">## [57] Matrix_1.4-0                rmarkdown_2.11             </span>
 <span class="co">## [59] R6_2.5.1                    compiler_4.2.0</span></code></pre>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-rainer_modular_2022" class="csl-entry">
+Rainer, Johannes, Andrea Vicini, Liesa Salzer, Jan Stanstrup, Josep M. Badia, Steffen Neumann, Michael A. Stravs, et al. 2022. <span>“A <span>Modular</span> and <span>Expandable</span> <span>Ecosystem</span> for <span>Metabolomics</span> <span>Data</span> <span>Annotation</span> in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://doi.org/10.3390/metabo12020173" class="external-link">https://doi.org/10.3390/metabo12020173</a>.
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
