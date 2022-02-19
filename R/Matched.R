@@ -57,9 +57,9 @@
 #' - `filterMatches`: keeps or removes matches corresponding to certain indexes
 #'   or values of `query` and `target`. If `queryValue` and `targetValue` are
 #'   provided, matches for these value pairs are kept or removed. Parameter
-#'   `index` allows to filter matches providing their index in the `@matches`
-#'   slot. Note that `filterMatches` removes only matches from the `@matches`
-#'   slot from the `Matched` object but thus not alter the `query` or `target`
+#'   `index` allows to filter matches providing their index in the [matches()]
+#'   matrix. Note that `filterMatches` removes only matches from the [matches()]
+#'   matrix from the `Matched` object but thus not alter the `query` or `target`
 #'   in the object. See examples below for more information.
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
@@ -137,6 +137,8 @@
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
 #'   mapping of elements between the `query` and the `target` objects.
+#'
+#' @param metadata `list` with optional additional metadata.
 #'
 #' @param name for `$`: the name of the column (or variable) to extract.
 #'
@@ -318,8 +320,8 @@
 #'
 #' ## Alternatively to specifying the matches to filter with `queryValue` and
 #' ## `targetValue` it is also possible to specify directly the index of the
-#' ## match(es) in the `@matches` `data.frame`:
-#' mo@matches
+#' ## match(es) in the `matches` `data.frame`:
+#' matches(mo)
 #'
 #' ## To keep only matches like in the example above we could use:
 #' mo_sub <- filterMatches(mo, index = c(1, 3, 5))
@@ -455,8 +457,10 @@ setClass(
 Matched <- function(query = list(), target = list(),
                     matches = data.frame(query_idx = integer(),
                                          target_idx = integer(),
-                                         score = numeric())) {
-    new("Matched", query = query, target = target, matches = matches)
+                                         score = numeric()),
+                    metadata = list()) {
+    new("Matched", query = query, target = target, matches = matches,
+        metadata = metadata)
 }
 
 setValidity("Matched", function(object) {

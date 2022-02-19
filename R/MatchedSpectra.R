@@ -79,7 +79,8 @@
 #'
 #' - `plotSpectraMirror`: creates a mirror plot between the query and each
 #'   matching target spectrum. Can only be applied to a `MatchedSpectra` with a
-#'   single query spectrum.
+#'   single query spectrum. Additional plotting parameters can be passed through
+#'   `...`.
 #'
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
@@ -113,6 +114,8 @@
 #' @param ylab for `plotSpectraMirror`: the label for the y-axis.
 #'
 #' @param ... for `addProcessing`: additional parameters for the function `FUN`.
+#'   For `plotSpectraMirror`: additional parameters passed to the plotting
+#'   functions.
 #'
 #' @return See individual method desciption above for details.
 #'
@@ -338,7 +341,7 @@ setMethod(
 #' @export
 setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
                                                           ylab = "intensity",
-                                                          main = "") {
+                                                          main = "", ...) {
     if (length(query(x)) != 1)
         stop("Length of 'query(x)' has to be 1.")
     y <- x@target[x@matches$target_idx]
@@ -348,5 +351,5 @@ setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
     par(mfrow = c(floor(nr), ceiling(nr)))
     for (i in seq_along(y))
         plotSpectraMirror(x = query(x)[1L], y = y[i],
-                          xlab = xlab, ylab = ylab, main = main)
+                          xlab = xlab, ylab = ylab, main = main, ...)
 })

@@ -228,7 +228,14 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'
 #' @param ... currently ignored.
 #'
-#' @return [Matched] object representing the result
+#' @return [Matched] object representing the result. To evaluate each match the
+#' object contains the m/z error in ppm (variable `"ppm_error"`) as well as the
+#' difference between the query and target m/z (variable `"score"`). The
+#' difference between the query and target retention time (variable `"score_rt"`
+#' is also present if retention time is considered for the match. Thus, for
+#' a match, a negative value of `"score"` (or `"score_rt"`) indicates that the
+#' m/z (or retention time) of the query element is smaller than that in the
+#' matched target element.
 #'
 #' @author Andrea Vicini, Michael Witting
 #'
@@ -370,7 +377,8 @@ setMethod("matchMz",
                                               tolerance = param@tolerance,
                                               ppm = param@ppm),
                               BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches)
+            Matched(query = query, target = target, matches = matches,
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -393,7 +401,7 @@ setMethod("matchMz",
           function(query, target, param, BPPARAM = SerialParam(),
                    mzColname = "mz") {
             if (!mzColname %in% colnames(query))
-              stop("Missing column \"mz\" in query")
+              stop("Missing column \"", mzColname, "\" in query")
             res <- matchMz(query$mz, target, param)
             res@query <- query
             res
@@ -432,7 +440,8 @@ setMethod("matchMz",
                                         ppm = param@ppm)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, res))
+                    matches = do.call(rbind, res),
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -512,7 +521,8 @@ setMethod("matchMz",
                                                 toleranceRt = param@toleranceRt)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, matches))
+                    matches = do.call(rbind, matches),
+                    metadata = list(param = param))
           })
 #' @rdname matchMz
 #'
@@ -551,7 +561,8 @@ setMethod("matchMz",
                                                 toleranceRt = param@toleranceRt)
             }
             Matched(query = query, target = target,
-                    matches = do.call(rbind, matches))
+                    matches = do.call(rbind, matches),
+                    metadata = list(param = param))
           })
 
 #' @rdname matchMz
@@ -563,7 +574,8 @@ setMethod("matchMz",
                    BPPARAM = SerialParam()) {
             matches <- matchMz(data.frame(rowData(query)), target, param,
                                mzColname , rtColname, BPPARAM)@matches
-            MatchedSummarizedExperiment(query, target, matches)
+            MatchedSummarizedExperiment(query, target, matches,
+                                        metadata = list(param = param))
           })
 
 #' @author Andrea Vicini
@@ -577,58 +589,67 @@ setMethod("matchMz",
 #'
 #' @noRd
 .getMatches <- function(queryIndex, queryMz, target, tolerance, ppm){
-  diffs <- abs(queryMz - target$mz)
-  cls <- which(diffs <= (tolerance + ppm(queryMz, ppm)))
+  diffs <- queryMz - target$mz
+  absdiffs <- abs(diffs)
+  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
                  adduct = target$adduct[cls],
-                 score = diffs[cls])
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
-                    score = numeric())
+                    score = numeric(),
+                    ppm = numeric())
   } else {
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
-                 score = diffs[cls])
+                 score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
-                    score = numeric())
+                    score = numeric(),
+                    ppm = numeric())
   }
 }
 
 #' @noRd
 .getMatchesMzRt <- function(queryIndex, queryMz, queryRt, target, tolerance,
                             ppm, toleranceRt){
-  diffs_rt <- abs(queryRt - target$rt)
-  cls_rt <- which(abs(queryRt - target$rt) <= toleranceRt)
-  diffs <- abs(queryMz - target$mz[cls_rt])
-  cls <- which(abs(queryMz - target$mz[cls_rt]) <=
-               (tolerance + ppm(queryMz, ppm)))
+  diffs_rt <- queryRt - target$rt
+  cls_rt <- which(abs(diffs_rt) <= toleranceRt)
+  diffs <- queryMz - target$mz[cls_rt]
+  absdiffs <- abs(diffs)
+  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
                  adduct = target$adduct[cls_rt[cls]],
                  score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
                  score_rt = diffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
                     score = numeric(),
+                    ppm = numeric(),
                     score_rt = numeric())
   } else {
     if (length(cls))
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls_rt[cls]],
                  score = diffs[cls],
+                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
                  score_rt = diffs_rt[cls_rt[cls]])
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
+                    ppm = numeric(),
                     score_rt = numeric())
   }
 }

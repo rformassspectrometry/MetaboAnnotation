@@ -1,0 +1,5 @@
+url: https://rformassspectrometry.github.io/MetaboAnnotation
+
+template:
+  bootstrap: 5
+  bootswatch: flatly

@@ -31,7 +31,7 @@ MatchedSpectra(
 
 \S4method{addProcessing}{MatchedSpectra}(object, FUN, ..., spectraVariables = character())
 
-\S4method{plotSpectraMirror}{MatchedSpectra}(x, xlab = "m/z", ylab = "intensity", main = "")
+\S4method{plotSpectraMirror}{MatchedSpectra}(x, xlab = "m/z", ylab = "intensity", main = "", ...)
 }
 \arguments{
 \item{query}{\code{Spectra} with the query spectra.}
@@ -52,7 +52,9 @@ matched.}
 \item{columns}{for \code{spectraData}: \code{character} vector with spectra variable
 names that should be extracted.}
 
-\item{...}{for \code{addProcessing}: additional parameters for the function \code{FUN}.}
+\item{...}{for \code{addProcessing}: additional parameters for the function \code{FUN}.
+For \code{plotSpectraMirror}: additional parameters passed to the plotting
+functions.}
 
 \item{FUN}{for \code{addProcessing}: function to be applied to the peak matrix
 of each spectrum in \code{object}. See \code{\link[=Spectra]{Spectra()}} for more details.}
@@ -141,7 +143,8 @@ MS level of target spectra is called \code{"target_msLevel"}).
 information.
 \item \code{plotSpectraMirror}: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
-single query spectrum.
+single query spectrum. Additional plotting parameters can be passed through
+\code{...}.
 }
 }
 

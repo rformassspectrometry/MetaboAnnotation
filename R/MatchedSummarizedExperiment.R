@@ -1,6 +1,7 @@
 setClass(
   "MatchedSummarizedExperiment",
-  contains = "Matched"
+  contains = "Matched",
+  slots = c(query = "SummarizedExperiment")
 )
 
 #' @importClassesFrom SummarizedExperiment SummarizedExperiment
@@ -17,15 +18,14 @@ MatchedSummarizedExperiment <- function(query = SummarizedExperiment(),
                                         matches = data.frame(
                                           query_idx = integer(),
                                           target_idx = integer(),
-                                          score = numeric())) {
+                                          score = numeric()),
+                                        metadata = list()) {
   new("MatchedSummarizedExperiment", query = query, target = target,
-      matches = matches)
+      matches = matches, metadata = metadata)
 }
 
 setValidity("MatchedSummarizedExperiment", function(object) {
   msg <- NULL
-  if(!is(object@query, "SummarizedExperiment"))
-    msg <- c(msg, "query must be a SummarizedExperiment")
   if (length(msg)) return(msg)
   TRUE
 })
