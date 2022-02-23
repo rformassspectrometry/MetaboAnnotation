@@ -603,7 +603,7 @@ setMethod("matchMz",
                     target_idx = integer(),
                     adduct = character(),
                     score = numeric(),
-                    ppm = numeric())
+                    ppm_error = numeric())
   } else {
     if (length(cls))
       data.frame(query_idx = queryIndex,
@@ -613,7 +613,7 @@ setMethod("matchMz",
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
-                    ppm = numeric())
+                    ppm_error = numeric())
   }
 }
 
@@ -637,7 +637,7 @@ setMethod("matchMz",
                     target_idx = integer(),
                     adduct = character(),
                     score = numeric(),
-                    ppm = numeric(),
+                    ppm_error = numeric(),
                     score_rt = numeric())
   } else {
     if (length(cls))
@@ -649,7 +649,7 @@ setMethod("matchMz",
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
-                    ppm = numeric(),
+                    ppm_error = numeric(),
                     score_rt = numeric())
   }
 }
