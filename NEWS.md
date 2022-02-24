@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.7
+
+- Add formula matching functions
+
 ## Changes in 0.99.5
 
 - Add parameter `...` to `plotSpectraMirror`.
