@@ -6,7 +6,7 @@
 \alias{matchFormula,data.frameOrSimilar,data.frameOrSimilar-method}
 \alias{matchFormula,character,data.frameOrSimilar-method}
 \alias{matchFormula,data.frameOrSimilar,character-method}
-\title{formula matching}
+\title{Chemical Formula Matching}
 \usage{
 matchFormula(query, target, ...)
 
@@ -23,35 +23,44 @@ matchFormula(query, target, ...)
   query,
   target,
   formulaColname = "formula",
-  BBPARAM = SerialParam()
+  BPPARAM = SerialParam()
 )
 
 \S4method{matchFormula}{data.frameOrSimilar,character}(
   query,
   target,
   formulaColname = "formula",
-  BBPARAM = SerialParam()
+  BPPARAM = SerialParam()
 )
 }
 \arguments{
-\item{query}{chemical formulas to search}
+\item{query}{\code{character} or \code{data.frame} with chemical formulas to search.}
 
-\item{target}{compound table to compare against}
+\item{target}{\code{character} or \code{data.frame} with chemical formulas to compare
+against.}
 
 \item{...}{currently ignored}
 
-\item{formulaColname}{name of the column contain chemical formula. Only used
-if a \code{data.frame} is supplied.}
+\item{BPPARAM}{parallel processing setup. See \code{BiocParallel::bpparam()} for
+details.}
+
+\item{formulaColname}{\code{character} with the name of the column containing
+chemical formulas. Can be of length 1 if both \code{query} and \code{target} are
+\code{data.frame}s and the name of the column with chemical formulas is the
+same for both. If different columns are used, \code{formulaColname[1]} can be
+used to define the column name in \code{query} and \code{formulaColname[2]} the
+one of \code{target}.}
 }
 \value{
-\link{Matched} object representing the result
+\link{Matched} object representing the result.
 }
 \description{
-The \code{matchFormula} method matches chemical formula from different inputs
+The \code{matchFormula} method matches chemical formulas from different inputs
 (parameter \code{query} and \code{target}). Before comparison all formulas are
-normalized using \code{\link[MetaboCoreUtils:standardizeFormula]{MetaboCoreUtils::standardizeFormula()}}. Inputs can be either
-a \code{character} or \code{data.frame} containing a column with formulas. In case of
-a \code{data.frame} as input the parameter \code{formulaColName} needs to specified.
+normalized using \code{\link[MetaboCoreUtils:standardizeFormula]{MetaboCoreUtils::standardizeFormula()}}. Inputs can be
+either a \code{character} or \code{data.frame} containing a column with formulas.
+In case of \code{data.frame}s parameter \code{formulaColname} needs to be used to
+specify the name of the column containing the chemical formulas.
 }
 \examples{
 

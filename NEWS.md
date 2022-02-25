@@ -2,7 +2,7 @@
 
 ## Changes in 0.99.7
 
-- Add formula matching functions
+- Add formula matching functions.
 
 ## Changes in 0.99.5
 
