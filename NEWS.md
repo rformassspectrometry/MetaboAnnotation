@@ -1,8 +1,12 @@
 # MetaboAnnotation 0.99
 
-## Changes in 0.99.6
+## Changes in 0.99.8
 
 - Add `setBackend` for `MatchedSpectra` objects.
+
+## Changes in 0.99.7
+
+- Add formula matching functions.
 
 ## Changes in 0.99.5
 

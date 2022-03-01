@@ -10,6 +10,7 @@ vignette: >
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
   %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation}
+bibliography: references.bib
 ---
 
 ```{r style, echo = FALSE, results = 'asis'}
@@ -24,7 +25,7 @@ BiocStyle::markdown()
 # Introduction
 
 The `MetaboAnnotation` package defines high-level user functionality to support
-and facilitate annotation of MS-based metabolomics data.
+and facilitate annotation of MS-based metabolomics data [@rainer_modular_2022].
 
 
 # Installation
@@ -428,9 +429,10 @@ analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
 `r Biocpkg("xcms")` package. Also,
 
 
-
 # Session information {-}
 
 ```{r sessioninfo, echo=FALSE}
 sessionInfo()
 ```
+
+# References
