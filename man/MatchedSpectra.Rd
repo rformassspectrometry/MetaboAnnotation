@@ -71,6 +71,9 @@ with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
 \item{ylab}{for \code{plotSpectraMirror}: the label for the y-axis.}
 
 \item{main}{for \code{plotSpectraMirror}: an optional title for each plot.}
+
+\item{backend}{for \code{setBackend}: instance of an object extending \link{MsBackend}.
+See help for \code{setBackend} in \code{\link[=Spectra]{Spectra()}} for more details.}
 }
 \value{
 See individual method desciption above for details.

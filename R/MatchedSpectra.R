@@ -87,6 +87,9 @@
 #'   the query and target `Spectra` changed to the specified `backend`, which
 #'   can be any backend extending [MsBackend].
 #'
+#' @param backend for `setBackend`: instance of an object extending [MsBackend].
+#'   See help for `setBackend` in [Spectra()] for more details.
+#'
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
 #'
