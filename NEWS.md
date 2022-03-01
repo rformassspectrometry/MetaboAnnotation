@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.6
+
+- Add `setBackend` for `MatchedSpectra` objects.
+
 ## Changes in 0.99.5
 
 - Add parameter `...` to `plotSpectraMirror`.
