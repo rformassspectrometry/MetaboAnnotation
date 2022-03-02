@@ -5,6 +5,7 @@
 \alias{Mass2MzParam}
 \alias{Mass2MzRtParam}
 \alias{MzRtParam}
+\alias{CompareMassParam}
 \alias{matchMz}
 \alias{matchMz,numeric,numeric,Mass2MzParam-method}
 \alias{matchMz,numeric,data.frameOrSimilar,Mass2MzParam-method}
@@ -16,6 +17,7 @@
 \alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,MzParam-method}
 \alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam-method}
 \alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,MzRtParam-method}
+\alias{matchMz,numeric,numeric,CompareMassParam-method}
 \alias{matchMz,SummarizedExperiment,ANY,Param-method}
 \title{m/z matching}
 \usage{
@@ -26,6 +28,13 @@ Mass2MzParam(adducts = c("[M+H]+"), tolerance = 0, ppm = 5)
 Mass2MzRtParam(adducts = c("[M+H]+"), tolerance = 0, ppm = 5, toleranceRt = 0)
 
 MzRtParam(tolerance = 0, ppm = 0, toleranceRt = 0)
+
+CompareMassParam(
+  queryAdducts = c("[M+H]+"),
+  targetAdducts = c("[M+H]+"),
+  tolerance = 0,
+  ppm = 5
+)
 
 matchMz(query, target, param, ...)
 
@@ -83,6 +92,8 @@ matchMz(query, target, param, ...)
   BPPARAM = SerialParam()
 )
 
+\S4method{matchMz}{numeric,numeric,CompareMassParam}(query, target, param, BPPARAM = SerialParam())
+
 \S4method{matchMz}{SummarizedExperiment,ANY,Param}(
   query,
   target,
@@ -114,6 +125,14 @@ have columns \code{"mass_add"} and \code{"mass_multi"} defining the \emph{additi
 \item{toleranceRt}{for \code{Mass2MzRtParam} or \code{MzRtParam}: \code{numeric(1)}
 defining the maximal acceptable absolute difference in retention time
 values to consider them them \emph{matching}.}
+
+\item{queryAdducts}{for \code{CompareMassParam}. Adducts used to derive mass
+values from query m/z values. The expected format is the same as that
+for parameter \code{adducts}.}
+
+\item{targetAdducts}{for \code{CompareMassParam}. Adducts used to derive mass
+values from target m/z values. The expected format is the same as that
+for parameter \code{adducts}.}
 
 \item{query}{feature table containing information on MS1 features. Can be
 a \code{data.frame} (with mandatory column names \code{"mz"}) or a \code{numeric} with
@@ -170,7 +189,7 @@ contain a column with the (monoisotopic) mass of the compounds (the column
 name can be specified with parameter \code{massColname} which defaults to
 \code{"exactmass"}) \code{Mass2MzParam}'s parameter \code{adducts} allows to define
 the expected adducts (defaults to \code{adducts = "[M+H]+"} but any adducts
-available in \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter
+available in \code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameters
 \code{tolerance} and \code{ppm} allow to define the maximal acceptable (constant or
 m/z relative) difference between query and target m/z values.
 \item \code{Mass2MzRtParam}: match m/z and retention time values against
@@ -188,7 +207,7 @@ containing these information can be specified with parameters \code{massColname}
 and \code{rtColname} which default to \code{"exactmass"} and \code{"rt"}, respectively.
 \code{Mass2MzRtParam}'s parameter \code{adducts} allows to define the expected
 adducts (defaults to \code{adducts = "[M+H]+"} but any adducts available in
-\code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameter \code{tolerance} and
+\code{\link[MetaboCoreUtils:adductNames]{MetaboCoreUtils::adducts()}} are supported). Parameters \code{tolerance} and
 \code{ppm} allow to define the maximal acceptable (constant or m/z relative)
 difference between query and target m/z values; parameter \code{toleranceRt}
 allows to specify the maximal acceptable difference between query and
@@ -213,6 +232,17 @@ to define the maximal acceptable (constant or m/z relative) difference
 between query and target m/z values; \code{MzRtParam} parameter \code{toleranceRt}
 allows to specify the maximal acceptable difference between query and
 target retention time values.
+\item \code{CompareMassParam}: first convert to masses the m/z values of \code{query} and
+\code{target} based respectively on \code{CompareMassParam} parameters \code{queryAdducts}
+and \code{targetAdducts} and then match the obtained masses. \code{query} must be
+either a \code{data.frame} with a column containing m/z values (which name can
+be specified with parameter \code{mzColname}, default being \code{mzColname = "mz"})
+or a \code{numeric} with the m/z values. The same holds for \code{target}.
+\code{CompareMassParam} parameters \code{queryAdducts} and \code{targetAdducts} allows to
+define the adducts for the m/z to mass conversion of \code{query} and \code{target}
+respectively. Parameters \code{tolerance} and \code{ppm} allow to define the
+maximal acceptable (constant or mass relative) difference between masses
+derived from \code{query} and \code{target}.
 }
 }
 \examples{

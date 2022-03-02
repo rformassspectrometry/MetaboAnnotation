@@ -35,18 +35,7 @@ setClass("Mass2MzParam",
          prototype = prototype(
            adducts = c("[M+H]+")),
          validity = function(object) {
-           msg <- NULL
-           if (is(object@adducts, "data.frame")) {
-             if(any(!c("mass_add", "mass_multi") %in% colnames(object@adducts)))
-               msg <- paste0("Columns \"mass_add\" and \"mass_multi\" must be ",
-                             "present when adducts is a data.frame")
-           } else {
-             if (!all(object@adducts %in% c(adductNames("positive"),
-                                            adductNames("negative"))))
-               msg <- paste0("Unknown adducts, please check MetaboCoreUtils",
-                             " for valid adducts")
-           }
-             msg
+           .valid_adduct(object@adducts)
          })
 
 #' @rdname matchMz
@@ -109,6 +98,49 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
   new("MzRtParam", tolerance = tolerance, ppm = ppm, toleranceRt = toleranceRt)
 }
 
+#' @importFrom MetaboCoreUtils adductNames
+#'
+#' @noRd
+setClass("CompareMassParam",
+         slots = c(
+           queryAdducts = "adductClass",
+           targetAdducts = "adductClass"),
+         contains = "MzParam",
+         prototype = prototype(
+           queryAdducts = c("[M+H]+"),
+           targetAdducts = c("[M-H]-")),
+         validity = function(object) {
+           c(.valid_adduct(object@queryAdducts, "`queryAdducts`"),
+             .valid_adduct(object@targetAdducts, "`targetAdducts`"))
+         })
+
+.valid_adduct <- function(adducts, name = "`adducts`") {
+  msg <- NULL
+  if (is(adducts, "data.frame")) {
+    if(any(!c("mass_add", "mass_multi") %in% colnames(adducts)))
+      msg <- paste0("Columns \"mass_add\" and \"mass_multi\" must be ",
+                    "present when ", name, " is a data.frame")
+  } else {
+    if (!all(adducts %in% c(adductNames("positive"), adductNames("negative"))))
+      msg <- paste0("Unknown adducts in ", name, " please check",
+                    "  MetaboCoreUtils for valid adducts")
+  }
+  msg
+}
+
+
+#' @rdname matchMz
+#'
+#' @importFrom methods new
+#'
+#' @export
+CompareMassParam <- function(queryAdducts = c("[M+H]+"),
+                             targetAdducts = c("[M+H]+"),
+                             tolerance = 0, ppm = 5) {
+  new("CompareMassParam", queryAdducts = queryAdducts,
+      targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm)
+}
+
 #' @title m/z matching
 #'
 #' @name matchMz
@@ -135,7 +167,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   name can be specified with parameter `massColname` which defaults to
 #'   `"exactmass"`) `Mass2MzParam`'s parameter `adducts` allows to define
 #'   the expected adducts (defaults to `adducts = "[M+H]+"` but any adducts
-#'   available in [MetaboCoreUtils::adducts()] are supported). Parameter
+#'   available in [MetaboCoreUtils::adducts()] are supported). Parameters
 #'   `tolerance` and `ppm` allow to define the maximal acceptable (constant or
 #'   m/z relative) difference between query and target m/z values.
 #'
@@ -154,7 +186,7 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   and `rtColname` which default to `"exactmass"` and `"rt"`, respectively.
 #'   `Mass2MzRtParam`'s parameter `adducts` allows to define the expected
 #'   adducts (defaults to `adducts = "[M+H]+"` but any adducts available in
-#'   [MetaboCoreUtils::adducts()] are supported). Parameter `tolerance` and
+#'   [MetaboCoreUtils::adducts()] are supported). Parameters `tolerance` and
 #'   `ppm` allow to define the maximal acceptable (constant or m/z relative)
 #'   difference between query and target m/z values; parameter `toleranceRt`
 #'   allows to specify the maximal acceptable difference between query and
@@ -182,6 +214,18 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #'   allows to specify the maximal acceptable difference between query and
 #'   target retention time values.
 #'
+#' - `CompareMassParam`: first convert to masses the m/z values of `query` and
+#'   `target` based respectively on `CompareMassParam` parameters `queryAdducts`
+#'   and `targetAdducts` and then match the obtained masses. `query` must be
+#'   either a `data.frame` with a column containing m/z values (which name can
+#'   be specified with parameter `mzColname`, default being `mzColname = "mz"`)
+#'   or a `numeric` with the m/z values. The same holds for `target`.
+#'   `CompareMassParam` parameters `queryAdducts` and `targetAdducts` allows to
+#'   define the adducts for the m/z to mass conversion of `query` and `target`
+#'   respectively. Parameters `tolerance` and `ppm` allow to define the
+#'   maximal acceptable (constant or mass relative) difference between masses 
+#'   derived from `query` and `target`.
+#'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`:
 #'     either `character` with the names of adducts or `data.frame` with the
 #'     adduct definition. This parameter is used to calculate m/z from target
@@ -208,11 +252,24 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @param ppm for any `param` object: `numeric(1)` defining the maximal
 #'     acceptable m/z-dependent difference (in parts-per-million) in m/z values
 #'     to consider them to be *matching*.
+#'     
+#' @param query feature table containing information on MS1 features. Can be
+#'     a `data.frame` (with mandatory column names `"mz"`) or a `numeric` with
+#'     the m/z values. A matching based on both m/z and retention time can be
+#'     performed when a column `"rt"` is present in both `query` and `target`.
+#'     
+#' @param queryAdducts for `CompareMassParam`. Adducts used to derive mass
+#'     values from query m/z values. The expected format is the same as that
+#'     for parameter `adducts`.
 #'
 #' @param rtColname `character(1)` with the name of the column containing the
 #'     retention times of the compounds. Defaults to `rtColname = "rt"`.
 #'
 #' @param target compound table with metabolites to compare against.
+#' 
+#' @param targetAdducts for `CompareMassParam`. Adducts used to derive mass
+#'     values from target m/z values. The expected format is the same as that
+#'     for parameter `adducts`.
 #'
 #' @param tolerance for any `param` object: `numeric(1)` defining the maximal
 #'     acceptable absolute difference in m/z values to consider them *matching*.
@@ -220,11 +277,6 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @param toleranceRt for `Mass2MzRtParam` or `MzRtParam`: `numeric(1)`
 #'     defining the maximal acceptable absolute difference in retention time
 #'     values to consider them them *matching*.
-#'
-#' @param query feature table containing information on MS1 features. Can be
-#'     a `data.frame` (with mandatory column names `"mz"`) or a `numeric` with
-#'     the m/z values. A matching based on both m/z and retention time can be
-#'     performed when a column `"rt"` is present in both `query` and `target`.
 #'
 #' @param ... currently ignored.
 #'
@@ -380,6 +432,7 @@ setMethod("matchMz",
             Matched(query = query, target = target, matches = matches,
                     metadata = list(param = param))
           })
+
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "numeric",
@@ -525,8 +578,6 @@ setMethod("matchMz",
                     metadata = list(param = param))
           })
 #' @rdname matchMz
-#'
-#' @importFrom BiocParallel bpmapply SerialParam
 setMethod("matchMz",
           signature = c(query = "data.frameOrSimilar",
                         target = "data.frameOrSimilar",
@@ -564,7 +615,32 @@ setMethod("matchMz",
                     matches = do.call(rbind, matches),
                     metadata = list(param = param))
           })
-
+#' @rdname matchMz
+setMethod("matchMz",
+          signature = c(query = "numeric",
+                        target = "numeric",
+                        param = "CompareMassParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+            query_mass <- .mz_to_mass_df(query, param@queryAdducts)
+            target_mass<- .mz_to_mass_df(target, param@targetAdducts)
+            queryl <- nrow(query_mass)
+            matches <- vector("list", queryl)
+            for(i in seq_len(queryl)) {
+              matches[[i]] <- .getMatches(query_mass$index[i],
+                                          query_mass$mass[i],
+                                          target = target_mass,
+                                          tolerance = param@tolerance,
+                                          ppm = param@ppm)
+              if (nrow(matches[[i]]))
+                matches[[i]]$adduct <- paste(matches[[i]]$adduct,
+                                             query_mass$adduct[i], sep = " / ")
+              else matches[[i]]$adduct <- character()
+            }
+            Matched(query = query, target = target,
+                    matches = do.call(rbind, matches),
+                    metadata = list(param = param))
+            
+          })
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "SummarizedExperiment",
@@ -589,7 +665,7 @@ setMethod("matchMz",
 #'
 #' @noRd
 .getMatches <- function(queryIndex, queryMz, target, tolerance, ppm){
-  diffs <- queryMz - target$mz
+  diffs <- queryMz - target[, 2]
   absdiffs <- abs(diffs)
   cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
   if ("adduct" %in% colnames(target)){
@@ -598,7 +674,7 @@ setMethod("matchMz",
                  target_idx = target$index[cls],
                  adduct = target$adduct[cls],
                  score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
+                 ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     adduct = character(),
@@ -609,7 +685,7 @@ setMethod("matchMz",
       data.frame(query_idx = queryIndex,
                  target_idx = target$index[cls],
                  score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls, "mz"] * 10^6)
+                 ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
     else data.frame(query_idx = integer(),
                     target_idx = integer(),
                     score = numeric(),
@@ -664,6 +740,20 @@ setMethod("matchMz",
 .mass_to_mz_df <- function(x, adducts) {
   mz <- mass2mz(x, adducts)
   data.frame(index = rep(seq_along(x), .nelements(adducts)),
-             adduct = rep(colnames(mz), each = length(x)),
-             mz = as.numeric(mz))
+             mz = as.numeric(mz),
+             adduct = rep(colnames(mz), each = length(x)))
+}
+
+#' creates a `data.frame` with columns `"index"`, `"adduct"` and `"mass"` from
+#' provided m/z values `x` and adduct definition `adducts`. `"index"` is the
+#' index of the m/z in the input vector `x`.
+#'
+#' @importFrom MetaboCoreUtils mz2mass
+#'
+#' @noRd
+.mz_to_mass_df <- function(x, adducts) {
+  mass <- mz2mass(x, adducts)
+  data.frame(index = rep(seq_along(x), .nelements(adducts)),
+             mass = as.numeric(mass),
+             adduct = rep(colnames(mass), each = length(x)))
 }

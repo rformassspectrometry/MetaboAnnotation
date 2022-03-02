@@ -148,8 +148,8 @@ test_that("matchMz,Mass2MzParam works", {
 
 test_that(".getMatches works", {
     trgt <- data.frame(index = c(1, 2, 3, 1, 2, 3),
-                       adduct = c("A", "A", "A", "B", "B", "B"),
-                       mz = c(1, 1.2, 1.21, 1.2, 2, 2.1))
+                       mz = c(1, 1.2, 1.21, 1.2, 2, 2.1),
+                       adduct = c("A", "A", "A", "B", "B", "B"))
     trgt <- trgt[order(trgt$mz), ]
 
     res <- .getMatches(3, 1.2, trgt, tolerance = 0, ppm = 0)
@@ -272,14 +272,14 @@ test_that(".mass_to_mz_df works", {
     adds <- MetaboCoreUtils::adductNames()
     res <- .mass_to_mz_df(mass, adducts = adds)
     expect_true(is.data.frame(res))
-    expect_equal(colnames(res), c("index", "adduct", "mz"))
+    expect_equal(colnames(res), c("index", "mz", "adduct"))
     expect_equal(res$index, rep(1:4, length(adds)))
     expect_equal(res$adduct, rep(adds, each = 4))
 
     adds <- MetaboCoreUtils::adducts()
     res1 <- .mass_to_mz_df(mass, adducts = adds)
     expect_true(is.data.frame(res))
-    expect_equal(colnames(res), c("index", "adduct", "mz"))
+    expect_equal(colnames(res), c("index", "mz", "adduct"))
     expect_equal(res$index, rep(1:4, nrow(adds)))
     expect_equal(res$adduct, rep(adds$name, each = 4))
 })
@@ -401,4 +401,57 @@ test_that("matchMz, MzRtParam works", {
   expect_equal(query(res), qry)
   expect_equal(target(res), trgt + 0.5)
   expect_true(nrow(res@matches) == 0)
+})
+
+test_that("matchMz, CompareMassParam works", {
+  
+  m <- c(200, 300)
+  qry <- c(100, as.numeric(mass2mz(m, c("[M+H]+", "[M+K]+"))) + c(0, 0, 0, 5))
+  trgt <- c(mass2mz(m, "[M-H]-"), 400, 500)
+
+  par <- CompareMassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
+                          targetAdducts = "[M-H]-")
+  res <- matchMz(qry, trgt, par)
+  expect_equal(query(res), qry)
+  expect_equal(target(res), trgt)
+  expect_equal(res@matches$query_idx, c(2, 3, 4))
+  expect_equal(res@matches$target_idx, c(1, 2, 1))
+  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
+                                                       c(2, 1)), sep = " / " ))
+  expect_equal(res@matches$score, c(0, 0, 0))
+  expect_equal(res@matches$ppm_error, c(0, 0, 0))
+
+  ## no matches
+  res <- matchMz(qry + 0.1, trgt, par)
+  expect_true(is(res, "Matched"))
+  expect_equal(query(res), qry + 0.1)
+  expect_equal(target(res), trgt)
+  expect_true(nrow(res@matches) == 0)
+
+  # positive tolerance
+  par <- CompareMassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
+                          targetAdducts = "[M-H]-",
+                          tolerance = 10)
+  res <- matchMz(qry, trgt, par)
+  expect_equal(query(res), qry)
+  expect_equal(target(res), trgt)
+  expect_equal(res@matches$query_idx, c(2, 3, 4, 5))
+  expect_equal(res@matches$target_idx, c(1, 2, 1, 2))
+  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
+                                                       each = 2), sep = " / " ))
+  expect_equal(res@matches$score, c(0, 0, 0, 5))
+  expect_equal(res@matches$ppm_error, c(0, 0, 0, 5 / 300 * 10^6))
+
+  # `query`and `target` data.frames
+  qry_df <- data.frame(mzq = qry, other = 1)
+  trgt_df <- data.frame(other = "b", mzt = trgt)
+  res <- matchMz(qry_df, trgt_df, par, mzColname = c("mzq", "mzt"))
+  expect_equal(query(res), qry_df)
+  expect_equal(target(res), trgt_df)
+  expect_equal(res@matches$query_idx, c(2, 3, 4, 5))
+  expect_equal(res@matches$target_idx, c(1, 2, 1, 2))
+  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
+                                                       each = 2), sep = " / " ))
+  expect_equal(res@matches$score, c(0, 0, 0, 5))
+  expect_equal(res@matches$ppm_error, c(0, 0, 0, 5 / 300 * 10^6))
 })
