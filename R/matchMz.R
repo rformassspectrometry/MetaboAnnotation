@@ -1,20 +1,30 @@
 #' @noRd
-setClass("MzParam",
+setClass("ValueParam",
          slots = c(
-           tolerance = "numeric",
-           ppm = "numeric"),
+             tolerance = "numeric",
+             ppm = "numeric"),
          contains = "Param",
          prototype = prototype(
-           tolerance = 0,
-           ppm = 5),
+             tolerance = 0,
+             ppm = 5),
          validity = function(object) {
-           msg <- NULL
-           if (length(object@tolerance) != 1 || object@tolerance < 0)
-             msg <- c("'tolerance' has to be a positive number of length 1")
-           if (length(object@ppm) != 1 || object@ppm < 0)
-             msg <- c("'ppm' has to be a positive number of length 1")
-           msg
+             msg <- NULL
+             if (length(object@tolerance) != 1 || object@tolerance < 0)
+                 msg <- c("'tolerance' has to be a positive number of length 1")
+             if (length(object@ppm) != 1 || object@ppm < 0)
+                 msg <- c("'ppm' has to be a positive number of length 1")
+             msg
          })
+
+#' @rdname matchMz
+#'
+#' @importFrom methods new
+ValueParam <- function(tolerance = 0, ppm = 5) {
+    new("ValueParam", tolerance = tolerance, ppm = ppm)
+}
+
+#' @noRd
+setClass("MzParam", contains = "ValueParam")
 
 #' @rdname matchMz
 #'
@@ -30,12 +40,12 @@ MzParam <- function(tolerance = 0, ppm = 5) {
 #' @noRd
 setClass("Mass2MzParam",
          slots = c(
-           adducts = "adductClass"),
-         contains = "MzParam",
+             targetAdducts = "adductClass"),
+         contains = "ValueParam",
          prototype = prototype(
-           adducts = c("[M+H]+")),
+             targetAdducts = c("[M+H]+")),
          validity = function(object) {
-           .valid_adduct(object@adducts)
+             .valid_adduct(object@targetAdducts)
          })
 
 #' @rdname matchMz
@@ -44,7 +54,7 @@ setClass("Mass2MzParam",
 #'
 #' @export
 Mass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
-  new("Mass2MzParam", adducts = adducts, tolerance = tolerance,
+  new("Mass2MzParam", targetAdducts = adducts, tolerance = tolerance,
       ppm = ppm)
 }
 
@@ -71,7 +81,7 @@ setClass("Mass2MzRtParam",
 #' @export
 Mass2MzRtParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5,
                                  toleranceRt = 0) {
-  new("Mass2MzRtParam", adducts = adducts, tolerance = tolerance,
+  new("Mass2MzRtParam", targetAdducts = adducts, tolerance = tolerance,
       ppm = ppm, toleranceRt = toleranceRt)
 }
 
@@ -101,11 +111,11 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @importFrom MetaboCoreUtils adductNames
 #'
 #' @noRd
-setClass("CompareMassParam",
+setClass("Mz2MassParam",
          slots = c(
            queryAdducts = "adductClass",
            targetAdducts = "adductClass"),
-         contains = "MzParam",
+         contains = "ValueParam",
          prototype = prototype(
            queryAdducts = c("[M+H]+"),
            targetAdducts = c("[M-H]-")),
@@ -134,10 +144,10 @@ setClass("CompareMassParam",
 #' @importFrom methods new
 #'
 #' @export
-CompareMassParam <- function(queryAdducts = c("[M+H]+"),
+Mz2MassParam <- function(queryAdducts = c("[M+H]+"),
                              targetAdducts = c("[M+H]+"),
                              tolerance = 0, ppm = 5) {
-  new("CompareMassParam", queryAdducts = queryAdducts,
+  new("Mz2MassParam", queryAdducts = queryAdducts,
       targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm)
 }
 
@@ -214,13 +224,13 @@ CompareMassParam <- function(queryAdducts = c("[M+H]+"),
 #'   allows to specify the maximal acceptable difference between query and
 #'   target retention time values.
 #'
-#' - `CompareMassParam`: first convert to masses the m/z values of `query` and
-#'   `target` based respectively on `CompareMassParam` parameters `queryAdducts`
+#' - `Mz2MassParam`: first convert to masses the m/z values of `query` and
+#'   `target` based respectively on `Mz2MassParam` parameters `queryAdducts`
 #'   and `targetAdducts` and then match the obtained masses. `query` must be
 #'   either a `data.frame` with a column containing m/z values (which name can
 #'   be specified with parameter `mzColname`, default being `mzColname = "mz"`)
 #'   or a `numeric` with the m/z values. The same holds for `target`.
-#'   `CompareMassParam` parameters `queryAdducts` and `targetAdducts` allows to
+#'   `Mz2MassParam` parameters `queryAdducts` and `targetAdducts` allows to
 #'   define the adducts for the m/z to mass conversion of `query` and `target`
 #'   respectively. Parameters `tolerance` and `ppm` allow to define the
 #'   maximal acceptable (constant or mass relative) difference between masses 
@@ -258,7 +268,7 @@ CompareMassParam <- function(queryAdducts = c("[M+H]+"),
 #'     the m/z values. A matching based on both m/z and retention time can be
 #'     performed when a column `"rt"` is present in both `query` and `target`.
 #'     
-#' @param queryAdducts for `CompareMassParam`. Adducts used to derive mass
+#' @param queryAdducts for `Mz2MassParam`. Adducts used to derive mass
 #'     values from query m/z values. The expected format is the same as that
 #'     for parameter `adducts`.
 #'
@@ -267,7 +277,7 @@ CompareMassParam <- function(queryAdducts = c("[M+H]+"),
 #'
 #' @param target compound table with metabolites to compare against.
 #' 
-#' @param targetAdducts for `CompareMassParam`. Adducts used to derive mass
+#' @param targetAdducts for `Mz2MassParam`. Adducts used to derive mass
 #'     values from target m/z values. The expected format is the same as that
 #'     for parameter `adducts`.
 #'
@@ -413,7 +423,74 @@ NULL
 #'
 #' @export
 setGeneric("matchMz", function(query, target, param, ...)
-  standardGeneric("matchMz"))
+    standardGeneric("matchMz"))
+
+#' @importFrom BiocParallel bpmapply SerialParam
+#'
+#' @noRd
+setMethod("matchMz",
+          signature = c(query = "numeric",
+                        target = "numeric",
+                        param = "ValueParam"),
+          function(query, target, param, BPPARAM = SerialParam()) {
+              target_ <- data.frame(index = seq_along(target), value = target)
+              queryl <- length(query)
+              res <- vector("list", queryl)
+              for (i in seq_len(queryl)) {
+                  res[[i]] <- .getMatches(i, query[i], target = target_,
+                                          tolerance = param@tolerance,
+                                          ppm = param@ppm)
+              }
+              Matched(query = query, target = target,
+                      matches = do.call(rbind, res),
+                      metadata = list(param = param))
+          })
+#' @noRd
+setMethod("matchMz",
+          signature = c(query = "numeric",
+                        target = "data.frameOrSimilar",
+                        param = "ValueParam"),
+          function(query, target, param, valueColname,
+                   BPPARAM = SerialParam()) {
+              if (!valueColname %in% colnames(target))
+                  stop("Missing column \"", valueColname, "\" in target")
+              res <- matchMz(query, target[, valueColname], param)
+              res@target <- target
+              res
+          })
+#' @noRd
+setMethod("matchMz",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "numeric",
+                        param = "ValueParam"),
+          function(query, target, param, valueColname,
+                   BPPARAM = SerialParam()) {
+              if (!valueColname %in% colnames(query))
+                  stop("Missing column \"", valueColname, "\" in query")
+              res <- matchMz(query[, valueColname], target, param)
+              res@query <- query
+              res
+          })
+#' @noRd
+setMethod("matchMz",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
+                        param = "ValueParam"),
+          function(query, target, param, valueColname,
+                   BPPARAM = SerialParam()) {
+              if(length(valueColname) == 1)
+                  valueColname <- rep(valueColname, 2)
+              if (!valueColname[1] %in% colnames(query))
+                  stop("Missing column \"", valueColname[1], "\" in query")
+              if (!valueColname[2] %in% colnames(target))
+                  stop("Missing column \"", valueColname[2], "\" in target")
+              res <- matchMz(query[, valueColname[1]],
+                             target[, valueColname[2]], param)
+              res@query <- query
+              res@target <- target
+              res
+          })
+
 #' @rdname matchMz
 #'
 #' @importFrom BiocParallel bpmapply SerialParam
@@ -422,15 +499,15 @@ setMethod("matchMz",
                         target = "numeric",
                         param = "Mass2MzParam"),
           function(query, target, param, BPPARAM = SerialParam()) {
-            target_mz <- .mass_to_mz_df(target, param@adducts)
-            matches <- do.call(
-              rbind, bpmapply(seq_along(query), query, FUN = .getMatches,
-                              MoreArgs = list(target = target_mz,
-                                              tolerance = param@tolerance,
-                                              ppm = param@ppm),
-                              BPPARAM = BPPARAM, SIMPLIFY = FALSE))
-            Matched(query = query, target = target, matches = matches,
-                    metadata = list(param = param))
+              target_mz <- .mass_to_mz_df(target, param@targetAdducts)
+              matches <- do.call(
+                  rbind, bpmapply(seq_along(query), query, FUN = .getMatches,
+                                  MoreArgs = list(target = target_mz,
+                                                  tolerance = param@tolerance,
+                                                  ppm = param@ppm),
+                                  BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+              Matched(query = query, target = target, matches = matches,
+                      metadata = list(param = param))
           })
 
 #' @rdname matchMz
@@ -440,11 +517,11 @@ setMethod("matchMz",
                         param = "Mass2MzParam"),
           function(query, target, param, massColname = "exactmass",
                    BPPARAM = SerialParam()) {
-            if (!massColname %in% colnames(target))
-              stop("Missing column \"", massColname, "\" in target")
-            res <- matchMz(query, target[, massColname], param)
-            res@target <- target
-            res
+              if (!massColname %in% colnames(target))
+                  stop("Missing column \"", massColname, "\" in target")
+              res <- matchMz(query, target[, massColname], param)
+              res@target <- target
+              res
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -453,11 +530,11 @@ setMethod("matchMz",
                         param = "Mass2MzParam"),
           function(query, target, param, BPPARAM = SerialParam(),
                    mzColname = "mz") {
-            if (!mzColname %in% colnames(query))
-              stop("Missing column \"", mzColname, "\" in query")
-            res <- matchMz(query$mz, target, param)
-            res@query <- query
-            res
+              if (!mzColname %in% colnames(query))
+                  stop("Missing column \"", mzColname, "\" in query")
+              res <- matchMz(query$mz, target, param)
+              res@query <- query
+              res
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -466,14 +543,14 @@ setMethod("matchMz",
                         param = "Mass2MzParam"),
           function(query, target, param, mzColname = "mz",
                    massColname = "exactmass", BPPARAM = SerialParam()) {
-            if (!mzColname %in% colnames(query))
-              stop("Missing column \"", mzColname, "\" in query")
-            if (!massColname %in% colnames(target))
-              stop("Missing column \"", massColname, "\" in target")
-            res <- matchMz(query[, mzColname], target[, massColname], param)
-            res@query <- query
-            res@target <- target
-            res
+              if (!mzColname %in% colnames(query))
+                  stop("Missing column \"", mzColname, "\" in query")
+              if (!massColname %in% colnames(target))
+                  stop("Missing column \"", massColname, "\" in target")
+              res <- matchMz(query[, mzColname], target[, massColname], param)
+              res@query <- query
+              res@target <- target
+              res
           })
 #' @rdname matchMz
 #'
@@ -483,18 +560,18 @@ setMethod("matchMz",
                         target = "numeric",
                         param = "MzParam"),
           function(query, target, param, BPPARAM = SerialParam()) {
-            target_mz <- data.frame(index = seq_along(target),
-                                    mz = target)
-            queryl <- length(query)
-            res <- vector("list", queryl)
-            for (i in seq_len(queryl)) {
-                res[[i]] <- .getMatches(i, query[i], target = target_mz,
-                                        tolerance = param@tolerance,
-                                        ppm = param@ppm)
-            }
-            Matched(query = query, target = target,
-                    matches = do.call(rbind, res),
-                    metadata = list(param = param))
+              target_mz <- data.frame(index = seq_along(target),
+                                      mz = target)
+              queryl <- length(query)
+              res <- vector("list", queryl)
+              for (i in seq_len(queryl)) {
+                  res[[i]] <- .getMatches(i, query[i], target = target_mz,
+                                          tolerance = param@tolerance,
+                                          ppm = param@ppm)
+              }
+              Matched(query = query, target = target,
+                      matches = do.call(rbind, res),
+                      metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -503,11 +580,11 @@ setMethod("matchMz",
                         param = "MzParam"),
           function(query, target, param, mzColname = "mz",
                    BPPARAM = SerialParam()) {
-            if (!mzColname %in% colnames(target))
-              stop("Missing column \"", mzColname, "\" in target")
-            res <- matchMz(query, target[, mzColname], param)
-            res@target <- target
-            res
+              if (!mzColname %in% colnames(target))
+                  stop("Missing column \"", mzColname, "\" in target")
+              res <- matchMz(query, target[, mzColname], param)
+              res@target <- target
+              res
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -516,11 +593,11 @@ setMethod("matchMz",
                         param = "MzParam"),
           function(query, target, param, mzColname = "mz",
                    BPPARAM = SerialParam()) {
-            if (!mzColname %in% colnames(query))
-              stop("Missing column \"", mzColname, "\" in query")
-            res <- matchMz(query[, mzColname], target, param)
-            res@query <- query
-            res
+              if (!mzColname %in% colnames(query))
+                  stop("Missing column \"", mzColname, "\" in query")
+              res <- matchMz(query[, mzColname], target, param)
+              res@query <- query
+              res
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -529,16 +606,17 @@ setMethod("matchMz",
                         param = "MzParam"),
           function(query, target, param, mzColname = c("mz", "mz"),
                    BPPARAM = SerialParam()) {
-            if(length(mzColname) == 1)
-              mzColname <- rep(mzColname, 2)
-            if (!mzColname[1] %in% colnames(query))
-              stop("Missing column \"", mzColname[1], "\" in query")
-            if (!mzColname[2] %in% colnames(target))
-              stop("Missing column \"", mzColname[2], "\" in target")
-            res <- matchMz(query[, mzColname[1]], target[, mzColname[2]], param)
-            res@query <- query
-            res@target <- target
-            res
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if (!mzColname[1] %in% colnames(query))
+                  stop("Missing column \"", mzColname[1], "\" in query")
+              if (!mzColname[2] %in% colnames(target))
+                  stop("Missing column \"", mzColname[2], "\" in target")
+              res <- matchMz(query[, mzColname[1]],
+                             target[, mzColname[2]], param)
+              res@query <- query
+              res@target <- target
+              res
           })
 #' @rdname matchMz
 #'
@@ -550,32 +628,35 @@ setMethod("matchMz",
           function(query, target, param, massColname = "exactmass",
                    mzColname = "mz", rtColname = c("rt", "rt"),
                    BPPARAM = SerialParam()) {
-            if(length(rtColname) == 1)
-              rtColname <- rep(rtColname, 2)
-            if (!mzColname %in% colnames(query))
-              stop("Missing column \"", mzColname, "\" in query")
-            if (!rtColname[1] %in% colnames(query))
-              stop("Missing column \"", rtColname[1], "\" in query")
-            if (!massColname %in% colnames(target))
-              stop("Missing column \"", massColname, "\" in target")
-            if (!rtColname[2] %in% colnames(target))
-              stop("Missing column \"", rtColname[2], "\" in target")
-            target_mz <- .mass_to_mz_df(target[, massColname], param@adducts)
-            target_mz$rt <- rep(target[, rtColname[2]], .nelements(param@adducts))
-            queryl <- nrow(query)
-            matches <- vector("list", queryl)
-            query_mz <- query[, mzColname]
-            query_rt <- query[, rtColname[1L]]
-            for (i in seq_len(queryl)) {
-                matches[[i]] <- .getMatchesMzRt(i, query_mz[i], query_rt[i],
-                                                target = target_mz,
-                                                tolerance = param@tolerance,
-                                                ppm = param@ppm,
-                                                toleranceRt = param@toleranceRt)
-            }
-            Matched(query = query, target = target,
-                    matches = do.call(rbind, matches),
-                    metadata = list(param = param))
+              if(length(rtColname) == 1)
+                  rtColname <- rep(rtColname, 2)
+              if (!mzColname %in% colnames(query))
+                  stop("Missing column \"", mzColname, "\" in query")
+              if (!rtColname[1] %in% colnames(query))
+                  stop("Missing column \"", rtColname[1], "\" in query")
+              if (!massColname %in% colnames(target))
+                  stop("Missing column \"", massColname, "\" in target")
+              if (!rtColname[2] %in% colnames(target))
+                  stop("Missing column \"", rtColname[2], "\" in target")
+              target_mz <- .mass_to_mz_df(target[, massColname],
+                                          param@targetAdducts)
+              target_mz$rt <- rep(target[, rtColname[2]],
+                                  .nelements(param@targetAdducts))
+              queryl <- nrow(query)
+              matches <- vector("list", queryl)
+              query_mz <- query[, mzColname]
+              query_rt <- query[, rtColname[1L]]
+              for (i in seq_len(queryl)) {
+                  matches[[i]] <-
+                      .getMatchesMzRt(i, query_mz[i], query_rt[i],
+                                      target = target_mz,
+                                      tolerance = param@tolerance,
+                                      ppm = param@ppm,
+                                      toleranceRt =param@toleranceRt)
+              }
+              Matched(query = query, target = target,
+                      matches = do.call(rbind, matches),
+                      metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
@@ -584,63 +665,112 @@ setMethod("matchMz",
                         param = "MzRtParam"),
           function(query, target, param, mzColname = c("mz", "mz"),
                    rtColname = c("rt", "rt"), BPPARAM = SerialParam()) {
-            if(length(mzColname) == 1)
-              mzColname <- rep(mzColname, 2)
-            if(length(rtColname) == 1)
-              rtColname <- rep(rtColname, 2)
-            if (!mzColname[1] %in% colnames(query))
-              stop("Missing column \"", mzColname[1], "\" in query")
-            if (!mzColname[2] %in% colnames(target))
-              stop("Missing column \"", mzColname[2], "\" in target")
-            if (!rtColname[1] %in% colnames(query))
-              stop("Missing column \"", rtColname[1], "\" in query")
-            if (!rtColname[2] %in% colnames(target))
-              stop("Missing column \"", rtColname[2], "\" in target")
-            target_mz <- data.frame(index = seq_len(nrow(target)),
-                                    mz = target[, mzColname[2]],
-                                    rt = target[, rtColname[2]])
-            queryl <- nrow(query)
-            matches <- vector("list", queryl)
-            query_mz <- query[, mzColname[1L]]
-            query_rt <- query[, rtColname[1L]]
-            for (i in seq_len(queryl)) {
-                matches[[i]] <- .getMatchesMzRt(i, query_mz[i],
-                                                query_rt[i],
-                                                target = target_mz,
-                                                tolerance = param@tolerance,
-                                                ppm = param@ppm,
-                                                toleranceRt = param@toleranceRt)
-            }
-            Matched(query = query, target = target,
-                    matches = do.call(rbind, matches),
-                    metadata = list(param = param))
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if(length(rtColname) == 1)
+                  rtColname <- rep(rtColname, 2)
+              if (!mzColname[1] %in% colnames(query))
+                  stop("Missing column \"", mzColname[1], "\" in query")
+              if (!mzColname[2] %in% colnames(target))
+                  stop("Missing column \"", mzColname[2], "\" in target")
+              if (!rtColname[1] %in% colnames(query))
+                  stop("Missing column \"", rtColname[1], "\" in query")
+              if (!rtColname[2] %in% colnames(target))
+                  stop("Missing column \"", rtColname[2], "\" in target")
+              target_mz <- data.frame(index = seq_len(nrow(target)),
+                                      mz = target[, mzColname[2]],
+                                      rt = target[, rtColname[2]])
+              queryl <- nrow(query)
+              matches <- vector("list", queryl)
+              query_mz <- query[, mzColname[1L]]
+              query_rt <- query[, rtColname[1L]]
+              for (i in seq_len(queryl)) {
+                  matches[[i]] <-
+                      .getMatchesMzRt(i, query_mz[i],
+                                      query_rt[i],
+                                      target = target_mz,
+                                      tolerance = param@tolerance,
+                                      ppm = param@ppm,
+                                      toleranceRt = param@toleranceRt)
+              }
+              Matched(query = query, target = target,
+                      matches = do.call(rbind, matches),
+                      metadata = list(param = param))
           })
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "numeric",
                         target = "numeric",
-                        param = "CompareMassParam"),
+                        param = "Mz2MassParam"),
           function(query, target, param, BPPARAM = SerialParam()) {
-            query_mass <- .mz_to_mass_df(query, param@queryAdducts)
-            target_mass<- .mz_to_mass_df(target, param@targetAdducts)
-            queryl <- nrow(query_mass)
-            matches <- vector("list", queryl)
-            for(i in seq_len(queryl)) {
-              matches[[i]] <- .getMatches(query_mass$index[i],
-                                          query_mass$mass[i],
-                                          target = target_mass,
-                                          tolerance = param@tolerance,
-                                          ppm = param@ppm)
-              if (nrow(matches[[i]]))
-                matches[[i]]$adduct <- paste(matches[[i]]$adduct,
-                                             query_mass$adduct[i], sep = " / ")
-              else matches[[i]]$adduct <- character()
-            }
-            Matched(query = query, target = target,
-                    matches = do.call(rbind, matches),
-                    metadata = list(param = param))
-            
+              query_mass <- .mz_to_mass_df(query, param@queryAdducts)
+              target_mass<- .mz_to_mass_df(target, param@targetAdducts)
+              queryl <- nrow(query_mass)
+              matches <- vector("list", queryl)
+              for(i in seq_len(queryl)) {
+                  matches[[i]] <- .getMatches(query_mass$index[i],
+                                              query_mass$mass[i],
+                                              target = target_mass,
+                                              tolerance = param@tolerance,
+                                              ppm = param@ppm)
+                  if (nrow(matches[[i]]))
+                      matches[[i]]$query_adduct <- query_mass$adduct[i]
+                  else matches[[i]]$query_adduct <- character()
+              }
+              matches <- do.call(rbind, matches)
+              colnames(matches)[3] <- "target_adduct"
+              Matched(query = query, target = target,
+                      matches = matches[, c(1, 2, 6, 3, 4, 5)],
+                      metadata = list(param = param))
+              
           })
+
+#' @rdname matchMz
+setMethod("matchMz",
+          signature = c(query = "numeric",
+                        target = "data.frameOrSimilar",
+                        param = "Mz2MassParam"),
+          function(query, target, param, mzColname = "mz",
+                   BPPARAM = SerialParam()) {
+              if (!mzColname %in% colnames(target))
+                  stop("Missing column \"", mzColname, "\" in target")
+              res <- matchMz(query, target[, mzColname], param)
+              res@target <- target
+              res
+          })
+#' @rdname matchMz
+setMethod("matchMz",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "numeric",
+                        param = "Mz2MassParam"),
+          function(query, target, param, mzColname = "mz",
+                   BPPARAM = SerialParam()) {
+              if (!mzColname %in% colnames(query))
+                  stop("Missing column \"", mzColname, "\" in query")
+              res <- matchMz(query[, mzColname], target, param)
+              res@query <- query
+              res
+          })
+#' @rdname matchMz
+setMethod("matchMz",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
+                        param = "Mz2MassParam"),
+          function(query, target, param, mzColname = c("mz", "mz") ,
+                   BPPARAM = SerialParam()) {
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if (!mzColname[1] %in% colnames(query))
+                  stop("Missing column \"", mzColname[1], "\" in query")
+              if (!mzColname[2] %in% colnames(target))
+                  stop("Missing column \"", mzColname[2], "\" in target")
+              res <- matchMz(query[, mzColname[1]], target[, mzColname[2]],
+                             param)
+              res@query <- query
+              res@target <- target
+              res
+          })
+
 #' @rdname matchMz
 setMethod("matchMz",
           signature = c(query = "SummarizedExperiment",
@@ -648,10 +778,10 @@ setMethod("matchMz",
                         param = "Param"),
           function(query, target, param, mzColname = "mz", rtColname = "rt",
                    BPPARAM = SerialParam()) {
-            matches <- matchMz(data.frame(rowData(query)), target, param,
-                               mzColname , rtColname, BPPARAM)@matches
-            MatchedSummarizedExperiment(query, target, matches,
-                                        metadata = list(param = param))
+              matches <- matchMz(data.frame(rowData(query)), target, param,
+                                 mzColname , rtColname, BPPARAM)@matches
+              MatchedSummarizedExperiment(query, target, matches,
+                                          metadata = list(param = param))
           })
 
 #' @author Andrea Vicini
@@ -665,69 +795,71 @@ setMethod("matchMz",
 #'
 #' @noRd
 .getMatches <- function(queryIndex, queryMz, target, tolerance, ppm){
-  diffs <- queryMz - target[, 2]
-  absdiffs <- abs(diffs)
-  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
-  if ("adduct" %in% colnames(target)){
-    if (length(cls))
-      data.frame(query_idx = queryIndex,
-                 target_idx = target$index[cls],
-                 adduct = target$adduct[cls],
-                 score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
-    else data.frame(query_idx = integer(),
-                    target_idx = integer(),
-                    adduct = character(),
-                    score = numeric(),
-                    ppm_error = numeric())
-  } else {
-    if (length(cls))
-      data.frame(query_idx = queryIndex,
-                 target_idx = target$index[cls],
-                 score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
-    else data.frame(query_idx = integer(),
-                    target_idx = integer(),
-                    score = numeric(),
-                    ppm_error = numeric())
-  }
+    diffs <- queryMz - target[, 2]
+    absdiffs <- abs(diffs)
+    cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
+    if ("adduct" %in% colnames(target)){
+        if (length(cls))
+            data.frame(query_idx = queryIndex,
+                       target_idx = target$index[cls],
+                       adduct = target$adduct[cls],
+                       score = diffs[cls],
+                       ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
+        else data.frame(query_idx = integer(),
+                        target_idx = integer(),
+                        adduct = character(),
+                        score = numeric(),
+                        ppm_error = numeric())
+    } else {
+        if (length(cls))
+            data.frame(query_idx = queryIndex,
+                       target_idx = target$index[cls],
+                       score = diffs[cls],
+                       ppm_error = absdiffs[cls] / target[cls, 2] * 10^6)
+        else data.frame(query_idx = integer(),
+                        target_idx = integer(),
+                        score = numeric(),
+                        ppm_error = numeric())
+    }
 }
 
 #' @noRd
 .getMatchesMzRt <- function(queryIndex, queryMz, queryRt, target, tolerance,
                             ppm, toleranceRt){
-  diffs_rt <- queryRt - target$rt
-  cls_rt <- which(abs(diffs_rt) <= toleranceRt)
-  diffs <- queryMz - target$mz[cls_rt]
-  absdiffs <- abs(diffs)
-  cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
-  if ("adduct" %in% colnames(target)){
-    if (length(cls))
-      data.frame(query_idx = queryIndex,
-                 target_idx = target$index[cls_rt[cls]],
-                 adduct = target$adduct[cls_rt[cls]],
-                 score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
-                 score_rt = diffs_rt[cls_rt[cls]])
-    else data.frame(query_idx = integer(),
-                    target_idx = integer(),
-                    adduct = character(),
-                    score = numeric(),
-                    ppm_error = numeric(),
-                    score_rt = numeric())
-  } else {
-    if (length(cls))
-      data.frame(query_idx = queryIndex,
-                 target_idx = target$index[cls_rt[cls]],
-                 score = diffs[cls],
-                 ppm_error = absdiffs[cls] / target[cls_rt[cls], "mz"] * 10^6,
-                 score_rt = diffs_rt[cls_rt[cls]])
-    else data.frame(query_idx = integer(),
-                    target_idx = integer(),
-                    score = numeric(),
-                    ppm_error = numeric(),
-                    score_rt = numeric())
-  }
+    diffs_rt <- queryRt - target$rt
+    cls_rt <- which(abs(diffs_rt) <= toleranceRt)
+    diffs <- queryMz - target$mz[cls_rt]
+    absdiffs <- abs(diffs)
+    cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
+    if ("adduct" %in% colnames(target)){
+        if (length(cls))
+            data.frame(query_idx = queryIndex,
+                       target_idx = target$index[cls_rt[cls]],
+                       adduct = target$adduct[cls_rt[cls]],
+                       score = diffs[cls],
+                       ppm_error = absdiffs[cls] /
+                           target[cls_rt[cls], "mz"] * 10^6,
+                       score_rt = diffs_rt[cls_rt[cls]])
+        else data.frame(query_idx = integer(),
+                        target_idx = integer(),
+                        adduct = character(),
+                        score = numeric(),
+                        ppm_error = numeric(),
+                        score_rt = numeric())
+    } else {
+        if (length(cls))
+            data.frame(query_idx = queryIndex,
+                       target_idx = target$index[cls_rt[cls]],
+                       score = diffs[cls],
+                       ppm_error = absdiffs[cls] /
+                           target[cls_rt[cls], "mz"] * 10^6,
+                       score_rt = diffs_rt[cls_rt[cls]])
+        else data.frame(query_idx = integer(),
+                        target_idx = integer(),
+                        score = numeric(),
+                        ppm_error = numeric(),
+                        score_rt = numeric())
+    }
 }
 
 #' creates a `data.frame` with columns `"index"`, `"adduct"` and `"mz"` from
@@ -738,10 +870,10 @@ setMethod("matchMz",
 #'
 #' @noRd
 .mass_to_mz_df <- function(x, adducts) {
-  mz <- mass2mz(x, adducts)
-  data.frame(index = rep(seq_along(x), .nelements(adducts)),
-             mz = as.numeric(mz),
-             adduct = rep(colnames(mz), each = length(x)))
+    mz <- mass2mz(x, adducts)
+    data.frame(index = rep(seq_along(x), .nelements(adducts)),
+               mz = as.numeric(mz),
+               adduct = rep(colnames(mz), each = length(x)))
 }
 
 #' creates a `data.frame` with columns `"index"`, `"adduct"` and `"mass"` from
@@ -752,8 +884,8 @@ setMethod("matchMz",
 #'
 #' @noRd
 .mz_to_mass_df <- function(x, adducts) {
-  mass <- mz2mass(x, adducts)
-  data.frame(index = rep(seq_along(x), .nelements(adducts)),
-             mass = as.numeric(mass),
-             adduct = rep(colnames(mass), each = length(x)))
+    mass <- mz2mass(x, adducts)
+    data.frame(index = rep(seq_along(x), .nelements(adducts)),
+               mass = as.numeric(mass),
+               adduct = rep(colnames(mass), each = length(x)))
 }

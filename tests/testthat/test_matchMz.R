@@ -403,21 +403,21 @@ test_that("matchMz, MzRtParam works", {
   expect_true(nrow(res@matches) == 0)
 })
 
-test_that("matchMz, CompareMassParam works", {
+test_that("matchMz, Mz2MassParam works", {
   
   m <- c(200, 300)
   qry <- c(100, as.numeric(mass2mz(m, c("[M+H]+", "[M+K]+"))) + c(0, 0, 0, 5))
   trgt <- c(mass2mz(m, "[M-H]-"), 400, 500)
 
-  par <- CompareMassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
+  par <- Mz2MassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
                           targetAdducts = "[M-H]-")
   res <- matchMz(qry, trgt, par)
   expect_equal(query(res), qry)
   expect_equal(target(res), trgt)
   expect_equal(res@matches$query_idx, c(2, 3, 4))
   expect_equal(res@matches$target_idx, c(1, 2, 1))
-  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
-                                                       c(2, 1)), sep = " / " ))
+  expect_equal(res@matches$query_adduct, c("[M+H]+", "[M+H]+", "[M+K]+"))
+  expect_equal(res@matches$target_adduct, rep("[M-H]-", 3))
   expect_equal(res@matches$score, c(0, 0, 0))
   expect_equal(res@matches$ppm_error, c(0, 0, 0))
 
@@ -429,7 +429,7 @@ test_that("matchMz, CompareMassParam works", {
   expect_true(nrow(res@matches) == 0)
 
   # positive tolerance
-  par <- CompareMassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
+  par <- Mz2MassParam(queryAdducts = c("[M+H]+", "[M+K]+"),
                           targetAdducts = "[M-H]-",
                           tolerance = 10)
   res <- matchMz(qry, trgt, par)
@@ -437,8 +437,8 @@ test_that("matchMz, CompareMassParam works", {
   expect_equal(target(res), trgt)
   expect_equal(res@matches$query_idx, c(2, 3, 4, 5))
   expect_equal(res@matches$target_idx, c(1, 2, 1, 2))
-  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
-                                                       each = 2), sep = " / " ))
+  expect_equal(res@matches$target_adduct, rep("[M-H]-", 4))
+  expect_equal(res@matches$query_adduct, c(rep("[M+H]+", 2), rep("[M+K]+", 2)))
   expect_equal(res@matches$score, c(0, 0, 0, 5))
   expect_equal(res@matches$ppm_error, c(0, 0, 0, 5 / 300 * 10^6))
 
@@ -449,9 +449,8 @@ test_that("matchMz, CompareMassParam works", {
   expect_equal(query(res), qry_df)
   expect_equal(target(res), trgt_df)
   expect_equal(res@matches$query_idx, c(2, 3, 4, 5))
-  expect_equal(res@matches$target_idx, c(1, 2, 1, 2))
-  expect_equal(res@matches$adduct, paste("[M-H]-", rep(c("[M+H]+", "[M+K]+"),
-                                                       each = 2), sep = " / " ))
+  expect_equal(res@matches$target_adduct, rep("[M-H]-", 4))
+  expect_equal(res@matches$query_adduct, c(rep("[M+H]+", 2), rep("[M+K]+", 2)))
   expect_equal(res@matches$score, c(0, 0, 0, 5))
   expect_equal(res@matches$ppm_error, c(0, 0, 0, 5 / 300 * 10^6))
 })
