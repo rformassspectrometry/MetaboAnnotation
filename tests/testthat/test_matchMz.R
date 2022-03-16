@@ -1,3 +1,11 @@
+test_that("ValueParam works", {
+    res <- ValueParam()
+    expect_true(is(res, "ValueParam"))
+    
+    expect_error(ValueParam(tolerance = 1:3), "positive number")
+    expect_error(ValueParam(ppm = -4), "positive number")
+})
+
 test_that("Mass2MzParam works", {
   res <- Mass2MzParam()
   expect_true(is(res, "Mass2MzParam"))
@@ -37,6 +45,56 @@ test_that("MzRtParam works", {
   expect_error(MzRtParam(tolerance = 1:3), "positive number")
   expect_error(MzRtParam(toleranceRt = -1), "positive number")
   expect_error(MzRtParam(ppm = -4), "positive number")
+})
+
+test_that("Mz2MassParam works", {
+    res <- Mz2MassParam()
+    expect_true(is(res, "Mz2MassParam"))
+    
+    expect_error(Mz2MassParam(tolerance = 1:3), "positive number")
+    expect_error(Mz2MassParam(ppm = -4), "positive number")
+    
+    adds <- data.frame(mass_add = c(1, 2, 3), mass_multi = c(1, 2, 0.5))
+    rownames(adds) <- c("a", "b", "c")
+    res <- Mz2MassParam(queryAdducts = adds)
+    expect_true(is(res, "Mz2MassParam"))
+})
+
+test_that("matchMz, ValueParam works", {
+    qry <- data.frame(value = c(150, 170, 179))
+    trgt <- data.frame(value = seq(110, 200, 10))
+    
+    par <- ValueParam(tolerance = 0)
+    expect_error(matchMz(qry, trgt, par), "`valueColname` has to be provided.")
+    expect_error(matchMz(qry, trgt, par,
+                         valueColname = c("notcolumn", "value")), "Missing")
+    expect_error(matchMz(qry, trgt, par,
+                         valueColname = c("value", "notcolumn")), "Missing")
+    res <- matchMz(qry, trgt, par, valueColname = "value")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt)
+    expect_equal(res@matches$query_idx, c(1, 2))
+    expect_equal(res@matches$target_idx, c(5, 7))
+    expect_equal(res@matches$score, c(0, 0))
+    expect_equal(res@matches$ppm_error, c(0, 0))
+    
+    ## no matches
+    res <- matchMz(qry + 0.1, trgt, par, valueColname = "value")
+    expect_true(is(res, "Matched"))
+    expect_equal(query(res), qry + 0.1)
+    expect_equal(target(res), trgt)
+    expect_true(nrow(res@matches) == 0)
+    
+    # positive tolerance
+    par <- ValueParam(tolerance = 10)
+    res <- matchMz(qry, trgt, par, valueColname = "value")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt)
+    expect_equal(res@matches$query_idx, c(1, 1, 1, 2, 2, 2, 3, 3))
+    expect_equal(res@matches$target_idx, c(4, 5, 6, 6, 7, 8, 7, 8))
+    expect_equal(res@matches$score, c(10, 0, -10, 10, 0, -10, 9, -1))
+    expect_equal(res@matches$ppm_error, c(10, 0, 10, 10, 0, 10, 9, 1) /
+                     c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
 })
 
 test_that("matchMz,Mass2MzParam works", {
@@ -359,9 +417,8 @@ test_that("matchMz, MzRtParam works", {
   expect_equal(query(res), qry + 0.5)
   expect_equal(target(res), trgt)
   expect_true(nrow(res@matches) == 0)
-})
 
-test_that("matchMz, MzRtParam works", {
+  #### query `SummarizedExperiment`
   library(SummarizedExperiment)
   qry <- SummarizedExperiment(
     assays = data.frame(matrix(NA, 4, 2)),
@@ -453,4 +510,17 @@ test_that("matchMz, Mz2MassParam works", {
   expect_equal(res@matches$query_adduct, c(rep("[M+H]+", 2), rep("[M+K]+", 2)))
   expect_equal(res@matches$score, c(0, 0, 0, 5))
   expect_equal(res@matches$ppm_error, c(0, 0, 0, 5 / 300 * 10^6))
+})
+
+test_that(".valid_adduct works", {
+    expect_equal(.valid_adduct(c("A", "[M+H]+"), name = "`targetAdducts`"),
+                 paste("Unknown adducts in `targetAdducts` please check",
+                       "MetaboCoreUtils for valid adducts"))
+    expect_null(.valid_adduct(c("[M+H]+")))
+    expect_equal(.valid_adduct(data.frame(a = 1, b = 2)),
+                 paste("Columns \"mass_add\" and \"mass_multi\" must be",
+                        "present when `adducts` is a data.frame"))
+    expect_null(.valid_adduct(data.frame(mass_add = 1, mass_multi = 2)))
+    
+    
 })
