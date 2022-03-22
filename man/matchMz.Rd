@@ -7,6 +7,7 @@
 \alias{Mass2MzRtParam}
 \alias{MzRtParam}
 \alias{Mz2MassParam}
+\alias{Mz2MassRtParam}
 \alias{matchMz}
 \alias{matchMz,numeric,numeric,ValueParam-method}
 \alias{matchMz,numeric,data.frameOrSimilar,ValueParam-method}
@@ -25,6 +26,7 @@
 \alias{matchMz,numeric,data.frameOrSimilar,Mz2MassParam-method}
 \alias{matchMz,data.frameOrSimilar,numeric,Mz2MassParam-method}
 \alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam-method}
+\alias{matchMz,data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam-method}
 \alias{matchMz,SummarizedExperiment,ANY,Param-method}
 \title{m/z matching}
 \usage{
@@ -43,6 +45,14 @@ Mz2MassParam(
   targetAdducts = c("[M-H]-"),
   tolerance = 0,
   ppm = 5
+)
+
+Mz2MassRtParam(
+  queryAdducts = c("[M+H]+"),
+  targetAdducts = c("[M+H]+"),
+  tolerance = 0,
+  ppm = 5,
+  toleranceRt = 0
 )
 
 matchMz(query, target, param, ...)
@@ -93,6 +103,14 @@ matchMz(query, target, param, ...)
 \S4method{matchMz}{data.frameOrSimilar,numeric,Mz2MassParam}(query, target, param, mzColname = "mz")
 
 \S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam}(query, target, param, mzColname = c("mz", "mz"))
+
+\S4method{matchMz}{data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam}(
+  query,
+  target,
+  param,
+  mzColname = c("mz", "mz"),
+  rtColname = c("rt", "rt")
+)
 
 \S4method{matchMz}{SummarizedExperiment,ANY,Param}(query, target, param, mzColname = "mz", rtColname = c("rt", "rt"))
 }

@@ -2,7 +2,7 @@
 
 ## Changes in 0.99.8
 
-- Add `matchMz, Mz2MassParam` . (issue
+- Add `matchMz, Mz2MassParam` and `matchMz, Mz2MassRtParam`. (issue
   [#56](https://github.com/rformassspectrometry/MetaboAnnotation/issues/56)).
 
 ## Changes in 0.99.7

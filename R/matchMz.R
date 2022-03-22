@@ -138,6 +138,34 @@ Mz2MassParam <- function(queryAdducts = c("[M+H]+"),
       targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm)
 }
 
+
+#' @noRd
+setClass("Mz2MassRtParam",
+         slots = c(
+             toleranceRt = "numeric"),
+         contains = "Mz2MassParam",
+         prototype = prototype(
+             toleranceRt = 0),
+         validity = function(object) {
+             msg <- NULL
+             if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
+                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+             msg
+         })
+
+#' @rdname matchMz
+#'
+#' @importFrom methods new
+#'
+#' @export
+Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
+                           targetAdducts = c("[M+H]+"),
+                           tolerance = 0, ppm = 5, toleranceRt = 0) {
+    new("Mz2MassRtParam", queryAdducts = queryAdducts,
+        targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm,
+        toleranceRt = toleranceRt)
+}
+
 #' @title m/z matching
 #'
 #' @name matchMz
@@ -219,6 +247,19 @@ Mz2MassParam <- function(queryAdducts = c("[M+H]+"),
 #'   The same holds for `target`. Parameters `tolerance` and `ppm` allow to
 #'   define the maximal acceptable (constant or mass relative) difference
 #'   between masses derived from `query` and `target`.
+#'
+#' - `Mz2MassRtParam`: first convert to masses the m/z values of `query` and
+#'   `target` based respectively on `Mz2MassRtParam` parameters `queryAdducts`
+#'   (defaults to `queryAdducts = "[M+H]+"`) and `targetAdducts` (defaults to
+#'   `targetAdducts = "[M-H]-"`) and then match the obtained masses and
+#'   corresponding retention times (to each mass value corresponds the same
+#'   retention time associated to the m/z from which the mass value was
+#'   obtained). `query` must be a `data.frameOrSimilar` with a column containing
+#'   m/z values (whose name can be specified with parameter `mzColname`,
+#'   default being `mzColname = "mz"`). The same holds for `target`.
+#'   Parameters `tolerance` and `ppm` have the same meaning as in
+#'   `Mz2MassParam`. Parameter `toleranceRt` allows to specify the maximal
+#'   acceptable difference between retention time values.
 #'
 #' - `ValueParam`: matches elements from from `query` (if `numeric`) or else
 #'   from one of its columns with those from `target` (if `numeric`) or else
@@ -775,6 +816,55 @@ setMethod("matchMz",
 
 #' @rdname matchMz
 setMethod("matchMz",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "data.frameOrSimilar",
+                        param = "Mz2MassRtParam"),
+          function(query, target, param, mzColname = c("mz", "mz"),
+                   rtColname = c("rt", "rt")) {
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if(length(rtColname) == 1)
+                  rtColname <- rep(rtColname, 2)
+              if (!mzColname[1] %in% colnames(query))
+                  stop("Missing column \"", mzColname[1], "\" in query")
+              if (!mzColname[2] %in% colnames(target))
+                  stop("Missing column \"", mzColname[2], "\" in target")
+              if (!rtColname[1] %in% colnames(query))
+                  stop("Missing column \"", rtColname[1], "\" in query")
+              if (!rtColname[2] %in% colnames(target))
+                  stop("Missing column \"", rtColname[2], "\" in target")
+              query_mass <- .mz_to_mass_df(query[, mzColname[1]],
+                                           param@queryAdducts)
+              query_mass$rt <- rep(query[, rtColname[1]],
+                                   .nelements(param@queryAdducts))
+              target_mass<- .mz_to_mass_df(target[, mzColname[2]],
+                                           param@targetAdducts)
+              target_mass$rt <- rep(target[, rtColname[2]],
+                                    .nelements(param@targetAdducts))
+              queryl <- nrow(query_mass)
+              matches <- vector("list", queryl)
+              for (i in seq_len(queryl)) {
+                  matches[[i]] <-
+                      .getMatchesMzRt(query_mass$index[i],
+                                      query_mass$mass[i],
+                                      query_mass$rt[i],
+                                      target = target_mass,
+                                      tolerance = param@tolerance,
+                                      ppm = param@ppm,
+                                      toleranceRt = param@toleranceRt)
+                  if (nrow(matches[[i]]))
+                      matches[[i]]$query_adduct <- query_mass$adduct[i]
+                  else matches[[i]]$query_adduct <- character()
+              }
+              matches <- do.call(rbind, matches)
+              colnames(matches)[3] <- "target_adduct"
+              Matched(query = query, target = target,
+                      matches = matches[, c(1, 2, 7, 3, 4, 5, 6)],
+                      metadata = list(param = param))
+          })
+
+#' @rdname matchMz
+setMethod("matchMz",
           signature = c(query = "SummarizedExperiment",
                         target = "ANY",
                         param = "Param"),
@@ -830,7 +920,7 @@ setMethod("matchMz",
                             ppm, toleranceRt){
     diffs_rt <- queryRt - target$rt
     cls_rt <- which(abs(diffs_rt) <= toleranceRt)
-    diffs <- queryMz - target$mz[cls_rt]
+    diffs <- queryMz - target[cls_rt, 2]
     absdiffs <- abs(diffs)
     cls <- which(absdiffs <= (tolerance + ppm(queryMz, ppm)))
     if ("adduct" %in% colnames(target)){
@@ -840,7 +930,7 @@ setMethod("matchMz",
                        adduct = target$adduct[cls_rt[cls]],
                        score = diffs[cls],
                        ppm_error = absdiffs[cls] /
-                           target[cls_rt[cls], "mz"] * 10^6,
+                           target[cls_rt[cls], 2] * 10^6,
                        score_rt = diffs_rt[cls_rt[cls]])
         else data.frame(query_idx = integer(),
                         target_idx = integer(),
@@ -854,7 +944,7 @@ setMethod("matchMz",
                        target_idx = target$index[cls_rt[cls]],
                        score = diffs[cls],
                        ppm_error = absdiffs[cls] /
-                           target[cls_rt[cls], "mz"] * 10^6,
+                           target[cls_rt[cls], 2] * 10^6,
                        score_rt = diffs_rt[cls_rt[cls]])
         else data.frame(query_idx = integer(),
                         target_idx = integer(),
