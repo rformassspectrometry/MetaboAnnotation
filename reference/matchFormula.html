@@ -20,7 +20,7 @@ specify the name of the column containing the chemical formulas."><meta property
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,11 +148,11 @@ one of <code>target</code>.</p></dd>
 <span class="r-in"><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">matchFormula</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matches</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 3 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               query      target     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> C6H12O6     H12C6O6     C6H12O6         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA         C11H12O2          NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1            HN3          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            query  target     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           &lt;AsIs&gt;  &lt;AsIs&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> C6H12O6  H12C6O6 C6H12O6         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA      C11H12O2      NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1         HN3      NA        NA</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## data.frame vs data.frame</span></span>
 <span class="r-in"><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">matchFormula</span><span class="op">(</span><span class="va">query_df</span>, <span class="va">target_df</span><span class="op">)</span></span>
@@ -167,20 +167,20 @@ one of <code>target</code>.</p></dd>
 <span class="r-in"><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">matchFormula</span><span class="op">(</span><span class="va">query_df</span>, <span class="va">target</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matches</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       formula        name      target     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     H12C6O6           A     C6H12O6         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    C11H12O2           B          NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         HN3           C          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       formula        name  target     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;character&gt;  &lt;AsIs&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     H12C6O6           A C6H12O6         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    C11H12O2           B      NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         HN3           C      NA        NA</span>
 <span class="r-in"><span class="co">## character vs data.frame</span></span>
 <span class="r-in"><span class="va">matches</span> <span class="op">&lt;-</span> <span class="fu">matchFormula</span><span class="op">(</span><span class="va">query</span>, <span class="va">target_df</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matches</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            query target_formula target_name     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;character&gt;    &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        H12C6O6        C6H12O6           F         1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA      C11H12O2             NA          NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1         HN3             NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         query target_formula target_name     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;AsIs&gt;    &lt;character&gt; &lt;character&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     H12C6O6        C6H12O6           F         1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA   C11H12O2             NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1      HN3             NA          NA        NA</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
