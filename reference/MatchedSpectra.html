@@ -95,7 +95,10 @@ matchedData(object, columns = spectraVariables(object), ...)
 addProcessing(object, FUN, ..., spectraVariables = character())
 
 # S4 method for MatchedSpectra
-plotSpectraMirror(x, xlab = "m/z", ylab = "intensity", main = "", ...)</code></pre></div>
+plotSpectraMirror(x, xlab = "m/z", ylab = "intensity", main = "", ...)
+
+# S4 method for MatchedSpectra,MsBackend
+setBackend(object, backend, ...)</code></pre></div>
     </div>
 
     <div class="section level2">
@@ -135,6 +138,9 @@ with <code>FUN</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectr
 <dd><p>for <code>plotSpectraMirror</code>: the label for the y-axis.</p></dd>
 <dt>main</dt>
 <dd><p>for <code>plotSpectraMirror</code>: an optional title for each plot.</p></dd>
+<dt>backend</dt>
+<dd><p>for <code>setBackend</code>: instance of an object extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackend</a>.
+See help for <code>setBackend</code> in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -203,6 +209,10 @@ information.</p></li>
 matching target spectrum. Can only be applied to a <code>MatchedSpectra</code> with a
 single query spectrum. Additional plotting parameters can be passed through
 <code>...</code>.</p></li>
+<li><p><code>setBackend</code>: allows to change the <em>backend</em> of both the query and target
+<code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object. The function will return a <code>MatchedSpectra</code> object with
+the query and target <code>Spectra</code> changed to the specified <code>backend</code>, which
+can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackend</a>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
