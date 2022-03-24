@@ -1,8 +1,13 @@
 # MetaboAnnotation 0.99
 
-## Changes in 0.99.8
+## Changes in 0.99.9
 
 - Add `setBackend` for `MatchedSpectra` objects.
+
+## Changes in 0.99.8
+
+- Add `matchMz, Mz2MassParam` and `matchMz, Mz2MassRtParam`. (issue
+  [#56](https://github.com/rformassspectrometry/MetaboAnnotation/issues/56)).
 
 ## Changes in 0.99.7
 

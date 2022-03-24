@@ -71,6 +71,8 @@ setGeneric("matchFormula", function(query, target, ...)
 #' @rdname matchFormula
 #'
 #' @importFrom MetaboCoreUtils standardizeFormula
+#' 
+#' @importFrom BiocParallel bpmapply SerialParam
 setMethod(
     "matchFormula",
     signature = c(query = "character",
