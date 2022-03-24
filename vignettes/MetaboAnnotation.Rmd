@@ -35,6 +35,26 @@ install `BiocManager` use `install.packages("BiocManager")` and, after that,
 `BiocManager::install("MetaboAnnotation")` to install this package.
 
 
+# General description
+
+`MetaboAnnotation` provides a set of *matching* functions that allow comparison
+(and matching) between *query* and *target* entities. These entities can be
+chemical formulas, numeric values (e.g. m/z or retention times) or fragment
+spectra. The available matching functions are:
+
+- `matchFormula`: to match chemical formulas.
+- `matchSpectra`: to match fragment spectra.
+- `matchValues` (formerly `matchMz`): to match numerical values (m/z, masses,
+  retention times etc).
+
+For each of these matching functions *parameter* objects are available that
+allow different types or matching algorithms. Refer to the help pages for a
+detailed listing of these (e.g. `?matchFormula`, `?matchSpectra` or
+`?matchValues`). As a result, a `Matched` (or `MatchedSpectra`) object is
+returned which streamlines and simplifies handling of the potential one-to-many
+(or one-to-none) matching.
+
+
 # Example use cases
 
 The following sections illustrate example use cases of the functionality
@@ -48,9 +68,9 @@ library(MetaboAnnotation)
 ## Matching of m/z values
 
 In this section a simple matching of feature m/z values against theoretical m/z
-values is performed. This is the lowest level of confidence in metabolite anno-
-tation. However, it gives ideas about potential metabolites that can be analyzed
-in further downstream experiments and analyses.
+values is performed. This is the lowest level of confidence in metabolite
+annotation. However, it gives ideas about potential metabolites that can be
+analyzed in further downstream experiments and analyses.
 
 The following example loads the feature table from a lipidomics experiments and
 matches the measured m/z values against reference masses from LipidMaps. Below
@@ -75,7 +95,7 @@ features (i.e. the query m/z values) against them. For this we need to define
 the *most likely* ions/adducts that would be generated from the compounds based
 on the ionization used in the experiment. We assume the most abundant adducts
 from the compounds being `"[M+H]+"` and `"[M+Na]+`. We next perform the matching
-with the `matchMz` function providing the query and target data as well as a
+with the `matchValues` function providing the query and target data as well as a
 parameter object (in our case a `Mass2MzParam`) with the settings for the
 matching. With the `Mass2MzParam`, the mass or target compounds get first
 converted to m/z values, based on the defined adducts, and these are then
@@ -89,7 +109,7 @@ first 100 features.
 parm <- Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
                            tolerance = 0.005, ppm = 0)
 
-matched_features <- matchMz(ms1_features[1:100, ], target_df, parm)
+matched_features <- matchValues(ms1_features[1:100, ], target_df, parm)
 matched_features
 ```
 
@@ -132,7 +152,7 @@ values by using the `MzParam` instead of the `Mass2MzParam`.
 ## Matching of m/z and retention time values
 
 If expected retention time values were available for the target compounds, an
-annotation with higher confidence could be performed with `matchMz` and a
+annotation with higher confidence could be performed with `matchValues` and a
 `Mass2MzRtParam` parameter object. To illustrate this we randomly assign
 retention times from query features to the target compounds adding also 2
 seconds difference. In a real use case the target `data.frame` would contain
@@ -177,8 +197,8 @@ specify the name of the column containing the retention times with parameter
 parm <- Mass2MzRtParam(adducts = c("[M+H]+", "[M+Na]+"),
                        tolerance = 0.005, ppm = 0,
                        toleranceRt = 10)
-matched_features <- matchMz(ms1_subset, target_df, param = parm,
-                            rtColname = "rtime")
+matched_features <- matchValues(ms1_subset, target_df, param = parm,
+                                rtColname = "rtime")
 matched_features
 ```
 
