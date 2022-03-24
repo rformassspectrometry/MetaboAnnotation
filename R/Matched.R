@@ -24,7 +24,7 @@
 #' @section Creation and subsetting:
 #'
 #' `Matched` and `MatchedSummarizedExperiment` objects are returned as result
-#' from the [matchMz()] function.
+#' from the [matchValues()] function.
 #'
 #' Alternatively, `Matched` objects can also be created with the `Matched`
 #' function providing the `query` and `target` object as well as the `matches`

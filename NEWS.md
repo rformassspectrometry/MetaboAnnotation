@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.10
+
+- Change `matchMz` into `matchValues` (issue
+  [#65](https://github.com/rformassspectrometry/MetaboAnnotation/issues/65)).
+
 ## Changes in 0.99.9
 
 - Add `setBackend` for `MatchedSpectra` objects.

@@ -180,7 +180,7 @@ the matched \code{SummarizedExperiment}.
 
 
 \code{Matched} and \code{MatchedSummarizedExperiment} objects are returned as result
-from the \code{\link[=matchMz]{matchMz()}} function.
+from the \code{\link[=matchValues]{matchValues()}} function.
 
 Alternatively, \code{Matched} objects can also be created with the \code{Matched}
 function providing the \code{query} and \code{target} object as well as the \code{matches}
