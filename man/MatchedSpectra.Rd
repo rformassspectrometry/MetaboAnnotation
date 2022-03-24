@@ -10,6 +10,7 @@
 \alias{matchedData,MatchedSpectra-method}
 \alias{addProcessing,MatchedSpectra-method}
 \alias{plotSpectraMirror,MatchedSpectra-method}
+\alias{setBackend,MatchedSpectra,MsBackend-method}
 \title{Representation of Spectra matches}
 \usage{
 MatchedSpectra(
@@ -32,6 +33,8 @@ MatchedSpectra(
 \S4method{addProcessing}{MatchedSpectra}(object, FUN, ..., spectraVariables = character())
 
 \S4method{plotSpectraMirror}{MatchedSpectra}(x, xlab = "m/z", ylab = "intensity", main = "", ...)
+
+\S4method{setBackend}{MatchedSpectra,MsBackend}(object, backend, ...)
 }
 \arguments{
 \item{query}{\code{Spectra} with the query spectra.}
@@ -68,6 +71,9 @@ with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
 \item{ylab}{for \code{plotSpectraMirror}: the label for the y-axis.}
 
 \item{main}{for \code{plotSpectraMirror}: an optional title for each plot.}
+
+\item{backend}{for \code{setBackend}: instance of an object extending \link{MsBackend}.
+See help for \code{setBackend} in \code{\link[=Spectra]{Spectra()}} for more details.}
 }
 \value{
 See individual method desciption above for details.
@@ -145,6 +151,10 @@ information.
 matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
 single query spectrum. Additional plotting parameters can be passed through
 \code{...}.
+\item \code{setBackend}: allows to change the \emph{backend} of both the query and target
+\code{\link[=Spectra]{Spectra()}} object. The function will return a \code{MatchedSpectra} object with
+the query and target \code{Spectra} changed to the specified \code{backend}, which
+can be any backend extending \link{MsBackend}.
 }
 }
 

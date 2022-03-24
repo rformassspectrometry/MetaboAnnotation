@@ -245,7 +245,7 @@ test_that("plotSpectraMirror throws an error", {
     expect_error(plotSpectraMirror(ms), "Length")
 })
 
-test_that("adProcessing works", {
+test_that("addProcessing works", {
     ms <- MatchedSpectra(
         sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
                                        target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
@@ -258,4 +258,14 @@ test_that("adProcessing works", {
     res <- addProcessing(ms, FUN = FUN)
     expect_equal(res@query@processingQueue, list(ProcessingStep(FUN)))
     expect_equal(res@target@processingQueue, list(ProcessingStep(FUN)))
+})
+
+test_that("setBackend,MatchedSpectra works", {
+    res <- matchSpectra(pest_ms2, minimb, param = CompareSpectraParam())
+    expect_s4_class(query(res)@backend, "MsBackendMzR")
+    expect_s4_class(target(res)@backend, "MsBackendDataFrame")
+
+    res <- setBackend(res, MsBackendDataFrame())
+    expect_s4_class(query(res)@backend, "MsBackendDataFrame")
+    expect_s4_class(target(res)@backend, "MsBackendDataFrame")
 })

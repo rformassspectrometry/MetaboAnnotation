@@ -82,6 +82,14 @@
 #'   single query spectrum. Additional plotting parameters can be passed through
 #'   `...`.
 #'
+#' - `setBackend`: allows to change the *backend* of both the query and target
+#'   [Spectra()] object. The function will return a `MatchedSpectra` object with
+#'   the query and target `Spectra` changed to the specified `backend`, which
+#'   can be any backend extending [MsBackend].
+#'
+#' @param backend for `setBackend`: instance of an object extending [MsBackend].
+#'   See help for `setBackend` in [Spectra()] for more details.
+#'
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
 #'
@@ -353,3 +361,15 @@ setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
         plotSpectraMirror(x = query(x)[1L], y = y[i],
                           xlab = xlab, ylab = ylab, main = main, ...)
 })
+
+#' @importMethodsFrom Spectra setBackend
+#'
+#' @rdname MatchedSpectra
+#'
+#' @export
+setMethod("setBackend", c("MatchedSpectra", "MsBackend"),
+          function(object, backend, ...) {
+              object@query <- setBackend(object@query, backend = backend, ...)
+              object@target <- setBackend(object@target, backend = backend, ...)
+              object
+          })

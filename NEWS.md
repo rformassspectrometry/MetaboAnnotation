@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.9
+
+- Add `setBackend` for `MatchedSpectra` objects.
+
 ## Changes in 0.99.8
 
 - Add `matchMz, Mz2MassParam` and `matchMz, Mz2MassRtParam`. (issue
