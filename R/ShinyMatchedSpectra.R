@@ -3,8 +3,10 @@
 #' @description
 #'
 #' The `shinyMatchedSpectra()` function opens a simple shiny application
-#' that allows to browse
-#'
+#' that allows to browse results stored in a `MatchedSpectra` object. Results
+#' can be verified and set to TRUE or FALSE. Upon pushing the "Save & Close"
+#' button the the app is closed and a filtered `MatchedSpectra` is returned,
+#' containing only results set to TRUE.
 #'
 #' @param object A non-empty instance of class `MatchedSpectra`.
 #'
@@ -14,6 +16,9 @@
 #'
 #' @import shiny
 #' @import DT
+#' @import BiocParallel
+#' @import Spectra
+#' @import S4Vectors
 #'
 #' @author Carolin Huber, Michael Witting
 shinyMatchedSpectra <- function(object) {
@@ -27,97 +32,93 @@ shinyMatchedSpectra <- function(object) {
   register(SerialParam())
 
 
-  # Define UI for application
   ui <- fluidPage(
     titlePanel(
-      # title with logos
-      div("ShinyMetaboAnnotation")
+      div("ShinyMatchedSpectra")
     ),
     sidebarLayout(
-      # define sidebar with list of matches and true match false match buttons
       sidebarPanel(
-        # define File upload
-        # define Feature selection
-        selectInput('selection', 'Features:', choices=list(), multiple=FALSE, selectize=FALSE, size=25),
-        actionButton("b_store", "Close")
+        selectInput("selection", "Query Spectra:",
+                    choices = list(),
+                    multiple = FALSE,
+                    selectize = FALSE,
+                    size = 25),
+        actionButton("b_store", "Save & Close")
       ),
-      # define main window with text, plotly plot
       mainPanel(
         plotlyOutput("plot"),
         DT::dataTableOutput("dynamic"),
         radioButtons("veri",
                      label = "Hit correct?",
-                     choices = list("Yes" = T, "No" = F),
+                     choices = list("Yes" = T,
+                                    "No" = F),
                      selected = T)
       )
     )
   )
 
-  #######################################################################
-  # Define server logic
+
   server <- function(input, output, session) {
 
-    # reduce only to results with matches
     mtch_sub <- mtch[whichQuery(object)]
     mtch_sub <- pruneTarget(mtch_sub)
 
-    q <- reactiveValues(mtch_sub = mtch_sub,
-                        l_choices = .createChoices(mtch_sub),
-                        boolean_values = .createBoolean(mtch_sub))
-
-
-    observe(updateSelectInput(inputId='selection', choices = q$l_choices))
-
-
     # define storage places for reactive values that change during the shiny application run
-    v <- reactiveValues(i = 1)
-    id <- reactiveValues(target_idx = 1L)
+    reacVal_mtch <- reactiveValues(mtch_sub = mtch_sub,
+                              l_choices = .createChoices(mtch_sub),
+                              boolean_values = .createBoolean(mtch_sub))
+    reacVal_query <- reactiveValues(id = 1)
+    reacVal_target <- reactiveValues(id = 1)
     specs <- reactiveValues(match = MatchedSpectra(),
                             query = Spectra(),
                             target = Spectra())
+
+    observe(updateSelectInput(inputId = "selection",
+                              choices = reacVal_mtch$l_choices))
 
     # Define what happens if a selection in list clicked
     observeEvent(input$selection, {
 
       # change index to selection
-      v$i <- as.numeric(input$selection)
+      reacVal_query$id <- as.numeric(input$selection)
 
       # filter MatchedSpectra based on index from selection
-      x <- q$mtch_sub[v$i]
+      x <- reacVal_mtch$mtch_sub[reacVal_query$id]
       mtch_tbl <- .createTable(x)
 
       # create dynamic table
       output$dynamic <- DT::renderDT(DT::datatable(as.data.frame(cbind.DataFrame(mtch_tbl,
-                                                                   Hit = q$boolean_values[[v$i]])),
+                                                                                 Hit = reacVal_mtch$boolean_values[[reacVal_query$id]])),
                                                    selection = "single"),
                                      server = TRUE)
 
-      id$target_idx <- input$dynamic_rows_selected
+      reacVal_target$id <- input$dynamic_rows_selected
       output$row <- renderPrint(input$dynamic_rows_selected)
 
       # update reactiveValues containing spectra
       specs$match <- x
       specs$query <- query(x)
-      specs$target <- x@target[x@matches$target_idx][input$dynamic_rows_selected]
+      specs$target <- Spectra()
 
       # render new plotly plot
       observe(output$plot <-  renderPlotly(.plotlyMirrorPlot(specs$query, specs$target)))
 
       # change the button to the previous selected verification value
       updateRadioButtons(inputId="veri",
-                         choices = list("Yes" = T, "No" = F),
-                         selected = q$boolean_values[v$i][id$target_idx])
+                         choices = list("Yes" = T,
+                                        "No" = F),
+                         selected = reacVal_mtch$boolean_values[reacVal_query$id][reacVal_target$id])
     })
 
     # Define what happens if a row in DT is selected
     observeEvent(input$dynamic_rows_selected, {
 
       # change index to selection
-      id$target_idx <- input$dynamic_rows_selected
+      reacVal_target$id <- input$dynamic_rows_selected
 
       # filter MatchedSpectra based on index from selection
-      v$i <- as.numeric(input$selection)
-      x <- q$mtch_sub[v$i]
+      reacVal_query$id <- as.numeric(input$selection)
+      x <- reacVal_mtch$mtch_sub[reacVal_query$id]
 
       # update reactiveValues containing spectra
       specs$target <- x@target[x@matches$target_idx][input$dynamic_rows_selected]
@@ -126,59 +127,74 @@ shinyMatchedSpectra <- function(object) {
       observe(output$plot <-  renderPlotly(.plotlyMirrorPlot(specs$query, specs$target)))
 
       # change the button to the previous selected verification value
-      updateRadioButtons(inputId="veri",
-                         choices = list("Yes" = T, "No" = F),
-                         selected = q$boolean_values[v$i][input$dynamic_rows_selected])
+      updateRadioButtons(inputId = "veri",
+                         choices = list("Yes" = T,
+                                        "No" = F),
+                         selected = reacVal_mtch$boolean_values[reacVal_query$id][input$dynamic_rows_selected])
 
     })
 
-    # Define what to do if click on radio button
+    # update verification
     observeEvent(input$veri, {
-
-      # store value in logical vector
-      q$boolean_values[[v$i]][id$target_idx] <- as.logical(input$veri)
-
+      reacVal_mtch$boolean_values[[reacVal_query$id]][reacVal_target$id] <- as.logical(input$veri)
     })
 
-    # Store Result from commandline
+    # store results and close app
     observeEvent(input$b_store, {
-
-      mtch_sub_filtered <- .filterVerified(q$mtch_sub, q$boolean_values)
-
+      mtch_sub_filtered <- .filterVerified(reacVal_mtch$mtch_sub,
+                                           reacVal_mtch$boolean_values)
       stopApp(mtch_sub_filtered)
-
     })
-
-
-
 
   }
-
 
   # runApp is required to make return of values working
   runApp(shinyApp(ui, server))
 
 }
 
-##' @import plotly
+#' function to create interactive plot
+#' @import plotly
+#'
+#' @noRd
 .plotlyMirrorPlot <- function(query_spectrum, target_spectrum){
 
   # create data frames for plotting
   top <- data.frame(mz = unlist(mz(query_spectrum)),
                     int = unlist(intensity(query_spectrum)))
+
+  top$int <- top$int / max(top$int) * 100
+
+  if(length(target_spectrum) > 0) {
+
+    bottom <- data.frame(mz = unlist(mz(target_spectrum)),
+                         int = unlist(intensity(target_spectrum)))
+
+    bottom$int <- bottom$int / max(bottom$int) * 100
+
+    min_mz <- min(c(top$mz, bottom$mz))
+    max_mz <- max(c(top$mz, bottom$mz))
+
+  } else {
+
+    min_mz <- min(top$mz)
+    max_mz <- max(top$mz)
+
+  }
+
   # create layout
   layout <- list(
     title = "",
     xaxis = list(title = "m/z",
-                 zeroline=TRUE,
-                 range=c(0, max(top$mz)),
-                 nticks=8,
+                 zeroline = TRUE,
+                 range = c(min_mz, max_mz),
+                 nticks = 8,
                  autorange = TRUE),
     yaxis = list(title = "Signal Intensity [%]",
-                 zeroline=TRUE,
-                 tickmode='array',
-                 tickvals=c(-100, -50, 0, 50, 100),
-                 ticktext=c('100','50', '0', '50', '100'))
+                 zeroline = TRUE,
+                 tickmode ='array',
+                 tickvals = c(-100, -50, 0, 50, 100),
+                 ticktext = c('100','50', '0', '50', '100'))
   )
 
   # create plot
@@ -203,9 +219,6 @@ shinyMatchedSpectra <- function(object) {
     )
 
   if(length(target_spectrum) > 0) {
-
-    bottom <- data.frame(mz = unlist(mz(target_spectrum)),
-                         int = unlist(intensity(target_spectrum)))
 
     p <-
       add_trace(
@@ -309,7 +322,8 @@ shinyMatchedSpectra <- function(object) {
   tbl
 }
 
-
+#' filter matches based on manual selection
+#' @noRd
 .filterVerified <- function(mtch_sub, boolean_values) {
 
   filter_idx <- mtch_sub@matches[which(unlist(boolean_values)),]

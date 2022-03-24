@@ -283,6 +283,18 @@ default being \code{mzColname = "mz"}) or a \code{numeric} with the m/z values.
 The same holds for \code{target}. Parameters \code{tolerance} and \code{ppm} allow to
 define the maximal acceptable (constant or mass relative) difference
 between masses derived from \code{query} and \code{target}.
+\item \code{Mz2MassRtParam}: first convert to masses the m/z values of \code{query} and
+\code{target} based respectively on \code{Mz2MassRtParam} parameters \code{queryAdducts}
+(defaults to \code{queryAdducts = "[M+H]+"}) and \code{targetAdducts} (defaults to
+\code{targetAdducts = "[M-H]-"}) and then match the obtained masses and
+corresponding retention times (to each mass value corresponds the same
+retention time associated to the m/z from which the mass value was
+obtained). \code{query} must be a \code{data.frameOrSimilar} with a column containing
+m/z values (whose name can be specified with parameter \code{mzColname},
+default being \code{mzColname = "mz"}). The same holds for \code{target}.
+Parameters \code{tolerance} and \code{ppm} have the same meaning as in
+\code{Mz2MassParam}. Parameter \code{toleranceRt} allows to specify the maximal
+acceptable difference between retention time values.
 \item \code{ValueParam}: matches elements from from \code{query} (if \code{numeric}) or else
 from one of its columns with those from \code{target} (if \code{numeric}) or else
 from one of its columns. The name(s) of the colum(s) used for the matching

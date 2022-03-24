@@ -14,8 +14,11 @@ A \code{MatchedSpectra} with verified results
 }
 \description{
 The \code{shinyMatchedSpectra()} function opens a simple shiny application
-that allows to browse
+that allows to browse results stored in a \code{MatchedSpectra} object. Results
+can be verified and set to TRUE or FALSE. Upon pushing the "Save & Close"
+button the the app is closed and a filtered \code{MatchedSpectra} is returned,
+containing only results set to TRUE.
 }
 \author{
-Michael Witting
+Carolin Huber, Michael Witting
 }
