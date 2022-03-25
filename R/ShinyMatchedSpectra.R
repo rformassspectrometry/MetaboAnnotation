@@ -60,15 +60,24 @@ shinyMatchedSpectra <- function(object) {
 
   server <- function(input, output, session) {
 
-    mtch_sub <- mtch[whichQuery(object)]
+    # reduce only to results with matches
+    mtch_sub <- object[whichQuery(object)]
     mtch_sub <- pruneTarget(mtch_sub)
+
+    q <- reactiveValues(mtch_sub = mtch_sub,
+                        l_choices = .createChoices(mtch_sub),
+                        boolean_values = .createBoolean(mtch_sub))
+
+    observe(updateSelectInput(inputId='selection', choices = q$l_choices))
 
     # define storage places for reactive values that change during the shiny application run
     reacVal_mtch <- reactiveValues(mtch_sub = mtch_sub,
                               l_choices = .createChoices(mtch_sub),
                               boolean_values = .createBoolean(mtch_sub))
+
     reacVal_query <- reactiveValues(id = 1)
     reacVal_target <- reactiveValues(id = 1)
+
     specs <- reactiveValues(match = MatchedSpectra(),
                             query = Spectra(),
                             target = Spectra())
@@ -89,7 +98,8 @@ shinyMatchedSpectra <- function(object) {
       # create dynamic table
       output$dynamic <- DT::renderDT(DT::datatable(as.data.frame(cbind.DataFrame(mtch_tbl,
                                                                                  Hit = reacVal_mtch$boolean_values[[reacVal_query$id]])),
-                                                   selection = "single"),
+                                                   #selection = "single"),
+                                                   selection = list(mode = "single", selected = c(1))),
                                      server = TRUE)
 
       reacVal_target$id <- input$dynamic_rows_selected
@@ -124,14 +134,8 @@ shinyMatchedSpectra <- function(object) {
       specs$target <- x@target[x@matches$target_idx][input$dynamic_rows_selected]
 
       # render new plotly plot
-      observe(output$plot <-  renderPlotly(.plotlyMirrorPlot(specs$query, specs$target)))
-
-      # change the button to the previous selected verification value
-      updateRadioButtons(inputId = "veri",
-                         choices = list("Yes" = T,
-                                        "No" = F),
-                         selected = reacVal_mtch$boolean_values[reacVal_query$id][input$dynamic_rows_selected])
-
+      observe(output$plot <- renderPlotly(.plotlyMirrorPlot(specs$query,
+                                                            specs$target)))
     })
 
     # update verification
@@ -295,31 +299,17 @@ shinyMatchedSpectra <- function(object) {
 #' create table for display
 #' @noRd
 .createTable <- function(x){
+    .sel_cols <- c("precursorMz", "target_precursorMz", "rtime",
+                   "target_rtime", "target_name", "target_compound_name",
+                   "score", "reverse_score", "presence_ratio")
+    cols <- .sel_cols[.sel_cols %in% spectraVariables(x)]
+    tbl <- matchedData(x, cols)
 
-  tbl <- matchedData(x)
-  tbl <- tbl[,c("precursorMz",
-              "target_precursorMz",
-              "rtime",
-              "target_rtime",
-              "target_name",
-              "score",
-              "reverse_score",
-              "presence_ratio")]
+    tbl$score <- round(tbl$score, 3)
+    tbl$reverse_score <- round(tbl$reverse_score, 3)
+    tbl$presence_ratio <- round(tbl$presence_ratio, 3)
 
-  tbl$score <- round(tbl$score, 3)
-  tbl$reverse_score <- round(tbl$reverse_score, 3)
-  tbl$presence_ratio <- round(tbl$presence_ratio, 3)
-
-  names(tbl)[names(tbl) == "precursorMz"] <- "Query m/z"
-  names(tbl)[names(tbl) == "target_precursorMz"] <- "Target m/z"
-  names(tbl)[names(tbl) == "rtime"] <- "Query RT"
-  names(tbl)[names(tbl) == "target_rtime"] <- "Target RT"
-  names(tbl)[names(tbl) == "target_name"] <- "Name"
-  names(tbl)[names(tbl) == "score"] <- "Forward Score"
-  names(tbl)[names(tbl) == "reverse_score"] <- "Reverse Score"
-  names(tbl)[names(tbl) == "presence_ratio"] <- "Presence Ratio"
-
-  tbl
+    tbl
 }
 
 #' filter matches based on manual selection
