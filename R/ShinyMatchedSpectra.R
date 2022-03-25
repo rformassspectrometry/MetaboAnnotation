@@ -58,13 +58,12 @@ shinyMatchedSpectra <- function(object) {
   server <- function(input, output, session) {
 
     # reduce only to results with matches
-    mtch_sub <- mtch[whichQuery(object)]
+    mtch_sub <- object[whichQuery(object)]
     mtch_sub <- pruneTarget(mtch_sub)
 
     q <- reactiveValues(mtch_sub = mtch_sub,
                         l_choices = .createChoices(mtch_sub),
                         boolean_values = .createBoolean(mtch_sub))
-
 
     observe(updateSelectInput(inputId='selection', choices = q$l_choices))
 
@@ -282,31 +281,17 @@ shinyMatchedSpectra <- function(object) {
 #' create table for display
 #' @noRd
 .createTable <- function(x){
+    .sel_cols <- c("precursorMz", "target_precursorMz", "rtime",
+                   "target_rtime", "target_name", "target_compound_name",
+                   "score", "reverse_score", "presence_ratio")
+    cols <- .sel_cols[.sel_cols %in% spectraVariables(x)]
+    tbl <- matchedData(x, cols)
 
-  tbl <- matchedData(x)
-  tbl <- tbl[,c("precursorMz",
-              "target_precursorMz",
-              "rtime",
-              "target_rtime",
-              "target_name",
-              "score",
-              "reverse_score",
-              "presence_ratio")]
+    tbl$score <- round(tbl$score, 3)
+    tbl$reverse_score <- round(tbl$reverse_score, 3)
+    tbl$presence_ratio <- round(tbl$presence_ratio, 3)
 
-  tbl$score <- round(tbl$score, 3)
-  tbl$reverse_score <- round(tbl$reverse_score, 3)
-  tbl$presence_ratio <- round(tbl$presence_ratio, 3)
-
-  names(tbl)[names(tbl) == "precursorMz"] <- "Query m/z"
-  names(tbl)[names(tbl) == "target_precursorMz"] <- "Target m/z"
-  names(tbl)[names(tbl) == "rtime"] <- "Query RT"
-  names(tbl)[names(tbl) == "target_rtime"] <- "Target RT"
-  names(tbl)[names(tbl) == "target_name"] <- "Name"
-  names(tbl)[names(tbl) == "score"] <- "Forward Score"
-  names(tbl)[names(tbl) == "reverse_score"] <- "Reverse Score"
-  names(tbl)[names(tbl) == "presence_ratio"] <- "Presence Ratio"
-
-  tbl
+    tbl
 }
 
 
