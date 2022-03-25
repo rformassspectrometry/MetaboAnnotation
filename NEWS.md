@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.10
+
+- Add `shinyMatchedSpectra` for manual inspection of results
+
 ## Changes in 0.99.9
 
 - Add `setBackend` for `MatchedSpectra` objects.
