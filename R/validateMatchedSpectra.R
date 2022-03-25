@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' The `shinyMatchedSpectra()` function opens a simple shiny application
+#' The `validateMatchedSpectra()` function opens a simple shiny application
 #' that allows to browse results stored in a `MatchedSpectra` object. Results
 #' can be verified and set to TRUE or FALSE. Upon pushing the "Save & Close"
 #' button the the app is closed and a filtered `MatchedSpectra` is returned,
@@ -21,7 +21,7 @@
 #' @import S4Vectors
 #'
 #' @author Carolin Huber, Michael Witting
-shinyMatchedSpectra <- function(object) {
+validateMatchedSpectra <- function(object) {
 
   stopifnot(inherits(object, "MatchedSpectra"))
   if (!length(object)) {
@@ -34,7 +34,7 @@ shinyMatchedSpectra <- function(object) {
 
   ui <- fluidPage(
     titlePanel(
-      div("ShinyMatchedSpectra")
+      div("validateMatchedSpectra")
     ),
     sidebarLayout(
       sidebarPanel(
