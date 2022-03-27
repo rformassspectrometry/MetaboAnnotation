@@ -68,6 +68,18 @@ default being mzColname = "mz") or a numeric with the m/z values.
 The same holds for target. Parameters tolerance and ppm allow to
 define the maximal acceptable (constant or mass relative) difference
 between masses derived from query and target.
+Mz2MassRtParam: first convert to masses the m/z values of query and
+target based respectively on Mz2MassRtParam parameters queryAdducts
+(defaults to queryAdducts = "[M+H]+") and targetAdducts (defaults to
+targetAdducts = "[M-H]-") and then match the obtained masses and
+corresponding retention times (to each mass value corresponds the same
+retention time associated to the m/z from which the mass value was
+obtained). query must be a data.frameOrSimilar with a column containing
+m/z values (whose name can be specified with parameter mzColname,
+default being mzColname = "mz"). The same holds for target.
+Parameters tolerance and ppm have the same meaning as in
+Mz2MassParam. Parameter toleranceRt allows to specify the maximal
+acceptable difference between retention time values.
 ValueParam: matches elements from from query (if numeric) or else
 from one of its columns with those from target (if numeric) or else
 from one of its columns. The name(s) of the colum(s) used for the matching
@@ -143,6 +155,18 @@ default being mzColname = "mz") or a numeric with the m/z values.
 The same holds for target. Parameters tolerance and ppm allow to
 define the maximal acceptable (constant or mass relative) difference
 between masses derived from query and target.
+Mz2MassRtParam: first convert to masses the m/z values of query and
+target based respectively on Mz2MassRtParam parameters queryAdducts
+(defaults to queryAdducts = "[M+H]+") and targetAdducts (defaults to
+targetAdducts = "[M-H]-") and then match the obtained masses and
+corresponding retention times (to each mass value corresponds the same
+retention time associated to the m/z from which the mass value was
+obtained). query must be a data.frameOrSimilar with a column containing
+m/z values (whose name can be specified with parameter mzColname,
+default being mzColname = "mz"). The same holds for target.
+Parameters tolerance and ppm have the same meaning as in
+Mz2MassParam. Parameter toleranceRt allows to specify the maximal
+acceptable difference between retention time values.
 ValueParam: matches elements from from query (if numeric) or else
 from one of its columns with those from target (if numeric) or else
 from one of its columns. The name(s) of the colum(s) used for the matching
@@ -160,7 +184,7 @@ parameter valueColname.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.8</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -267,6 +291,18 @@ default being <code>mzColname = "mz"</code>) or a <code>numeric</code> with the 
 The same holds for <code>target</code>. Parameters <code>tolerance</code> and <code>ppm</code> allow to
 define the maximal acceptable (constant or mass relative) difference
 between masses derived from <code>query</code> and <code>target</code>.</p></li>
+<li><p><code>Mz2MassRtParam</code>: first convert to masses the m/z values of <code>query</code> and
+<code>target</code> based respectively on <code>Mz2MassRtParam</code> parameters <code>queryAdducts</code>
+(defaults to <code>queryAdducts = "[M+H]+"</code>) and <code>targetAdducts</code> (defaults to
+<code>targetAdducts = "[M-H]-"</code>) and then match the obtained masses and
+corresponding retention times (to each mass value corresponds the same
+retention time associated to the m/z from which the mass value was
+obtained). <code>query</code> must be a <code>data.frameOrSimilar</code> with a column containing
+m/z values (whose name can be specified with parameter <code>mzColname</code>,
+default being <code>mzColname = "mz"</code>). The same holds for <code>target</code>.
+Parameters <code>tolerance</code> and <code>ppm</code> have the same meaning as in
+<code>Mz2MassParam</code>. Parameter <code>toleranceRt</code> allows to specify the maximal
+acceptable difference between retention time values.</p></li>
 <li><p><code>ValueParam</code>: matches elements from from <code>query</code> (if <code>numeric</code>) or else
 from one of its columns with those from <code>target</code> (if <code>numeric</code>) or else
 from one of its columns. The name(s) of the colum(s) used for the matching
@@ -687,12 +723,12 @@ associated to the target element.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  11.9990  9.92269e-04 82.695917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 343.0000  4.10888e-05  0.119792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  22.9995  5.31594e-04 23.113324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 231.0010 -9.99360e-04  4.326213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     query  target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;  &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12      NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 343.000 -1.14620e-04   0.33417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  23.000  2.59175e-05   1.12685</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 231.001 -1.24756e-03   5.40068</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -700,7 +736,8 @@ associated to the target element.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini.</p>
+  <p></p><p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin
+Huber.</p>
 </div>
 
 <div class="pkgdown-footer-right">
