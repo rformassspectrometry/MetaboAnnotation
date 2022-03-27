@@ -2,7 +2,7 @@
 % Please edit documentation in R/validateMatchedSpectra.R
 \name{validateMatchedSpectra}
 \alias{validateMatchedSpectra}
-\title{Verify Results from matchSpectra}
+\title{Validating MatchedSpectra}
 \usage{
 validateMatchedSpectra(object)
 }
@@ -10,15 +10,43 @@ validateMatchedSpectra(object)
 \item{object}{A non-empty instance of class \code{MatchedSpectra}.}
 }
 \value{
-A \code{MatchedSpectra} with verified results
+A \code{MatchedSpectra} with validated results.
 }
 \description{
 The \code{validateMatchedSpectra()} function opens a simple shiny application
-that allows to browse results stored in a \code{MatchedSpectra} object. Results
-can be verified and set to TRUE or FALSE. Upon pushing the "Save & Close"
-button the the app is closed and a filtered \code{MatchedSpectra} is returned,
-containing only results set to TRUE.
+that allows to browse results stored in a \code{MatchedSpectra} object and to
+\emph{validate} the presented matches. For each query spectrum a table with
+matched target spectra are shown (if available) and an interactive mirror
+plot is generated. Valid matches can be selected using a check box which is
+displayed below the mirror plot. Upon pushing the "Save & Close"
+button the app is closed and a filtered \code{MatchedSpectra} is returned,
+containing only \emph{validated} matches.
+}
+\examples{
+
+library(Spectra)
+## Load test data
+fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
+pest_ms2 <- pest_ms2[c(808, 809, 945:955)]
+load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
+
+## Normalize intensities and match spectra
+csp <- CompareSpectraParam(requirePrecursor = TRUE,
+                           THRESHFUN = function(x) x >= 0.7)
+norm_int <- function(x) {
+    x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"]) * 100
+    x
+}
+ms <- matchSpectra(addProcessing(pest_ms2, norm_int),
+                   addProcessing(minimb, norm_int), csp)
+
+## validate matches using the shiny app. Note: the call is only executed
+## in interactive mode.
+if (interactive()) {
+    validateMatchedSpectra(ms)
+}
 }
 \author{
-Carolin Huber, Michael Witting
+Carolin Huber, Michael Witting, Johannes Rainer
 }

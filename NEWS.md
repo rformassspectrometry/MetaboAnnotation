@@ -2,7 +2,8 @@
 
 ## Changes in 0.99.10
 
-- Add `shinyMatchedSpectra` for manual inspection of results
+- Add `validateMatchedSpectra` for manual inspection and validation of an
+  `MatchedSpectra` object.
 
 ## Changes in 0.99.9
 
