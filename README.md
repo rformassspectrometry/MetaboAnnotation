@@ -31,3 +31,4 @@ vignette](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/R
 - Andrea Vicini
 - Michael Witting
 - Johannes Rainer
+- Carolin Huber
