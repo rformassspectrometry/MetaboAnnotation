@@ -44,7 +44,11 @@ Suggests:
     knitr,
     msdata,
     BiocStyle,
-    rmarkdown
+    rmarkdown,
+    plotly,
+    shiny,
+    shinyjs,
+    DT
 License: Artistic-2.0
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues

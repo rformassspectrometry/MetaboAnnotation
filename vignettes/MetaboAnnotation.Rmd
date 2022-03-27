@@ -337,8 +337,9 @@ as.data.frame(mtches_df)
 ```
 
 Using the `plotSpectraMirror` function we can visualize the matching results for
-one query spectrum. Below we call this function to show all matches for the
-second spectrum.
+one query spectrum. Note also that an interactive, `shiny`-based, validation of
+matching results is available with the `validateMatchedSpectra` function. Below
+we call this function to show all matches for the second spectrum.
 
 ```{r}
 plotSpectraMirror(mtches[2])
@@ -428,9 +429,9 @@ spectra. Such objects could also be extracted from an `xcms`-based LC-MS/MS data
 analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
 `r Biocpkg("xcms")` package. Also,
 
-Matches can be also further validated using an interactive Shiny app by calling 
-`validateMatchedSpectra` on the `MatchedSpectra` object. Individual matches can 
-be set to TRUE or FALSE in this app. By closing the app via the Save & Close 
+Matches can be also further validated using an interactive Shiny app by calling
+`validateMatchedSpectra` on the `MatchedSpectra` object. Individual matches can
+be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
 
