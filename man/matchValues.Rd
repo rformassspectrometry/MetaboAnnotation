@@ -228,10 +228,11 @@ Available \code{param} objects and corresponding matching approaches are:
 acceptable differences expressed in \code{ppm} and \code{tolerance}. As detailed
 above, parameters \code{query} and \code{target} of the \code{matchValues} function can be
 either \code{numeric} or any two-dimensional array. In the latter case parameter
-\code{valueColname} can be used to specify the name of the column that contains
-the values to be matched. The function returns a \code{\link[=Matched]{Matched()}} object.
+\code{valueColname} has to be used to specify the name of the column that
+contains the values to be matched. The function returns a \code{\link[=Matched]{Matched()}}
+object.
 \item \code{MzParam}: match query m/z values against reference compounds for which
-also m/z are known. Matching is performed similar to the \code{ValueParam}
+also m/z are known. Matching is performed similarly to the \code{ValueParam}
 above. If \code{query} or \code{target} are a two dimensional array, the column name
 containing the values to be compared must be defined with \code{matchValues}'
 parameter \code{mzColname}, which defaults to \code{"mz"}. \code{MzParam} parameters
@@ -253,8 +254,8 @@ which only the (exact) mass is known. Before matching, m/z values are
 calculated from the compounds masses in the \emph{target} table using the
 adducts specified via \code{Mass2MzParam} \code{adducts} parameter (defaults to
 \code{adducts = "[M+H]+"}). After conversion of adduct masses to m/z values,
-matching is performed similar to \code{MzParam} (i.e. the same parameters \code{ppm}
-and \code{tolerance} can be used). If \code{query} is a two-dimensional array,
+matching is performed similarly to \code{MzParam} (i.e. the same parameters
+\code{ppm} and \code{tolerance} can be used). If \code{query} is a two-dimensional array,
 parameter \code{mzColname} of \code{matchValues} can be used to specify the column
 containing the query's m/z values (defaults to \code{"mz"}). If \code{target} is a
 two-dimensional array, parameter \code{massColname} can be used to define the
@@ -263,18 +264,18 @@ column containing the reference compound's masses (defaults to
 \item \code{Mass2MzRtParam}: match m/z \strong{and} retention time values against
 reference compounds for which the (exact) mass \strong{and} retention time are
 known. Before matching, exact masses in \code{target} are converted to m/z
-values as for \code{Mass2MzParam}. Matching is then performed similar to
+values as for \code{Mass2MzParam}. Matching is then performed similarly to
 \code{MzRtParam}, i.e. m/z and retention times of entities are compared. With
 \code{matchValues}' parameters \code{mzColname}, \code{rtColname} and \code{massColname} the
-columns containing m/z values (in query), retention time values (in query
-and target) and exact masses (in target) can be specified.
-\item \code{Mz2MassParam}: input values for query and target are expected to be m/z
-values but matching is performed on exact masses calculated from these
+columns containing m/z values (in \code{query}), retention time values (in
+\code{query} and \code{target}) and exact masses (in \code{target}) can be specified.
+\item \code{Mz2MassParam}: input values for \code{query} and \code{target} are expected to be
+m/z values but matching is performed on exact masses calculated from these
 (based on the provided adduct definitions). In detail, m/z values in
 \code{query} are first converted to masses with the \code{\link[=mz2mass]{mz2mass()}} function based
 on the adducts defined with \code{queryAdducts} (defaults to \code{"[M+H]+"}). The
 same is done for m/z values in \code{target} (adducts can be defined with
-\code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similar to }ValueParam\verb{. If }query\code{or}target\verb{are two-dimensional arrays, the column containing the m/z values can be spefified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
+\code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are two-dimensional arrays, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
 \item \code{Mz2MassRtParam}: same as \code{Mz2MassParam} but with additional comparison of
 retention times between \code{query} and \code{target}. If \code{query} or \code{target} are
 two-dimensional arrays, \code{matchValues}' parameter \code{rtColname} and

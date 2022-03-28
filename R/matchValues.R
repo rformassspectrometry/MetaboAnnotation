@@ -190,11 +190,12 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'   acceptable differences expressed in `ppm` and `tolerance`. As detailed
 #'   above, parameters `query` and `target` of the `matchValues` function can be
 #'   either `numeric` or any two-dimensional array. In the latter case parameter
-#'   `valueColname` can be used to specify the name of the column that contains
-#'   the values to be matched. The function returns a [Matched()] object.
+#'   `valueColname` has to be used to specify the name of the column that
+#'   contains the values to be matched. The function returns a [Matched()]
+#'   object.
 #'
 #' - `MzParam`: match query m/z values against reference compounds for which
-#'   also m/z are known. Matching is performed similar to the `ValueParam`
+#'   also m/z are known. Matching is performed similarly to the `ValueParam`
 #'   above. If `query` or `target` are a two dimensional array, the column name
 #'   containing the values to be compared must be defined with `matchValues`'
 #'   parameter `mzColname`, which defaults to `"mz"`. `MzParam` parameters
@@ -218,8 +219,8 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'   calculated from the compounds masses in the *target* table using the
 #'   adducts specified via `Mass2MzParam` `adducts` parameter (defaults to
 #'   `adducts = "[M+H]+"`). After conversion of adduct masses to m/z values,
-#'   matching is performed similar to `MzParam` (i.e. the same parameters `ppm`
-#'   and `tolerance` can be used). If `query` is a two-dimensional array,
+#'   matching is performed similarly to `MzParam` (i.e. the same parameters
+#'   `ppm` and `tolerance` can be used). If `query` is a two-dimensional array,
 #'   parameter `mzColname` of `matchValues` can be used to specify the column
 #'   containing the query's m/z values (defaults to `"mz"`). If `target` is a
 #'   two-dimensional array, parameter `massColname` can be used to define the
@@ -229,22 +230,22 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' - `Mass2MzRtParam`: match m/z **and** retention time values against
 #'   reference compounds for which the (exact) mass **and** retention time are
 #'   known. Before matching, exact masses in `target` are converted to m/z
-#'   values as for `Mass2MzParam`. Matching is then performed similar to
+#'   values as for `Mass2MzParam`. Matching is then performed similarly to
 #'   `MzRtParam`, i.e. m/z and retention times of entities are compared. With
 #'   `matchValues`' parameters `mzColname`, `rtColname` and `massColname` the
-#'   columns containing m/z values (in query), retention time values (in query
-#'   and target) and exact masses (in target) can be specified.
+#'   columns containing m/z values (in `query`), retention time values (in
+#'   `query` and `target`) and exact masses (in `target`) can be specified.
 #'
-#' - `Mz2MassParam`: input values for query and target are expected to be m/z
-#'   values but matching is performed on exact masses calculated from these
+#' - `Mz2MassParam`: input values for `query` and `target` are expected to be
+#'   m/z values but matching is performed on exact masses calculated from these
 #'   (based on the provided adduct definitions). In detail, m/z values in
 #'   `query` are first converted to masses with the [mz2mass()] function based
 #'   on the adducts defined with `queryAdducts` (defaults to `"[M+H]+"`). The
 #'   same is done for m/z values in `target` (adducts can be defined with
 #'   `targetAdducts` which defaults to `"[M-H-]"). Matching is then performed
-#'   on these converted values similar to `ValueParam`. If `query` or `target`
+#'   on these converted values similarly to `ValueParam`. If `query` or `target`
 #'   are two-dimensional arrays, the column containing the m/z values can be
-#'   spefified with `matchValues`' parameter `mzColname` (defaults to `"mz"`).
+#'   specified with `matchValues`' parameter `mzColname` (defaults to `"mz"`).
 #'
 #' - `Mz2MassRtParam`: same as `Mz2MassParam` but with additional comparison of
 #'   retention times between `query` and `target`. If `query` or `target` are
