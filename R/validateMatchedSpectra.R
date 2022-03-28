@@ -89,8 +89,9 @@ validateMatchedSpectra <- function(object) {
         dtl <- split(dt, factor(object@matches$query_idx, seq_along(object)))
         rv <- shiny::reactiveValues(
             queries = query_ids,
-            dtl = dtl
-        )
+            dtl = dtl,
+            previous_query = 0L
+            )
         rv_query <- shiny::reactiveValues(idx = 1L)
         rv_target <- shiny::reactiveValues(idx = 1L)
         shiny::observe(shiny::updateSelectInput(inputId = "query",
@@ -108,9 +109,8 @@ validateMatchedSpectra <- function(object) {
                           options = list(dom = "t", ordering = FALSE),
                           escape = FALSE, rownames = FALSE),
                 server = TRUE)
-            if (nrow(rv$dtl[[rv_query$idx]])) {
-                rv_target$idx <- input$targets_rows_selected
-                ## output$row <- shiny::renderPrint(input$targets_rows_selected)
+            if (nrow(rv$dtl[[rv_query$idx]]) >= rv_target$idx) {
+                ## rv_target$idx <- input$targets_rows_selected
                 shinyjs::enable("valid")
                 current_valid <- rv$dtl[[rv_query$idx]]$valid[rv_target$idx]
                 shiny::updateCheckboxInput(session, "valid", value = current_valid)
@@ -118,6 +118,7 @@ validateMatchedSpectra <- function(object) {
                 shinyjs::disable("valid")
             output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match), Spectra()))
+            rv$previous_query <- rv_query$idx + 0L
         })
         ## Choose target spectrum
         shiny::observeEvent(input$targets_rows_selected, {
@@ -127,14 +128,16 @@ validateMatchedSpectra <- function(object) {
                 tidx <- current_match@matches$target_idx[rv_target$idx]
                 current_valid <- rv$dtl[[rv_query$idx]]$valid[rv_target$idx]
                 shiny::updateCheckboxInput(session, "valid", value = current_valid)
-                    output$plot <- plotly::renderPlotly(
+                output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match),
                                              target(current_match)[tidx]))
             }
         })
         shiny::observeEvent(input$valid, {
-            if (nrow(rv$dtl[[rv_query$idx]]))
+            if (length(rv_target$idx) &&
+                nrow(rv$dtl[[rv_query$idx]]) >= rv_target$idx) {
                 rv$dtl[[rv_query$idx]]$valid[rv_target$idx] <- input$valid
+            }
         })
         shiny::observeEvent(input$b_store, {
             idx <- which(do.call(rbind, rv$dtl)$valid)
