@@ -6,6 +6,7 @@ norm_int <- function(x) {
 }
 ms <- matchSpectra(addProcessing(pest_ms2, norm_int),
                    addProcessing(minimb, norm_int), csp)
+ms2 <- ms[whichQuery(ms)]
 
 test_that(".createChoices works", {
     res <- .createChoices(ms)
