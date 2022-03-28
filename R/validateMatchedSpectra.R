@@ -89,8 +89,7 @@ validateMatchedSpectra <- function(object) {
         dtl <- split(dt, factor(object@matches$query_idx, seq_along(object)))
         rv <- shiny::reactiveValues(
             queries = query_ids,
-            dtl = dtl,
-            previous_query = 0L
+            dtl = dtl
             )
         rv_query <- shiny::reactiveValues(idx = 1L)
         rv_target <- shiny::reactiveValues(idx = 1L)
@@ -118,7 +117,6 @@ validateMatchedSpectra <- function(object) {
                 shinyjs::disable("valid")
             output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match), Spectra()))
-            rv$previous_query <- rv_query$idx + 0L
         })
         ## Choose target spectrum
         shiny::observeEvent(input$targets_rows_selected, {
