@@ -248,10 +248,9 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'   specified with `matchValues`' parameter `mzColname` (defaults to `"mz"`).
 #'
 #' - `Mz2MassRtParam`: same as `Mz2MassParam` but with additional comparison of
-#'   retention times between `query` and `target`. If `query` or `target` are
-#'   two-dimensional arrays, `matchValues`' parameter `rtColname` and
-#'   `mzColname` allow to specify the columns with the retention times and m/z
-#'   values, respectively.
+#'   retention times between `query` and `target`. Parameters `rtColname` and
+#'   `mzColname` of `matchValues` allow to specify which columns contain the
+#'   retention times and m/z values, respectively.
 #'
 #' @param adducts for `Mass2MzParam` or `Mass2MzRtParam`: either `character`
 #'     with adduct names from [MetaboCoreUtils::adducts()] or `data.frame` with

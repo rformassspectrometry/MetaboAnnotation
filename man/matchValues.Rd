@@ -277,10 +277,9 @@ on the adducts defined with \code{queryAdducts} (defaults to \code{"[M+H]+"}). T
 same is done for m/z values in \code{target} (adducts can be defined with
 \code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are two-dimensional arrays, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
 \item \code{Mz2MassRtParam}: same as \code{Mz2MassParam} but with additional comparison of
-retention times between \code{query} and \code{target}. If \code{query} or \code{target} are
-two-dimensional arrays, \code{matchValues}' parameter \code{rtColname} and
-\code{mzColname} allow to specify the columns with the retention times and m/z
-values, respectively.
+retention times between \code{query} and \code{target}. Parameters \code{rtColname} and
+\code{mzColname} of \code{matchValues} allow to specify which columns contain the
+retention times and m/z values, respectively.
 }
 }
 \examples{
