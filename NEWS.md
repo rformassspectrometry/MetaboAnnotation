@@ -1,9 +1,14 @@
 # MetaboAnnotation 0.99
 
-## Changes in 0.99.10
+## Changes in 0.99.11
 
 - Change `matchMz` into `matchValues` (issue
   [#65](https://github.com/rformassspectrometry/MetaboAnnotation/issues/65)).
+
+## Changes in 0.99.10
+
+- Add `validateMatchedSpectra` for manual inspection and validation of an
+  `MatchedSpectra` object.
 
 ## Changes in 0.99.9
 

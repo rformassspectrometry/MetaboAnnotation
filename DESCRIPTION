@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 0.99.10
+Version: 0.99.11
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -21,7 +21,11 @@ Authors@R:
       person(given = "Andrea", family = "Vicini",
              email = "andrea.vicini@eurac.edu",
              role = c("aut"),
-             comment = c(ORCID = "0000-0001-9438-6909")))
+             comment = c(ORCID = "0000-0001-9438-6909")),
+      person(given = "Carolin", family = "Huber",
+             email = "carolin-elisabeth.huber@ufz.de",
+             role = c("aut"),
+             comment = c(ORCID = "0000-0002-9355-8948")))
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -40,7 +44,11 @@ Suggests:
     knitr,
     msdata,
     BiocStyle,
-    rmarkdown
+    rmarkdown,
+    plotly,
+    shiny,
+    shinyjs,
+    DT
 License: Artistic-2.0
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
