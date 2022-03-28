@@ -37,10 +37,10 @@
     <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchFormula.html</loc>
   </url>
   <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchMz.html</loc>
+    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchSpectra.html</loc>
   </url>
   <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchSpectra.html</loc>
+    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.html</loc>
   </url>
   <url>
     <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/validateMatchedSpectra.html</loc>
