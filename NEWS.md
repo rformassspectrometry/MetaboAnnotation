@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.12
+
+- Update plotly-based mirror plots in `validateMatchedSpectra`.
+
 ## Changes in 0.99.11
 
 - Change `matchMz` into `matchValues` (issue
