@@ -148,8 +148,15 @@ validateMatchedSpectra <- function(object) {
 #' function to create interactive plot
 #' @importMethodsFrom Spectra peaksData
 #'
+#' @param x `Spectra` of length 1
+#'
+#' @param y `Spectra` of length 1
+#'
+#' @param col optional colors.
+#'
 #' @noRd
-.plotlySpectraMirror <- function(x, y, col = c("#E41A1C", "#377EB8")) {
+.plotlySpectraMirror <- function(x, y, col = c("#E41A1C", "#377EB8"),
+                                 main = "") {
     if (!requireNamespace("plotly", quietly = TRUE))
         stop("The use of '.plotlySpectraMirror' requires package 'plotly'. ",
              "Please install with 'BiocInstaller::install(\"plotly\")'")
@@ -161,36 +168,32 @@ validateMatchedSpectra <- function(object) {
     if (length(y)) {
         lower <- as.data.frame(peaksData(y)[[1L]])
     } else lower <- data.frame(mz = numeric(), intensity = numeric())
+    if (nrow(upper))
+        upper$zero <- 0.0
+    else upper$zero <- numeric()
+    if (nrow(lower))
+        lower$zero <- 0.0
+    else lower$zero <- numeric()
 
+    mz_range <- range(upper$mz, lower$mz) + c(-1, 1)
+    maxy <- max(upper$intensity, lower$intensity, na.rm = TRUE)
+    int_range <- list(-maxy, maxy)
 
-    mz_range <- range(upper$mz, lower$mz)
-    int_range <- range(upper$intensity, lower$intensity)
-
-    layout <- list(
-        title = "",
-        xaxis = list(title = "m/z",
-                     zeroline = TRUE,
-                     range = mz_range,
-                     nticks = 8,
-                     autorange = TRUE),
-        yaxis = list(title = "intensity",
-                     zeroline = TRUE,
-                     range = list(-int_range[2L], int_range[2L]))
-    )
+    lower$intensity <- -lower$intensity
     p <- plotly::plot_ly()
-    p <- plotly::add_trace(p, type = "bar", x = upper$mz, y = upper$intensity,
-                           marker = list(size = 3, color = col[1L],
-                                         xanchor = "center"),
-                           offset = 0, name = "query", width = 0.5,
-                           hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::add_trace(p, type = "bar", x = lower$mz, y = -lower$intensity,
-                           marker = list(size = 3, color = col[2L],
-                                         xanchor = "center"),
-                           offset = 0, name = "target", width = 0.5,
-                           hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::layout(p, title = layout$title, xaxis = layout$xaxis,
-                        yaxis = layout$yaxis, hovermode = "x",
-                        hoverdistance = 1)
+    p <- plotly::add_segments(p, data = upper, x = ~mz, y = ~zero, xend = ~mz,
+                              yend = ~intensity, line = list(color = col[1L]),
+                              name = "query",
+                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
+    p <- plotly::add_segments(p, data = lower, x = ~mz, y = ~zero, xend = ~mz,
+                              yend = ~intensity, line = list(color = col[2L]),
+                              name = "target",
+                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
+    p <- plotly::layout(p, title = main,
+                        xaxis = list(title = "m/z", range = mz_range),
+                        yaxis = list(title = "intensity", zeroline = TRUE,
+                                     range = int_range),
+                        hovermode = "x", hoverdistance = 1)
     p
 }
 
