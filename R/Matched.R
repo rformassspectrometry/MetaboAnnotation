@@ -661,16 +661,23 @@ setMethod("matchedData", "Matched", function(object,
     msg
 }
 
+.cnt <- function(target) {
+    ndim <- length(dim(target))
+    if (ndim == 2) {
+        cnt <- colnames(target)
+        if (length(cnt)) cnt <- paste0("target_", cnt)
+    } else if (ndim == 0) {
+        cnt <- "target"
+    } else {
+        stop("unsupported dimensions in \"target\"")
+    }
+    cnt
+}
+
 .colnames <- function(query, target, matches) {
   cns <- colnames(matches)
   cnq <- NULL
-  cnt <- NULL
-  if (length(dim(target)) == 2){
-    cnt <- colnames(target)
-    if (length(cnt)) cnt <- paste0("target_", cnt)
-  }
-  if (is.null(dim(target)))
-    cnt <- "target"
+  cnt <- .cnt(target)
   if (length(dim(query)) == 2)
     cnq <- colnames(query)
   if (is.null(dim(query)))
@@ -688,7 +695,7 @@ setMethod("matchedData", "Matched", function(object,
       idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
       return(matches[idxs_mtch, name])
     }
-    if (name == "target" || length(grep("^target_", name))) {
+    if (name %in% .cnt(target)) {
       idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
       .extract_elements(target, idxs_trg, sub("target_", "", name), drop = TRUE)
     }else
@@ -704,7 +711,7 @@ setMethod("matchedData", "Matched", function(object,
   not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
   idxs_qry <- c(matches$query_idx, not_mtchd)
   ord <- order(idxs_qry)
-  from_target <- grepl("^target_", columns) | columns == "target"
+  from_target <- columns %in% .cnt(target)
   from_matches <- columns %in% colnames(matches)
   from_query <- !(from_target | from_matches)
   res_q <- NULL

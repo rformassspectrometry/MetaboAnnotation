@@ -1,5 +1,11 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.13
+
+- Fix issue about `matchedData` not working for result objects of
+  `matchValues, Mz2MassParam` and `matchValues, Mz2MassRtParam` (issue
+  [#69](https://github.com/rformassspectrometry/MetaboAnnotation/issues/69)).
+
 ## Changes in 0.99.12
 
 - Update plotly-based mirror plots in `validateMatchedSpectra`.

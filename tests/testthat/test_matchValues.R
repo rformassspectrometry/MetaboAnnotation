@@ -556,6 +556,7 @@ test_that("matchValues, Mz2MassParam works", {
     expect_equal(query(res), qry)
     expect_equal(target(res), data.frame(mz = trgt))
     expect_equal(res@metadata$param, par)
+    expect_true(is(matchedData(res), "DataFrame"))
 
     ## data.frame, numeric
     expect_error(
@@ -661,6 +662,7 @@ test_that("matchValues, Mz2MassRtParam works", {
     expect_equal(res@matches$score, c(0, 0))
     expect_equal(res@matches$ppm_error, c(0, 0))
     expect_equal(res@matches$score_rt, c(0, 0))
+    expect_true(is(matchedData(res), "DataFrame"))
 
     ## positive toleranceRt
     par <- Mz2MassRtParam(queryAdducts = c("[M+H]+", "[M+K]+"),
