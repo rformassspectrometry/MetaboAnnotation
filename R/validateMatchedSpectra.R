@@ -55,6 +55,9 @@ validateMatchedSpectra <- function(object) {
     if (!requireNamespace("DT", quietly = TRUE))
         stop("The use of 'validateMatchedSpectra' requires package 'DT'.",
              " Please install with 'BiocInstaller::install(\"DT\")'")
+    if (!requireNamespace("SpectraVis", quietly = TRUE))
+        stop("The use of 'validateMatchedSpectra' requires package 'SpectraVis'.",
+             " Please install with 'BiocInstaller::install(\"RforMassSpectrometry/SpectraVis\")'")
 
     stopifnot(inherits(object, "MatchedSpectra"))
     if (!length(object))
@@ -63,6 +66,15 @@ validateMatchedSpectra <- function(object) {
     bpp <- bpparam()
     on.exit(register(bpp))
     register(SerialParam())
+    ppm <- 20
+    tolerance <- 0
+    prm <- object@metadata$param
+    if (length(prm)) {
+        if (any(slotNames(prm) == "ppm"))
+            ppm <- prm@ppm
+        if (any(slotNames(prm) == "tolerance"))
+            tolerance <- prm@tolerance
+    }
     ui <- shiny::fluidPage(shinyjs::useShinyjs(),
                     shiny::titlePanel(shiny::div("validateMatchedSpectra")),
                     shiny::sidebarLayout(shiny::sidebarPanel(
@@ -116,7 +128,13 @@ validateMatchedSpectra <- function(object) {
             } else
                 shinyjs::disable("valid")
             output$plot <- plotly::renderPlotly(
-                        .plotlySpectraMirror(query(current_match), Spectra()))
+                                       SpectraVis::plotlySpectraMirror(
+                                                       query(current_match),
+                                                       Spectra(),
+                                                       xLabel = "query",
+                                                       yLabel = "target",
+                                                       ppm = ppm,
+                                                       tolerance = tolerance))
         })
         ## Choose target spectrum
         shiny::observeEvent(input$targets_rows_selected, {
@@ -127,8 +145,13 @@ validateMatchedSpectra <- function(object) {
                 current_valid <- rv$dtl[[rv_query$idx]]$valid[rv_target$idx]
                 shiny::updateCheckboxInput(session, "valid", value = current_valid)
                 output$plot <- plotly::renderPlotly(
-                        .plotlySpectraMirror(query(current_match),
-                                             target(current_match)[tidx]))
+                                           SpectraVis::plotlySpectraMirror(
+                                                           query(current_match),
+                                                           target(current_match)[tidx],
+                                                           xLabel = "query",
+                                                           yLabel = "target",
+                                                           ppm = ppm,
+                                                           tolerance = tolerance))
             }
         })
         shiny::observeEvent(input$valid, {
@@ -143,58 +166,6 @@ validateMatchedSpectra <- function(object) {
         })
     }
     shiny::runApp(shiny::shinyApp(ui, server))
-}
-
-#' function to create interactive plot
-#' @importMethodsFrom Spectra peaksData
-#'
-#' @param x `Spectra` of length 1
-#'
-#' @param y `Spectra` of length 1
-#'
-#' @param col optional colors.
-#'
-#' @noRd
-.plotlySpectraMirror <- function(x, y, col = c("#E41A1C", "#377EB8"),
-                                 main = "") {
-    if (!requireNamespace("plotly", quietly = TRUE))
-        stop("The use of '.plotlySpectraMirror' requires package 'plotly'. ",
-             "Please install with 'BiocInstaller::install(\"plotly\")'")
-    if (length(col) != 2)
-        col <- col[c(1, 1)]
-    if (length(x)) {
-        upper <- as.data.frame(peaksData(x)[[1L]])
-    } else upper <- data.frame(mz = numeric(), intensity = numeric())
-    if (length(y)) {
-        lower <- as.data.frame(peaksData(y)[[1L]])
-    } else lower <- data.frame(mz = numeric(), intensity = numeric())
-    if (nrow(upper))
-        upper$zero <- 0.0
-    else upper$zero <- numeric()
-    if (nrow(lower))
-        lower$zero <- 0.0
-    else lower$zero <- numeric()
-
-    mz_range <- range(upper$mz, lower$mz) + c(-1, 1)
-    maxy <- max(upper$intensity, lower$intensity, na.rm = TRUE)
-    int_range <- list(-maxy, maxy)
-
-    lower$intensity <- -lower$intensity
-    p <- plotly::plot_ly()
-    p <- plotly::add_segments(p, data = upper, x = ~mz, y = ~zero, xend = ~mz,
-                              yend = ~intensity, line = list(color = col[1L]),
-                              name = "query",
-                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::add_segments(p, data = lower, x = ~mz, y = ~zero, xend = ~mz,
-                              yend = ~intensity, line = list(color = col[2L]),
-                              name = "target",
-                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::layout(p, title = main,
-                        xaxis = list(title = "m/z", range = mz_range),
-                        yaxis = list(title = "intensity", zeroline = TRUE,
-                                     range = int_range),
-                        hovermode = "x", hoverdistance = 1)
-    p
 }
 
 #' isolate entries for feature selection

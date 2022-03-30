@@ -48,7 +48,10 @@ Suggests:
     plotly,
     shiny,
     shinyjs,
+    SpectraVis,
     DT
+Remotes:
+    RforMassSpectrometry/SpectraVis
 License: Artistic-2.0
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
