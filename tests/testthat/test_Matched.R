@@ -570,3 +570,14 @@ test_that(".extract_elements works", {
     expect_equal(.extract_elements(a, c(3, 6)), list(3, NULL))
     expect_equal(.extract_elements(a, c(NA, 1)), list(NA, 1))
 })
+
+test_that(".cnt works", {
+    t <- data.frame(a = 1:5, b = 2:6)
+    expect_equal(.cnt(t), c("target_a", "target_b"))
+    
+    t <- 1:5
+    expect_equal(.cnt(t), "target")
+
+    t <- array(data = 1, dim = c(1, 1, 1))
+    expect_error(.cnt(t), "unsupported")
+})
