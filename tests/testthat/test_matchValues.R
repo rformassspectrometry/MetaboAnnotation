@@ -626,6 +626,19 @@ test_that("matchValues, Mz2MassParam works", {
     res_2 <- matchValues(qry, qry, ValueParam())
     expect_equal(res_2@matches$query_idx, 1:5)
     expect_equal(res_2@matches$target_idx, 1:5)
+
+    ## numeric, numeric
+    a <- 1:10
+    b <- 1:5
+    res <- matchValues(a, b, Mz2MassParam(queryAdducts = "[M]+",
+                                          targetAdducts = "[M]-"))
+    expect_equal(res@matches$target_idx, 1:5)
+    expect_equal(res@matches$query_idx, 1:5)
+    expect_true(all(res@matches$query_adduct == "[M]+"))
+    expect_true(all(res@matches$target_adduct == "[M]-"))
+    expect_s4_class(matchedData(res), "DataFrame")
+    expect_equal(res$query, a)
+    expect_equal(res$target, c(b, NA, NA, NA, NA, NA))
 })
 
 test_that("matchValues, Mz2MassRtParam works", {
@@ -702,6 +715,21 @@ test_that("matchValues, Mz2MassRtParam works", {
     expect_equal(query(res), qry_df)
     expect_equal(target(res), trgt_df)
     expect_true(nrow(res@matches) == 0)
+
+    m <- c(200, 300)
+    qry <- c(100, as.numeric(mass2mz(m, c("[M+H]+", "[M+K]+"))) + c(0, 0, 0, 5))
+    trgt <- c(mass2mz(m, "[M-H]-"), 400, 500)
+    qry_df <- data.frame(mz = qry, rt = c(50, 100, 151, 100, 150))
+    trgt_df <- data.frame(mz = trgt, rt = c(100, 150, 200, 250))
+    par <- Mz2MassRtParam(queryAdducts = c("[M+H]+", "[M+K]+"),
+                          targetAdducts = "[M-H]-")
+    res <- matchValues(qry_df, trgt_df, par)
+    md <- matchedData(res)
+    expect_s4_class(md, "DataFrame")
+    expect_equal(res@matches$query_idx, c(2, 4))
+    expect_equal(res@matches$target_idx, c(1, 1))
+    expect_true(all(c("mz", "rt", "target_mz", "target_rt",
+                      "query_adduct", "target_adduct") %in% colnames(md)))
 })
 
 test_that(".valid_adduct works", {
