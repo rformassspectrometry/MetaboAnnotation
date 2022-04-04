@@ -1,5 +1,12 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.14
+
+- `query` and `target` of type `SummarizedExperiment` supported for `Matched`.
+- `MatchedSummarizedExperiment` class removed.
+- Support `SummarizedExperiment` for both `query` and `target` parameters in
+  `matchValues`.
+  
 ## Changes in 0.99.13
 
 - Fix issue about `matchedData` not working for result objects of

@@ -28,7 +28,6 @@
 \alias{matchValues,data.frameOrSimilar,numeric,Mz2MassParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam-method}
-\alias{matchValues,SummarizedExperiment,ANY,Param-method}
 \title{Matching of numeric values}
 \usage{
 ValueParam(tolerance = 0, ppm = 5)
@@ -112,8 +111,6 @@ matchValues(query, target, param, ...)
   mzColname = c("mz", "mz"),
   rtColname = c("rt", "rt")
 )
-
-\S4method{matchValues}{SummarizedExperiment,ANY,Param}(query, target, param, mzColname = "mz", rtColname = c("rt", "rt"))
 }
 \arguments{
 \item{tolerance}{for any \code{param} object: \code{numeric(1)} defining the maximal
@@ -192,8 +189,7 @@ To be used when \code{param} is \code{MzRtParam} or \code{Mass2MzRtParam}.
 Defaults to \code{rtColname = c("rt", "rt")}.}
 }
 \value{
-\link{Matched} object representing the result (or more precisely
-\link{MatchedSummarizedExperiment} if \code{query} is \code{SummarizedExperiment}).
+\link{Matched} object representing the result.
 To evaluate each match the object contains, depending on which \code{param} is
 used, the m/z or mass error in ppm (variable \code{"ppm_error"}) as well as
 the m/z or mass difference (variable \code{"score"}). When \code{param} is
@@ -217,10 +213,10 @@ The \code{matchValues} method matches elements from \code{query} with those in \
 using different matching approaches depending on parameter \code{param}.
 Generally, \code{query} is expected to contain MS experimental values
 (m/z and possibly retention time) while \code{target} theoretical values from
-reference compounds. \code{target} can be \code{numeric} or a two dimensional array (
-such as a \code{data.frame}, \code{matrix} or \code{DataFrame}). The same is true for
-\code{query} which in addition can also be \code{SummarizedExperiment}. \code{matchMz} is an
-alias for \code{matchValues} to allow backward compatibility.
+reference compounds. \code{query} can be \code{numeric}, a two dimensional array (
+such as a \code{data.frame}, \code{matrix} or \code{DataFrame}) or a \code{SummarizedExperiment}.
+The same is true for \code{target}. \code{matchMz} is an alias for \code{matchValues} to
+allow backward compatibility.
 
 Available \code{param} objects and corresponding matching approaches are:
 \itemize{

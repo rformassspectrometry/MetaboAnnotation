@@ -2,38 +2,26 @@
 #'
 #' @name Matched
 #'
-#' @aliases Matched Matched-class [,Matched-method MatchedSummarizedExperiment MatchedSummarizedExperiment-class
+#' @aliases Matched Matched-class [,Matched-method
 #'
 #' @description
 #'
-#' Matches between query and target generic objects can be represented by the
-#' `Matched` object. By default, all data accessors work as
+#' Matches between *query* and *target* generic objects can be represented by
+#' the `Matched` object. By default, all data accessors work as
 #' *left joins* between the *query* and the *target* object, i.e. values are
 #' returned for each *query* object with eventual duplicated entries (values)
-#' if the query object matches more than one target object. See also
+#' if the *query* object matches more than one *target* object. See also
 #' *Creation and subsetting* as well as *Extracting data* sections below for
-#' details and more information
-#'
-#' The `MatchedSummarizedExperiment` object allows to represent matches between
-#' a [SummarizedExperiment()] object against a *target* object (which can be,
-#' like for the `Matched` object, a `data.frame`, `matrix`, `vector` or `list`).
-#' Matches represent links between rows of this `SummarizedExperiment` to the
-#' target, hence, `colnames` and `matchedData` will access the [rowData()] of
-#' the matched `SummarizedExperiment`.
+#' details and more information.
 #'
 #' @section Creation and subsetting:
 #'
-#' `Matched` and `MatchedSummarizedExperiment` objects are returned as result
-#' from the [matchValues()] function.
+#' `Matched` object is returned as result from the [matchValues()] function.
 #'
 #' Alternatively, `Matched` objects can also be created with the `Matched`
-#' function providing the `query` and `target` object as well as the `matches`
+#' function providing the `query` and `target` objects as well as the `matches`
 #' `data.frame` with two columns of integer indices defining which elements
 #' from *query* match which element from *target*.
-#'
-#' `MatchedSummarizedExperiment` objects can be created with the
-#' `MatchedSummarizedExperiment` function providing the `SummarizedExperiment`
-#' with the `query` parameter.
 #'
 #' - `[` subset the object selecting `query` object elements to keep with
 #'   parameter `i`. The resulting object will contain all the matches
@@ -73,18 +61,18 @@
 #'   belong to *query*, *target* or be related to the matches (e.g. the
 #'   score of each match). If the *query* (*target*) object is two dimensional,
 #'   its columns can be extracted (prefix` "target_"` is used for columns in the
-#'   *target* object) otherwise (if *query* respectively *target* does have only
-#'   a single dimension (e.g. is a `list` or a `character`) the whole object can
-#'   is extracted with `x$query` (`x$target`).
-#'   The matching scores are available as *variable*
-#'   `"score"`. Similar to a left join between the query and target elements,
-#'   this function returns a value for each query element, with eventual
-#'   duplicated values for query elements matching more than one target element.
-#'   If variables from the target `data.frame` are extracted, an `NA` is
-#'   reported for the entries corresponding to *query* elements that don't match
-#'   any target element. See examples below for more details.
-#'   For `MatchedSummarizedExperiment` columns in the object's `rowData` are
-#'   used as query columns and returned.
+#'   *target* object) otherwise if *query* (*target*) has only a single
+#'   dimension (e.g. is a `list` or a `character`) the whole object can be
+#'   extracted with `x$query` (`x$target`). More precisely, when
+#'   *query* (*target*) is a `SummarizedExperiment` the columns from
+#'   `rowData(query)` (rowData(`target`)) are extracted.The matching scores
+#'   are available as *variable* `"score"`. Similar to a left join between the
+#'   query and target elements, this function returns a value for each query
+#'   element, with eventual duplicated values for query elements matching more
+#'   than one target element. If variables from the target `data.frame` are
+#'   extracted, an `NA` is reported for the entries corresponding to *query*
+#'   elements that don't match any target element. See examples below for
+#'   more details.
 #'
 #' - `length` returns the number of **query** elements.
 #'
@@ -94,12 +82,12 @@
 #'   `columns = colnames(object)`). Each single column in the returned
 #'   `DataFrame` is constructed in the same way as in `$`. That is, like `$`,
 #'   this function performs a *left join* of variables from the *query* and
-#'   *target* objects returning all values for all query elements (eventually
-#'   returning duplicated elements for query elements matching multiple target
-#'   elements) and the values for the target elements matched to the respective
-#'   query elements (or `NA` if the target element is not matched to any query
-#'   element). For `MatchedSummarizedExperiment` the object's `rowData` is used
-#'   as the *query* data frame.
+#'   *target* objects (or from their `rowData` in case they are
+#'   `SummarizedExperiment`) returning all values for all *query* elements
+#'   (eventually returning duplicated elements for query elements matching
+#'   multiple target elements) and the values for the target elements matched
+#'   to the respective query elements (or `NA` if the target element is not
+#'   matched to any query element).
 #'
 #' - `matches` returns a `data.frame` with the actual matching information with
 #'   columns `"query_idx"` (index of the element in `query`), `"target_idx"`
@@ -191,7 +179,7 @@
 #'
 #' @examples
 #'
-#' ## Creating a Matched object.
+#' ## Creating a `Matched` object.
 #' q1 <- data.frame(col1 = 1:5, col2 = 6:10)
 #' t1 <- data.frame(col1 = 11:16, col2 = 17:22)
 #' ## Define matches between query row 1 with target row 2 and, query row 2
@@ -256,7 +244,7 @@
 #' nrow(target(mo_sub))
 #'
 #' ########
-#' ## Creating a Matched object with a `data.frame` for `query` and a `vector`
+#' ## Creating a `Matched` object with a `data.frame` for `query` and a `vector`
 #' ## for `target`. The matches are specified in the same way as the example
 #' ## before.
 #'
@@ -296,7 +284,8 @@
 #' length(target(mo))
 #' length(target(mo_sub))
 #'
-#' ## Reducing the target elements to only those that match at least one query row
+#' ## Reducing the target elements to only those that match at least one query
+#' ## row
 #' mo_sub <- pruneTarget(mo_sub)
 #' length(target(mo_sub))
 #'
@@ -362,7 +351,9 @@
 #'     targetValue = 15)
 #' matchedData(mo_add)
 #'
-#' ## Creating a MatchedSummarizedExperiment object.
+#' ## Creating a `Matched` object with a `SummarizedExperiment` for `query` and
+#' ## a `vector` for `target`. The matches are specified in the same way as
+#' ## the example before.
 #' library(SummarizedExperiment)
 #' q1 <- SummarizedExperiment(
 #'   assays = data.frame(matrix(NA, 5, 2)),
@@ -372,7 +363,7 @@
 #' ## Define matches between row 1 in rowData(q1) with target row 2 and,
 #' ## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target
 #' ## row 5.
-#' mo <- MatchedSummarizedExperiment(
+#' mo <- Matched(
 #'     q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
 #'                                 target_idx = c(2L, 2L, 3L, 4L, 5L),
 #'                                  score = seq(0.5, 0.9, by = 0.1)))
@@ -406,20 +397,23 @@
 #' ## from the object. Same as with `$`, a left join between the columns
 #' ## from the query and the target is performed. Below we extract selected
 #' ## columns from the object as a DataFrame.
-#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+#'                                   "target_col2"))
 #' res
 #' res$col1
 #' res$target_col1
 #'
-#' ## The example MatchedSummarizedExperiment object contains all rows in the
-#' ## rowData of the SummarizedExperiment and all target rows. Below we subset the
-#' ## object keeping only rows that are matched to at least one target row.
+#' ## The example `Matched` object contains all rows in the
+#' ## `rowData` of the `SummarizedExperiment` and all target rows. Below we
+#' ## subset the object keeping only rows that are matched to at least one
+#' ## target row.
 #' mo_sub <- mo[whichQuery(mo)]
 #'
-#' ## mo_sub contains now a SummarizedExperiment with only 3 rows:
+#' ## mo_sub contains now a `SummarizedExperiment` with only 3 rows:
 #' nrow(query(mo_sub))
 #'
-#' ## while the original object contains a SummarizedExperiment with all 5 rows:
+#' ## while the original object contains a `SummarizedExperiment` with all 5
+#' ## rows:
 #' nrow(query(mo))
 #'
 #' ## Both objects contain however still the full target object:
@@ -427,7 +421,7 @@
 #' nrow(target(mo_sub))
 #'
 #' ## With the `pruneTarget` we can however reduce also the target rows to
-#' ## only those that match at least one in the rowData of query
+#' ## only those that match at least one in the `rowData` of query
 #' mo_sub <- pruneTarget(mo_sub)
 #' nrow(target(mo_sub))
 NULL
@@ -549,7 +543,7 @@ whichQuery <- function(object) {
 #'
 #' @export
 setMethod("$", "Matched", function(x, name) {
-  .dollar(x@query, x@target, x@matches, name)
+  .dollar(.objectToMatch(x@query), .objectToMatch(x@target), x@matches, name)
 })
 
 #' @importFrom BiocGenerics colnames
@@ -558,7 +552,7 @@ setMethod("$", "Matched", function(x, name) {
 #'
 #' @rdname Matched
 setMethod("colnames", "Matched", function(x) {
-  .colnames(x@query, x@target, x@matches)
+  .colnames(.objectToMatch(x@query), .objectToMatch(x@target), x@matches)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -570,7 +564,8 @@ setMethod("colnames", "Matched", function(x) {
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    .matchedData(object@query, object@target, object@matches, columns, ... )
+    .matchedData(.objectToMatch(object@query), .objectToMatch(object@target),
+                 object@matches, columns, ... )
 })
 
 
@@ -737,6 +732,15 @@ setMethod("matchedData", "Matched", function(object,
   res[, columns, drop = FALSE]
 }
 
+#' @importMethodsFrom SummarizedExperiment rowData
+#' 
+#' @noRd
+.objectToMatch <- function(x) {
+    if(is(x, "SummarizedExperiment"))
+        x <- rowData(x)
+    x
+}
+
 #' @rdname Matched
 #'
 #' @importFrom methods validObject
@@ -791,7 +795,8 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
         stop("some indexes in \"index\" are out-of-bounds")
     if (!length(index) && length(queryValue))
-        index  <- .findMatchesIdxs(object@query, object@target,
+        index  <- .findMatchesIdxs(.objectToMatch(object@query),
+                                   .objectToMatch(object@target),
                                    object@matches, queryValue,
                                    targetValue, queryColname,
                                    targetColname)
@@ -858,7 +863,8 @@ setMethod("addMatches", "Matched",
           function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
                    score = rep(NA_real_, length(queryValue)), isIndex = FALSE) {
-              object@matches <- .addMatches(object@query, object@target,
+              object@matches <- .addMatches(.objectToMatch(object@query),
+                                            .objectToMatch(object@target),
                                             object@matches, queryValue,
                                             targetValue, queryColname,
                                             targetColname, score, isIndex)
