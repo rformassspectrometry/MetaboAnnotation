@@ -2,10 +2,12 @@
 
 ## Changes in 0.99.14
 
-- `query` and `target` of type `SummarizedExperiment` supported for `Matched`.
+- `query` and/or `target` of type `SummarizedExperiment` supported for
+  `Matched` objects.
 - `MatchedSummarizedExperiment` class removed.
-- Support `SummarizedExperiment` for both `query` and `target` parameters in
-  `matchValues`.
+- `query` and/or `target` of type `QFeatures` supported for `Matched` objects.
+- Support `SummarizedExperiment` and `QFeatures` for both `query` and `target`
+  parameters in `matchValues`.
   
 ## Changes in 0.99.13
 

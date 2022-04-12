@@ -7,7 +7,9 @@ q3 <- SummarizedExperiment(assays = data.frame(matrix(NA, 5, 2)),
                            rowData = q1,
                            colData = data.frame(cD1 = c(NA, NA),
                                                 cD2 = c(NA, NA)))
-t3 <- t1
+library(QFeatures)
+q4 <- QFeatures(list(a1 = q3, a2 = q3[4:5]))
+t3 <- t4 <- t1
 
 m <- data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                 target_idx = c(2L, 2L, 3L, 4L, 5L),
@@ -776,4 +778,20 @@ test_that(".cnt works", {
 
     t <- array(data = 1, dim = c(1, 1, 1))
     expect_error(.cnt(t), "unsupported")
+})
+
+test_that(".validate_assay works", {
+    expect_identical(.validate_assay(q4, c("a1", "a2")),
+                     "\"assayQuery\" must be of length 1")
+    expect_identical(.validate_assay(q4, "a3", "Target"),
+                 "No assay \"a3\" in \"target\"")
+    expect_null(.validate_assay(q4, "a1"))
+})
+
+test_that(".validate_assay works", {
+    expect_identical(.validate_assay(q4, c("a1", "a2")),
+                     "\"assayQuery\" must be of length 1")
+    expect_identical(.validate_assay(q4, "a3", "Target"),
+                     "No assay \"a3\" in \"target\"")
+    expect_null(.validate_assay(q4, "a1"))
 })

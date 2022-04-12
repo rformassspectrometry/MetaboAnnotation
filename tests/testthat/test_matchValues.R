@@ -130,6 +130,84 @@ test_that("matchValues, ValueParam works", {
     expect_equal(res@matches$score, c(10, 0, -10, 10, 0, -10, 9, -1))
     expect_equal(res@matches$ppm_error, c(10, 0, 10, 10, 0, 10, 9, 1) /
                      c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
+    
+    ## data.frame, SummarizedExperiment
+    trgt_se <- SummarizedExperiment(assays = data.frame(matrix(NA, 10, 2)),
+                                    rowData = trgt)
+    par <- ValueParam(tolerance = 0)
+    
+    expect_error(matchValues(qry, trgt_se, par), "`valueColname` has to be provided.")
+    expect_error(matchValues(qry, trgt_se, par,
+                             valueColname = c("notcolumn", "value")), "Missing")
+    expect_error(matchValues(qry, trgt_se, par,
+                             valueColname = c("value", "notcolumn")), "Missing")
+    res <- matchValues(qry, trgt_se, par, valueColname = "value")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt_se)
+    expect_equal(res@matches$query_idx, c(1, 2))
+    expect_equal(res@matches$target_idx, c(5, 7))
+    expect_equal(res@matches$score, c(0, 0))
+    expect_equal(res@matches$ppm_error, c(0, 0))
+    
+    ## no matches
+    res <- matchValues(qry + 0.1, trgt_se, par, valueColname = "value")
+    expect_true(is(res, "Matched"))
+    expect_equal(query(res), qry + 0.1)
+    expect_equal(target(res), trgt_se)
+    expect_true(nrow(res@matches) == 0)
+    
+    # positive tolerance
+    par <- ValueParam(tolerance = 10)
+    res <- matchValues(qry, trgt_se, par, valueColname = "value")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt_se)
+    expect_equal(res@matches$query_idx, c(1, 1, 1, 2, 2, 2, 3, 3))
+    expect_equal(res@matches$target_idx, c(4, 5, 6, 6, 7, 8, 7, 8))
+    expect_equal(res@matches$score, c(10, 0, -10, 10, 0, -10, 9, -1))
+    expect_equal(res@matches$ppm_error, c(10, 0, 10, 10, 0, 10, 9, 1) /
+                     c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
+
+    ## data.frame, QFeatures
+    trgt_qf <- QFeatures(list(a1 = trgt_se))
+    par <- ValueParam(tolerance = 0)
+
+    expect_error(matchValues(qry, trgt_qf, par), "`valueColname` has to be")
+    expect_error(matchValues(qry, trgt_qf, par,
+                             valueColname = c("notcolumn", "value")), "Missing")
+    expect_error(matchValues(qry, trgt_qf, par, valueColname = "value"),
+                 "Not valid")
+    expect_error(matchValues(qry, trgt_qf, par, targetAssay = "a3",
+                             valueColname = "value"), "Not valid")
+    expect_error(matchValues(qry, trgt_qf, par, targetAssay = "a1",
+                             valueColname = c("value", "notcolumn")), "Missing")
+    res <- matchValues(qry, trgt_qf, par, targetAssay = "a1",
+                       valueColname = "value")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt_qf)
+    expect_equal(res@matches$query_idx, c(1, 2))
+    expect_equal(res@matches$target_idx, c(5, 7))
+    expect_equal(res@matches$score, c(0, 0))
+    expect_equal(res@matches$ppm_error, c(0, 0))
+    
+    ## no matches
+    res <- matchValues(qry + 0.1, trgt_qf, par, valueColname = "value",
+                       targetAssay = "a1")
+    expect_true(is(res, "Matched"))
+    expect_equal(query(res), qry + 0.1)
+    expect_equal(target(res), trgt_qf)
+    expect_true(nrow(res@matches) == 0)
+    
+    # positive tolerance
+    par <- ValueParam(tolerance = 10)
+    res <- matchValues(qry, trgt_qf, par, valueColname = "value",
+                       targetAssay = "a1")
+    expect_equal(query(res), qry)
+    expect_equal(target(res), trgt_qf)
+    expect_equal(res@matches$query_idx, c(1, 1, 1, 2, 2, 2, 3, 3))
+    expect_equal(res@matches$target_idx, c(4, 5, 6, 6, 7, 8, 7, 8))
+    expect_equal(res@matches$score, c(10, 0, -10, 10, 0, -10, 9, -1))
+    expect_equal(res@matches$ppm_error, c(10, 0, 10, 10, 0, 10, 9, 1) /
+                     c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
 })
 
 test_that("matchValues,Mass2MzParam works", {

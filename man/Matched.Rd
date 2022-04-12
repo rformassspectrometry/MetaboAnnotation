@@ -34,6 +34,8 @@ Matched(
   target = list(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score =
     numeric()),
+  queryAssay = character(),
+  targetAssay = character(),
   metadata = list()
 )
 
@@ -95,6 +97,16 @@ matched.}
 \item{matches}{\code{data.frame} with columns \code{"query_idx"} (\code{integer}),
 \code{"target_idx"} (\code{integer}) and \code{"score"} (\code{numeric}) representing the n:m
 mapping of elements between the \code{query} and the \code{target} objects.}
+
+\item{queryAssay}{\code{character} that needs to be specified when \code{query} is
+\code{QFeatures} and corresponds to the name of one of the assay in \code{query}.
+In this case, the \code{Matched} object represents the matches between
+the \code{rowData} of that assay and data in \code{target}.}
+
+\item{targetAssay}{\code{character} that needs to be specified when \code{target} is
+\code{QFeatures} and corresponds to the name of one of the assay in \code{target}.
+In this case, the \code{Matched} object represents the matches between data in
+\code{query} and the \code{rowData} of that assay.}
 
 \item{metadata}{\code{list} with optional additional metadata.}
 
@@ -209,7 +221,9 @@ its columns can be extracted (prefix\code{ "target_"} is used for columns in the
 dimension (e.g. is a \code{list} or a \code{character}) the whole object can be
 extracted with \code{x$query} (\code{x$target}). More precisely, when
 \emph{query} (\emph{target}) is a \code{SummarizedExperiment} the columns from
-\code{rowData(query)} (rowData(\code{target})) are extracted.The matching scores
+\code{rowData(query)} (rowData(\code{target})) are extracted; when \emph{query} (\emph{target})
+is a \code{QFeatures} the columns from \code{rowData} of the assay specified in the
+\code{queryAssay} (\code{targetAssay}) slot are extracted. The matching scores
 are available as \emph{variable} \code{"score"}. Similar to a left join between the
 query and target elements, this function returns a value for each query
 element, with eventual duplicated values for query elements matching more
@@ -224,8 +238,7 @@ define which columns (or variables) should be returned (defaults to
 \code{columns = colnames(object)}). Each single column in the returned
 \code{DataFrame} is constructed in the same way as in \code{$}. That is, like \code{$},
 this function performs a \emph{left join} of variables from the \emph{query} and
-\emph{target} objects (or from their \code{rowData} in case they are
-\code{SummarizedExperiment}) returning all values for all \emph{query} elements
+\emph{target} objects returning all values for all \emph{query} elements
 (eventually returning duplicated elements for query elements matching
 multiple target elements) and the values for the target elements matched
 to the respective query elements (or \code{NA} if the target element is not

@@ -65,7 +65,9 @@
 #'   dimension (e.g. is a `list` or a `character`) the whole object can be
 #'   extracted with `x$query` (`x$target`). More precisely, when
 #'   *query* (*target*) is a `SummarizedExperiment` the columns from
-#'   `rowData(query)` (rowData(`target`)) are extracted.The matching scores
+#'   `rowData(query)` (rowData(`target`)) are extracted; when *query* (*target*)
+#'   is a `QFeatures` the columns from `rowData` of the assay specified in the
+#'   `queryAssay` (`targetAssay`) slot are extracted. The matching scores
 #'   are available as *variable* `"score"`. Similar to a left join between the
 #'   query and target elements, this function returns a value for each query
 #'   element, with eventual duplicated values for query elements matching more
@@ -82,8 +84,7 @@
 #'   `columns = colnames(object)`). Each single column in the returned
 #'   `DataFrame` is constructed in the same way as in `$`. That is, like `$`,
 #'   this function performs a *left join* of variables from the *query* and
-#'   *target* objects (or from their `rowData` in case they are
-#'   `SummarizedExperiment`) returning all values for all *query* elements
+#'   *target* objects returning all values for all *query* elements
 #'   (eventually returning duplicated elements for query elements matching
 #'   multiple target elements) and the values for the target elements matched
 #'   to the respective query elements (or `NA` if the target element is not
@@ -139,6 +140,11 @@
 #' @param target object with the elements against which `query` has been
 #'   matched.
 #'
+#' @param targetAssay `character` that needs to be specified when `target` is
+#'   `QFeatures` and corresponds to the name of one of the assay in `target`.
+#'   In this case, the `Matched` object represents the matches between data in
+#'   `query` and the `rowData` of that assay.
+#'   
 #' @param targetColname if `query` is 2-dimensional: column of `target` against
 #'   which elements of `targetValue` are compared.
 #'
@@ -151,6 +157,11 @@
 #'   `targetValue` have to match.
 #'
 #' @param query object with the query elements.
+#' 
+#' @param queryAssay `character` that needs to be specified when `query` is
+#'   `QFeatures` and corresponds to the name of one of the assay in `query`.
+#'   In this case, the `Matched` object represents the matches between
+#'   the `rowData` of that assay and data in `target`.
 #'
 #' @param queryColname if `query` is 2-dimensional: column of `query` against
 #'   which elements of `queryValue` are compared.
@@ -432,6 +443,8 @@ setClass(
         query = "ANY",
         target = "ANY",
         matches = "data.frame",
+        queryAssay = "character",
+        targetAssay = "character",
         metadata = "list",
         version = "character"
     ),
@@ -441,6 +454,8 @@ setClass(
         matches = data.frame(query_idx = integer(),
                              target_idx = integer(),
                              score = numeric()),
+        queryAssay = character(),
+        targetAssay = character(),
         metadata = list(),
         version = "0.1")
 )
@@ -452,9 +467,10 @@ Matched <- function(query = list(), target = list(),
                     matches = data.frame(query_idx = integer(),
                                          target_idx = integer(),
                                          score = numeric()),
+                    queryAssay = character(), targetAssay = character(),
                     metadata = list()) {
     new("Matched", query = query, target = target, matches = matches,
-        metadata = metadata)
+        queryAssay = queryAssay, targetAssay = targetAssay, metadata = metadata)
 }
 
 setValidity("Matched", function(object) {
@@ -469,13 +485,27 @@ setValidity("Matched", function(object) {
     if (length(msg)) return(msg)
     msg <- .validate_qt(object@target)
     if (length(msg)) return(msg)
+    msg <- .validate_assay(object@query, object@queryAssay)
+    if (length(msg)) return(msg)
+    msg <- .validate_assay(object@target, object@targetAssay, "Target")
+    if (length(msg)) return(msg)
     TRUE
 })
+
+.validate_assay <- function(x, assay, what = "Query") {
+    if (inherits(x, "QFeatures")) {
+        if (length(assay) != 1)
+            return(paste0("\"","assay", what,  "\" must be of length 1"))
+        if (!assay %in% names(x)) 
+            return(paste0("No assay \"", assay, "\" in \"",tolower(what), "\""))
+    }
+}
 
 #' @export
 #'
 #' @rdname Matched
-setMethod("length", "Matched", function(x) .nelements(x@query))
+setMethod("length", "Matched",
+          function(x) .nelements(.objectToMatch(x@query, x@queryAssay)))
 
 #' @exportMethod show
 #'
@@ -485,10 +515,11 @@ setMethod("length", "Matched", function(x) .nelements(x@query))
 setMethod("show", "Matched", function(object) {
     cat("Object of class", class(object)[1L], "\n")
     cat("Total number of matches:", nrow(object@matches), "\n")
-    cat("Number of query objects: ", .nelements(object@query),
+    cat("Number of query objects: ", length(object),
         " (", length(unique(object@matches$query_idx)), " matched)\n", sep = "")
-    cat("Number of target objects: ", .nelements(object@target),
-        " (", length(unique(object@matches$target_idx)), " matched)\n", sep = "")
+    cat("Number of target objects: ",
+        .nelements(.objectToMatch(object@target, object@targetAssay)), " (",
+        length(unique(object@matches$target_idx)), " matched)\n", sep = "")
 })
 
 #' @exportMethod [
@@ -543,7 +574,8 @@ whichQuery <- function(object) {
 #'
 #' @export
 setMethod("$", "Matched", function(x, name) {
-  .dollar(.objectToMatch(x@query), .objectToMatch(x@target), x@matches, name)
+  .dollar(.objectToMatch(x@query, x@queryAssay),
+          .objectToMatch(x@target, x@targetAssay), x@matches, name)
 })
 
 #' @importFrom BiocGenerics colnames
@@ -552,7 +584,8 @@ setMethod("$", "Matched", function(x, name) {
 #'
 #' @rdname Matched
 setMethod("colnames", "Matched", function(x) {
-  .colnames(.objectToMatch(x@query), .objectToMatch(x@target), x@matches)
+  .colnames(.objectToMatch(x@query, x@queryAssay),
+            .objectToMatch(x@target, x@targetAssay), x@matches)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -564,7 +597,8 @@ setMethod("colnames", "Matched", function(x) {
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    .matchedData(.objectToMatch(object@query), .objectToMatch(object@target),
+    .matchedData(.objectToMatch(object@query, x@queryAssay),
+                 .objectToMatch(object@target, x@targetAssay),
                  object@matches, columns, ... )
 })
 
@@ -597,7 +631,7 @@ setMethod("matchedData", "Matched", function(object,
 .subset_matches_nodim <- function(x, i) {
     if(!all(i %in% seq_len(length(x))))
         stop("subscript contains out-of-bounds indices")
-    slot(x, "query", check = FALSE) <- .extract_elements(x@query, i)
+    slot(x, "query", check = FALSE) <- .subset_qt(x@query, x@queryAssay, i)
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
     if (nrow(mtches)) {
         ## Support handling duplicated indices.
@@ -610,6 +644,17 @@ setMethod("matchedData", "Matched", function(object,
         mtches$query_idx <- rep(seq_along(i), lns)
     }
     slot(x, "matches", check = FALSE) <- mtches
+    x
+}
+
+.subset_qt <- function(x, assay, i, j, drop = FALSE) {
+    if (is(x, "QFeatures")) {
+        if (assay %in% names(x))
+            stop("Invalid assay name.")
+        x[[assay]] <- .extract_elements(x[[assay]], i, j, drop)
+    } else {
+        x <- .extract_elements(x, i, j, drop)
+    }
     x
 }
 
@@ -735,7 +780,12 @@ setMethod("matchedData", "Matched", function(object,
 #' @importMethodsFrom SummarizedExperiment rowData
 #' 
 #' @noRd
-.objectToMatch <- function(x) {
+.objectToMatch <- function(x, assayname = character()) {
+    if (is(x, "QFeatures")) {
+        if (length(assayname) != 1 || !assayname %in% names(x))
+            stop ("Not valid assay name.")
+        else x <- x[[assayname]] 
+    }
     if(is(x, "SummarizedExperiment"))
         x <- rowData(x)
     x
@@ -748,7 +798,7 @@ setMethod("matchedData", "Matched", function(object,
 #' @export
 pruneTarget <- function(object) {
     keep <- whichTarget(object)
-    object@target <- .extract_elements(object@target, keep)
+    object@target <- .subset_qt(object@target, object@targetAssay, keep)
     object@matches$target_idx <- match(object@matches$target_idx, keep)
     validObject(object)
     object
@@ -795,8 +845,8 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
         stop("some indexes in \"index\" are out-of-bounds")
     if (!length(index) && length(queryValue))
-        index  <- .findMatchesIdxs(.objectToMatch(object@query),
-                                   .objectToMatch(object@target),
+        index  <- .findMatchesIdxs(.objectToMatch(object@query, object@queryAssay),
+                                   .objectToMatch(object@target, object@targetAssay),
                                    object@matches, queryValue,
                                    targetValue, queryColname,
                                    targetColname)
@@ -863,8 +913,8 @@ setMethod("addMatches", "Matched",
           function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
                    score = rep(NA_real_, length(queryValue)), isIndex = FALSE) {
-              object@matches <- .addMatches(.objectToMatch(object@query),
-                                            .objectToMatch(object@target),
+              object@matches <- .addMatches(.objectToMatch(object@query, object@queryAssay),
+                                            .objectToMatch(object@target, object@targetAssay),
                                             object@matches, queryValue,
                                             targetValue, queryColname,
                                             targetColname, score, isIndex)

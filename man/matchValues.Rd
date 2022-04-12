@@ -59,25 +59,65 @@ matchValues(query, target, param, ...)
 
 \S4method{matchValues}{numeric,numeric,ValueParam}(query, target, param)
 
-\S4method{matchValues}{numeric,data.frameOrSimilar,ValueParam}(query, target, param, valueColname = character())
+\S4method{matchValues}{numeric,data.frameOrSimilar,ValueParam}(
+  query,
+  target,
+  param,
+  valueColname = character(),
+  targetAssay = character()
+)
 
-\S4method{matchValues}{data.frameOrSimilar,numeric,ValueParam}(query, target, param, valueColname = character())
+\S4method{matchValues}{data.frameOrSimilar,numeric,ValueParam}(
+  query,
+  target,
+  param,
+  valueColname = character(),
+  queryAssay = character()
+)
 
-\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,ValueParam}(query, target, param, valueColname = character())
+\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,ValueParam}(
+  query,
+  target,
+  param,
+  valueColname = character(),
+  queryAssay = character(),
+  targetAssay = character()
+)
 
 \S4method{matchValues}{numeric,numeric,Mass2MzParam}(query, target, param)
 
-\S4method{matchValues}{numeric,data.frameOrSimilar,Mass2MzParam}(query, target, param, massColname = "exactmass")
+\S4method{matchValues}{numeric,data.frameOrSimilar,Mass2MzParam}(
+  query,
+  target,
+  param,
+  massColname = "exactmass",
+  targetAssay = character()
+)
 
-\S4method{matchValues}{data.frameOrSimilar,numeric,Mass2MzParam}(query, target, param, mzColname = "mz")
+\S4method{matchValues}{data.frameOrSimilar,numeric,Mass2MzParam}(query, target, param, mzColname = "mz", queryAssay = character())
 
-\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam}(query, target, param, mzColname = "mz", massColname = "exactmass")
+\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam}(
+  query,
+  target,
+  param,
+  mzColname = "mz",
+  massColname = "exactmass",
+  queryAssay = character(0),
+  targetAssay = character(0)
+)
 
-\S4method{matchValues}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColname = "mz")
+\S4method{matchValues}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColname = "mz", targetAssay = character())
 
-\S4method{matchValues}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColname = "mz")
+\S4method{matchValues}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColname = "mz", queryAssay = character())
 
-\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,MzParam}(query, target, param, mzColname = c("mz", "mz"))
+\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,MzParam}(
+  query,
+  target,
+  param,
+  mzColname = c("mz", "mz"),
+  queryAssay = character(),
+  targetAssay = character()
+)
 
 \S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam}(
   query,
@@ -85,7 +125,9 @@ matchValues(query, target, param, ...)
   param,
   massColname = "exactmass",
   mzColname = "mz",
-  rtColname = c("rt", "rt")
+  rtColname = c("rt", "rt"),
+  queryAssay = character(),
+  targetAssay = character()
 )
 
 \S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,MzRtParam}(
@@ -93,23 +135,34 @@ matchValues(query, target, param, ...)
   target,
   param,
   mzColname = c("mz", "mz"),
-  rtColname = c("rt", "rt")
+  rtColname = c("rt", "rt"),
+  queryAssay = character(),
+  targetAssay = character()
 )
 
 \S4method{matchValues}{numeric,numeric,Mz2MassParam}(query, target, param)
 
-\S4method{matchValues}{numeric,data.frameOrSimilar,Mz2MassParam}(query, target, param, mzColname = "mz")
+\S4method{matchValues}{numeric,data.frameOrSimilar,Mz2MassParam}(query, target, param, mzColname = "mz", targetAssay = character())
 
-\S4method{matchValues}{data.frameOrSimilar,numeric,Mz2MassParam}(query, target, param, mzColname = "mz")
+\S4method{matchValues}{data.frameOrSimilar,numeric,Mz2MassParam}(query, target, param, mzColname = "mz", queryAssay = character())
 
-\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam}(query, target, param, mzColname = c("mz", "mz"))
+\S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam}(
+  query,
+  target,
+  param,
+  mzColname = c("mz", "mz"),
+  queryAssay = character(),
+  targetAssay = character()
+)
 
 \S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam}(
   query,
   target,
   param,
   mzColname = c("mz", "mz"),
-  rtColname = c("rt", "rt")
+  rtColname = c("rt", "rt"),
+  queryAssay = character(),
+  targetAssay = character()
 )
 }
 \arguments{
@@ -146,13 +199,14 @@ values from target m/z values. The expected format is the same as that
 for parameter \code{adducts}.}
 
 \item{query}{feature table containing information on MS1 features. Can be
-a \code{data.frame}, \code{DataFrame}, \code{matrix}, \code{SummarizedExperiment} or
-\code{numeric}. It is expected to contain m/z values and can contain also
+a \code{numeric}, \code{data.frame}, \code{DataFrame}, \code{matrix}, \code{SummarizedExperiment}
+or \code{QFeatures}. It is expected to contain m/z values and can contain also
 other variables. Matchings based on both m/z and retention time can be
 performed when a column with retention times is present in both \code{query}
 and \code{target}.}
 
-\item{target}{compound table with metabolites to compare against.}
+\item{target}{compound table with metabolites to compare against. The
+expected types are the same as those for \code{query}.}
 
 \item{param}{parameter object defining the matching approach and containing
 the settings for that approach. See description above for details.}
@@ -165,6 +219,14 @@ matching. This parameter should only be used when \code{param} is
 \code{valueParam} and in this case it must be provided (unless both \code{query}
 and \code{target} are \code{numeric}). It can be \code{character(1)} or \code{character(2)}
 in a similar way to \code{mzColname}.}
+
+\item{targetAssay}{\code{character} to be used when \code{target} is \code{QFeatures}. It
+specifies the name of the assay in \code{target} containing the informations
+to use for the matching.}
+
+\item{queryAssay}{\code{character} to be used when \code{query} is \code{QFeatures}. It
+specifies the name of the assay in \code{query} containing the informations
+to use for the matching.}
 
 \item{massColname}{\code{character(1)} with the name of the column in \code{target}
 containing the mass of compounds. To be used when \code{param} is
@@ -180,7 +242,7 @@ only to be specified for \code{query}) then \code{mzColname} is expected to be
 \code{character(1)}. If both \code{query} and \code{target} are not numeric \code{mzColname}
 is expected to be \code{character(2)} (or \code{character(1)} and in this last case
 the two column names are assumed to be the same). If not specified the
-assumed default name for coulmns with m/z values is \code{"mz"}.}
+assumed default name for columns with m/z values is \code{"mz"}.}
 
 \item{rtColname}{\code{character(2)} with the name of the column containing
 the compounds retention times in \code{query} and the name for the one in
@@ -214,34 +276,33 @@ using different matching approaches depending on parameter \code{param}.
 Generally, \code{query} is expected to contain MS experimental values
 (m/z and possibly retention time) while \code{target} theoretical values from
 reference compounds. \code{query} can be \code{numeric}, a two dimensional array (
-such as a \code{data.frame}, \code{matrix} or \code{DataFrame}) or a \code{SummarizedExperiment}.
-The same is true for \code{target}. \code{matchMz} is an alias for \code{matchValues} to
+such as a \code{data.frame}, \code{matrix} or \code{DataFrame}), a \code{SummarizedExperiment}
+or a \code{QFeatures}. In the penultimate case the information for the matching
+is expected to be in the \code{rowData} of the object while in the last one in
+the \code{rowData} of one of the object assays (that needs to be specified with
+\code{assayQuery}). The same is true for \code{target} (except that parameter
+\code{assayTarget} would be used). \code{matchMz} is an alias for \code{matchValues} to
 allow backward compatibility.
 
 Available \code{param} objects and corresponding matching approaches are:
 \itemize{
 \item \code{ValueParam}: generic matching between values in \code{query} and \code{target} given
-acceptable differences expressed in \code{ppm} and \code{tolerance}. As detailed
-above, parameters \code{query} and \code{target} of the \code{matchValues} function can be
-either \code{numeric} or any two-dimensional array. In the latter case parameter
-\code{valueColname} has to be used to specify the name of the column that
-contains the values to be matched. The function returns a \code{\link[=Matched]{Matched()}}
-object.
+acceptable differences expressed in \code{ppm} and \code{tolerance}. If \code{query} or
+\code{target} are not numeric, parameter \code{valueColname} has to be used to
+specify the name of the column that contains the values to be matched.
+The function returns a \code{\link[=Matched]{Matched()}} object.
 \item \code{MzParam}: match query m/z values against reference compounds for which
 also m/z are known. Matching is performed similarly to the \code{ValueParam}
-above. If \code{query} or \code{target} are a two dimensional array, the column name
-containing the values to be compared must be defined with \code{matchValues}'
-parameter \code{mzColname}, which defaults to \code{"mz"}. \code{MzParam} parameters
-\code{tolerance} and \code{ppm} allow to define the maximal acceptable (constant or
-m/z relative) difference between query and target m/z values.
+above. If \code{query} or \code{target} are not numeric, the column name containing
+the values to be compared must be defined with \code{matchValues}' parameter
+\code{mzColname}, which defaults to \code{"mz"}. \code{MzParam} parameters \code{tolerance}
+and \code{ppm} allow to define the maximal acceptable (constant or m/z relative)
+difference between query and target m/z values.
 \item \code{MzRtParam}: match m/z \strong{and} retention time values between \code{query} and
-\code{target}. \code{query} must be a two-dimensional array (e.g. \code{data.frame}) or
-a \code{SummarizedExperiment}. In the latter case, m/z and retention times are
-expected to be present in the object's \code{rowData}. \code{target} must be a
-two-dimensional array with reference m/z and retention times. Parameters
-\code{mzColname} and \code{rtColname} of the \code{matchValues} function allow to define
-the columns containing these values (defaulting to \code{c("mz", "mz")} and
-\code{c("rt", "rt")}, respectively). \code{MzRtParam} parameters \code{tolerance} and
+\code{target}. Parameters \code{mzColname} and \code{rtColname} of the \code{matchValues}
+function allow to define the columns in \code{query} and \code{target} containing
+these values (defaulting to \code{c("mz", "mz")} and \code{c("rt", "rt")},
+respectively). \code{MzRtParam} parameters \code{tolerance} and
 \code{ppm} have the same meaning as in \code{MzParam}; \code{MzRtParam} parameter
 \code{toleranceRt} allows to specify the maximal acceptable difference between
 query and target retention time values.
@@ -251,10 +312,10 @@ calculated from the compounds masses in the \emph{target} table using the
 adducts specified via \code{Mass2MzParam} \code{adducts} parameter (defaults to
 \code{adducts = "[M+H]+"}). After conversion of adduct masses to m/z values,
 matching is performed similarly to \code{MzParam} (i.e. the same parameters
-\code{ppm} and \code{tolerance} can be used). If \code{query} is a two-dimensional array,
+\code{ppm} and \code{tolerance} can be used). If \code{query} is not \code{numeric},
 parameter \code{mzColname} of \code{matchValues} can be used to specify the column
 containing the query's m/z values (defaults to \code{"mz"}). If \code{target} is a
-two-dimensional array, parameter \code{massColname} can be used to define the
+is not \code{numeric}, parameter \code{massColname} can be used to define the
 column containing the reference compound's masses (defaults to
 \code{"exactmass"}).
 \item \code{Mass2MzRtParam}: match m/z \strong{and} retention time values against
@@ -271,7 +332,7 @@ m/z values but matching is performed on exact masses calculated from these
 \code{query} are first converted to masses with the \code{\link[=mz2mass]{mz2mass()}} function based
 on the adducts defined with \code{queryAdducts} (defaults to \code{"[M+H]+"}). The
 same is done for m/z values in \code{target} (adducts can be defined with
-\code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are two-dimensional arrays, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
+\code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are not numeric, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
 \item \code{Mz2MassRtParam}: same as \code{Mz2MassParam} but with additional comparison of
 retention times between \code{query} and \code{target}. Parameters \code{rtColname} and
 \code{mzColname} of \code{matchValues} allow to specify which columns contain the
