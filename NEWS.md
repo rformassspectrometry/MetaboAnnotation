@@ -1,5 +1,9 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.14
+
+- Improve plotly-based mirror plots in `validateMatchedSpectra`.
+
 ## Changes in 0.99.13
 
 - Fix issue about `matchedData` not working for result objects of
