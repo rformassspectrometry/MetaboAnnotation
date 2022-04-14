@@ -211,7 +211,7 @@ test_that(".subset_matches_nodim and [ works", {
         q3, t3, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = seq(0.5, 0.9, by = 0.1)))
-    
+
     res <- .subset_matches_nodim(mo, 2)
     expect_true(length(res) == 1)
     expect_equal(res@matches$query_idx, c(1L, 1L, 1L))
@@ -219,35 +219,35 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@matches$score, mo@matches$score[c(2, 3, 4)])
     expect_equal(res@query, mo@query[2, ])
     expect_equal(res@target, mo@target)
-    
-    
+
+
     expect_error(.subset_matches_nodim(mo, 12), "out-of-bounds")
-    
+
     res <- .subset_matches_nodim(mo, c(1, 5))
     expect_equal(res@query, mo@query[c(1, 5), ])
     expect_true(length(res) == 2)
     expect_equal(res@matches$score, mo@matches$score[c(1, 5)])
-    
+
     ## arbitrary order
     res <- .subset_matches_nodim(mo, c(3, 2, 1, 1, 4))
     expect_equal(query(res), query(mo)[c(3, 2, 1, 1, 4), ])
     expect_equal(target(res), target(mo))
     expect_equal(res@matches$query_idx, c(2L, 2L, 2L, 3L, 4L))
     expect_equal(res@matches$score, c(0.6, 0.7, 0.8, 0.5, 0.5))
-    
+
     res <- mo[]
     expect_equal(res, mo)
     res <- mo[c(TRUE, FALSE)]
     expect_equal(res@matches$query_idx, 1L)
     expect_equal(res@matches$target_idx, 2L)
     expect_equal(res@matches$score, 0.5)
-    
+
     ## All works even after subsetting and pruning.
     mo <- Matched(
         q3, t3, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = seq(0.5, 0.9, by = 0.1)))
-    
+
     res <- mo[whichQuery(mo)]
     expect_equal(query(res), q3[whichQuery(mo), ])
     res <- pruneTarget(res)
@@ -504,12 +504,12 @@ test_that("matchedData,Matched works", {
     res <- matchedData(mo, columns = c("col1", "col2"))
     expect_equal(colnames(res), c("col1", "col2"))
     expect_equal(res$col1, mo$col1)
-    
+
     ## Only target object variables
     res <- matchedData(mo, columns = c("target_col1", "target_col2"))
     expect_equal(colnames(res), c("target_col1", "target_col2"))
     expect_equal(res$target_col1, mo$target_col1)
-    
+
     ## Only matches
     res <- matchedData(mo, columns = c("score"))
     expect_equal(colnames(res), c("score"))
@@ -533,7 +533,7 @@ test_that("matchedData,Matched works", {
     res <- matchedData(mo, columns = c("target_col1", "target_col2"))
     expect_equal(colnames(res), c("target_col1", "target_col2"))
     expect_equal(res$target_col1, mo$target_col1)
-    
+
     ## Only matches
     res <- matchedData(mo, columns = c("score"))
     expect_equal(colnames(res), c("score"))
@@ -586,7 +586,7 @@ test_that("pruneTarget,Matched works", {
     res <- pruneTarget(mo)
     expect_equal(matchedData(res), matchedData(mo))
     expect_true(nrow(res@target) < nrow(mo@target))
-    
+
     mo <- Matched(q3, t3, matches = data.frame(query_idx = integer(),
                                                target_idx = integer(),
                                                score = numeric()))
@@ -772,7 +772,7 @@ test_that(".extract_elements works", {
 test_that(".cnt works", {
     t <- data.frame(a = 1:5, b = 2:6)
     expect_equal(.cnt(t), c("target_a", "target_b"))
-    
+
     t <- 1:5
     expect_equal(.cnt(t), "target")
 
@@ -788,10 +788,22 @@ test_that(".validate_assay works", {
     expect_null(.validate_assay(q4, "a1"))
 })
 
-test_that(".validate_assay works", {
-    expect_identical(.validate_assay(q4, c("a1", "a2")),
-                     "\"assayQuery\" must be of length 1")
-    expect_identical(.validate_assay(q4, "a3", "Target"),
-                     "No assay \"a3\" in \"target\"")
-    expect_null(.validate_assay(q4, "a1"))
+test_that(".objectToMatch works", {
+    expect_identical(.objectToMatch(q1), q1)
+    expect_identical(.objectToMatch(q2), q2)
+    expect_identical(.objectToMatch(q3), rowData(q3))
+    expect_error(.objectToMatch(q4), "has to be provided")
+    expect_error(.objectToMatch(q4, c("a1", "a2")), "must be `character")
+    expect_error(.objectToMatch(q4, c("a3")), "with name")
+    expect_identical(.objectToMatch(q4, c("a1")), rowData(q4[["a1"]]))
+})
+
+test_that(".subset_qt works", {
+    i <- c(1, 3)
+    expect_identical(.subset_qt(q1, i = i), q1[i, ])
+    expect_identical(.subset_qt(q2, i = i), q2[i])
+    expect_identical(.subset_qt(q3, i = i), (q3)[i, ])
+    res <- .subset_qt(q4, "a1", i = i)
+    expect_is(res, "QFeatures")
+    expect_equal(res[["a1"]], q4[["a1"]][i, ])
 })

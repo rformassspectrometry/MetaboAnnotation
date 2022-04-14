@@ -476,8 +476,8 @@ Matched <- function(query = list(), target = list(),
 setValidity("Matched", function(object) {
     msg <- .validate_matches_format(object@matches)
     if (length(msg)) return(msg)
-    msg <- .validate_matches_content(object@matches, .nelements(object@query),
-                                     .nelements(object@target))
+    msg <- .validate_matches_content(object@matches, length(object),
+                                     .nelements_t(object))
     if(any(c("query", "target") %in% colnames(object@matches)))
         return("\"query\" and \"target\" can't be used as matches column names")
     if (length(msg)) return(msg)
@@ -507,6 +507,8 @@ setValidity("Matched", function(object) {
 setMethod("length", "Matched",
           function(x) .nelements(.objectToMatch(x@query, x@queryAssay)))
 
+.nelements_t <- function(x) .nelements(.objectToMatch(x@target, x@targetAssay))
+
 #' @exportMethod show
 #'
 #' @importMethodsFrom methods show
@@ -517,8 +519,7 @@ setMethod("show", "Matched", function(object) {
     cat("Total number of matches:", nrow(object@matches), "\n")
     cat("Number of query objects: ", length(object),
         " (", length(unique(object@matches$query_idx)), " matched)\n", sep = "")
-    cat("Number of target objects: ",
-        .nelements(.objectToMatch(object@target, object@targetAssay)), " (",
+    cat("Number of target objects: ", .nelements_t(object), " (",
         length(unique(object@matches$target_idx)), " matched)\n", sep = "")
 })
 
@@ -597,8 +598,8 @@ setMethod("colnames", "Matched", function(x) {
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    .matchedData(.objectToMatch(object@query, x@queryAssay),
-                 .objectToMatch(object@target, x@targetAssay),
+    .matchedData(.objectToMatch(object@query, object@queryAssay),
+                 .objectToMatch(object@target, object@targetAssay),
                  object@matches, columns, ... )
 })
 
@@ -649,7 +650,7 @@ setMethod("matchedData", "Matched", function(object,
 
 .subset_qt <- function(x, assay, i, j, drop = FALSE) {
     if (is(x, "QFeatures")) {
-        if (assay %in% names(x))
+        if (!assay %in% names(x))
             stop("Invalid assay name.")
         x[[assay]] <- .extract_elements(x[[assay]], i, j, drop)
     } else {
@@ -781,9 +782,14 @@ setMethod("matchedData", "Matched", function(object,
 #' 
 #' @noRd
 .objectToMatch <- function(x, assayname = character()) {
+    #what <- as.character(sys.call()[-1])[1]
     if (is(x, "QFeatures")) {
-        if (length(assayname) != 1 || !assayname %in% names(x))
-            stop ("Not valid assay name.")
+        if (!(len_ass <- length(assayname)))
+            stop ("assay name has to be provided when x is `QFeatures`.")
+        if (len_ass != 1)
+            stop ("assay name must be `character(1)`")
+        if (!assayname %in% names(x))
+            stop ("No assay in x with name \"", assayname, "\"")
         else x <- x[[assayname]] 
     }
     if(is(x, "SummarizedExperiment"))
