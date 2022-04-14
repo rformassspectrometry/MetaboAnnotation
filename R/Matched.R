@@ -781,19 +781,26 @@ setMethod("matchedData", "Matched", function(object,
 #' @importMethodsFrom SummarizedExperiment rowData
 #' 
 #' @noRd
-.objectToMatch <- function(x, assayname = character()) {
-    #what <- as.character(sys.call()[-1])[1]
+.objectToMatch <- function(x, assayname = character(), colnames = character()) {
+    what <- as.character(sys.call()[-1])[1]
     if (is(x, "QFeatures")) {
         if (!(len_ass <- length(assayname)))
-            stop ("assay name has to be provided when x is `QFeatures`.")
+            stop ("`", what, "Assay` has to be provided when `", what,
+                  "` is `QFeatures`.")
         if (len_ass != 1)
-            stop ("assay name must be `character(1)`")
+            stop ("`", what, "Assay` must be `character(1)`")
         if (!assayname %in% names(x))
-            stop ("No assay in x with name \"", assayname, "\"")
+            stop ("No assay in `", what, "` with name \"", assayname, "\"")
         else x <- x[[assayname]] 
     }
     if(is(x, "SummarizedExperiment"))
         x <- rowData(x)
+    if(length(colnames)) {
+        if(any(tmp <- !colnames %in% colnames(x)))
+            stop(paste0("Missing column \"", colnames[tmp], "\" in ",
+                        what, collapse = "\n"))
+        x <- x[, colnames]
+    }
     x
 }
 

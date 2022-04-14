@@ -516,10 +516,8 @@ setMethod("matchValues",
                    targetAssay = character()) {
               if(!length(valueColname))
                   stop("`valueColname` has to be provided.")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!valueColname %in% colnames(target_))
-                  stop("Missing column \"", valueColname, "\" in target")
-              res <- matchValues(query, target_[, valueColname], param)
+              target_ <- .objectToMatch(target, targetAssay, valueColname)
+              res <- matchValues(query, target_, param)
               res@target <- target
               res@targetAssay <- targetAssay
               res
@@ -534,10 +532,8 @@ setMethod("matchValues",
                    queryAssay = character()) {
               if(!length(valueColname))
                   stop("`valueColname` has to be provided.")
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!valueColname %in% colnames(query_))
-                  stop("Missing column \"", valueColname, "\" in query")
-              res <- matchValues(query_[, valueColname], target, param)
+              query_ <- .objectToMatch(query, queryAssay, valueColname)
+              res <- matchValues(query_, target, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res
@@ -554,20 +550,43 @@ setMethod("matchValues",
                   stop("`valueColname` has to be provided.")
               if(length(valueColname) == 1)
                   valueColname <- rep(valueColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!valueColname[1] %in% colnames(query_))
-                  stop("Missing column \"", valueColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!valueColname[2] %in% colnames(target_))
-                  stop("Missing column \"", valueColname[2], "\" in target")
-              res <- matchValues(query_[, valueColname[1]],
-                             target_[, valueColname[2]], param)
+              query_ <- .objectToMatch(query, queryAssay, valueColname[1])
+              target_ <- .objectToMatch(target, targetAssay, valueColname[2])
+              res <- matchValues(query_, target_, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res@target <- target
               res@targetAssay <- targetAssay
               res
           })
+
+#' #' @rdname matchValues
+#' setMethod("matchValues",
+#'           signature = c(query = "data.frameOrSimilar",
+#'                         target = "data.frameOrSimilar",
+#'                         param = "ValueParam"),
+#'           function(query, target, param, queryValueColname = character(),
+#'                    targetValueColname = character(),
+#'                    queryAssay = character(), targetAssay = character()) {
+#'               if(!length(queryValueColname) && !is.numeric(query))
+#'                   stop("`queryValueColname` has to be provided.")
+#'               if(!length(targetValueColname) && !is.numeric(target))
+#'                   stop("`targetValueColname` has to be provided.")
+#'               query_ <- .objectToMatch(query, queryAssay, targetValueColname)
+#'               target_ <- .objectToMatch(target, targetAssay, queryValueColname)
+#'               target_ <- data.frame(index = seq_along(target_), target_)
+#'               queryl <- length(query_)
+#'               res <- vector("list", queryl)
+#'               for (i in seq_len(queryl)) {
+#'                   res[[i]] <- .getMatches(i, query_[i], target = target_,
+#'                                           tolerance = param@tolerance,
+#'                                           ppm = param@ppm)
+#'               }
+#'               Matched(query = query, target = target,
+#'                       matches = do.call(rbind, res),
+#'                       queryAssay = queryAssay, targetAssay = targetAssay,
+#'                       metadata = list(param = param))
+#'           })
 
 #' @rdname matchValues
 setMethod("matchValues",
@@ -595,10 +614,8 @@ setMethod("matchValues",
                         param = "Mass2MzParam"),
           function(query, target, param, massColname = "exactmass",
                    targetAssay = character()) {
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!massColname %in% colnames(target_))
-                  stop("Missing column \"", massColname, "\" in target")
-              res <- matchValues(query, target_[, massColname], param)
+              target_ <- .objectToMatch(target, targetAssay, massColname)
+              res <- matchValues(query, target_, param)
               res@target <- target
               res@targetAssay <- targetAssay
               res
@@ -611,10 +628,8 @@ setMethod("matchValues",
                         param = "Mass2MzParam"),
           function(query, target, param, mzColname = "mz",
                    queryAssay = character()) {
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname %in% colnames(query_))
-                  stop("Missing column \"", mzColname, "\" in query")
-              res <- matchValues(query_[, mzColname], target, param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname)
+              res <- matchValues(query_, target, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res
@@ -628,14 +643,9 @@ setMethod("matchValues",
           function(query, target, param, mzColname = "mz",
                    massColname = "exactmass", queryAssay = character(0),
                    targetAssay = character(0)) {
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname %in% colnames(query_))
-                  stop("Missing column \"", mzColname, "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!massColname %in% colnames(target_))
-                  stop("Missing column \"", massColname, "\" in target")
-              res <- matchValues(query_[, mzColname], target_[, massColname],
-                                 param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname)
+              target_ <- .objectToMatch(target, targetAssay, massColname)
+              res <- matchValues(query_, target_, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res@target <- target
@@ -650,10 +660,8 @@ setMethod("matchValues",
                         param = "MzParam"),
           function(query, target, param, mzColname = "mz",
                    targetAssay = character()) {
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname %in% colnames(target_))
-                  stop("Missing column \"", mzColname, "\" in target")
-              res <- matchValues(query, target_[, mzColname], param)
+              target_ <- .objectToMatch(target, targetAssay, mzColname)
+              res <- matchValues(query, target_, param)
               res@target <- target
               res@targetAssay <- targetAssay
               res
@@ -666,10 +674,8 @@ setMethod("matchValues",
                         param = "MzParam"),
           function(query, target, param, mzColname = "mz",
                    queryAssay = character()) {
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname %in% colnames(query_))
-                  stop("Missing column \"", mzColname, "\" in query")
-              res <- matchValues(query_[, mzColname], target, param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname)
+              res <- matchValues(query_, target, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res
@@ -684,14 +690,9 @@ setMethod("matchValues",
                    queryAssay = character(), targetAssay = character()) {
               if(length(mzColname) == 1)
                   mzColname <- rep(mzColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname[1] %in% colnames(query_))
-                  stop("Missing column \"", mzColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname[2] %in% colnames(target_))
-                  stop("Missing column \"", mzColname[2], "\" in target")
-              res <- matchValues(query_[, mzColname[1]],
-                             target_[, mzColname[2]], param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname[1])
+              target_ <- .objectToMatch(target, targetAssay, mzColname[2])
+              res <- matchValues(query_, target_, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res@target <- target
@@ -709,16 +710,10 @@ setMethod("matchValues",
                    queryAssay = character(), targetAssay = character()) {
               if(length(rtColname) == 1)
                   rtColname <- rep(rtColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname %in% colnames(query_))
-                  stop("Missing column \"", mzColname, "\" in query")
-              if (!rtColname[1] %in% colnames(query_))
-                  stop("Missing column \"", rtColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!massColname %in% colnames(target_))
-                  stop("Missing column \"", massColname, "\" in target")
-              if (!rtColname[2] %in% colnames(target_))
-                  stop("Missing column \"", rtColname[2], "\" in target")
+              query_ <- .objectToMatch(query, queryAssay,
+                                       c(mzColname, rtColname[1]))
+              target_ <- .objectToMatch(target, targetAssay,
+                                        c(massColname, rtColname[2]))
               target_mz <- .mass_to_mz_df(target_[, massColname],
                                           param@targetAdducts)
               target_mz$rt <- rep(target_[, rtColname[2]],
@@ -753,23 +748,16 @@ setMethod("matchValues",
                   mzColname <- rep(mzColname, 2)
               if(length(rtColname) == 1)
                   rtColname <- rep(rtColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname[1] %in% colnames(query_))
-                  stop("Missing column \"", mzColname[1], "\" in query")
-              if (!rtColname[1] %in% colnames(query_))
-                  stop("Missing column \"", rtColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname[2] %in% colnames(target_))
-                  stop("Missing column \"", mzColname[2], "\" in target")
-              if (!rtColname[2] %in% colnames(target_))
-                  stop("Missing column \"", rtColname[2], "\" in target")
+              query_ <- .objectToMatch(query, queryAssay,
+                                       c(mzColname[1], rtColname[1]))
+              target_ <- .objectToMatch(target, targetAssay,
+                                        c(mzColname[2], rtColname[2]))
               target_mz <- data.frame(index = seq_len(nrow(target_)),
-                                      mz = target_[, mzColname[2]],
-                                      rt = target_[, rtColname[2]])
+                                      mz = target_[, 1], rt = target_[, 2])
               queryl <- nrow(query_)
               matches <- vector("list", queryl)
-              query_mz <- query_[, mzColname[1L]]
-              query_rt <- query_[, rtColname[1L]]
+              query_mz <- query_[, 1]
+              query_rt <- query_[, 2]
               for (i in seq_len(queryl)) {
                   matches[[i]] <-
                       .getMatchesMzRt(i, query_mz[i],
@@ -820,10 +808,8 @@ setMethod("matchValues",
                         param = "Mz2MassParam"),
           function(query, target, param, mzColname = "mz",
                    targetAssay = character()) {
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname %in% colnames(target_))
-                  stop("Missing column \"", mzColname, "\" in target")
-              res <- matchValues(query, target_[, mzColname], param)
+              target_ <- .objectToMatch(target, targetAssay, mzColname)
+              res <- matchValues(query, target_, param)
               res@target <- target
               res@targetAssay <- targetAssay
               res
@@ -835,10 +821,8 @@ setMethod("matchValues",
                         param = "Mz2MassParam"),
           function(query, target, param, mzColname = "mz",
                    queryAssay = character()) {
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname %in% colnames(query_))
-                  stop("Missing column \"", mzColname, "\" in query")
-              res <- matchValues(query_[, mzColname], target, param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname)
+              res <- matchValues(query_, target, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res
@@ -852,14 +836,9 @@ setMethod("matchValues",
                    queryAssay = character(), targetAssay = character()) {
               if(length(mzColname) == 1)
                   mzColname <- rep(mzColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname[1] %in% colnames(query_))
-                  stop("Missing column \"", mzColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname[2] %in% colnames(target_))
-                  stop("Missing column \"", mzColname[2], "\" in target")
-              res <- matchValues(query_[, mzColname[1]], target_[, mzColname[2]],
-                             param)
+              query_ <- .objectToMatch(query, queryAssay, mzColname[1])
+              target_ <- .objectToMatch(target, targetAssay, mzColname[2])
+              res <- matchValues(query_, target_, param)
               res@query <- query
               res@queryAssay <- queryAssay
               res@target <- target
@@ -879,16 +858,10 @@ setMethod("matchValues",
                   mzColname <- rep(mzColname, 2)
               if(length(rtColname) == 1)
                   rtColname <- rep(rtColname, 2)
-              query_ <- .objectToMatch(query, queryAssay)
-              if (!mzColname[1] %in% colnames(query_))
-                  stop("Missing column \"", mzColname[1], "\" in query")
-              if (!rtColname[1] %in% colnames(query_))
-                  stop("Missing column \"", rtColname[1], "\" in query")
-              target_ <- .objectToMatch(target, targetAssay)
-              if (!mzColname[2] %in% colnames(target_))
-                  stop("Missing column \"", mzColname[2], "\" in target")
-              if (!rtColname[2] %in% colnames(target_))
-                  stop("Missing column \"", rtColname[2], "\" in target")
+              query_ <- .objectToMatch(query, queryAssay,
+                                       c(mzColname[1], rtColname[1]))
+              target_ <- .objectToMatch(target, targetAssay,
+                                        c(mzColname[2], rtColname[2 ]))
               query_mass <- .mz_to_mass_df(query_[, mzColname[1]],
                                            param@queryAdducts)
               query_mass$rt <- rep(query_[, rtColname[1]],

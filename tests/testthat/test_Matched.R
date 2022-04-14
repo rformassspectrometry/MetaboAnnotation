@@ -796,6 +796,14 @@ test_that(".objectToMatch works", {
     expect_error(.objectToMatch(q4, c("a1", "a2")), "must be `character")
     expect_error(.objectToMatch(q4, c("a3")), "with name")
     expect_identical(.objectToMatch(q4, c("a1")), rowData(q4[["a1"]]))
+    expect_identical(.objectToMatch(q1, "assayname", "col2"), q1[, "col2"])
+    expect_identical(.objectToMatch(q3, colnames = "col2"),
+                     rowData(q3)[, "col2"])
+    expect_identical(.objectToMatch(q4, "a1", "col2"),
+                     rowData(q4[["a1"]])[, "col2"])
+    expect_error(.objectToMatch(q1, "a1", c("col1", "col3")), "Missing column")
+    expect_error(.objectToMatch(q3, "a1", c("col1", "col3")), "Missing column")
+    expect_error(.objectToMatch(q4, "a1", c("col1", "col3")), "Missing column")
 })
 
 test_that(".subset_qt works", {
