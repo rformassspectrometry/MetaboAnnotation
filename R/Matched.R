@@ -229,7 +229,8 @@
 #' ## from the object. Same as with `$`, a left join between the columns
 #' ## from the query and the target is performed. Below we extract selected
 #' ## columns from the object as a DataFrame.
-#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+#'                                    "target_col2"))
 #' res
 #' res$col1
 #' res$target_col1
@@ -478,7 +479,7 @@ setValidity("Matched", function(object) {
     if (length(msg)) return(msg)
     msg <- .validate_matches_content(object@matches, length(object),
                                      .nelements_t(object))
-    if(any(c("query", "target") %in% colnames(object@matches)))
+    if (any(c("query", "target") %in% colnames(object@matches)))
         return("\"query\" and \"target\" can't be used as matches column names")
     if (length(msg)) return(msg)
     msg <- .validate_qt(object@query)
@@ -487,19 +488,10 @@ setValidity("Matched", function(object) {
     if (length(msg)) return(msg)
     msg <- .validate_assay(object@query, object@queryAssay)
     if (length(msg)) return(msg)
-    msg <- .validate_assay(object@target, object@targetAssay, "Target")
+    msg <- .validate_assay(object@target, object@targetAssay, "target")
     if (length(msg)) return(msg)
     TRUE
 })
-
-.validate_assay <- function(x, assay, what = "Query") {
-    if (inherits(x, "QFeatures")) {
-        if (length(assay) != 1)
-            return(paste0("\"","assay", what,  "\" must be of length 1"))
-        if (!assay %in% names(x)) 
-            return(paste0("No assay \"", assay, "\" in \"",tolower(what), "\""))
-    }
-}
 
 #' @export
 #'
@@ -630,7 +622,7 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @noRd
 .subset_matches_nodim <- function(x, i) {
-    if(!all(i %in% seq_len(length(x))))
+    if (!all(i %in% seq_len(length(x))))
         stop("subscript contains out-of-bounds indices")
     slot(x, "query", check = FALSE) <- .subset_qt(x@query, x@queryAssay, i)
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
@@ -694,12 +686,26 @@ setMethod("matchedData", "Matched", function(object,
 .validate_qt <- function(x){
     msg <- NULL
     ndim <- length(dim(x))
-    if(!(ndim %in% c(0,2)))
-        msg <- c(msg, "unsupported dimensions in either \"query\" or \"target\"")
-    if (ndim == 2 && !inherits(x, "SummarizedExperiment") && is.null(colnames(x)))
+    if (!(ndim %in% c(0,2)))
+        msg <- c(msg,
+                 "unsupported dimensions in either \"query\" or \"target\"")
+    if (ndim == 2 && !inherits(x, "SummarizedExperiment") &&
+        is.null(colnames(x)))
         msg <- c(msg, paste0("either \"query\" or \"target\" have 2",
-                 " dimensions but no column names"))
+                             " dimensions but no column names"))
     msg
+}
+
+.validate_assay <- function(x, assay, what = "query") {
+    if (is(x, "QFeatures")) {
+        if (!(len_ass <- length(assay)))
+            return(paste0("`", what, "Assay` has to be provided when `", what,
+                          "` is `QFeatures`."))
+        if (len_ass != 1)
+            return(paste0("`", what, "Assay` must be `character(1)`"))
+        if (!assay %in% names(x))
+            return(paste0("No assay in `", what, "` with name \"", assay, "\""))
+    }
 }
 
 .cnt <- function(target) {
@@ -716,87 +722,84 @@ setMethod("matchedData", "Matched", function(object,
 }
 
 .colnames <- function(query, target, matches) {
-  cns <- colnames(matches)
-  cnq <- NULL
-  cnt <- .cnt(target)
-  if (length(dim(query)) == 2)
-    cnq <- colnames(query)
-  if (is.null(dim(query)))
-    cnq <- "query"
-  c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
+    cns <- colnames(matches)
+    cnq <- NULL
+    cnt <- .cnt(target)
+    if (length(dim(query)) == 2)
+        cnq <- colnames(query)
+    if (is.null(dim(query)))
+        cnq <- "query"
+    c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
 }
 
 .dollar <- function(query, target, matches, name) {
-  if(name %in% .colnames(query, target, matches))
-  {
-    not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
-    idxs_qry <- c(matches$query_idx, not_mtchd)
-    ord <- order(idxs_qry)
-    if (name %in% colnames(matches)) {
-      idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
-      return(matches[idxs_mtch, name])
-    }
-    if (name %in% .cnt(target)) {
-      idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
-      .extract_elements(target, idxs_trg, sub("target_", "", name), drop = TRUE)
-    }else
-      .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
-  } else stop("'", name, "' not available")
+    if (name %in% .colnames(query, target, matches))
+    {
+        not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
+        idxs_qry <- c(matches$query_idx, not_mtchd)
+        ord <- order(idxs_qry)
+        if (name %in% colnames(matches)) {
+            idxs_mtch <- c(seq_len(nrow(matches)),
+                           rep(NA, length(not_mtchd)))[ord]
+            return(matches[idxs_mtch, name])
+        }
+        if (name %in% .cnt(target)) {
+            idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
+            .extract_elements(target, idxs_trg, sub("target_", "", name),
+                              drop = TRUE)
+        }else
+            .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
+    } else stop("'", name, "' not available")
 }
 
 .matchedData <- function(query, target, matches, columns, ...) {
-  cnms <- .colnames(query, target, matches)
-  if (any(!columns %in% cnms))
-    stop("column(s) ", paste0(columns[!columns %in% cnms],
-                              collapse = ", "), " not available")
-  not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
-  idxs_qry <- c(matches$query_idx, not_mtchd)
-  ord <- order(idxs_qry)
-  from_target <- columns %in% .cnt(target)
-  from_matches <- columns %in% colnames(matches)
-  from_query <- !(from_target | from_matches)
-  res_q <- NULL
-  res_t <- NULL
-  res_m <- NULL
-  if (any(from_query))
-    res_q <- .extract_elements(query, idxs_qry[ord], columns[from_query])
-  if (any(from_target)) {
-    idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
-    res_t <- .extract_elements(target, idxs_trg,
-                               sub("target_", "", columns[from_target]))
-  }
-  if (any(from_matches)) {
-    idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
-    res_m <- matches[idxs_mtch, columns[from_matches], drop = FALSE]
-  }
-  if(!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
-  if(!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
-  any_qtm <- c(any(from_query), any(from_target), any(from_matches))
-  res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-  colnames(res) <- c(columns[from_query], columns[from_target],
-                     columns[from_matches])
-  res[, columns, drop = FALSE]
+    cnms <- .colnames(query, target, matches)
+    if (any(!columns %in% cnms))
+        stop("column(s) ", paste0(columns[!columns %in% cnms],
+                                  collapse = ", "), " not available")
+    not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
+    idxs_qry <- c(matches$query_idx, not_mtchd)
+    ord <- order(idxs_qry)
+    from_target <- columns %in% .cnt(target)
+    from_matches <- columns %in% colnames(matches)
+    from_query <- !(from_target | from_matches)
+    res_q <- NULL
+    res_t <- NULL
+    res_m <- NULL
+    if (any(from_query))
+        res_q <- .extract_elements(query, idxs_qry[ord], columns[from_query])
+    if (any(from_target)) {
+        idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
+        res_t <- .extract_elements(target, idxs_trg,
+                                   sub("target_", "", columns[from_target]))
+    }
+    if (any(from_matches)) {
+        idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
+        res_m <- matches[idxs_mtch, columns[from_matches], drop = FALSE]
+    }
+    if (!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
+    if (!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
+    any_qtm <- c(any(from_query), any(from_target), any(from_matches))
+    res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
+    colnames(res) <- c(columns[from_query], columns[from_target],
+                       columns[from_matches])
+    res[, columns, drop = FALSE]
 }
 
 #' @importMethodsFrom SummarizedExperiment rowData
-#' 
+#'
 #' @noRd
 .objectToMatch <- function(x, assayname = character(), colnames = character()) {
     what <- as.character(sys.call()[-1])[1]
     if (is(x, "QFeatures")) {
-        if (!(len_ass <- length(assayname)))
-            stop ("`", what, "Assay` has to be provided when `", what,
-                  "` is `QFeatures`.")
-        if (len_ass != 1)
-            stop ("`", what, "Assay` must be `character(1)`")
-        if (!assayname %in% names(x))
-            stop ("No assay in `", what, "` with name \"", assayname, "\"")
-        else x <- x[[assayname]] 
+        msg <- .validate_assay(x, assayname, what)
+        if (!is.null(msg)) stop(msg)
+        else x <- x[[assayname]]
     }
-    if(is(x, "SummarizedExperiment"))
+    if (is(x, "SummarizedExperiment"))
         x <- rowData(x)
-    if(length(colnames)) {
-        if(any(tmp <- !colnames %in% colnames(x)))
+    if (length(colnames)) {
+        if (any(tmp <- !colnames %in% colnames(x)))
             stop(paste0("Missing column \"", colnames[tmp], "\" in ",
                         what, collapse = "\n"))
         x <- x[, colnames]
@@ -818,28 +821,30 @@ pruneTarget <- function(object) {
 }
 
 .findMatchesIdxs <- function(query, target, matches, queryValue = integer(),
-                         targetValue = integer(),
-                         queryColname = character(),
-                         targetColname = character()) {
+                             targetValue = integer(),
+                             queryColname = character(),
+                             targetColname = character()) {
     if (length(queryValue) != length(targetValue))
         stop("'queryValue' and 'targetValue' must have the same length")
     if (length(dim(query)) == 2) {
         if (length(queryColname) == 0)
-            stop("\"", queryColname,"\" must be set when 'query' is 2-dimensional")
+            stop("\"", queryColname,
+                 "\" must be set when 'query' is 2-dimensional")
         if (!queryColname %in% colnames(query))
-            stop("\"", queryColname,"\" is not a column of 'query'")
+            stop("\"", queryColname, "\" is not a column of 'query'")
     }
     targetColname <- sub("target_", "", targetColname)
     if (length(dim(target)) == 2) {
-        if(length(targetColname) == 0)
-            stop("\"", targetColname,"\" must be set when 'target' is 2-dimensional")
+        if (length(targetColname) == 0)
+            stop("\"", targetColname,
+                 "\" must be set when 'target' is 2-dimensional")
         if (!targetColname %in% colnames(target))
-            stop("\"", targetColname,"\" is not a column of 'target'")
+            stop("\"", targetColname, "\" is not a column of 'target'")
     }
     mq <- .extract_elements(query, matches$query_idx, queryColname,
                             drop = TRUE)
     mt <- .extract_elements(target, matches$target_idx, targetColname,
-                                               drop = TRUE)
+                            drop = TRUE)
     unlist(sapply(seq_along(queryValue), function(i)
         which(mq == queryValue[i] & mt == targetValue[i])))
 }
@@ -858,8 +863,10 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
         stop("some indexes in \"index\" are out-of-bounds")
     if (!length(index) && length(queryValue))
-        index  <- .findMatchesIdxs(.objectToMatch(object@query, object@queryAssay),
-                                   .objectToMatch(object@target, object@targetAssay),
+        index  <- .findMatchesIdxs(.objectToMatch(object@query,
+                                                  object@queryAssay),
+                                   .objectToMatch(object@target,
+                                                  object@targetAssay),
                                    object@matches, queryValue,
                                    targetValue, queryColname,
                                    targetColname)
@@ -882,7 +889,8 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
         stop("'score' needs to be either a 'data.frame' or a numeric")
     if (length(queryValue) != length(targetValue) ||
         length(queryValue) != nrow(score))
-        stop("'queryValue', 'targetValue' and 'score' must have the same length")
+        stop("'queryValue',
+             'targetValue' and 'score' must have the same length")
     if (isIndex) {
         if (!is.integer(queryValue) || !is.integer(targetValue))
             stop(paste0("'queryValue' and 'targetValue' must be integer ",
@@ -926,8 +934,10 @@ setMethod("addMatches", "Matched",
           function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
                    score = rep(NA_real_, length(queryValue)), isIndex = FALSE) {
-              object@matches <- .addMatches(.objectToMatch(object@query, object@queryAssay),
-                                            .objectToMatch(object@target, object@targetAssay),
+              object@matches <- .addMatches(.objectToMatch(object@query,
+                                                           object@queryAssay),
+                                            .objectToMatch(object@target,
+                                                           object@targetAssay),
                                             object@matches, queryValue,
                                             targetValue, queryColname,
                                             targetColname, score, isIndex)

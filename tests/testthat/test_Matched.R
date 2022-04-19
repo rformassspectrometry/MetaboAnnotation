@@ -15,7 +15,6 @@ m <- data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                 target_idx = c(2L, 2L, 3L, 4L, 5L),
                 score = seq(0.5, 0.9, by = 0.1))
 
-#### maybe to remove in test_MatchedSpectra.R?
 test_that("validator work", {
     ## .validate_matches_format
     res <- .validate_matches_format(4)
@@ -255,7 +254,6 @@ test_that(".subset_matches_nodim and [ works", {
     expect_equal(res@matches$target_idx, c(1L, 1L, 2L, 3L, 4L))
 })
 
-#### maybe to remove in test_MatchedSpectra.R?
 test_that(".fill_index works", {
     res <- .fill_index(1:5, integer())
     expect_equal(res, 1:5)
@@ -715,10 +713,10 @@ test_that("addMatches,Matched works", {
     expect_equal(target(moadd), target(mo))
 
     #### query vector and target data.frame
-    mo <- Matched(
-        q1[, "col1"], t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
-                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
-                                     score = seq(0.5, 0.9, by = 0.1)))
+    mo <- Matched(q1[, "col1"], t1,
+                  matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                       target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                       score = seq(0.5, 0.9, by = 0.1)))
     moadd <- addMatches(mo, queryValue = c(q1[c(3, 5), "col1"], 50),
                         targetValue = c(t1[c(1, 6), "col2"], 50),
                         targetColname = "col2",
@@ -782,9 +780,9 @@ test_that(".cnt works", {
 
 test_that(".validate_assay works", {
     expect_identical(.validate_assay(q4, c("a1", "a2")),
-                     "\"assayQuery\" must be of length 1")
-    expect_identical(.validate_assay(q4, "a3", "Target"),
-                 "No assay \"a3\" in \"target\"")
+                     "`queryAssay` must be `character(1)`")
+    expect_identical(.validate_assay(q4, "a3", "target"),
+                     "No assay in `target` with name \"a3\"")
     expect_null(.validate_assay(q4, "a1"))
 })
 

@@ -297,7 +297,8 @@ mo$target_col1
 ## from the object. Same as with `$`, a left join between the columns
 ## from the query and the target is performed. Below we extract selected
 ## columns from the object as a DataFrame.
-res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+                                   "target_col2"))
 res
 res$col1
 res$target_col1

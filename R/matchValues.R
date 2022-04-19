@@ -34,7 +34,7 @@ setClass("MzParam", contains = "ValueParam")
 #'
 #' @export
 MzParam <- function(tolerance = 0, ppm = 5) {
-  new("MzParam", tolerance = tolerance, ppm = ppm)
+    new("MzParam", tolerance = tolerance, ppm = ppm)
 }
 
 #' @importFrom MetaboCoreUtils adductNames
@@ -56,8 +56,8 @@ setClass("Mass2MzParam",
 #'
 #' @export
 Mass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
-  new("Mass2MzParam", targetAdducts = adducts, tolerance = tolerance,
-      ppm = ppm)
+    new("Mass2MzParam", targetAdducts = adducts, tolerance = tolerance,
+        ppm = ppm)
 }
 
 #' @importFrom MetaboCoreUtils adductNames
@@ -65,15 +65,15 @@ Mass2MzParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5) {
 #' @noRd
 setClass("Mass2MzRtParam",
          slots = c(
-           toleranceRt = "numeric"),
+             toleranceRt = "numeric"),
          contains = "Mass2MzParam",
          prototype = prototype(
-           toleranceRt = 0),
+             toleranceRt = 0),
          validity = function(object) {
-           msg <- NULL
-           if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
-             msg <- c("'toleranceRt' has to be a positive number of length 1")
-           msg
+             msg <- NULL
+             if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
+                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+             msg
          })
 
 #' @rdname matchValues
@@ -82,23 +82,23 @@ setClass("Mass2MzRtParam",
 #'
 #' @export
 Mass2MzRtParam <- function(adducts = c("[M+H]+"), tolerance = 0, ppm = 5,
-                                 toleranceRt = 0) {
-  new("Mass2MzRtParam", targetAdducts = adducts, tolerance = tolerance,
-      ppm = ppm, toleranceRt = toleranceRt)
+                           toleranceRt = 0) {
+    new("Mass2MzRtParam", targetAdducts = adducts, tolerance = tolerance,
+        ppm = ppm, toleranceRt = toleranceRt)
 }
 
 #' @noRd
 setClass("MzRtParam",
          slots = c(
-           toleranceRt = "numeric"),
+             toleranceRt = "numeric"),
          contains = "MzParam",
          prototype = prototype(
-           toleranceRt = 0),
+             toleranceRt = 0),
          validity = function(object) {
-           msg <- NULL
-           if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
-             msg <- c("'toleranceRt' has to be a positive number of length 1")
-           msg
+             msg <- NULL
+             if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
+                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+             msg
          })
 
 #' @rdname matchValues
@@ -107,7 +107,7 @@ setClass("MzRtParam",
 #'
 #' @export
 MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
-  new("MzRtParam", tolerance = tolerance, ppm = ppm, toleranceRt = toleranceRt)
+    new("MzRtParam", tolerance = tolerance, ppm = ppm, toleranceRt = toleranceRt)
 }
 
 #' @importFrom MetaboCoreUtils adductNames
@@ -115,15 +115,15 @@ MzRtParam <- function(tolerance = 0, ppm = 0, toleranceRt = 0) {
 #' @noRd
 setClass("Mz2MassParam",
          slots = c(
-           queryAdducts = "adductClass",
-           targetAdducts = "adductClass"),
+             queryAdducts = "adductClass",
+             targetAdducts = "adductClass"),
          contains = "ValueParam",
          prototype = prototype(
-           queryAdducts = c("[M+H]+"),
-           targetAdducts = c("[M-H]-")),
+             queryAdducts = c("[M+H]+"),
+             targetAdducts = c("[M-H]-")),
          validity = function(object) {
-           c(.valid_adduct(object@queryAdducts, "`queryAdducts`"),
-             .valid_adduct(object@targetAdducts, "`targetAdducts`"))
+             c(.valid_adduct(object@queryAdducts, "`queryAdducts`"),
+               .valid_adduct(object@targetAdducts, "`targetAdducts`"))
          })
 
 #' @rdname matchValues
@@ -134,8 +134,8 @@ setClass("Mz2MassParam",
 Mz2MassParam <- function(queryAdducts = c("[M+H]+"),
                          targetAdducts = c("[M-H]-"),
                          tolerance = 0, ppm = 5) {
-  new("Mz2MassParam", queryAdducts = queryAdducts,
-      targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm)
+    new("Mz2MassParam", queryAdducts = queryAdducts,
+        targetAdducts = targetAdducts, tolerance = tolerance, ppm = ppm)
 }
 
 #' @noRd
@@ -798,7 +798,7 @@ setMethod("matchValues",
               Matched(query = query, target = target,
                       matches = matches[, c(1, 2, 6, 3, 4, 5)],
                       metadata = list(param = param))
-
+              
           })
 
 #' @rdname matchValues
@@ -814,6 +814,7 @@ setMethod("matchValues",
               res@targetAssay <- targetAssay
               res
           })
+
 #' @rdname matchValues
 setMethod("matchValues",
           signature = c(query = "data.frameOrSimilar",
