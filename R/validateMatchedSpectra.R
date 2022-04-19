@@ -19,6 +19,8 @@
 #'
 #' @importFrom BiocParallel bpparam SerialParam register
 #'
+#' @importFrom methods slotNames
+#'
 #' @author Carolin Huber, Michael Witting, Johannes Rainer
 #'
 #' @examples
@@ -83,6 +85,14 @@ validateMatchedSpectra <- function(object) {
     server <- function(input, output, session) {
         query_ids <- .createChoices(object)
         dt <- .create_dt(object)
+        ppm <- 20
+        tolerance <- 0
+        if (length(prm <- object@metadata$param)) {
+            if ("ppm" %in% slotNames(prm))
+                ppm <- prm@ppm
+            if ("tolerance" %in% slotNames(prm))
+                tolerance <- prm@tolerance
+        }
         if (nrow(dt)) {
             dt <- data.frame(valid = TRUE, dt)
         } else dt <- data.frame(valid = logical(), dt)
@@ -116,7 +126,9 @@ validateMatchedSpectra <- function(object) {
             } else
                 shinyjs::disable("valid")
             output$plot <- plotly::renderPlotly(
-                        .plotlySpectraMirror(query(current_match), Spectra()))
+                        .plotlySpectraMirror(query(current_match), Spectra(),
+                                             xLabel = "query",
+                                             yLabel = "target"))
         })
         ## Choose target spectrum
         shiny::observeEvent(input$targets_rows_selected, {
@@ -128,7 +140,10 @@ validateMatchedSpectra <- function(object) {
                 shiny::updateCheckboxInput(session, "valid", value = current_valid)
                 output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match),
-                                             target(current_match)[tidx]))
+                                             target(current_match)[tidx],
+                                             ppm = ppm, tolerance = tolerance,
+                                             xLabel = "query",
+                                             yLabel = "target"))
             }
         })
         shiny::observeEvent(input$valid, {
@@ -146,56 +161,126 @@ validateMatchedSpectra <- function(object) {
 }
 
 #' function to create interactive plot
+#'
+#' This is `SpectraVis::plotlySpectraMirror` - replace with import or require
+#' once `SpectraVis` is in Bioconductor.
+#'
 #' @importMethodsFrom Spectra peaksData
 #'
-#' @param x `Spectra` of length 1
-#'
-#' @param y `Spectra` of length 1
-#'
-#' @param col optional colors.
+#' @importFrom MsCoreUtils common
 #'
 #' @noRd
-.plotlySpectraMirror <- function(x, y, col = c("#E41A1C", "#377EB8"),
-                                 main = "") {
+.plotlySpectraMirror <- function(x, y, xLabel = "", xColor = "#737373",
+                                yLabel = "", yColor = "#737373", matchSize = 5,
+                                ppm = 20, tolerance = 0) {
+    stopifnot(inherits(x, "Spectra"))
+    stopifnot(inherits(y, "Spectra"))
     if (!requireNamespace("plotly", quietly = TRUE))
         stop("The use of '.plotlySpectraMirror' requires package 'plotly'. ",
              "Please install with 'BiocInstaller::install(\"plotly\")'")
-    if (length(col) != 2)
-        col <- col[c(1, 1)]
-    if (length(x)) {
-        upper <- as.data.frame(peaksData(x)[[1L]])
-    } else upper <- data.frame(mz = numeric(), intensity = numeric())
-    if (length(y)) {
-        lower <- as.data.frame(peaksData(y)[[1L]])
-    } else lower <- data.frame(mz = numeric(), intensity = numeric())
-    if (nrow(upper))
-        upper$zero <- 0.0
-    else upper$zero <- numeric()
-    if (nrow(lower))
-        lower$zero <- 0.0
-    else lower$zero <- numeric()
-
-    mz_range <- range(upper$mz, lower$mz) + c(-1, 1)
-    maxy <- max(upper$intensity, lower$intensity, na.rm = TRUE)
-    int_range <- list(-maxy, maxy)
-
-    lower$intensity <- -lower$intensity
     p <- plotly::plot_ly()
-    p <- plotly::add_segments(p, data = upper, x = ~mz, y = ~zero, xend = ~mz,
-                              yend = ~intensity, line = list(color = col[1L]),
-                              name = "query",
-                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::add_segments(p, data = lower, x = ~mz, y = ~zero, xend = ~mz,
-                              yend = ~intensity, line = list(color = col[2L]),
-                              name = "target",
-                              hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
-    p <- plotly::layout(p, title = main,
-                        xaxis = list(title = "m/z", range = mz_range),
-                        yaxis = list(title = "intensity", zeroline = TRUE,
-                                     range = int_range),
-                        hovermode = "x", hoverdistance = 1)
-    p
+    if (length(x) > 1 || length(y) > 1)
+        stop("'x' and 'y' have to be of length 1")
+    if (length(x))
+        x_peaks <- as.data.frame(peaksData(x)[[1L]])
+    else x_peaks <- data.frame(mz = numeric(), intensity = numeric(),
+                               match = character())
+    if (length(y))
+        y_peaks <- as.data.frame(peaksData(y)[[1L]])
+    else y_peaks <- data.frame(mz = numeric(), intensity = numeric(),
+                               match = character())
+
+    x_range <- range(x_peaks$mz, y_peaks$mz, na.rm = TRUE) + c(-1, 1)
+    y_max <- max(x_peaks$intensity, y_peaks$intensity, na.rm = TRUE)
+    y_peaks$intensity <- -y_peaks$intensity
+
+    ht <- "<b>%{text}</b><br>mz: %{x}<br>int: %{y}"
+    if (nrow(x_peaks)) {
+        x_peaks$zero <- 0.0
+        x_peaks$match <- ""
+        x_peaks$color <- xColor[1L]
+        idx <- which(common(x_peaks$mz, y_peaks$mz, tolerance, ppm))
+        if (length(idx))
+            x_peaks$match[idx] <- "matched"
+        p <- .plotly_peaks(p, x_peaks, name = xLabel, col = xColor[1L],
+                           hovertemplate = ht, text = ~match)
+    }
+    if (nrow(y_peaks)) {
+        y_peaks$zero <- 0.0
+        y_peaks$match <- ""
+        y_peaks$color <- yColor[1L]
+        idx <- which(common(y_peaks$mz, x_peaks$mz, tolerance, ppm))
+        if (length(idx))
+            y_peaks$match[idx] <- "matched"
+        p <- .plotly_peaks(p, y_peaks, name = yLabel, col = yColor[1L],
+                           hovertemplate = ht, text = ~match)
+    }
+    pks <- rbind(x_peaks, y_peaks)
+    pks <- pks[pks$match != "", , drop = FALSE]
+    if (nrow(pks))
+        p <- plotly::add_trace(p, data = pks, x = ~mz, y = ~intensity,
+                       type = "scatter", mode = "markers",
+                       hoverinfo = "none", name = "matched",
+                       marker = list(size = matchSize[1L],
+                                     color = ~color))
+    plotly::layout(p, xaxis = list(title = "m/z", zeroline = FALSE),
+           yaxis = list(title = "intensity", zeroline = TRUE),
+           hovermode = "x", hoverdistance = 1)
 }
+
+#' That's also from `SpectraVis` - remove if `SpectraVis` is used instead.
+#'
+#' @noRd
+.plotly_peaks <- function(p, data, col = "#737373", name = "",
+                          hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>",
+                          ...) {
+    plotly::add_segments(p, data = data, x = ~mz, y = ~zero, xend = ~mz,
+                 yend = ~intensity, line = list(color = col),
+                 name = name, hovertemplate = hovertemplate, ...)
+}
+
+
+## .plotlySpectraMirror <- function(x, y, col = c("#E41A1C", "#377EB8"),
+##                                  main = "") {
+##     if (!requireNamespace("plotly", quietly = TRUE))
+##         stop("The use of '.plotlySpectraMirror' requires package 'plotly'. ",
+##              "Please install with 'BiocInstaller::install(\"plotly\")'")
+##     if (length(col) != 2)
+##         col <- col[c(1, 1)]
+##     if (length(x)) {
+##         upper <- as.data.frame(peaksData(x)[[1L]])
+##     } else upper <- data.frame(mz = numeric(), intensity = numeric())
+##     if (length(y)) {
+##         lower <- as.data.frame(peaksData(y)[[1L]])
+##     } else lower <- data.frame(mz = numeric(), intensity = numeric())
+##     if (nrow(upper))
+##         upper$zero <- 0.0
+##     else upper$zero <- numeric()
+##     if (nrow(lower))
+##         lower$zero <- 0.0
+##     else lower$zero <- numeric()
+
+##     mz_range <- range(upper$mz, lower$mz) + c(-1, 1)
+##     maxy <- max(upper$intensity, lower$intensity, na.rm = TRUE)
+##     int_range <- list(-maxy, maxy)
+
+##     lower$intensity <- -lower$intensity
+##     p <- plotly::plot_ly()
+##     p <- plotly::add_segments(p, data = upper, x = ~mz, y = ~zero, xend = ~mz,
+##                               yend = ~intensity, line = list(color = col[1L]),
+##                               name = "query",
+##                               hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
+##     p <- plotly::add_segments(p, data = lower, x = ~mz, y = ~zero, xend = ~mz,
+##                               yend = ~intensity, line = list(color = col[2L]),
+##                               name = "target",
+##                               hovertemplate = "<br>mz: %{x}<br>int: %{y}<br>")
+##     p <- plotly::layout(p, title = main,
+##                         xaxis = list(title = "m/z", range = mz_range),
+##                         yaxis = list(title = "intensity", zeroline = TRUE,
+##                                      range = int_range),
+##                         hovermode = "x", hoverdistance = 1)
+##     p
+## }
 
 #' isolate entries for feature selection
 #' @noRd
