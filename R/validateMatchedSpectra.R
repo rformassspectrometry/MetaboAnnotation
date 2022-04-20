@@ -128,7 +128,9 @@ validateMatchedSpectra <- function(object) {
             output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match), Spectra(),
                                              xLabel = "query",
-                                             yLabel = "target"))
+                                             xColor = "#E41A1C",
+                                             yLabel = "target",
+                                             yColor = "#377EB8"))
         })
         ## Choose target spectrum
         shiny::observeEvent(input$targets_rows_selected, {
@@ -143,7 +145,9 @@ validateMatchedSpectra <- function(object) {
                                              target(current_match)[tidx],
                                              ppm = ppm, tolerance = tolerance,
                                              xLabel = "query",
-                                             yLabel = "target"))
+                                             xColor = "#E41A1C",
+                                             yLabel = "target",
+                                             yColor = "#377EB8"))
             }
         })
         shiny::observeEvent(input$valid, {

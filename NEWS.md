@@ -1,5 +1,10 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.15
+
+- Highlight query and target spectra in different colors for
+  `validateMatchedSpectra`.
+
 ## Changes in 0.99.14
 
 - Improve plotly-based mirror plots in `validateMatchedSpectra`.
