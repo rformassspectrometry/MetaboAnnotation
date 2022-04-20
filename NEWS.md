@@ -1,5 +1,14 @@
 # MetaboAnnotation 0.99
 
+## Changes in 0.99.15
+
+- `query` and/or `target` of type `SummarizedExperiment` supported for
+  `Matched` objects.
+- `MatchedSummarizedExperiment` class removed.
+- `query` and/or `target` of type `QFeatures` supported for `Matched` objects.
+- Support `SummarizedExperiment` and `QFeatures` for both `query` and `target`
+  parameters in `matchValues`.
+
 ## Changes in 0.99.14
 
 - Improve plotly-based mirror plots in `validateMatchedSpectra`.

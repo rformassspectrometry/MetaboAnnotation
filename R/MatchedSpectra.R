@@ -290,7 +290,7 @@ setMethod("$", "MatchedSpectra", function(x, name) {
     if (name %in% spectraVariables(x@query))
         qry <- spectraData(x@query, name)
     else qry <- spectraData(x@query, "msLevel")
-    if (length(grep("^target_", name)))
+    if (name %in% paste0("target_", spectraVariables(x@target)))
         trg <- spectraData(x@target, sub("^target_", "", name))
     else trg <- data.frame()
     .dollar(qry, trg, x@matches, name)
@@ -303,11 +303,11 @@ setMethod("spectraData", "MatchedSpectra",
           function(object, columns = spectraVariables(object)) {
               mtches <- object@matches
               ## Better to subset target Spectra before passing it on.
-              cols_trg <- grep("^target_", columns)
+              cols_trg <- spectraVariables(object@target)
+              cols_trg <- cols_trg[paste0("target_", cols_trg) %in% columns]
               if (length(cols_trg)) {
                   trg <- as.data.frame(
-                      spectraData(object@target[mtches$target_idx],
-                                  sub("^target_", "", columns[cols_trg])))
+                      spectraData(object@target[mtches$target_idx], cols_trg))
                   mtches$target_idx <- seq_len(nrow(mtches))
               } else
                   trg <- data.frame()

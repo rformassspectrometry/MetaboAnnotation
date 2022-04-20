@@ -8,33 +8,6 @@ df2 <- DataFrame(
 sp1 <- Spectra(df1)
 sp2 <- Spectra(df2)
 
-test_that("validator work", {
-    ## .validate_matches_format
-    res <- .validate_matches_format(4)
-    expect_match(res, "data.frame")
-        res <- .validate_matches_format(data.frame())
-    expect_match(res, "Not all ")
-    tmp <- data.frame(query_idx = 1:3, target_idx = 1:6, score = 12)
-    res <- .validate_matches_format(tmp)
-    expect_equal(res, NULL)
-    tmp$query_idx <- "a"
-    res <- .validate_matches_format(tmp)
-    expect_match(res, "query_idx")
-    tmp$query_idx <- 1:6
-    tmp$target_idx <- "a"
-    res <- .validate_matches_format(tmp)
-    expect_match(res, "target_idx")
-
-    ## .validate_matches_content
-    tmp$target_idx <- c(1:3, 1:3)
-    res <- .validate_matches_content(tmp, 3, 3)
-    expect_match(res, "query_idx")
-    res <- .validate_matches_content(tmp, 9, 2)
-    expect_match(res, "target_idx")
-    res <- .validate_matches_content(tmp, 10, 10)
-    expect_equal(res, NULL)
-})
-
 test_that("MatchedSpectra works", {
     ms <- MatchedSpectra()
     expect_true(validObject(ms))
@@ -50,7 +23,7 @@ test_that("MatchedSpectra works", {
                                        target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
                                        score = 1:6))
     expect_true(validObject(ms))
-    expect_true(length(ms) == 10) # <-------- Changed to 10. It was 6.
+    expect_true(length(ms) == 10)
     expect_output(show(ms), "5 matched")
     expect_true(is(query(ms), "Spectra"))
     expect_true(is(target(ms), "Spectra"))
@@ -85,15 +58,8 @@ test_that(".subset_matches_nodim and [ works", {
 
     res <- .subset_matches_nodim(ms, c(2, 4))
     expect_equal(res@query, ms@query[c(2, 4)])
-    expect_true(length(res) == 2) # <-------- Changed to 10. It was 4.
+    expect_true(length(res) == 2)
     expect_equal(res@matches$score, 3:6)
-
-    ## duplicated index
-    # res <- .subset_matches_nodim2(ms, c(2, 4, 2)) #<----- .subset_matches_nodim2?
-    # expect_true(length(res) == 5)
-    # expect_equal(res@matches$score, c(3, 4, 5, 6, 3))
-    # expect_equal(query(res), query(ms)[c(2, 4, 2)])
-    # expect_equal(target(res), target(ms))
 
     ## arbitrary order
     res <- .subset_matches_nodim(ms, c(3, 2, 1, 1, 6, 9))
@@ -117,15 +83,6 @@ test_that(".subset_matches_nodim and [ works", {
     res <- ms[whichQuery(ms)]
     expect_equal(res$spectrum_id, c("a", "a", "b", "d", "d", "d"))
     res <- pruneTarget(res)
-})
-
-test_that(".fill_index works", {
-    res <- .fill_index(1:5, integer())
-    expect_equal(res, 1:5)
-
-    res <- .fill_index(1:20, c(2, 4, 4, 4, 6, 9, 10))
-    expect_equal(res, c(1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                        14, 15, 16, 17, 18, 19, 20))
 })
 
 test_that("$,MatchedSpectra works", {
