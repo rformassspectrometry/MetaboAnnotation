@@ -2,38 +2,35 @@
 #'
 #' @name Matched
 #'
-#' @aliases Matched Matched-class [,Matched-method MatchedSummarizedExperiment MatchedSummarizedExperiment-class
+#' @aliases Matched Matched-class [,Matched-method
 #'
 #' @description
 #'
-#' Matches between query and target generic objects can be represented by the
-#' `Matched` object. By default, all data accessors work as
+#' Matches between *query* and *target* generic objects can be represented by
+#' the `Matched` object. By default, all data accessors work as
 #' *left joins* between the *query* and the *target* object, i.e. values are
 #' returned for each *query* object with eventual duplicated entries (values)
-#' if the query object matches more than one target object. See also
+#' if the *query* object matches more than one *target* object. See also
 #' *Creation and subsetting* as well as *Extracting data* sections below for
-#' details and more information
+#' details and more information.
 #'
-#' The `MatchedSummarizedExperiment` object allows to represent matches between
-#' a [SummarizedExperiment()] object against a *target* object (which can be,
-#' like for the `Matched` object, a `data.frame`, `matrix`, `vector` or `list`).
-#' Matches represent links between rows of this `SummarizedExperiment` to the
-#' target, hence, `colnames` and `matchedData` will access the [rowData()] of
-#' the matched `SummarizedExperiment`.
+#' The `Matched` object allows to represent matches between one-dimensional
+#' `query` and `target` objects (being e.g. `numeric` or `list`),
+#' two-dimensional objects (`data.frame` or `matrix`) or more complex
+#' structures such as `SummarizedExperiments` or `QFeatures`. Combinations of
+#' all these different data types are also supported. Matches are represented
+#' between elements of one-dimensional objects, or rows for two-dimensional
+#' objects (including `SummarizedExperiment` or `QFeatures`). For [QFeatures()]
+#' objects matches to only one of the *assays* within the object is supported.
 #'
 #' @section Creation and subsetting:
 #'
-#' `Matched` and `MatchedSummarizedExperiment` objects are returned as result
-#' from the [matchValues()] function.
+#' `Matched` object is returned as result from the [matchValues()] function.
 #'
 #' Alternatively, `Matched` objects can also be created with the `Matched`
-#' function providing the `query` and `target` object as well as the `matches`
+#' function providing the `query` and `target` objects as well as the `matches`
 #' `data.frame` with two columns of integer indices defining which elements
 #' from *query* match which element from *target*.
-#'
-#' `MatchedSummarizedExperiment` objects can be created with the
-#' `MatchedSummarizedExperiment` function providing the `SummarizedExperiment`
-#' with the `query` parameter.
 #'
 #' - `[` subset the object selecting `query` object elements to keep with
 #'   parameter `i`. The resulting object will contain all the matches
@@ -73,18 +70,20 @@
 #'   belong to *query*, *target* or be related to the matches (e.g. the
 #'   score of each match). If the *query* (*target*) object is two dimensional,
 #'   its columns can be extracted (prefix` "target_"` is used for columns in the
-#'   *target* object) otherwise (if *query* respectively *target* does have only
-#'   a single dimension (e.g. is a `list` or a `character`) the whole object can
-#'   is extracted with `x$query` (`x$target`).
-#'   The matching scores are available as *variable*
-#'   `"score"`. Similar to a left join between the query and target elements,
-#'   this function returns a value for each query element, with eventual
-#'   duplicated values for query elements matching more than one target element.
-#'   If variables from the target `data.frame` are extracted, an `NA` is
-#'   reported for the entries corresponding to *query* elements that don't match
-#'   any target element. See examples below for more details.
-#'   For `MatchedSummarizedExperiment` columns in the object's `rowData` are
-#'   used as query columns and returned.
+#'   *target* object) otherwise if *query* (*target*) has only a single
+#'   dimension (e.g. is a `list` or a `character`) the whole object can be
+#'   extracted with `x$query` (`x$target`). More precisely, when
+#'   *query* (*target*) is a `SummarizedExperiment` the columns from
+#'   `rowData(query)` (rowData(`target`)) are extracted; when *query* (*target*)
+#'   is a [QFeatures()] the columns from `rowData` of the assay specified in the
+#'   `queryAssay` (`targetAssay`) slot are extracted. The matching scores
+#'   are available as *variable* `"score"`. Similar to a left join between the
+#'   query and target elements, this function returns a value for each query
+#'   element, with eventual duplicated values for query elements matching more
+#'   than one target element. If variables from the target `data.frame` are
+#'   extracted, an `NA` is reported for the entries corresponding to *query*
+#'   elements that don't match any target element. See examples below for
+#'   more details.
 #'
 #' - `length` returns the number of **query** elements.
 #'
@@ -94,12 +93,11 @@
 #'   `columns = colnames(object)`). Each single column in the returned
 #'   `DataFrame` is constructed in the same way as in `$`. That is, like `$`,
 #'   this function performs a *left join* of variables from the *query* and
-#'   *target* objects returning all values for all query elements (eventually
-#'   returning duplicated elements for query elements matching multiple target
-#'   elements) and the values for the target elements matched to the respective
-#'   query elements (or `NA` if the target element is not matched to any query
-#'   element). For `MatchedSummarizedExperiment` the object's `rowData` is used
-#'   as the *query* data frame.
+#'   *target* objects returning all values for all *query* elements
+#'   (eventually returning duplicated elements for query elements matching
+#'   multiple target elements) and the values for the target elements matched
+#'   to the respective query elements (or `NA` if the target element is not
+#'   matched to any query element).
 #'
 #' - `matches` returns a `data.frame` with the actual matching information with
 #'   columns `"query_idx"` (index of the element in `query`), `"target_idx"`
@@ -151,6 +149,11 @@
 #' @param target object with the elements against which `query` has been
 #'   matched.
 #'
+#' @param targetAssay `character` that needs to be specified when `target` is
+#'   a `QFeatures`. In this case, `targetAssay` is expected to be the name of
+#'   one of the assays in `target` (the one on which the matching was
+#'   performed).
+#'
 #' @param targetColname if `query` is 2-dimensional: column of `target` against
 #'   which elements of `targetValue` are compared.
 #'
@@ -163,6 +166,10 @@
 #'   `targetValue` have to match.
 #'
 #' @param query object with the query elements.
+#'
+#' @param queryAssay `character` that needs to be specified when `query` is
+#'   a `QFeatures`. In this case, `queryAssay` is expected to be the name of
+#'   one of the assays in `query` (the one on which the matching was performed).
 #'
 #' @param queryColname if `query` is 2-dimensional: column of `query` against
 #'   which elements of `queryValue` are compared.
@@ -191,7 +198,7 @@
 #'
 #' @examples
 #'
-#' ## Creating a Matched object.
+#' ## Creating a `Matched` object.
 #' q1 <- data.frame(col1 = 1:5, col2 = 6:10)
 #' t1 <- data.frame(col1 = 11:16, col2 = 17:22)
 #' ## Define matches between query row 1 with target row 2 and, query row 2
@@ -230,7 +237,8 @@
 #' ## from the object. Same as with `$`, a left join between the columns
 #' ## from the query and the target is performed. Below we extract selected
 #' ## columns from the object as a DataFrame.
-#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+#'                                    "target_col2"))
 #' res
 #' res$col1
 #' res$target_col1
@@ -256,7 +264,7 @@
 #' nrow(target(mo_sub))
 #'
 #' ########
-#' ## Creating a Matched object with a `data.frame` for `query` and a `vector`
+#' ## Creating a `Matched` object with a `data.frame` for `query` and a `vector`
 #' ## for `target`. The matches are specified in the same way as the example
 #' ## before.
 #'
@@ -296,7 +304,8 @@
 #' length(target(mo))
 #' length(target(mo_sub))
 #'
-#' ## Reducing the target elements to only those that match at least one query row
+#' ## Reducing the target elements to only those that match at least one query
+#' ## row
 #' mo_sub <- pruneTarget(mo_sub)
 #' length(target(mo_sub))
 #'
@@ -362,7 +371,9 @@
 #'     targetValue = 15)
 #' matchedData(mo_add)
 #'
-#' ## Creating a MatchedSummarizedExperiment object.
+#' ## Creating a `Matched` object with a `SummarizedExperiment` for `query` and
+#' ## a `vector` for `target`. The matches are specified in the same way as
+#' ## the example before.
 #' library(SummarizedExperiment)
 #' q1 <- SummarizedExperiment(
 #'   assays = data.frame(matrix(NA, 5, 2)),
@@ -372,7 +383,7 @@
 #' ## Define matches between row 1 in rowData(q1) with target row 2 and,
 #' ## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target
 #' ## row 5.
-#' mo <- MatchedSummarizedExperiment(
+#' mo <- Matched(
 #'     q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
 #'                                 target_idx = c(2L, 2L, 3L, 4L, 5L),
 #'                                  score = seq(0.5, 0.9, by = 0.1)))
@@ -406,20 +417,23 @@
 #' ## from the object. Same as with `$`, a left join between the columns
 #' ## from the query and the target is performed. Below we extract selected
 #' ## columns from the object as a DataFrame.
-#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1", "target_col2"))
+#' res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+#'                                   "target_col2"))
 #' res
 #' res$col1
 #' res$target_col1
 #'
-#' ## The example MatchedSummarizedExperiment object contains all rows in the
-#' ## rowData of the SummarizedExperiment and all target rows. Below we subset the
-#' ## object keeping only rows that are matched to at least one target row.
+#' ## The example `Matched` object contains all rows in the
+#' ## `rowData` of the `SummarizedExperiment` and all target rows. Below we
+#' ## subset the object keeping only rows that are matched to at least one
+#' ## target row.
 #' mo_sub <- mo[whichQuery(mo)]
 #'
-#' ## mo_sub contains now a SummarizedExperiment with only 3 rows:
+#' ## mo_sub contains now a `SummarizedExperiment` with only 3 rows:
 #' nrow(query(mo_sub))
 #'
-#' ## while the original object contains a SummarizedExperiment with all 5 rows:
+#' ## while the original object contains a `SummarizedExperiment` with all 5
+#' ## rows:
 #' nrow(query(mo))
 #'
 #' ## Both objects contain however still the full target object:
@@ -427,7 +441,7 @@
 #' nrow(target(mo_sub))
 #'
 #' ## With the `pruneTarget` we can however reduce also the target rows to
-#' ## only those that match at least one in the rowData of query
+#' ## only those that match at least one in the `rowData` of query
 #' mo_sub <- pruneTarget(mo_sub)
 #' nrow(target(mo_sub))
 NULL
@@ -438,6 +452,8 @@ setClass(
         query = "ANY",
         target = "ANY",
         matches = "data.frame",
+        queryAssay = "character",
+        targetAssay = "character",
         metadata = "list",
         version = "character"
     ),
@@ -447,6 +463,8 @@ setClass(
         matches = data.frame(query_idx = integer(),
                              target_idx = integer(),
                              score = numeric()),
+        queryAssay = character(),
+        targetAssay = character(),
         metadata = list(),
         version = "0.1")
 )
@@ -458,22 +476,27 @@ Matched <- function(query = list(), target = list(),
                     matches = data.frame(query_idx = integer(),
                                          target_idx = integer(),
                                          score = numeric()),
+                    queryAssay = character(), targetAssay = character(),
                     metadata = list()) {
     new("Matched", query = query, target = target, matches = matches,
-        metadata = metadata)
+        queryAssay = queryAssay, targetAssay = targetAssay, metadata = metadata)
 }
 
 setValidity("Matched", function(object) {
     msg <- .validate_matches_format(object@matches)
     if (length(msg)) return(msg)
-    msg <- .validate_matches_content(object@matches, .nelements(object@query),
-                                     .nelements(object@target))
-    if(any(c("query", "target") %in% colnames(object@matches)))
+    msg <- .validate_matches_content(object@matches, length(object),
+                                     .nelements_t(object))
+    if (any(c("query", "target") %in% colnames(object@matches)))
         return("\"query\" and \"target\" can't be used as matches column names")
     if (length(msg)) return(msg)
     msg <- .validate_qt(object@query)
     if (length(msg)) return(msg)
     msg <- .validate_qt(object@target)
+    if (length(msg)) return(msg)
+    msg <- .validate_assay(object@query, object@queryAssay)
+    if (length(msg)) return(msg)
+    msg <- .validate_assay(object@target, object@targetAssay, "target")
     if (length(msg)) return(msg)
     TRUE
 })
@@ -481,7 +504,10 @@ setValidity("Matched", function(object) {
 #' @export
 #'
 #' @rdname Matched
-setMethod("length", "Matched", function(x) .nelements(x@query))
+setMethod("length", "Matched",
+          function(x) .nelements(.objectToMatch(x@query, x@queryAssay)))
+
+.nelements_t <- function(x) .nelements(.objectToMatch(x@target, x@targetAssay))
 
 #' @exportMethod show
 #'
@@ -491,10 +517,10 @@ setMethod("length", "Matched", function(x) .nelements(x@query))
 setMethod("show", "Matched", function(object) {
     cat("Object of class", class(object)[1L], "\n")
     cat("Total number of matches:", nrow(object@matches), "\n")
-    cat("Number of query objects: ", .nelements(object@query),
+    cat("Number of query objects: ", length(object),
         " (", length(unique(object@matches$query_idx)), " matched)\n", sep = "")
-    cat("Number of target objects: ", .nelements(object@target),
-        " (", length(unique(object@matches$target_idx)), " matched)\n", sep = "")
+    cat("Number of target objects: ", .nelements_t(object), " (",
+        length(unique(object@matches$target_idx)), " matched)\n", sep = "")
 })
 
 #' @exportMethod [
@@ -549,7 +575,8 @@ whichQuery <- function(object) {
 #'
 #' @export
 setMethod("$", "Matched", function(x, name) {
-  .dollar(x@query, x@target, x@matches, name)
+  .dollar(.objectToMatch(x@query, x@queryAssay),
+          .objectToMatch(x@target, x@targetAssay), x@matches, name)
 })
 
 #' @importFrom BiocGenerics colnames
@@ -558,7 +585,8 @@ setMethod("$", "Matched", function(x, name) {
 #'
 #' @rdname Matched
 setMethod("colnames", "Matched", function(x) {
-  .colnames(x@query, x@target, x@matches)
+  .colnames(.objectToMatch(x@query, x@queryAssay),
+            .objectToMatch(x@target, x@targetAssay), x@matches)
 })
 
 #' @importMethodsFrom S4Vectors cbind
@@ -570,7 +598,9 @@ setMethod("colnames", "Matched", function(x) {
 #' @export
 setMethod("matchedData", "Matched", function(object,
                                              columns = colnames(object), ...) {
-    .matchedData(object@query, object@target, object@matches, columns, ... )
+    .matchedData(.objectToMatch(object@query, object@queryAssay),
+                 .objectToMatch(object@target, object@targetAssay),
+                 object@matches, columns, ... )
 })
 
 
@@ -600,9 +630,9 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @noRd
 .subset_matches_nodim <- function(x, i) {
-    if(!all(i %in% seq_len(length(x))))
-        stop("subscript contains out-of-bounds indices")
-    slot(x, "query", check = FALSE) <- .extract_elements(x@query, i)
+    if (!all(i %in% seq_len(length(x))))
+        stop("subscript contains out-of-bounds indices", call. = FALSE)
+    slot(x, "query", check = FALSE) <- .subset_qt(x@query, x@queryAssay, i)
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
     if (nrow(mtches)) {
         ## Support handling duplicated indices.
@@ -615,6 +645,17 @@ setMethod("matchedData", "Matched", function(object,
         mtches$query_idx <- rep(seq_along(i), lns)
     }
     slot(x, "matches", check = FALSE) <- mtches
+    x
+}
+
+.subset_qt <- function(x, assay, i, j, drop = FALSE) {
+    if (is(x, "QFeatures")) {
+        if (!assay %in% names(x))
+            stop("Invalid assay name.", call. = FALSE)
+        x[[assay]] <- .extract_elements(x[[assay]], i, j, drop)
+    } else {
+        x <- .extract_elements(x, i, j, drop)
+    }
     x
 }
 
@@ -653,12 +694,26 @@ setMethod("matchedData", "Matched", function(object,
 .validate_qt <- function(x){
     msg <- NULL
     ndim <- length(dim(x))
-    if(!(ndim %in% c(0,2)))
-        msg <- c(msg, "unsupported dimensions in either \"query\" or \"target\"")
-    if (ndim == 2 && !inherits(x, "SummarizedExperiment") && is.null(colnames(x)))
+    if (!(ndim %in% c(0,2)))
+        msg <- c(msg,
+                 "unsupported dimensions in either \"query\" or \"target\"")
+    if (ndim == 2 && !inherits(x, "SummarizedExperiment") &&
+        is.null(colnames(x)))
         msg <- c(msg, paste0("either \"query\" or \"target\" have 2",
-                 " dimensions but no column names"))
+                             " dimensions but no column names"))
     msg
+}
+
+.validate_assay <- function(x, assay, what = "query") {
+    if (is(x, "QFeatures")) {
+        if (!(len_ass <- length(assay)))
+            return(paste0("`", what, "Assay` has to be provided when `", what,
+                          "` is `QFeatures`."))
+        if (len_ass != 1)
+            return(paste0("`", what, "Assay` must be `character(1)`"))
+        if (!assay %in% names(x))
+            return(paste0("No assay in `", what, "` with name \"", assay, "\""))
+    }
 }
 
 .cnt <- function(target) {
@@ -669,72 +724,96 @@ setMethod("matchedData", "Matched", function(object,
     } else if (ndim == 0) {
         cnt <- "target"
     } else {
-        stop("unsupported dimensions in \"target\"")
+        stop("unsupported dimensions in \"target\"", call. = FALSE)
     }
     cnt
 }
 
 .colnames <- function(query, target, matches) {
-  cns <- colnames(matches)
-  cnq <- NULL
-  cnt <- .cnt(target)
-  if (length(dim(query)) == 2)
-    cnq <- colnames(query)
-  if (is.null(dim(query)))
-    cnq <- "query"
-  c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
+    cns <- colnames(matches)
+    cnq <- NULL
+    cnt <- .cnt(target)
+    if (length(dim(query)) == 2)
+        cnq <- colnames(query)
+    if (is.null(dim(query)))
+        cnq <- "query"
+    c(cnq, cnt, cns[!cns %in% c("query_idx", "target_idx")])
 }
 
 .dollar <- function(query, target, matches, name) {
-  if(name %in% .colnames(query, target, matches))
-  {
-    not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
-    idxs_qry <- c(matches$query_idx, not_mtchd)
-    ord <- order(idxs_qry)
-    if (name %in% colnames(matches)) {
-      idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
-      return(matches[idxs_mtch, name])
-    }
-    if (name %in% .cnt(target)) {
-      idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
-      .extract_elements(target, idxs_trg, sub("target_", "", name), drop = TRUE)
-    }else
-      .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
-  } else stop("'", name, "' not available")
+    if (name %in% .colnames(query, target, matches))
+    {
+        not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
+        idxs_qry <- c(matches$query_idx, not_mtchd)
+        ord <- order(idxs_qry)
+        if (name %in% colnames(matches)) {
+            idxs_mtch <- c(seq_len(nrow(matches)),
+                           rep(NA, length(not_mtchd)))[ord]
+            return(matches[idxs_mtch, name])
+        }
+        if (name %in% .cnt(target)) {
+            idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
+            .extract_elements(target, idxs_trg, sub("target_", "", name),
+                              drop = TRUE)
+        }else
+            .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
+    } else stop("'", name, "' not available", call. = FALSE)
 }
 
 .matchedData <- function(query, target, matches, columns, ...) {
-  cnms <- .colnames(query, target, matches)
-  if (any(!columns %in% cnms))
-    stop("column(s) ", paste0(columns[!columns %in% cnms],
-                              collapse = ", "), " not available")
-  not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
-  idxs_qry <- c(matches$query_idx, not_mtchd)
-  ord <- order(idxs_qry)
-  from_target <- columns %in% .cnt(target)
-  from_matches <- columns %in% colnames(matches)
-  from_query <- !(from_target | from_matches)
-  res_q <- NULL
-  res_t <- NULL
-  res_m <- NULL
-  if (any(from_query))
-    res_q <- .extract_elements(query, idxs_qry[ord], columns[from_query])
-  if (any(from_target)) {
-    idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
-    res_t <- .extract_elements(target, idxs_trg,
-                               sub("target_", "", columns[from_target]))
-  }
-  if (any(from_matches)) {
-    idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
-    res_m <- matches[idxs_mtch, columns[from_matches], drop = FALSE]
-  }
-  if(!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
-  if(!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
-  any_qtm <- c(any(from_query), any(from_target), any(from_matches))
-  res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
-  colnames(res) <- c(columns[from_query], columns[from_target],
-                     columns[from_matches])
-  res[, columns, drop = FALSE]
+    cnms <- .colnames(query, target, matches)
+    if (any(!columns %in% cnms))
+        stop("column(s) ", paste0(columns[!columns %in% cnms],
+                                  collapse = ", "), " not available",
+             call. = FALSE)
+    not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
+    idxs_qry <- c(matches$query_idx, not_mtchd)
+    ord <- order(idxs_qry)
+    from_target <- columns %in% .cnt(target)
+    from_matches <- columns %in% colnames(matches)
+    from_query <- !(from_target | from_matches)
+    res_q <- NULL
+    res_t <- NULL
+    res_m <- NULL
+    if (any(from_query))
+        res_q <- .extract_elements(query, idxs_qry[ord], columns[from_query])
+    if (any(from_target)) {
+        idxs_trg <- c(matches$target_idx, rep(NA, length(not_mtchd)))[ord]
+        res_t <- .extract_elements(target, idxs_trg,
+                                   sub("target_", "", columns[from_target]))
+    }
+    if (any(from_matches)) {
+        idxs_mtch <- c(seq_len(nrow(matches)), rep(NA, length(not_mtchd)))[ord]
+        res_m <- matches[idxs_mtch, columns[from_matches], drop = FALSE]
+    }
+    if (!is.null(res_q) && is.null(dim(query))) res_q <- I(res_q)
+    if (!is.null(res_t) && is.null(dim(target))) res_t <- I(res_t)
+    any_qtm <- c(any(from_query), any(from_target), any(from_matches))
+    res <- DataFrame(do.call(cbind, list(res_q, res_t, res_m)[any_qtm]))
+    colnames(res) <- c(columns[from_query], columns[from_target],
+                       columns[from_matches])
+    res[, columns, drop = FALSE]
+}
+
+#' @importMethodsFrom SummarizedExperiment rowData
+#'
+#' @noRd
+.objectToMatch <- function(x, assayname = character(), colnames = character()) {
+    what <- as.character(sys.call()[-1])[1]
+    if (is(x, "QFeatures")) {
+        msg <- .validate_assay(x, assayname, what)
+        if (!is.null(msg)) stop(msg, call. = FALSE)
+        else x <- x[[assayname]]
+    }
+    if (is(x, "SummarizedExperiment"))
+        x <- rowData(x)
+    if (length(colnames)) {
+        if (any(tmp <- !colnames %in% colnames(x)))
+            stop(paste0("Missing column \"", colnames[tmp], "\" in ",
+                        what, collapse = "\n"), call. = FALSE)
+        x <- x[, colnames]
+    }
+    x
 }
 
 #' @rdname Matched
@@ -744,35 +823,40 @@ setMethod("matchedData", "Matched", function(object,
 #' @export
 pruneTarget <- function(object) {
     keep <- whichTarget(object)
-    object@target <- .extract_elements(object@target, keep)
+    object@target <- .subset_qt(object@target, object@targetAssay, keep)
     object@matches$target_idx <- match(object@matches$target_idx, keep)
     validObject(object)
     object
 }
 
 .findMatchesIdxs <- function(query, target, matches, queryValue = integer(),
-                         targetValue = integer(),
-                         queryColname = character(),
-                         targetColname = character()) {
+                             targetValue = integer(),
+                             queryColname = character(),
+                             targetColname = character()) {
     if (length(queryValue) != length(targetValue))
-        stop("'queryValue' and 'targetValue' must have the same length")
+        stop("'queryValue' and 'targetValue' must have the same length",
+             call. = FALSE)
     if (length(dim(query)) == 2) {
         if (length(queryColname) == 0)
-            stop("\"", queryColname,"\" must be set when 'query' is 2-dimensional")
+            stop("\"", queryColname,
+                 "\" must be set when 'query' is 2-dimensional", call. = FALSE)
         if (!queryColname %in% colnames(query))
-            stop("\"", queryColname,"\" is not a column of 'query'")
+            stop("\"", queryColname, "\" is not a column of 'query'",
+                 call. = FALSE)
     }
     targetColname <- sub("target_", "", targetColname)
     if (length(dim(target)) == 2) {
-        if(length(targetColname) == 0)
-            stop("\"", targetColname,"\" must be set when 'target' is 2-dimensional")
+        if (length(targetColname) == 0)
+            stop("\"", targetColname,
+                 "\" must be set when 'target' is 2-dimensional", call. = FALSE)
         if (!targetColname %in% colnames(target))
-            stop("\"", targetColname,"\" is not a column of 'target'")
+            stop("\"", targetColname, "\" is not a column of 'target'",
+                 call. = FALSE)
     }
     mq <- .extract_elements(query, matches$query_idx, queryColname,
                             drop = TRUE)
     mt <- .extract_elements(target, matches$target_idx, targetColname,
-                                               drop = TRUE)
+                            drop = TRUE)
     unlist(sapply(seq_along(queryValue), function(i)
         which(mq == queryValue[i] & mt == targetValue[i])))
 }
@@ -789,9 +873,12 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
                                                 index = integer(),
                                                 keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out-of-bounds")
+        stop("some indexes in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(queryValue))
-        index  <- .findMatchesIdxs(object@query, object@target,
+        index  <- .findMatchesIdxs(.objectToMatch(object@query,
+                                                  object@queryAssay),
+                                   .objectToMatch(object@target,
+                                                  object@targetAssay),
                                    object@matches, queryValue,
                                    targetValue, queryColname,
                                    targetColname)
@@ -811,27 +898,33 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     if (!is.data.frame(score))
         score <- data.frame(score = score)
     if (!is.data.frame(score))
-        stop("'score' needs to be either a 'data.frame' or a numeric")
+        stop("'score' needs to be either a 'data.frame' or a numeric",
+             call. = FALSE)
     if (length(queryValue) != length(targetValue) ||
         length(queryValue) != nrow(score))
-        stop("'queryValue', 'targetValue' and 'score' must have the same length")
+        stop("'queryValue', 'targetValue' and 'score' must have the",
+             " same length", call. = FALSE)
     if (isIndex) {
         if (!is.integer(queryValue) || !is.integer(targetValue))
-            stop(paste0("'queryValue' and 'targetValue' must be integer ",
-                        "vectors when 'isIndex = TRUE'"))
+            stop("'queryValue' and 'targetValue' must be integer ",
+                 "vectors when 'isIndex = TRUE'", call. = FALSE)
         if (any(!queryValue %in% seq_len(.nelements(query))))
-            stop("Provided indices in 'queryValue' are out-of-bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.",
+                 call. = FALSE)
         if (any(!targetValue %in% seq_len(.nelements(target))))
-            stop("Provided indices in 'queryValue' are out-of-bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.",
+                 call. = FALSE)
         query_idx <- queryValue
         target_idx <- targetValue
     } else {
         if (length(dim(query)) == 2)
             if (!queryColname %in% colnames(query))
-                stop("\"", queryColname,"\" is not a column of 'query'")
+                stop("\"", queryColname,"\" is not a column of 'query'",
+                     call. = FALSE)
         if (length(dim(target)) == 2)
             if (!targetColname %in% colnames(target))
-                stop("\"", targetColname,"\" is not a column of 'target'")
+                stop("\"", targetColname,"\" is not a column of 'target'",
+                     call. = FALSE)
         mq <- match(queryValue, .extract_elements(query, j = queryColname,
                                                   drop = TRUE))
         mt <- match(targetValue, .extract_elements(target, j = targetColname,
@@ -858,7 +951,10 @@ setMethod("addMatches", "Matched",
           function(object, queryValue = integer(), targetValue = integer(),
                    queryColname = character(), targetColname = character(),
                    score = rep(NA_real_, length(queryValue)), isIndex = FALSE) {
-              object@matches <- .addMatches(object@query, object@target,
+              object@matches <- .addMatches(.objectToMatch(object@query,
+                                                           object@queryAssay),
+                                            .objectToMatch(object@target,
+                                                           object@targetAssay),
                                             object@matches, queryValue,
                                             targetValue, queryColname,
                                             targetColname, score, isIndex)

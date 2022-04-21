@@ -4,6 +4,12 @@
 
 - Highlight query and target spectra in different colors for
   `validateMatchedSpectra`.
+- `query` and/or `target` of type `SummarizedExperiment` supported for
+  `Matched` objects.
+- `MatchedSummarizedExperiment` class removed.
+- `query` and/or `target` of type `QFeatures` supported for `Matched` objects.
+- Support `SummarizedExperiment` and `QFeatures` for both `query` and `target`
+  parameters in `matchValues`.
 
 ## Changes in 0.99.14
 

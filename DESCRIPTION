@@ -38,6 +38,7 @@ Imports:
     Spectra (>= 1.5.7),
     BiocParallel,
     SummarizedExperiment,
+    QFeatures,
     graphics
 Suggests:
     testthat,
