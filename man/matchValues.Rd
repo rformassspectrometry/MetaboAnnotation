@@ -220,13 +220,15 @@ matching. This parameter should only be used when \code{param} is
 and \code{target} are \code{numeric}). It can be \code{character(1)} or \code{character(2)}
 in a similar way to \code{mzColname}.}
 
-\item{targetAssay}{\code{character} to be used when \code{target} is \code{QFeatures}. It
-specifies the name of the assay in \code{target} containing the informations
-to use for the matching.}
+\item{targetAssay}{\code{character(1)} specifying the name of the assay of the
+provided \code{QFeatures} that should be used for the matching (values from
+this assay's \code{rowData} will be used for matching). Only used if \code{target}
+is an instance of a \code{QFeatures} object.}
 
-\item{queryAssay}{\code{character} to be used when \code{query} is \code{QFeatures}. It
-specifies the name of the assay in \code{query} containing the informations
-to use for the matching.}
+\item{queryAssay}{\code{character(1)} specifying the name of the assay of the
+provided \code{QFeatures} that should be used for the matching (values from
+this assay's \code{rowData} will be used for matching). Only used if \code{query}
+is an instance of a \code{QFeatures} object.}
 
 \item{massColname}{\code{character(1)} with the name of the column in \code{target}
 containing the mass of compounds. To be used when \code{param} is
@@ -252,37 +254,37 @@ Defaults to \code{rtColname = c("rt", "rt")}.}
 }
 \value{
 \link{Matched} object representing the result.
-To evaluate each match the object contains, depending on which \code{param} is
-used, the m/z or mass error in ppm (variable \code{"ppm_error"}) as well as
-the m/z or mass difference (variable \code{"score"}). When \code{param} is
-\code{Mz2MassParam} such difference and ppm error are obtained using mass values
-internally computed from m/z values in \code{query} and \code{target} (see above
-for more detail on \code{Mz2MassParam}). When \code{param} is either \code{MzParam},
-\code{MzRtParam}, \code{Mass2MzParam} or \code{Mass2MzRtParam} \code{"ppm_error"} and \code{"score"}
-are computed from m/z values. In the first two cases both the m/z values are
-contained in \code{query} and \code{target} parameters. In the last two m/z values are
-internally computed from reference mass values in \code{target}. See more details
-for each individual parameter above. Additionally, if \code{param} is either
-\code{MzRtParam} or \code{Mass2MzRtParam} also retention time is used for the matching
-and the difference in retention time for each of the matched elements is also
-added to the returned \code{Matched} object. Note that, for a match, a negative
-value of \code{"score"} (or \code{"score_rt"}) indicates that the m/z or mass (or
-retention time) associated to the query element is smaller than that
-associated to the target element.
+
+Depending on the \code{param} object different \emph{scores} representing the quality
+of the match are provided. This comprises absolute as well as relative
+differences (column/variables \code{"score"} and \code{"ppm_error"} respectively).
+If \code{param} is a \code{Mz2MassParam}, \code{"score"} and \code{"ppm_error"} represent
+differences of the compared masses (calculated from the provided m/z values).
+If \code{param} an \code{MzParam}, \code{MzRtParam}, \code{Mass2MzParam} or \code{Mass2MzRtParam},
+\code{"score"} and \code{"ppm_error"} represent absolute and relative differences of
+m/z values.
+Additionally, if \code{param} is either an \code{MzRtParam} or \code{Mass2MzRtParam}
+differences between query and target retention times for each matched
+element is available in the column/variable \code{"score_rt"} in the returned
+\code{Matched} object.
+Negative values of \code{"score"} (or \code{"score_rt"}) indicate that the m/z or mass
+(or retention time) of the query element is smaller than that of the target
+element.
 }
 \description{
 The \code{matchValues} method matches elements from \code{query} with those in \code{target}
 using different matching approaches depending on parameter \code{param}.
 Generally, \code{query} is expected to contain MS experimental values
-(m/z and possibly retention time) while \code{target} theoretical values from
-reference compounds. \code{query} can be \code{numeric}, a two dimensional array (
-such as a \code{data.frame}, \code{matrix} or \code{DataFrame}), a \code{SummarizedExperiment}
-or a \code{QFeatures}. In the penultimate case the information for the matching
-is expected to be in the \code{rowData} of the object while in the last one in
-the \code{rowData} of one of the object assays (that needs to be specified with
-\code{assayQuery}). The same is true for \code{target} (except that parameter
-\code{assayTarget} would be used). \code{matchMz} is an alias for \code{matchValues} to
-allow backward compatibility.
+(m/z and possibly retention time) while \code{target} reference values. \code{query}
+and \code{target} can be \code{numeric}, a two dimensional array (such as a
+\code{data.frame}, \code{matrix} or \code{DataFrame}), a \code{SummarizedExperiment}
+or a \code{QFeatures}. For \code{SummarizedExperiment}, the information for
+the matching is expected to be in the object's \code{rowData}. For \code{QFeatures}
+matching is performed for values present in the \code{rowData} of one of the
+object's assays (which needs to be specified with the \code{assayQuery}
+parameter - if a \code{QFeatures} is used as \code{target} the name of the assay needs
+to be specified with parameter \code{assayTarget}). \code{matchMz} is an alias for
+\code{matchValues} to allow backward compatibility.
 
 Available \code{param} objects and corresponding matching approaches are:
 \itemize{
@@ -365,11 +367,28 @@ parm <- Mass2MzParam(
 res <- matchValues(fts, target_df, parm)
 res
 
+## List the available variables/columns
+colnames(res)
+
+## feature_id and mz are from the query data frame, while target_name,
+## target_formula and target_exactmass are from the query object (columns
+## from the target object have a prefix *target_* added to the original
+## column name. Columns adduct, score and ppm_error represent the results
+## of the matching: adduct the adduct/ion of the original compound for which
+## the m/z matches, score the absolute difference of the query and target
+## m/z and ppm_error the relative difference in m/z values.
+
 ## Get the full matching result:
 matchedData(res)
 
 ## We have thus matches of FT002 to two different compounds (but with the
 ## same mass).
+
+## Individual columns can also be accessed with the $ operator:
+res$feature_id
+res$target_name
+res$ppm_error
+
 
 ## We repeat the matching requiring an exact match
 parm <- Mass2MzParam(
@@ -451,6 +470,57 @@ mz1 <- c(12, 343, 23, 231)
 mz2 <- mz1 + rnorm(4, sd = 0.001)
 
 res <- matchValues(mz1, mz2, MzParam(tolerance = 0.001))
+
+matchedData(res)
+
+## Matching with a SummarizedExperiment or a QFeatures work analogously,
+## only that the matching is performed on the object's `rowData`.
+
+## Below we create a simple SummarizedExperiment with some random assay data.
+## Note that results from a data preprocessing with the `xcms` package could
+## be extracted as a `SummarizedExperiment` with the `quantify` method from
+## the `xcms` package.
+library(SummarizedExperiment)
+se <- SummarizedExperiment(
+    assays = matrix(rnorm(12), nrow = 3, ncol = 4),
+    rowData = fts)
+
+## We can now perform the matching of this SummarizedExperiment against the
+## target_df as before.
+res <- matchValues(se, target_df,
+    param = Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+        tolerance = 0, ppm = 20))
+res
+
+## Getting the available columns
+colnames(res)
+
+## The query columns represent the columns of the object's `rowData`
+rowData(se)
+
+## matchedData also returns the query object's rowData along with the
+## matching entries in the target object.
+matchedData(res)
+
+## While `query` will return the full SummarizedExperiment.
+query(res)
+
+## To illustrate use with a QFeatures object we first create a simple
+## QFeatures object with two assays, `"ions"` representing the full feature
+## data.frame and `"compounds"` a subset of it.
+library(QFeatures)
+qf <- QFeatures(list(ions = se, compounds = se[2,]))
+
+## We can perform the same matching as before, but need to specify which of
+## the assays in the QFeatures should be used for the matching. Below we
+## perform the matching using the "ions" assay.
+res <- matchValues(qf, target_df, queryAssay = "ions",
+    param = Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+        tolerance = 0, ppm = 20))
+res
+
+## colnames returns now the colnames of the `rowData` of the `"ions"` assay.
+colnames(res)
 
 matchedData(res)
 }

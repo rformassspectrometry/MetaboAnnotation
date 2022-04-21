@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation}
+  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures}
 bibliography: references.bib
 ---
 
@@ -132,10 +132,23 @@ whichQuery(matched_features)
 whichTarget(matched_features)
 ```
 
+The `colnames` function can be used to evaluate which variables/columns are
+available in the `Matched` object.
+
+```{r}
+colnames(matched_features)
+```
+
+These are all columns from the `query`, all columns from the `target` (the
+prefix `"target_"` is added to the original column names in `target`) and
+information on the matching result (in this case columns `"adduct"`, `"score"`
+and `"ppm_error"`).
+
 We can extract the full matching table with `matchedData`. This returns a
-`DataFrame` with all rows in *query* the corresponding matches in *target*
-along with the matching adduct (column `"adduct"`) and the difference in m/z
-(column `"score"`). Note that if a row in *query* matches multiple elements in
+`DataFrame` with all rows in *query* the corresponding matches in *target* along
+with the matching adduct (column `"adduct"`) and the difference in m/z (column
+`"score"` for absolute differences and `"ppm_error"` for the m/z relative
+differences). Note that if a row in *query* matches multiple elements in
 *target*, this row will be duplicated in the `DataFrame` returned by `data`.
 For rows that can not be matched `NA` values are reported.
 
@@ -143,10 +156,17 @@ For rows that can not be matched `NA` values are reported.
 matchedData(matched_features)
 ```
 
-See also the help page for `?Matched` for more details and information. In
-addition to the matching of query m/z against target exact masses as described
-above it would also be possible to match directly query m/z against target m/z
-values by using the `MzParam` instead of the `Mass2MzParam`.
+Individual columns can be simply extracted with the `$` operator:
+
+```{r}
+matched_features$target_name
+```
+
+`NA` is reported for query entries for which no match was found. See also the
+help page for `?Matched` for more details and information. In addition to the
+matching of query m/z against target exact masses as described above it would
+also be possible to match directly query m/z against target m/z values by using
+the `MzParam` instead of the `Mass2MzParam`.
 
 
 ## Matching of m/z and retention time values
@@ -206,6 +226,91 @@ Less features were matched based on m/z and retention times.
 
 ```{r}
 matchedData(matched_features)[whichQuery(matched_features), ]
+```
+
+
+## Matching of `SummarizedExperiment` or `QFeatures` objects
+
+Results from LC-MS preprocessing (e.g. by the `r BiocStyle::Biocpkg("xcms")`
+package) or generally metabolomics results might be best represented and bundled
+as `SummarizedExperiment` or `QFeatures` objects (from the same-named
+Bioconductor packages). A `XCMSnExp` preprocessing result from `xcms` can for
+example be converted to a `SummarizedExperiment` using the `quantify` method
+from the `xcms` package. The feature definitions (i.e. their m/z and retention
+time values) will then be stored in the object's `rowData` while the assay (the
+numerical matrix) will contain the feature abundances across all samples. Such
+`SummarizedExperiment` objects can be simply passed as `query` objects to the
+`matchValues` method. To illustrate this, we create below a simple
+`SummarizedExperiment` using the `ms1_features` data frame from the example
+above as `rowData` and adding a `matrix` with random values as assay.
+
+```{r}
+library(SummarizedExperiment)
+
+se <- SummarizedExperiment(
+    assays = matrix(nrow = nrow(ms1_features), ncol = 4),
+    rowData = ms1_features)
+```
+
+We can now use the same `matchValues` call as before to perform the
+matching. Matching will be performed on the object's `rowData`, i.e. each
+row/element of the `SummarizedExperiment` will be matched against the target
+using e.g. m/z values available in columns of the object's `rowData`:
+
+```{r}
+parm <- Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+                     tolerance = 0.005, ppm = 0)
+matched_features <- matchValues(se, target_df, param = parm)
+matched_features
+```
+
+As `query`, the result contains the full `SummarizedExperiment`, but `colnames`
+and `matchedData` will access the respective information from the `rowData` of
+this `SummarizedExperiment`:
+
+```{r}
+colnames(matched_features)
+matchedData(matched_features)
+```
+
+Subsetting the result object, to e.g. just matched elements will also subset the
+`SummarizedExperiment`.
+
+```{r}
+matched_sub <- matched_features[whichQuery(matched_features)]
+query(matched_sub)
+```
+
+A `QFeatures` object is essentially a container for several
+`SummarizedExperiment` objects which rows (features) are related with each
+other. Such an object could thus for example contain the full feature data from
+an LC-MS experiment as one assay and a compounded feature data in which data
+from ions of the same compound are aggregated as an additional
+assay. Below we create such an object using our `SummarizedExperiment` as an
+assay of name `"features"`. For now we don't add any additional assay to that
+`QFeatures`, thus, the object contains only this single data set.
+
+```{r, warning = FALSE}
+library(QFeatures)
+qf <- QFeatures(list(features = se))
+qf
+```
+
+`matchValues` supports also matching of `QFeatures` objects but the user
+needs to define the assay which should be used for the matching with the
+`queryAssay` parameter.
+
+```{r}
+matched_qf <- matchValues(qf, target_df, param = parm, queryAssay = "features")
+matched_qf
+```
+
+`colnames` and `matchedData` allow to access the `rowData` of the
+`SummarizedExperiment` stored in the `QFeatures`' `"features"` assay:
+
+```{r}
+colnames(matched_qf)
+matchedData(matched_qf)
 ```
 
 

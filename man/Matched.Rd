@@ -99,14 +99,13 @@ matched.}
 mapping of elements between the \code{query} and the \code{target} objects.}
 
 \item{queryAssay}{\code{character} that needs to be specified when \code{query} is
-\code{QFeatures} and corresponds to the name of one of the assay in \code{query}.
-In this case, the \code{Matched} object represents the matches between
-the \code{rowData} of that assay and data in \code{target}.}
+a \code{QFeatures}. In this case, \code{queryAssay} is expected to be the name of
+one of the assays in \code{query} (the one on which the matching was performed).}
 
 \item{targetAssay}{\code{character} that needs to be specified when \code{target} is
-\code{QFeatures} and corresponds to the name of one of the assay in \code{target}.
-In this case, the \code{Matched} object represents the matches between data in
-\code{query} and the \code{rowData} of that assay.}
+a \code{QFeatures}. In this case, \code{targetAssay} is expected to be the name of
+one of the assays in \code{target} (the one on which the matching was
+performed).}
 
 \item{metadata}{\code{list} with optional additional metadata.}
 
@@ -169,6 +168,15 @@ returned for each \emph{query} object with eventual duplicated entries (values)
 if the \emph{query} object matches more than one \emph{target} object. See also
 \emph{Creation and subsetting} as well as \emph{Extracting data} sections below for
 details and more information.
+
+The \code{Matched} object allows to represent matches between one-dimensional
+\code{query} and \code{target} objects (being e.g. \code{numeric} or \code{list}),
+two-dimensional objects (\code{data.frame} or \code{matrix}) or more complex
+structures such as \code{SummarizedExperiments} or \code{QFeatures}. Combinations of
+all these different data types are also supported. Matches are represented
+between elements of one-dimensional objects, or rows for two-dimensional
+objects (including \code{SummarizedExperiment} or \code{QFeatures}). For \code{\link[=QFeatures]{QFeatures()}}
+objects matches to only one of the \emph{assays} within the object is supported.
 }
 \section{Creation and subsetting}{
 
@@ -222,7 +230,7 @@ dimension (e.g. is a \code{list} or a \code{character}) the whole object can be
 extracted with \code{x$query} (\code{x$target}). More precisely, when
 \emph{query} (\emph{target}) is a \code{SummarizedExperiment} the columns from
 \code{rowData(query)} (rowData(\code{target})) are extracted; when \emph{query} (\emph{target})
-is a \code{QFeatures} the columns from \code{rowData} of the assay specified in the
+is a \code{\link[=QFeatures]{QFeatures()}} the columns from \code{rowData} of the assay specified in the
 \code{queryAssay} (\code{targetAssay}) slot are extracted. The matching scores
 are available as \emph{variable} \code{"score"}. Similar to a left join between the
 query and target elements, this function returns a value for each query

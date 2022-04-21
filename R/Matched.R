@@ -14,6 +14,15 @@
 #' *Creation and subsetting* as well as *Extracting data* sections below for
 #' details and more information.
 #'
+#' The `Matched` object allows to represent matches between one-dimensional
+#' `query` and `target` objects (being e.g. `numeric` or `list`),
+#' two-dimensional objects (`data.frame` or `matrix`) or more complex
+#' structures such as `SummarizedExperiments` or `QFeatures`. Combinations of
+#' all these different data types are also supported. Matches are represented
+#' between elements of one-dimensional objects, or rows for two-dimensional
+#' objects (including `SummarizedExperiment` or `QFeatures`). For [QFeatures()]
+#' objects matches to only one of the *assays* within the object is supported.
+#'
 #' @section Creation and subsetting:
 #'
 #' `Matched` object is returned as result from the [matchValues()] function.
@@ -66,7 +75,7 @@
 #'   extracted with `x$query` (`x$target`). More precisely, when
 #'   *query* (*target*) is a `SummarizedExperiment` the columns from
 #'   `rowData(query)` (rowData(`target`)) are extracted; when *query* (*target*)
-#'   is a `QFeatures` the columns from `rowData` of the assay specified in the
+#'   is a [QFeatures()] the columns from `rowData` of the assay specified in the
 #'   `queryAssay` (`targetAssay`) slot are extracted. The matching scores
 #'   are available as *variable* `"score"`. Similar to a left join between the
 #'   query and target elements, this function returns a value for each query
@@ -141,10 +150,10 @@
 #'   matched.
 #'
 #' @param targetAssay `character` that needs to be specified when `target` is
-#'   `QFeatures` and corresponds to the name of one of the assay in `target`.
-#'   In this case, the `Matched` object represents the matches between data in
-#'   `query` and the `rowData` of that assay.
-#'   
+#'   a `QFeatures`. In this case, `targetAssay` is expected to be the name of
+#'   one of the assays in `target` (the one on which the matching was
+#'   performed).
+#'
 #' @param targetColname if `query` is 2-dimensional: column of `target` against
 #'   which elements of `targetValue` are compared.
 #'
@@ -157,11 +166,10 @@
 #'   `targetValue` have to match.
 #'
 #' @param query object with the query elements.
-#' 
+#'
 #' @param queryAssay `character` that needs to be specified when `query` is
-#'   `QFeatures` and corresponds to the name of one of the assay in `query`.
-#'   In this case, the `Matched` object represents the matches between
-#'   the `rowData` of that assay and data in `target`.
+#'   a `QFeatures`. In this case, `queryAssay` is expected to be the name of
+#'   one of the assays in `query` (the one on which the matching was performed).
 #'
 #' @param queryColname if `query` is 2-dimensional: column of `query` against
 #'   which elements of `queryValue` are compared.
@@ -623,7 +631,7 @@ setMethod("matchedData", "Matched", function(object,
 #' @noRd
 .subset_matches_nodim <- function(x, i) {
     if (!all(i %in% seq_len(length(x))))
-        stop("subscript contains out-of-bounds indices")
+        stop("subscript contains out-of-bounds indices", call. = FALSE)
     slot(x, "query", check = FALSE) <- .subset_qt(x@query, x@queryAssay, i)
     mtches <- x@matches[x@matches$query_idx %in% i, , drop = FALSE]
     if (nrow(mtches)) {
@@ -643,7 +651,7 @@ setMethod("matchedData", "Matched", function(object,
 .subset_qt <- function(x, assay, i, j, drop = FALSE) {
     if (is(x, "QFeatures")) {
         if (!assay %in% names(x))
-            stop("Invalid assay name.")
+            stop("Invalid assay name.", call. = FALSE)
         x[[assay]] <- .extract_elements(x[[assay]], i, j, drop)
     } else {
         x <- .extract_elements(x, i, j, drop)
@@ -716,7 +724,7 @@ setMethod("matchedData", "Matched", function(object,
     } else if (ndim == 0) {
         cnt <- "target"
     } else {
-        stop("unsupported dimensions in \"target\"")
+        stop("unsupported dimensions in \"target\"", call. = FALSE)
     }
     cnt
 }
@@ -749,14 +757,15 @@ setMethod("matchedData", "Matched", function(object,
                               drop = TRUE)
         }else
             .extract_elements(query, idxs_qry[ord], name, drop = TRUE)
-    } else stop("'", name, "' not available")
+    } else stop("'", name, "' not available", call. = FALSE)
 }
 
 .matchedData <- function(query, target, matches, columns, ...) {
     cnms <- .colnames(query, target, matches)
     if (any(!columns %in% cnms))
         stop("column(s) ", paste0(columns[!columns %in% cnms],
-                                  collapse = ", "), " not available")
+                                  collapse = ", "), " not available",
+             call. = FALSE)
     not_mtchd <- setdiff(seq_len(.nelements(query)), matches$query_idx)
     idxs_qry <- c(matches$query_idx, not_mtchd)
     ord <- order(idxs_qry)
@@ -793,7 +802,7 @@ setMethod("matchedData", "Matched", function(object,
     what <- as.character(sys.call()[-1])[1]
     if (is(x, "QFeatures")) {
         msg <- .validate_assay(x, assayname, what)
-        if (!is.null(msg)) stop(msg)
+        if (!is.null(msg)) stop(msg, call. = FALSE)
         else x <- x[[assayname]]
     }
     if (is(x, "SummarizedExperiment"))
@@ -801,7 +810,7 @@ setMethod("matchedData", "Matched", function(object,
     if (length(colnames)) {
         if (any(tmp <- !colnames %in% colnames(x)))
             stop(paste0("Missing column \"", colnames[tmp], "\" in ",
-                        what, collapse = "\n"))
+                        what, collapse = "\n"), call. = FALSE)
         x <- x[, colnames]
     }
     x
@@ -825,21 +834,24 @@ pruneTarget <- function(object) {
                              queryColname = character(),
                              targetColname = character()) {
     if (length(queryValue) != length(targetValue))
-        stop("'queryValue' and 'targetValue' must have the same length")
+        stop("'queryValue' and 'targetValue' must have the same length",
+             call. = FALSE)
     if (length(dim(query)) == 2) {
         if (length(queryColname) == 0)
             stop("\"", queryColname,
-                 "\" must be set when 'query' is 2-dimensional")
+                 "\" must be set when 'query' is 2-dimensional", call. = FALSE)
         if (!queryColname %in% colnames(query))
-            stop("\"", queryColname, "\" is not a column of 'query'")
+            stop("\"", queryColname, "\" is not a column of 'query'",
+                 call. = FALSE)
     }
     targetColname <- sub("target_", "", targetColname)
     if (length(dim(target)) == 2) {
         if (length(targetColname) == 0)
             stop("\"", targetColname,
-                 "\" must be set when 'target' is 2-dimensional")
+                 "\" must be set when 'target' is 2-dimensional", call. = FALSE)
         if (!targetColname %in% colnames(target))
-            stop("\"", targetColname, "\" is not a column of 'target'")
+            stop("\"", targetColname, "\" is not a column of 'target'",
+                 call. = FALSE)
     }
     mq <- .extract_elements(query, matches$query_idx, queryColname,
                             drop = TRUE)
@@ -861,7 +873,7 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
                                                 index = integer(),
                                                 keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out-of-bounds")
+        stop("some indexes in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(queryValue))
         index  <- .findMatchesIdxs(.objectToMatch(object@query,
                                                   object@queryAssay),
@@ -886,28 +898,33 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     if (!is.data.frame(score))
         score <- data.frame(score = score)
     if (!is.data.frame(score))
-        stop("'score' needs to be either a 'data.frame' or a numeric")
+        stop("'score' needs to be either a 'data.frame' or a numeric",
+             call. = FALSE)
     if (length(queryValue) != length(targetValue) ||
         length(queryValue) != nrow(score))
-        stop("'queryValue',
-             'targetValue' and 'score' must have the same length")
+        stop("'queryValue', 'targetValue' and 'score' must have the",
+             " same length", call. = FALSE)
     if (isIndex) {
         if (!is.integer(queryValue) || !is.integer(targetValue))
-            stop(paste0("'queryValue' and 'targetValue' must be integer ",
-                        "vectors when 'isIndex = TRUE'"))
+            stop("'queryValue' and 'targetValue' must be integer ",
+                 "vectors when 'isIndex = TRUE'", call. = FALSE)
         if (any(!queryValue %in% seq_len(.nelements(query))))
-            stop("Provided indices in 'queryValue' are out-of-bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.",
+                 call. = FALSE)
         if (any(!targetValue %in% seq_len(.nelements(target))))
-            stop("Provided indices in 'queryValue' are out-of-bounds.")
+            stop("Provided indices in 'queryValue' are out-of-bounds.",
+                 call. = FALSE)
         query_idx <- queryValue
         target_idx <- targetValue
     } else {
         if (length(dim(query)) == 2)
             if (!queryColname %in% colnames(query))
-                stop("\"", queryColname,"\" is not a column of 'query'")
+                stop("\"", queryColname,"\" is not a column of 'query'",
+                     call. = FALSE)
         if (length(dim(target)) == 2)
             if (!targetColname %in% colnames(target))
-                stop("\"", targetColname,"\" is not a column of 'target'")
+                stop("\"", targetColname,"\" is not a column of 'target'",
+                     call. = FALSE)
         mq <- match(queryValue, .extract_elements(query, j = queryColname,
                                                   drop = TRUE))
         mt <- match(targetValue, .extract_elements(target, j = targetColname,

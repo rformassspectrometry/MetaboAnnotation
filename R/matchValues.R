@@ -178,15 +178,16 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' The `matchValues` method matches elements from `query` with those in `target`
 #' using different matching approaches depending on parameter `param`.
 #' Generally, `query` is expected to contain MS experimental values
-#' (m/z and possibly retention time) while `target` theoretical values from
-#' reference compounds. `query` can be `numeric`, a two dimensional array (
-#' such as a `data.frame`, `matrix` or `DataFrame`), a `SummarizedExperiment`
-#' or a `QFeatures`. In the penultimate case the information for the matching
-#' is expected to be in the `rowData` of the object while in the last one in
-#' the `rowData` of one of the object assays (that needs to be specified with
-#' `assayQuery`). The same is true for `target` (except that parameter
-#' `assayTarget` would be used). `matchMz` is an alias for `matchValues` to
-#' allow backward compatibility.
+#' (m/z and possibly retention time) while `target` reference values. `query`
+#' and `target` can be `numeric`, a two dimensional array (such as a
+#' `data.frame`, `matrix` or `DataFrame`), a `SummarizedExperiment`
+#' or a `QFeatures`. For `SummarizedExperiment`, the information for
+#' the matching is expected to be in the object's `rowData`. For `QFeatures`
+#' matching is performed for values present in the `rowData` of one of the
+#' object's assays (which needs to be specified with the `assayQuery`
+#' parameter - if a `QFeatures` is used as `target` the name of the assay needs
+#' to be specified with parameter `assayTarget`). `matchMz` is an alias for
+#' `matchValues` to allow backward compatibility.
 #'
 #' Available `param` objects and corresponding matching approaches are:
 #'
@@ -297,9 +298,10 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     values from query m/z values. The expected format is the same as that
 #'     for parameter `adducts`.
 #'
-#' @param queryAssay `character` to be used when `query` is `QFeatures`. It 
-#'     specifies the name of the assay in `query` containing the informations
-#'     to use for the matching.
+#' @param queryAssay `character(1)` specifying the name of the assay of the
+#'     provided `QFeatures` that should be used for the matching (values from
+#'     this assay's `rowData` will be used for matching). Only used if `query`
+#'     is an instance of a `QFeatures` object.
 #'
 #' @param rtColname `character(2)` with the name of the column containing
 #'     the compounds retention times in `query` and the name for the one in
@@ -314,9 +316,10 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     values from target m/z values. The expected format is the same as that
 #'     for parameter `adducts`.
 #'
-#' @param targetAssay `character` to be used when `target` is `QFeatures`. It 
-#'     specifies the name of the assay in `target` containing the informations
-#'     to use for the matching.
+#' @param targetAssay `character(1)` specifying the name of the assay of the
+#'     provided `QFeatures` that should be used for the matching (values from
+#'     this assay's `rowData` will be used for matching). Only used if `target`
+#'     is an instance of a `QFeatures` object.
 #'
 #' @param tolerance for any `param` object: `numeric(1)` defining the maximal
 #'     acceptable absolute difference in m/z (or in mass for `Mz2MassParam`)
@@ -336,23 +339,22 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' @param ... currently ignored.
 #'
 #' @return [Matched] object representing the result.
-#' To evaluate each match the object contains, depending on which `param` is
-#' used, the m/z or mass error in ppm (variable `"ppm_error"`) as well as
-#' the m/z or mass difference (variable `"score"`). When `param` is
-#' `Mz2MassParam` such difference and ppm error are obtained using mass values
-#' internally computed from m/z values in `query` and `target` (see above
-#' for more detail on `Mz2MassParam`). When `param` is either `MzParam`,
-#' `MzRtParam`, `Mass2MzParam` or `Mass2MzRtParam` `"ppm_error"` and `"score"`
-#' are computed from m/z values. In the first two cases both the m/z values are
-#' contained in `query` and `target` parameters. In the last two m/z values are
-#' internally computed from reference mass values in `target`. See more details
-#' for each individual parameter above. Additionally, if `param` is either
-#' `MzRtParam` or `Mass2MzRtParam` also retention time is used for the matching
-#' and the difference in retention time for each of the matched elements is also
-#' added to the returned `Matched` object. Note that, for a match, a negative
-#' value of `"score"` (or `"score_rt"`) indicates that the m/z or mass (or
-#' retention time) associated to the query element is smaller than that
-#' associated to the target element.
+#'
+#' Depending on the `param` object different *scores* representing the quality
+#' of the match are provided. This comprises absolute as well as relative
+#' differences (column/variables `"score"` and `"ppm_error"` respectively).
+#' If `param` is a `Mz2MassParam`, `"score"` and `"ppm_error"` represent
+#' differences of the compared masses (calculated from the provided m/z values).
+#' If `param` an `MzParam`, `MzRtParam`, `Mass2MzParam` or `Mass2MzRtParam`,
+#' `"score"` and `"ppm_error"` represent absolute and relative differences of
+#' m/z values.
+#' Additionally, if `param` is either an `MzRtParam` or `Mass2MzRtParam`
+#' differences between query and target retention times for each matched
+#' element is available in the column/variable `"score_rt"` in the returned
+#' `Matched` object.
+#' Negative values of `"score"` (or `"score_rt"`) indicate that the m/z or mass
+#' (or retention time) of the query element is smaller than that of the target
+#' element.
 #'
 #' @author Andrea Vicini, Michael Witting
 #'
@@ -384,11 +386,28 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' res <- matchValues(fts, target_df, parm)
 #' res
 #'
+#' ## List the available variables/columns
+#' colnames(res)
+#'
+#' ## feature_id and mz are from the query data frame, while target_name,
+#' ## target_formula and target_exactmass are from the query object (columns
+#' ## from the target object have a prefix *target_* added to the original
+#' ## column name. Columns adduct, score and ppm_error represent the results
+#' ## of the matching: adduct the adduct/ion of the original compound for which
+#' ## the m/z matches, score the absolute difference of the query and target
+#' ## m/z and ppm_error the relative difference in m/z values.
+#'
 #' ## Get the full matching result:
 #' matchedData(res)
 #'
 #' ## We have thus matches of FT002 to two different compounds (but with the
 #' ## same mass).
+#'
+#' ## Individual columns can also be accessed with the $ operator:
+#' res$feature_id
+#' res$target_name
+#' res$ppm_error
+#'
 #'
 #' ## We repeat the matching requiring an exact match
 #' parm <- Mass2MzParam(
@@ -472,6 +491,57 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' res <- matchValues(mz1, mz2, MzParam(tolerance = 0.001))
 #'
 #' matchedData(res)
+#'
+#' ## Matching with a SummarizedExperiment or a QFeatures work analogously,
+#' ## only that the matching is performed on the object's `rowData`.
+#'
+#' ## Below we create a simple SummarizedExperiment with some random assay data.
+#' ## Note that results from a data preprocessing with the `xcms` package could
+#' ## be extracted as a `SummarizedExperiment` with the `quantify` method from
+#' ## the `xcms` package.
+#' library(SummarizedExperiment)
+#' se <- SummarizedExperiment(
+#'     assays = matrix(rnorm(12), nrow = 3, ncol = 4),
+#'     rowData = fts)
+#'
+#' ## We can now perform the matching of this SummarizedExperiment against the
+#' ## target_df as before.
+#' res <- matchValues(se, target_df,
+#'     param = Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+#'         tolerance = 0, ppm = 20))
+#' res
+#'
+#' ## Getting the available columns
+#' colnames(res)
+#'
+#' ## The query columns represent the columns of the object's `rowData`
+#' rowData(se)
+#'
+#' ## matchedData also returns the query object's rowData along with the
+#' ## matching entries in the target object.
+#' matchedData(res)
+#'
+#' ## While `query` will return the full SummarizedExperiment.
+#' query(res)
+#'
+#' ## To illustrate use with a QFeatures object we first create a simple
+#' ## QFeatures object with two assays, `"ions"` representing the full feature
+#' ## data.frame and `"compounds"` a subset of it.
+#' library(QFeatures)
+#' qf <- QFeatures(list(ions = se, compounds = se[2,]))
+#'
+#' ## We can perform the same matching as before, but need to specify which of
+#' ## the assays in the QFeatures should be used for the matching. Below we
+#' ## perform the matching using the "ions" assay.
+#' res <- matchValues(qf, target_df, queryAssay = "ions",
+#'     param = Mass2MzParam(adducts = c("[M+H]+", "[M+Na]+"),
+#'         tolerance = 0, ppm = 20))
+#' res
+#'
+#' ## colnames returns now the colnames of the `rowData` of the `"ions"` assay.
+#' colnames(res)
+#'
+#' matchedData(res)
 NULL
 
 #' @rdname matchValues
@@ -481,12 +551,6 @@ setGeneric("matchValues", function(query, target, param, ...)
     standardGeneric("matchValues"))
 
 matchMz <- matchValues
-
-## #' @rdname matchMz
-## #'
-## #' @export
-## setGeneric("matchMz", function(query, target, param, ...)
-##     standardGeneric("matchMz"))
 
 #' @rdname matchValues
 setMethod("matchValues",
@@ -559,34 +623,6 @@ setMethod("matchValues",
               res@targetAssay <- targetAssay
               res
           })
-
-#' #' @rdname matchValues
-#' setMethod("matchValues",
-#'           signature = c(query = "data.frameOrSimilar",
-#'                         target = "data.frameOrSimilar",
-#'                         param = "ValueParam"),
-#'           function(query, target, param, queryValueColname = character(),
-#'                    targetValueColname = character(),
-#'                    queryAssay = character(), targetAssay = character()) {
-#'               if(!length(queryValueColname) && !is.numeric(query))
-#'                   stop("`queryValueColname` has to be provided.")
-#'               if(!length(targetValueColname) && !is.numeric(target))
-#'                   stop("`targetValueColname` has to be provided.")
-#'               query_ <- .objectToMatch(query, queryAssay, targetValueColname)
-#'               target_ <- .objectToMatch(target, targetAssay, queryValueColname)
-#'               target_ <- data.frame(index = seq_along(target_), target_)
-#'               queryl <- length(query_)
-#'               res <- vector("list", queryl)
-#'               for (i in seq_len(queryl)) {
-#'                   res[[i]] <- .getMatches(i, query_[i], target = target_,
-#'                                           tolerance = param@tolerance,
-#'                                           ppm = param@ppm)
-#'               }
-#'               Matched(query = query, target = target,
-#'                       matches = do.call(rbind, res),
-#'                       queryAssay = queryAssay, targetAssay = targetAssay,
-#'                       metadata = list(param = param))
-#'           })
 
 #' @rdname matchValues
 setMethod("matchValues",
@@ -798,7 +834,7 @@ setMethod("matchValues",
               Matched(query = query, target = target,
                       matches = matches[, c(1, 2, 6, 3, 4, 5)],
                       metadata = list(param = param))
-              
+
           })
 
 #' @rdname matchValues

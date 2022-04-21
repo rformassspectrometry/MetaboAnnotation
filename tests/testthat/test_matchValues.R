@@ -157,7 +157,7 @@ test_that("matchValues, ValueParam works", {
     expect_equal(query(res), qry + 0.1)
     expect_equal(target(res), trgt_se)
     expect_true(nrow(res@matches) == 0)
-    
+
     # positive tolerance
     par <- ValueParam(tolerance = 10)
     res <- matchValues(qry, trgt_se, par, valueColname = "value")
@@ -188,7 +188,7 @@ test_that("matchValues, ValueParam works", {
     expect_equal(res@matches$target_idx, c(5, 7))
     expect_equal(res@matches$score, c(0, 0))
     expect_equal(res@matches$ppm_error, c(0, 0))
-    
+
     # no matches
     res <- matchValues(qry + 0.1, trgt_qf, par, valueColname = "value",
                        targetAssay = "a1")
@@ -196,7 +196,7 @@ test_that("matchValues, ValueParam works", {
     expect_equal(query(res), qry + 0.1)
     expect_equal(target(res), trgt_qf)
     expect_true(nrow(res@matches) == 0)
-    
+
     # positive tolerance
     par <- ValueParam(tolerance = 10)
     res <- matchValues(qry, trgt_qf, par, valueColname = "value",
@@ -227,7 +227,7 @@ test_that("matchValues,Mass2MzParam works", {
     par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 20)
 
     ## data.frame, data.frame
-    
+
     # zero tolerance, positive ppm
     expect_error(matchValues(x, cmpds, par, mzColname = "mzz"), "Missing")
     res <- matchValues(x, cmpds, par)
@@ -238,8 +238,8 @@ test_that("matchValues,Mass2MzParam works", {
     expect_equal(res@matches$score, c(0, 0, 0, 1e-6))
     expect_equal(res@matches$ppm_error,
                  c(0, 0, 0, 1 / mass2mz(204.089878, "[M+Na]+")))
-    
-    # zero tolerance and ppm 
+
+    # zero tolerance and ppm
     par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
     res <- matchValues(x, cmpds, par)
     expect_equal(query(res), x)
@@ -697,6 +697,36 @@ test_that("matchValues, MzRtParam works", {
     expect_equal(query(res), qry)
     expect_equal(target(res), trgt + 0.5)
     expect_true(nrow(res@matches) == 0)
+
+    ## QFeatures
+    ions <- data.frame(id = c("a", "b", "c", "d", "e", "f"),
+                       mz = c(3, 4, 3, 5, 5, 6),
+                       rt = c(4, 4, 8, 8, 9, 10))
+    cmps <- data.frame(ID = c("AB", "CD", "EF"),
+                       mz = c(3.5, 4, 5.5),
+                       rt = c(4, 8, 9.5))
+    trgt <- data.frame(id = c("X", "Y", "Z"),
+                       mz = c(3.5, 8, 5.5),
+                       rt = c(4.5, 8.7, 10))
+    ions <- SummarizedExperiment(matrix(rnorm(12), nrow = 6, ncol = 2),
+                                 rowData = ions)
+    cmps <- SummarizedExperiment(matrix(rnorm(6), nrow = 3, ncol = 2),
+                                 rowData = cmps)
+    qf <- QFeatures(list(ions = ions, compounds = cmps))
+    prm <- MzRtParam(tolerance = 0.5, toleranceRt = 0.5)
+    res <- matchValues(qf, trgt, queryAssay = "ions",
+                       param = prm)
+    expect_true(all(colnames(rowData(ions)) %in% colnames(res)))
+    expect_equal(res$score, c(-0.5, 0.5, NA, NA, NA, 0.5))
+    expect_equal(res$score_rt, c(-0.5, -0.5, NA, NA, NA, 0))
+    expect_error(matchValues(qf, trgt, param = prm), "queryAssay")
+    expect_equal(matchedData(res), matchedData(matchValues(ions, trgt, prm)))
+
+    res <- matchValues(qf, trgt, queryAssay = "compounds",
+                       param = prm)
+    expect_equal(res$score, c(0, NA, 0))
+    expect_equal(res$score_rt, c(-0.5, NA, -0.5))
+    expect_equal(matchedData(res), matchedData(matchValues(cmps, trgt, prm)))
 })
 
 test_that("matchValues, Mz2MassParam works", {
