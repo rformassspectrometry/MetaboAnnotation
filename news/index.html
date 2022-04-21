@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.15</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,46 +50,63 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.99" id="metaboannotation-099">MetaboAnnotation 0.99<a class="anchor" aria-label="anchor" href="#metaboannotation-099"></a></h2>
 <div class="section level3">
-<h3 id="changes-in-0-99">Changes in 0.99.14<a class="anchor" aria-label="anchor" href="#changes-in-0-99"></a></h3>
+<h3 id="changes-in-0-99">Changes in 0.99.15<a class="anchor" aria-label="anchor" href="#changes-in-0-99"></a></h3>
+<ul><li>Highlight query and target spectra in different colors for
+<code>validateMatchedSpectra</code>.</li>
+<li>
+<code>query</code> and/or <code>target</code> of type
+<code>SummarizedExperiment</code> supported for <code>Matched</code>
+objects.</li>
+<li>
+<code>MatchedSummarizedExperiment</code> class removed.</li>
+<li>
+<code>query</code> and/or <code>target</code> of type
+<code>QFeatures</code> supported for <code>Matched</code> objects.</li>
+<li>Support <code>SummarizedExperiment</code> and <code>QFeatures</code>
+for both <code>query</code> and <code>target</code> parameters in
+<code>matchValues</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-in-0-99-1">Changes in 0.99.14<a class="anchor" aria-label="anchor" href="#changes-in-0-99-1"></a></h3>
 <ul><li>Improve plotly-based mirror plots in
 <code>validateMatchedSpectra</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-1">Changes in 0.99.13<a class="anchor" aria-label="anchor" href="#changes-in-0-99-1"></a></h3>
+<h3 id="changes-in-0-99-2">Changes in 0.99.13<a class="anchor" aria-label="anchor" href="#changes-in-0-99-2"></a></h3>
 <ul><li>Fix issue about <code>matchedData</code> not working for result
 objects of <code>matchValues, Mz2MassParam</code> and
 <code>matchValues, Mz2MassRtParam</code> (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/69" class="external-link">#69</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-2">Changes in 0.99.12<a class="anchor" aria-label="anchor" href="#changes-in-0-99-2"></a></h3>
+<h3 id="changes-in-0-99-3">Changes in 0.99.12<a class="anchor" aria-label="anchor" href="#changes-in-0-99-3"></a></h3>
 <ul><li>Update plotly-based mirror plots in
 <code>validateMatchedSpectra</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-3">Changes in 0.99.11<a class="anchor" aria-label="anchor" href="#changes-in-0-99-3"></a></h3>
+<h3 id="changes-in-0-99-4">Changes in 0.99.11<a class="anchor" aria-label="anchor" href="#changes-in-0-99-4"></a></h3>
 <ul><li>Change <code>matchMz</code> into <code>matchValues</code> (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/65" class="external-link">#65</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-4">Changes in 0.99.10<a class="anchor" aria-label="anchor" href="#changes-in-0-99-4"></a></h3>
+<h3 id="changes-in-0-99-5">Changes in 0.99.10<a class="anchor" aria-label="anchor" href="#changes-in-0-99-5"></a></h3>
 <ul><li>Add <code>validateMatchedSpectra</code> for manual inspection and
 validation of an <code>MatchedSpectra</code> object.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-5">Changes in 0.99.9<a class="anchor" aria-label="anchor" href="#changes-in-0-99-5"></a></h3>
+<h3 id="changes-in-0-99-6">Changes in 0.99.9<a class="anchor" aria-label="anchor" href="#changes-in-0-99-6"></a></h3>
 <ul><li>Add <code>setBackend</code> for <code>MatchedSpectra</code>
 objects.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-6">Changes in 0.99.8<a class="anchor" aria-label="anchor" href="#changes-in-0-99-6"></a></h3>
+<h3 id="changes-in-0-99-7">Changes in 0.99.8<a class="anchor" aria-label="anchor" href="#changes-in-0-99-7"></a></h3>
 <ul><li>Add <code>matchMz, Mz2MassParam</code> and
 <code>matchMz, Mz2MassRtParam</code>. (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/56" class="external-link">#56</a>).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-7">Changes in 0.99.7<a class="anchor" aria-label="anchor" href="#changes-in-0-99-7"></a></h3>
+<h3 id="changes-in-0-99-8">Changes in 0.99.7<a class="anchor" aria-label="anchor" href="#changes-in-0-99-8"></a></h3>
 <ul><li>Add formula matching functions.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-8">Changes in 0.99.5<a class="anchor" aria-label="anchor" href="#changes-in-0-99-8"></a></h3>
+<h3 id="changes-in-0-99-9">Changes in 0.99.5<a class="anchor" aria-label="anchor" href="#changes-in-0-99-9"></a></h3>
 <ul><li>Add parameter <code>...</code> to
 <code>plotSpectraMirror</code>.</li>
 <li>Definitions of “<code>score</code>”, “<code>score_rt</code>” changed
@@ -99,12 +116,12 @@ retention time respectively.</li>
 <code>"ppm_error"</code> becomes error without sign.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-9">Changes in 0.99.4<a class="anchor" aria-label="anchor" href="#changes-in-0-99-9"></a></h3>
+<h3 id="changes-in-0-99-10">Changes in 0.99.4<a class="anchor" aria-label="anchor" href="#changes-in-0-99-10"></a></h3>
 <ul><li>Add matches m/z error (variable <code>"ppm_error"</code>) to the
 <code>Matched</code> object returned by <code>matchMz</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-0-99-10">Changes in 0.99.3<a class="anchor" aria-label="anchor" href="#changes-in-0-99-10"></a></h3>
+<h3 id="changes-in-0-99-11">Changes in 0.99.3<a class="anchor" aria-label="anchor" href="#changes-in-0-99-11"></a></h3>
 <ul><li>Address Herve’s comments.</li>
 </ul></div>
 </div>
