@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.99.15</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,10 +95,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.15/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.16/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
-[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>)<br><strong>Compiled</strong>: Thu Apr 21 11:02:35 2022</p>
+[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>)<br><strong>Compiled</strong>: Thu Apr 28 13:20:59 2022</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -450,7 +450,7 @@ the retention times with parameter <code>rtColname</code>.</p>
 <h3 id="matching-of-summarizedexperiment-or-qfeatures-objects">Matching of <code>SummarizedExperiment</code> or
 <code>QFeatures</code> objects<a class="anchor" aria-label="anchor" href="#matching-of-summarizedexperiment-or-qfeatures-objects"></a>
 </h3>
-<p>Results from LC-MS preprocessing (e.g. by the <em><a href="https://bioconductor.org/packages/3.15/xcms" class="external-link">xcms</a></em>
+<p>Results from LC-MS preprocessing (e.g. by the <em><a href="https://bioconductor.org/packages/3.16/xcms" class="external-link">xcms</a></em>
 package) or generally metabolomics results might be best represented and
 bundled as <code>SummarizedExperiment</code> or <code>QFeatures</code>
 objects (from the same-named Bioconductor packages). A
@@ -704,7 +704,7 @@ in the <code>QFeatures</code>’ <code>"features"</code> assay:</p>
 <h3 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
 </h3>
 <p>In this section we match experimental MS/MS spectra against reference
-spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.15/Spectra" class="external-link">Spectra</a></em>
+spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.16/Spectra" class="external-link">Spectra</a></em>
 package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>,
 but the functions and concepts used here are more suitable to the
 <em>end user</em> as they simplify the handling of the spectra matching
@@ -751,7 +751,7 @@ belong).</p>
 <span class="co">## file(s):</span>
 <span class="co">## PestMix1_DDA.mzML</span>
 <span class="co">## Processing:</span>
-<span class="co">##  Filter: select MS level(s) 2 [Thu Apr 21 11:02:57 2022]</span></code></pre>
+<span class="co">##  Filter: select MS level(s) 2 [Thu Apr 28 13:21:23 2022]</span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -795,7 +795,7 @@ target spectra. <code>CompareSpectraParam</code> allows to set all
 individual settings for the <code>compareSpectra</code> call with
 parameters <code>MAPFUN</code>, <code>ppm</code>, <code>tolerance</code>
 and <code>FUN</code> (see the help on <code>compareSpectra</code> in the
-<em><a href="https://bioconductor.org/packages/3.15/Spectra" class="external-link">Spectra</a></em>
+<em><a href="https://bioconductor.org/packages/3.16/Spectra" class="external-link">Spectra</a></em>
 package for more details). In addition, we can <em>pre-filter</em> the
 target spectra for each individual query spectrum to speed-up the
 calculations. By setting <code>requirePrecursor = TRUE</code> we compare
@@ -1122,7 +1122,7 @@ selects always the best match.</p>
 object with MS2 spectra. Such objects could also be extracted from an
 <code>xcms</code>-based LC-MS/MS data analysis with the
 <code>chromPeaksSpectra</code> or <code>featureSpectra</code> functions
-from the <em><a href="https://bioconductor.org/packages/3.15/xcms" class="external-link">xcms</a></em>
+from the <em><a href="https://bioconductor.org/packages/3.16/xcms" class="external-link">xcms</a></em>
 package. Also,</p>
 <p>Matches can be also further validated using an interactive Shiny app
 by calling <code>validateMatchedSpectra</code> on the
@@ -1135,12 +1135,13 @@ only matches manually validated.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span class="co">## R Under development (unstable) (2022-03-14 r81896)</span>
+<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
 <span class="co">## Running under: Ubuntu 20.04.4 LTS</span>
 <span class="co">## </span>
 <span class="co">## Matrix products: default</span>
-<span class="co">## BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.8.so</span>
+<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3</span>
+<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3</span>
 <span class="co">## </span>
 <span class="co">## locale:</span>
 <span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
@@ -1155,36 +1156,36 @@ only matches manually validated.</p>
 <span class="co">## [8] base     </span>
 <span class="co">## </span>
 <span class="co">## other attached packages:</span>
-<span class="co">##  [1] msdata_0.35.3               Spectra_1.5.19             </span>
-<span class="co">##  [3] ProtGenerics_1.27.2         BiocParallel_1.29.21       </span>
-<span class="co">##  [5] QFeatures_1.5.2             MultiAssayExperiment_1.21.6</span>
-<span class="co">##  [7] SummarizedExperiment_1.25.3 Biobase_2.55.2             </span>
-<span class="co">##  [9] GenomicRanges_1.47.6        GenomeInfoDb_1.31.7        </span>
-<span class="co">## [11] IRanges_2.29.1              S4Vectors_0.33.17          </span>
-<span class="co">## [13] BiocGenerics_0.41.2         MatrixGenerics_1.7.0       </span>
-<span class="co">## [15] matrixStats_0.62.0-9000     MetaboAnnotation_0.99.15   </span>
-<span class="co">## [17] BiocStyle_2.23.1           </span>
+<span class="co">##  [1] msdata_0.37.0               Spectra_1.7.0              </span>
+<span class="co">##  [3] ProtGenerics_1.29.0         BiocParallel_1.31.0        </span>
+<span class="co">##  [5] QFeatures_1.7.0             MultiAssayExperiment_1.23.0</span>
+<span class="co">##  [7] SummarizedExperiment_1.27.0 Biobase_2.57.0             </span>
+<span class="co">##  [9] GenomicRanges_1.49.0        GenomeInfoDb_1.33.0        </span>
+<span class="co">## [11] IRanges_2.31.0              S4Vectors_0.35.0           </span>
+<span class="co">## [13] BiocGenerics_0.43.0         MatrixGenerics_1.9.0       </span>
+<span class="co">## [15] matrixStats_0.62.0-9000     MetaboAnnotation_1.1.0     </span>
+<span class="co">## [17] BiocStyle_2.25.0           </span>
 <span class="co">## </span>
 <span class="co">## loaded via a namespace (and not attached):</span>
 <span class="co">##  [1] Rcpp_1.0.8.3            lattice_0.20-45         rprojroot_2.0.3        </span>
 <span class="co">##  [4] digest_0.6.29           R6_2.5.1                evaluate_0.15          </span>
-<span class="co">##  [7] highr_0.9               zlibbioc_1.41.0         rlang_1.0.2            </span>
-<span class="co">## [10] lazyeval_0.2.2          jquerylib_0.1.4         MetaboCoreUtils_1.3.8  </span>
-<span class="co">## [13] Matrix_1.4-1            rmarkdown_2.13          mzR_2.29.5             </span>
-<span class="co">## [16] pkgdown_2.0.2.9000      textshaping_0.3.6       desc_1.4.1             </span>
+<span class="co">##  [7] highr_0.9               zlibbioc_1.43.0         rlang_1.0.2            </span>
+<span class="co">## [10] lazyeval_0.2.2          jquerylib_0.1.4         MetaboCoreUtils_1.5.0  </span>
+<span class="co">## [13] Matrix_1.4-1            rmarkdown_2.14          mzR_2.31.0             </span>
+<span class="co">## [16] pkgdown_2.0.3.9000      textshaping_0.3.6       desc_1.4.1             </span>
 <span class="co">## [19] stringr_1.4.0           igraph_1.3.1            RCurl_1.98-1.6         </span>
-<span class="co">## [22] DelayedArray_0.21.2     compiler_4.2.0          xfun_0.30              </span>
+<span class="co">## [22] DelayedArray_0.23.0     compiler_4.2.0          xfun_0.30              </span>
 <span class="co">## [25] pkgconfig_2.0.3         systemfonts_1.0.4       htmltools_0.5.2        </span>
 <span class="co">## [28] GenomeInfoDbData_1.2.8  bookdown_0.26           codetools_0.2-18       </span>
-<span class="co">## [31] MASS_7.3-56             bitops_1.0-7            grid_4.2.0             </span>
-<span class="co">## [34] jsonlite_1.8.0          AnnotationFilter_1.19.0 magrittr_2.0.3         </span>
-<span class="co">## [37] MsCoreUtils_1.7.5       ncdf4_1.19              cli_3.2.0              </span>
-<span class="co">## [40] stringi_1.7.6           cachem_1.0.6            XVector_0.35.0         </span>
+<span class="co">## [31] MASS_7.3-57             bitops_1.0-7            grid_4.2.0             </span>
+<span class="co">## [34] jsonlite_1.8.0          AnnotationFilter_1.21.0 magrittr_2.0.3         </span>
+<span class="co">## [37] MsCoreUtils_1.9.0       ncdf4_1.19              cli_3.3.0              </span>
+<span class="co">## [40] stringi_1.7.6           cachem_1.0.6            XVector_0.37.0         </span>
 <span class="co">## [43] fs_1.5.2                bslib_0.3.1             ragg_1.2.2             </span>
 <span class="co">## [46] tools_4.2.0             purrr_0.3.4             parallel_4.2.0         </span>
 <span class="co">## [49] fastmap_1.1.0           yaml_2.3.5              clue_0.3-60            </span>
-<span class="co">## [52] cluster_2.1.3           BiocManager_1.30.16     memoise_2.0.1          </span>
-<span class="co">## [55] knitr_1.38              sass_0.4.1</span></code></pre>
+<span class="co">## [52] cluster_2.1.3           BiocManager_1.30.17     memoise_2.0.1          </span>
+<span class="co">## [55] knitr_1.39              sass_0.4.1</span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -1207,14 +1208,12 @@ in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin
-Huber.</p>
+<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber.</p>
 </div>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
 </div>
 
     </footer>
