@@ -980,4 +980,3 @@ test_that("TopRankMatchesParam works", {
     expect_error(TopRankMatchesParam(n = c(2L, 3L)), "length 1")
     expect_error(TopRankMatchesParam(n = -4L), "positive integer")
 })
-

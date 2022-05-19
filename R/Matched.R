@@ -66,7 +66,11 @@
 #'   - `TopRankMatchesParam`: for each query element the matches are ranked
 #'     according to their score and only the `n` best of them are kept (if `n`
 #'     is larger than the number of matches for a given query element all the
-#'     matches are returned).
+#'     matches are returned). If besides variable `"score"` also variable
+#'     `"score_rt"` is available in the `Matched` object (e.g. that is the case
+#'     for the `Matched` object returned by [matchValues()] for `param` objects
+#'     involving a retention time comparison), the ranking is computed on the
+#'     product of the values of the two variables.
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
