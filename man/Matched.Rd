@@ -19,13 +19,17 @@
 \alias{colnames,Matched-method}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
-\alias{filterMatches,Matched-method}
+\alias{filterMatches,Matched,ANY-method}
+\alias{SelectMatchesParam}
+\alias{TopRankMatchesParam}
+\alias{filterMatches,Matched,SelectMatchesParam-method}
+\alias{filterMatches,Matched,TopRankMatchesParam-method}
 \alias{addMatches,Matched-method}
 \title{Representation of generic objects matches}
 \usage{
 addMatches(object, ...)
 
-filterMatches(object, ...)
+filterMatches(object, param, ...)
 
 matchedData(object, ...)
 
@@ -63,7 +67,7 @@ whichQuery(object)
 
 pruneTarget(object)
 
-\S4method{filterMatches}{Matched}(
+\S4method{filterMatches}{Matched,ANY}(
   object,
   queryValue = integer(),
   targetValue = integer(),
@@ -73,6 +77,21 @@ pruneTarget(object)
   keep = TRUE,
   ...
 )
+
+SelectMatchesParam(
+  queryValue = numeric(),
+  targetValue = numeric(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE
+)
+
+TopRankMatchesParam(n = 1L)
+
+\S4method{filterMatches}{Matched,SelectMatchesParam}(object, param, ...)
+
+\S4method{filterMatches}{Matched,TopRankMatchesParam}(object, param, ...)
 
 \S4method{addMatches}{Matched}(
   object,
@@ -88,6 +107,9 @@ pruneTarget(object)
 \item{object}{a \code{Matched} object.}
 
 \item{...}{additional parameters.}
+
+\item{param}{for \code{filterMatches}: parameter object to select and customize
+the filtering procedure.}
 
 \item{query}{object with the query elements.}
 
@@ -122,7 +144,7 @@ performed).}
 \item{columns}{for \code{matchedData}: \code{character} vector with column names of
 variables that should be extracted.}
 
-\item{queryValue}{for \code{filterMatches}: vector of values to search for in
+\item{queryValue}{for \code{SelectMatchesParam}: vector of values to search for in
 \code{query} (if \code{query} is 1-dimensional) or in column \code{queryColname} of
 \code{query} (if \code{query} is 2-dimensional). For \code{addMatches}: either an index
 in \code{query} or value in column \code{queryColname} of \code{query} defining (together
@@ -130,25 +152,30 @@ with \code{targetValue}) the pair of query and target elements for which a
 match should be manually added. Lengths of \code{queryValue} and
 \code{targetValue} have to match.}
 
-\item{targetValue}{for \code{filterMatches}: vector of values to search for in
-\code{target} (if \code{target} is 1-dimensional) or in column \code{targetColname} of
+\item{targetValue}{for \code{SelectMatchesParam}: vector of values to search for
+in \code{target} (if \code{target} is 1-dimensional) or in column \code{targetColname} of
 \code{target} (if \code{target} is 2-dimensional). For \code{addMatches}: either an
 index in \code{target} or value in column \code{targetColname} of \code{target} defining
 (together with \code{queryValue}) the pair of query and target elements for
 which a match should be manually added. Lengths of \code{queryValue} and
 \code{targetValue} have to match.}
 
-\item{queryColname}{if \code{query} is 2-dimensional: column of \code{query} against
-which elements of \code{queryValue} are compared.}
+\item{queryColname}{for \code{SelectMatchesParam}: if \code{query} is 2-dimensional it
+represents the column of \code{query} against which elements of \code{queryValue}
+are compared.}
 
-\item{targetColname}{if \code{query} is 2-dimensional: column of \code{target} against
-which elements of \code{targetValue} are compared.}
+\item{targetColname}{for \code{SelectMatchesParam}: if \code{query} is 2-dimensional it
+represents the column of \code{target} against which elements of \code{targetValue}
+are compared.}
 
-\item{index}{for \code{filterMatches}: indices of the matches to keep (if
+\item{index}{for \code{SelectMatchesParam}: indices of the matches to keep (if
 \code{keep = TRUE}) or to drop if (\code{keep = FALSE}).}
 
-\item{keep}{for \code{filterMatches}: \code{logical}. If \code{keep = TRUE} the matches are
-kept, if \code{keep = FALSE} they are removed.}
+\item{keep}{for \code{SelectMatchesParam}: \code{logical}. If \code{keep = TRUE} the matches
+are kept, if \code{keep = FALSE} they are removed.}
+
+\item{n}{for \code{TopRankMatchesParam}: number of best ranked matches to keep
+for each \code{query} element.}
 
 \item{score}{for \code{addMatches}: \code{numeric} (same length than \code{queryValue}) or
 \code{data.frame} (same number of rows than \code{queryValue}) specifying the scores
@@ -205,13 +232,20 @@ provide the score for the match. It can be a numeric with the score or a
 \code{data.frame} with additional information on the manually added matches. In
 both cases its length (or number of rows) has to match the length of
 \code{queryValue}. See examples below for more information.
-\item \code{filterMatches}: keeps or removes matches corresponding to certain indexes
-or values of \code{query} and \code{target}. If \code{queryValue} and \code{targetValue} are
-provided, matches for these value pairs are kept or removed. Parameter
-\code{index} allows to filter matches providing their index in the \code{\link[=matches]{matches()}}
-matrix. Note that \code{filterMatches} removes only matches from the \code{\link[=matches]{matches()}}
-matrix from the \code{Matched} object but thus not alter the \code{query} or \code{target}
-in the object. See examples below for more information.
+\item \code{filterMatches}: filter matches in a \code{Matched} object using different
+approaches depending on the class of \code{param}:
+\itemize{
+\item \code{SelectMatchesParam}: keeps or removes (respectively when parameter
+\code{keep = TRUE} and \code{keep = FALSE}) matches corresponding to certain
+indexes or values of \code{query} and \code{target}. If \code{queryValue} and
+\code{targetValue} are provided, matches for these value pairs are kept or
+removed. Parameter index\verb{allows to filter matches providing their index in the [matches()] matrix. Note that}filterMatches\verb{removes only matches from the [matches()] matrix from the}Matched\verb{object but thus not alter the}query\code{or}target` in the object. See examples below for more
+information.
+\item \code{TopRankMatchesParam}: for each query element the matches are ranked
+according to their score and only the \code{n} best of them are kept (if \code{n}
+is larger than the number of matches for a given query element all the
+matches are returned).
+}
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }

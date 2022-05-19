@@ -72,7 +72,7 @@ setClass("Mass2MzRtParam",
          validity = function(object) {
              msg <- NULL
              if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
-                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+                 msg <- "'toleranceRt' has to be a positive number of length 1"
              msg
          })
 
@@ -97,7 +97,7 @@ setClass("MzRtParam",
          validity = function(object) {
              msg <- NULL
              if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
-                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+                 msg <- "'toleranceRt' has to be a positive number of length 1"
              msg
          })
 
@@ -148,7 +148,7 @@ setClass("Mz2MassRtParam",
          validity = function(object) {
              msg <- NULL
              if (length(object@toleranceRt) != 1 || object@toleranceRt < 0)
-                 msg <- c("'toleranceRt' has to be a positive number of length 1")
+                 msg <- "'toleranceRt' has to be a positive number of length 1"
              msg
          })
 
