@@ -56,7 +56,7 @@
 #'
 #'   - `SelectMatchesParam`: keeps or removes (respectively when parameter
 #'     `keep = TRUE` and `keep = FALSE`) matches corresponding to certain
-#'     indexes or values of `query` and `target`. If `queryValue` and
+#'     indices or values of `query` and `target`. If `queryValue` and
 #'     `targetValue` are provided, matches for these value pairs are kept or
 #'     removed. Parameter index` allows to filter matches providing their index
 #'     in the [matches()] matrix. Note that `filterMatches` removes only matches
@@ -138,7 +138,7 @@
 #'  `keep = TRUE`) or to drop if (`keep = FALSE`).
 #'
 #' @param isIndex for `addMatches`: specifies if `queryValue` and
-#' `targetValue` are expected to be vectors of indexes.
+#' `targetValue` are expected to be vectors of indices.
 #'
 #' @param j for `[`: ignored.
 #'
@@ -887,14 +887,14 @@ pruneTarget <- function(object) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
+setMethod("filterMatches", c("Matched", "missing"), function (object, queryValue = integer(),
                                                 targetValue = integer(),
                                                 queryColname = character(),
                                                 targetColname = character(),
                                                 index = integer(),
                                                 keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out-of-bounds", call. = FALSE)
+        stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(queryValue))
         index  <- .findMatchesIdxs(.objectToMatch(object@query,
                                                   object@queryAssay),
@@ -992,7 +992,7 @@ setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
                                                                          param, ...) {
     index <- param@index
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out-of-bounds", call. = FALSE)
+        stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(param@queryValue))
         index  <- .findMatchesIdxs(.objectToMatch(object@query,
                                                   object@queryAssay),
@@ -1015,11 +1015,11 @@ setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
 #' @export
 setMethod("filterMatches", c("Matched", "TopRankMatchesParam"),
           function (object, param, ...) {
-              score <- object@matches$score
+              rank <- object@matches$score
               if ("score_rt" %in% colnames(object@matches))
-                  score <- score * object@matches$score_rt
+                  rank <- rank * rank(object@matches$score_rt)
               seq_len_nm <- seq_len(nrow(object@matches))
-              tmp <- split.data.frame(cbind(seq_len_nm, score),
+              tmp <- split.data.frame(cbind(seq_len_nm, rank),
                                       object@matches$query_idx)
               index <- do.call("c", lapply(tmp, function(x)
                   x[order(x[, 2])[seq_len(min(param@n, nrow(x)))], 1]))

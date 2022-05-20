@@ -19,7 +19,7 @@
 \alias{colnames,Matched-method}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
-\alias{filterMatches,Matched,ANY-method}
+\alias{filterMatches,Matched,missing-method}
 \alias{SelectMatchesParam}
 \alias{TopRankMatchesParam}
 \alias{filterMatches,Matched,SelectMatchesParam-method}
@@ -67,7 +67,7 @@ whichQuery(object)
 
 pruneTarget(object)
 
-\S4method{filterMatches}{Matched,ANY}(
+\S4method{filterMatches}{Matched,missing}(
   object,
   queryValue = integer(),
   targetValue = integer(),
@@ -182,7 +182,7 @@ for each \code{query} element.}
 for the matches to add. If not specified, a \code{NA} will be used as score.}
 
 \item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
-\code{targetValue} are expected to be vectors of indexes.}
+\code{targetValue} are expected to be vectors of indices.}
 }
 \value{
 See individual method description above for details.
@@ -237,14 +237,18 @@ approaches depending on the class of \code{param}:
 \itemize{
 \item \code{SelectMatchesParam}: keeps or removes (respectively when parameter
 \code{keep = TRUE} and \code{keep = FALSE}) matches corresponding to certain
-indexes or values of \code{query} and \code{target}. If \code{queryValue} and
+indices or values of \code{query} and \code{target}. If \code{queryValue} and
 \code{targetValue} are provided, matches for these value pairs are kept or
 removed. Parameter index\verb{allows to filter matches providing their index in the [matches()] matrix. Note that}filterMatches\verb{removes only matches from the [matches()] matrix from the}Matched\verb{object but thus not alter the}query\code{or}target` in the object. See examples below for more
 information.
 \item \code{TopRankMatchesParam}: for each query element the matches are ranked
 according to their score and only the \code{n} best of them are kept (if \code{n}
 is larger than the number of matches for a given query element all the
-matches are returned).
+matches are returned). If besides variable \code{"score"} also variable
+\code{"score_rt"} is available in the \code{Matched} object (e.g. that is the case
+for the \code{Matched} object returned by \code{\link[=matchValues]{matchValues()}} for \code{param} objects
+involving a retention time comparison), the ranking is computed on the
+product of the values of the two variables.
 }
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
