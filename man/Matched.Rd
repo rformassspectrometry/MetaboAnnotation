@@ -249,16 +249,19 @@ information.
 according to their score and only the \code{n} best of them are kept (if \code{n}
 is larger than the number of matches for a given query element all the
 matches are returned). For the ranking (ordering) R's \code{rank} function is
-used, thus, smaller score values (representing smaller differences
-between expected and observed m/z values) are considered \emph{better}. By
+used on the absolute values of the scores (variable \code{"score"}), thus,
+smaller score values (representing e.g. smaller differences between
+expected and observed m/z values) are considered \emph{better}. By
 setting parameter \code{decreasing = TRUE} matches can be ranked in decreasing
 order (i.e. higher scores are ranked higher and are thus selected).
 If besides variable \code{"score"} also variable \code{"score_rt"} is available in
-the \code{Matched} object (e.g. that is the case for the \code{Matched} object
+the \code{Matched} object (which is the case for the \code{Matched} object
 returned by \code{\link[=matchValues]{matchValues()}} for \code{param} objects involving a retention
 time comparison), the ordering of the matches is based on the product of
 the ranks of the two variables (ranking of retention time differences
-is performed on the absolute value of \code{"score_rt"}).
+is performed on the absolute value of \code{"score_rt"}). Thus, matches with
+small (or, depending on parameter \code{decreasing}, large) values for
+\code{"score"} \strong{and} \code{"score_rt"} are returned.
 }
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.

@@ -67,16 +67,19 @@
 #'     according to their score and only the `n` best of them are kept (if `n`
 #'     is larger than the number of matches for a given query element all the
 #'     matches are returned). For the ranking (ordering) R's `rank` function is
-#'     used, thus, smaller score values (representing smaller differences
-#'     between expected and observed m/z values) are considered *better*. By
+#'     used on the absolute values of the scores (variable `"score"`), thus,
+#'     smaller score values (representing e.g. smaller differences between
+#'     expected and observed m/z values) are considered *better*. By
 #'     setting parameter `decreasing = TRUE` matches can be ranked in decreasing
 #'     order (i.e. higher scores are ranked higher and are thus selected).
 #'     If besides variable `"score"` also variable `"score_rt"` is available in
-#'     the `Matched` object (e.g. that is the case for the `Matched` object
+#'     the `Matched` object (which is the case for the `Matched` object
 #'     returned by [matchValues()] for `param` objects involving a retention
 #'     time comparison), the ordering of the matches is based on the product of
 #'     the ranks of the two variables (ranking of retention time differences
-#'     is performed on the absolute value of `"score_rt"`).
+#'     is performed on the absolute value of `"score_rt"`). Thus, matches with
+#'     small (or, depending on parameter `decreasing`, large) values for
+#'     `"score"` **and** `"score_rt"` are returned.
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
@@ -1032,7 +1035,7 @@ setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
 setMethod("filterMatches", c("Matched", "TopRankedMatchesParam"),
           function (object, param, ...) {
               sign <- ifelse(param@decreasing, yes = -1, no = 1)
-              rank <- rank(object@matches$score * sign)
+              rank <- rank(abs(object@matches$score) * sign)
               if ("score_rt" %in% colnames(object@matches))
                   rank <- rank * rank(abs(object@matches$score_rt) * sign)
               seq_len_nm <- seq_len(nrow(object@matches))
