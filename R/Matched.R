@@ -51,13 +51,26 @@
 #'   both cases its length (or number of rows) has to match the length of
 #'   `queryValue`. See examples below for more information.
 #'
-#' - `filterMatches`: keeps or removes matches corresponding to certain indexes
-#'   or values of `query` and `target`. If `queryValue` and `targetValue` are
-#'   provided, matches for these value pairs are kept or removed. Parameter
-#'   `index` allows to filter matches providing their index in the [matches()]
-#'   matrix. Note that `filterMatches` removes only matches from the [matches()]
-#'   matrix from the `Matched` object but thus not alter the `query` or `target`
-#'   in the object. See examples below for more information.
+#' - `filterMatches`: filter matches in a `Matched` object using different
+#'    approaches depending on the class of `param`:
+#'
+#'   - `SelectMatchesParam`: keeps or removes (respectively when parameter
+#'     `keep = TRUE` and `keep = FALSE`) matches corresponding to certain
+#'     indices or values of `query` and `target`. If `queryValue` and
+#'     `targetValue` are provided, matches for these value pairs are kept or
+#'     removed. Parameter index` allows to filter matches providing their index
+#'     in the [matches()] matrix. Note that `filterMatches` removes only matches
+#'     from the [matches()] matrix from the `Matched` object but thus not alter
+#'     the `query` or `target` in the object. See examples below for more
+#'     information.
+#'   - `TopRankMatchesParam`: for each query element the matches are ranked
+#'     according to their score and only the `n` best of them are kept (if `n`
+#'     is larger than the number of matches for a given query element all the
+#'     matches are returned). If besides variable `"score"` also variable
+#'     `"score_rt"` is available in the `Matched` object (e.g. that is the case
+#'     for the `Matched` object returned by [matchValues()] for `param` objects
+#'     involving a retention time comparison), the ranking is computed on the
+#'     product of the values of the two variables.
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
@@ -121,26 +134,32 @@
 #'
 #' @param i `integer` or `logical` defining the `query` elements to keep.
 #'
-#' @param index for `filterMatches`: indices of the matches to keep (if
+#' @param index for `SelectMatchesParam`: indices of the matches to keep (if
 #'  `keep = TRUE`) or to drop if (`keep = FALSE`).
 #'
 #' @param isIndex for `addMatches`: specifies if `queryValue` and
-#' `targetValue` are expected to be vectors of indexes.
+#' `targetValue` are expected to be vectors of indices.
 #'
 #' @param j for `[`: ignored.
 #'
-#' @param keep for `filterMatches`: `logical`. If `keep = TRUE` the matches are
-#' kept, if `keep = FALSE` they are removed.
+#' @param keep for `SelectMatchesParam`: `logical`. If `keep = TRUE` the matches
+#' are kept, if `keep = FALSE` they are removed.
 #'
 #' @param matches `data.frame` with columns `"query_idx"` (`integer`),
 #'   `"target_idx"` (`integer`) and `"score"` (`numeric`) representing the n:m
 #'   mapping of elements between the `query` and the `target` objects.
 #'
 #' @param metadata `list` with optional additional metadata.
+#' 
+#' @param n for `TopRankMatchesParam`: number of best ranked matches to keep
+#'   for each `query` element.
 #'
 #' @param name for `$`: the name of the column (or variable) to extract.
 #'
 #' @param object a `Matched` object.
+#' 
+#' @param param for `filterMatches`: parameter object to select and customize
+#'   the filtering procedure.
 #'
 #' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
 #'   `data.frame` (same number of rows than `queryValue`) specifying the scores
@@ -154,11 +173,12 @@
 #'   one of the assays in `target` (the one on which the matching was
 #'   performed).
 #'
-#' @param targetColname if `query` is 2-dimensional: column of `target` against
-#'   which elements of `targetValue` are compared.
+#' @param targetColname for `SelectMatchesParam`: if `query` is 2-dimensional it
+#'   represents the column of `target` against which elements of `targetValue`
+#'   are compared.
 #'
-#' @param targetValue for `filterMatches`: vector of values to search for in
-#'   `target` (if `target` is 1-dimensional) or in column `targetColname` of
+#' @param targetValue for `SelectMatchesParam`: vector of values to search for
+#'   in `target` (if `target` is 1-dimensional) or in column `targetColname` of
 #'   `target` (if `target` is 2-dimensional). For `addMatches`: either an
 #'   index in `target` or value in column `targetColname` of `target` defining
 #'   (together with `queryValue`) the pair of query and target elements for
@@ -171,10 +191,11 @@
 #'   a `QFeatures`. In this case, `queryAssay` is expected to be the name of
 #'   one of the assays in `query` (the one on which the matching was performed).
 #'
-#' @param queryColname if `query` is 2-dimensional: column of `query` against
-#'   which elements of `queryValue` are compared.
+#' @param queryColname for `SelectMatchesParam`: if `query` is 2-dimensional it
+#'   represents the column of `query` against which elements of `queryValue`
+#'   are compared.
 #'
-#' @param queryValue for `filterMatches`: vector of values to search for in
+#' @param queryValue for `SelectMatchesParam`: vector of values to search for in
 #'   `query` (if `query` is 1-dimensional) or in column `queryColname` of
 #'   `query` (if `query` is 2-dimensional). For `addMatches`: either an index
 #'   in `query` or value in column `queryColname` of `query` defining (together
@@ -866,14 +887,14 @@ pruneTarget <- function(object) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
+setMethod("filterMatches", c("Matched", "missing"), function (object, queryValue = integer(),
                                                 targetValue = integer(),
                                                 queryColname = character(),
                                                 targetColname = character(),
                                                 index = integer(),
                                                 keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indexes in \"index\" are out-of-bounds", call. = FALSE)
+        stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(queryValue))
         index  <- .findMatchesIdxs(.objectToMatch(object@query,
                                                   object@queryAssay),
@@ -888,6 +909,125 @@ setMethod("filterMatches", "Matched", function (object, queryValue = integer(),
     validObject(object)
     object
 })
+
+#' @noRd
+setClass("SelectMatchesParam",
+         slots = c(
+             queryValue = "characterOrNumeric",
+             targetValue = "characterOrNumeric",
+             queryColname = "character",
+             targetColname = "character",
+             index = "integer",
+             keep = "logical"),
+         contains = "Param",
+         prototype = prototype(
+             queryValue = numeric(),
+             targetValue = numeric(),
+             queryColname = character(),
+             targetColname = character(),
+             index = integer(),
+             keep = TRUE),
+         validity = function(object) {
+             msg <- NULL
+             if(length(object@queryValue) != length(object@targetValue))
+                 msg <- c(msg, paste0("'queryValue' and 'targetValue' ",
+                                      "must have the same length"))
+             if (length(object@queryColname) > 1)
+                 msg <- c(msg,
+                          "'queryColname' cannot be of length greater than 1")
+             if (length(object@targetColname) > 1)
+                 msg <- c(msg,
+                          "'targetColname' cannot be of length greater than 1")
+             if (any(object@index <= 0))
+                 msg <- c(msg, "'index' must contain positive integers")
+             if (length(object@keep) != 1)
+                 msg <- c(msg, "'keep' must be a logical of length 1")
+             msg
+         })
+
+#' @rdname Matched
+#'
+#' @importFrom methods new
+#'
+#' @export
+SelectMatchesParam <-
+    function(queryValue = numeric(), targetValue = numeric(),
+             queryColname = character(), targetColname = character(),
+             index = integer(), keep = TRUE) {
+        new("SelectMatchesParam",
+            queryValue = queryValue, targetValue = targetValue,
+            queryColname = queryColname, targetColname = targetColname,
+            index = index, keep = keep)
+    }
+
+#' @noRd
+setClass("TopRankMatchesParam",
+         slots = c(
+             n = "integer"),
+         contains = "Param",
+         prototype = prototype(
+             n = 1L),
+         validity = function(object) {
+             msg <- NULL
+             if (length(object@n) != 1 || object@n <= 0)
+                 msg <- "'n' must have length 1 be a positive integer"
+             msg
+         })
+
+#' @rdname Matched
+#'
+#' @importFrom methods new
+#'
+#' @export
+TopRankMatchesParam <- function(n = 1L) {
+    new("TopRankMatchesParam", n = n)
+}
+
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
+setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
+                                                                         param, ...) {
+    index <- param@index
+    if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
+        stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
+    if (!length(index) && length(param@queryValue))
+        index  <- .findMatchesIdxs(.objectToMatch(object@query,
+                                                  object@queryAssay),
+                                   .objectToMatch(object@target,
+                                                  object@targetAssay),
+                                   object@matches, param@queryValue,
+                                   param@targetValue, param@queryColname,
+                                   param@targetColname)
+    if (param@keep) to_keep <- seq_len(nrow(object@matches)) %in% index
+    else to_keep <- !seq_len(nrow(object@matches)) %in% index
+    object@matches <- object@matches[to_keep, , drop = FALSE]
+    validObject(object)
+    object
+})
+
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
+setMethod("filterMatches", c("Matched", "TopRankMatchesParam"),
+          function (object, param, ...) {
+              rank <- object@matches$score
+              if ("score_rt" %in% colnames(object@matches))
+                  rank <- rank * rank(object@matches$score_rt)
+              seq_len_nm <- seq_len(nrow(object@matches))
+              tmp <- split.data.frame(cbind(seq_len_nm, rank),
+                                      object@matches$query_idx)
+              index <- do.call("c", lapply(tmp, function(x)
+                  x[order(x[, 2])[seq_len(min(param@n, nrow(x)))], 1]))
+              to_keep <- seq_len_nm %in% index
+              object@matches <- object@matches[to_keep, , drop = FALSE]
+              validObject(object)
+              object
+          })
 
 #' @importFrom MsCoreUtils rbindFill
 .addMatches <- function(query, target, matches, queryValue = integer(),
