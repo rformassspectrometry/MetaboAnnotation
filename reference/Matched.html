@@ -38,7 +38,7 @@ objects matches to only one of the assays within the object is supported."><meta
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,7 +98,7 @@ objects matches to only one of the <em>assays</em> within the object is supporte
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre><code>addMatches(object, ...)
 
-filterMatches(object, ...)
+filterMatches(object, param, ...)
 
 matchedData(object, ...)
 
@@ -142,7 +142,7 @@ matchedData(object, columns = colnames(object), ...)
 
 pruneTarget(object)
 
-# S4 method for Matched
+# S4 method for Matched,missing
 filterMatches(
   object,
   queryValue = integer(),
@@ -153,6 +153,23 @@ filterMatches(
   keep = TRUE,
   ...
 )
+
+SelectMatchesParam(
+  queryValue = numeric(),
+  targetValue = numeric(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE
+)
+
+TopRankMatchesParam(n = 1L)
+
+# S4 method for Matched,SelectMatchesParam
+filterMatches(object, param, ...)
+
+# S4 method for Matched,TopRankMatchesParam
+filterMatches(object, param, ...)
 
 # S4 method for Matched
 addMatches(
@@ -172,6 +189,9 @@ addMatches(
 <dd><p>a <code>Matched</code> object.</p></dd>
 <dt>...</dt>
 <dd><p>additional parameters.</p></dd>
+<dt>param</dt>
+<dd><p>for <code>filterMatches</code>: parameter object to select and customize
+the filtering procedure.</p></dd>
 <dt>query</dt>
 <dd><p>object with the query elements.</p></dd>
 <dt>target</dt>
@@ -206,7 +226,7 @@ performed).</p></dd>
 <dd><p>for <code>matchedData</code>: <code>character</code> vector with column names of
 variables that should be extracted.</p></dd>
 <dt>queryValue</dt>
-<dd><p>for <code>filterMatches</code>: vector of values to search for in
+<dd><p>for <code>SelectMatchesParam</code>: vector of values to search for in
 <code>query</code> (if <code>query</code> is 1-dimensional) or in column <code>queryColname</code> of
 <code>query</code> (if <code>query</code> is 2-dimensional). For <code>addMatches</code>: either an index
 in <code>query</code> or value in column <code>queryColname</code> of <code>query</code> defining (together
@@ -214,32 +234,37 @@ with <code>targetValue</code>) the pair of query and target elements for which a
 match should be manually added. Lengths of <code>queryValue</code> and
 <code>targetValue</code> have to match.</p></dd>
 <dt>targetValue</dt>
-<dd><p>for <code>filterMatches</code>: vector of values to search for in
-<code>target</code> (if <code>target</code> is 1-dimensional) or in column <code>targetColname</code> of
+<dd><p>for <code>SelectMatchesParam</code>: vector of values to search for
+in <code>target</code> (if <code>target</code> is 1-dimensional) or in column <code>targetColname</code> of
 <code>target</code> (if <code>target</code> is 2-dimensional). For <code>addMatches</code>: either an
 index in <code>target</code> or value in column <code>targetColname</code> of <code>target</code> defining
 (together with <code>queryValue</code>) the pair of query and target elements for
 which a match should be manually added. Lengths of <code>queryValue</code> and
 <code>targetValue</code> have to match.</p></dd>
 <dt>queryColname</dt>
-<dd><p>if <code>query</code> is 2-dimensional: column of <code>query</code> against
-which elements of <code>queryValue</code> are compared.</p></dd>
+<dd><p>for <code>SelectMatchesParam</code>: if <code>query</code> is 2-dimensional it
+represents the column of <code>query</code> against which elements of <code>queryValue</code>
+are compared.</p></dd>
 <dt>targetColname</dt>
-<dd><p>if <code>query</code> is 2-dimensional: column of <code>target</code> against
-which elements of <code>targetValue</code> are compared.</p></dd>
+<dd><p>for <code>SelectMatchesParam</code>: if <code>query</code> is 2-dimensional it
+represents the column of <code>target</code> against which elements of <code>targetValue</code>
+are compared.</p></dd>
 <dt>index</dt>
-<dd><p>for <code>filterMatches</code>: indices of the matches to keep (if
+<dd><p>for <code>SelectMatchesParam</code>: indices of the matches to keep (if
 <code>keep = TRUE</code>) or to drop if (<code>keep = FALSE</code>).</p></dd>
 <dt>keep</dt>
-<dd><p>for <code>filterMatches</code>: <code>logical</code>. If <code>keep = TRUE</code> the matches are
-kept, if <code>keep = FALSE</code> they are removed.</p></dd>
+<dd><p>for <code>SelectMatchesParam</code>: <code>logical</code>. If <code>keep = TRUE</code> the matches
+are kept, if <code>keep = FALSE</code> they are removed.</p></dd>
+<dt>n</dt>
+<dd><p>for <code>TopRankMatchesParam</code>: number of best ranked matches to keep
+for each <code>query</code> element.</p></dd>
 <dt>score</dt>
 <dd><p>for <code>addMatches</code>: <code>numeric</code> (same length than <code>queryValue</code>) or
 <code>data.frame</code> (same number of rows than <code>queryValue</code>) specifying the scores
 for the matches to add. If not specified, a <code>NA</code> will be used as score.</p></dd>
 <dt>isIndex</dt>
 <dd><p>for <code>addMatches</code>: specifies if <code>queryValue</code> and
-<code>targetValue</code> are expected to be vectors of indexes.</p></dd>
+<code>targetValue</code> are expected to be vectors of indices.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -271,13 +296,22 @@ provide the score for the match. It can be a numeric with the score or a
 <code>data.frame</code> with additional information on the manually added matches. In
 both cases its length (or number of rows) has to match the length of
 <code>queryValue</code>. See examples below for more information.</p></li>
-<li><p><code>filterMatches</code>: keeps or removes matches corresponding to certain indexes
-or values of <code>query</code> and <code>target</code>. If <code>queryValue</code> and <code>targetValue</code> are
-provided, matches for these value pairs are kept or removed. Parameter
-<code>index</code> allows to filter matches providing their index in the <code>matches()</code>
-matrix. Note that <code>filterMatches</code> removes only matches from the <code>matches()</code>
-matrix from the <code>Matched</code> object but thus not alter the <code>query</code> or <code>target</code>
-in the object. See examples below for more information.</p></li>
+<li><p><code>filterMatches</code>: filter matches in a <code>Matched</code> object using different
+approaches depending on the class of <code>param</code>:</p><ul><li><p><code>SelectMatchesParam</code>: keeps or removes (respectively when parameter
+<code>keep = TRUE</code> and <code>keep = FALSE</code>) matches corresponding to certain
+indices or values of <code>query</code> and <code>target</code>. If <code>queryValue</code> and
+<code>targetValue</code> are provided, matches for these value pairs are kept or
+removed. Parameter index<code>allows to filter matches providing their index in the [matches()] matrix. Note that</code>filterMatches<code>removes only matches from the [matches()] matrix from the</code>Matched<code>object but thus not alter the</code>query<code>or</code>target` in the object. See examples below for more
+information.</p></li>
+<li><p><code>TopRankMatchesParam</code>: for each query element the matches are ranked
+according to their score and only the <code>n</code> best of them are kept (if <code>n</code>
+is larger than the number of matches for a given query element all the
+matches are returned). If besides variable <code>"score"</code> also variable
+<code>"score_rt"</code> is available in the <code>Matched</code> object (e.g. that is the case
+for the <code>Matched</code> object returned by <code><a href="matchValues.html">matchValues()</a></code> for <code>param</code> objects
+involving a retention time comparison), the ranking is computed on the
+product of the values of the two variables.</p></li>
+</ul></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
 </ul></div>
