@@ -21,9 +21,9 @@
 \alias{pruneTarget}
 \alias{filterMatches,Matched,missing-method}
 \alias{SelectMatchesParam}
-\alias{TopRankMatchesParam}
+\alias{TopRankedMatchesParam}
 \alias{filterMatches,Matched,SelectMatchesParam-method}
-\alias{filterMatches,Matched,TopRankMatchesParam-method}
+\alias{filterMatches,Matched,TopRankedMatchesParam-method}
 \alias{addMatches,Matched-method}
 \title{Representation of generic objects matches}
 \usage{
@@ -87,11 +87,11 @@ SelectMatchesParam(
   keep = TRUE
 )
 
-TopRankMatchesParam(n = 1L)
+TopRankedMatchesParam(n = 1L, decreasing = FALSE)
 
 \S4method{filterMatches}{Matched,SelectMatchesParam}(object, param, ...)
 
-\S4method{filterMatches}{Matched,TopRankMatchesParam}(object, param, ...)
+\S4method{filterMatches}{Matched,TopRankedMatchesParam}(object, param, ...)
 
 \S4method{addMatches}{Matched}(
   object,
@@ -174,8 +174,12 @@ are compared.}
 \item{keep}{for \code{SelectMatchesParam}: \code{logical}. If \code{keep = TRUE} the matches
 are kept, if \code{keep = FALSE} they are removed.}
 
-\item{n}{for \code{TopRankMatchesParam}: number of best ranked matches to keep
-for each \code{query} element.}
+\item{n}{for \code{TopRankedMatchesParam}: \code{integer(1)} with number of best
+ranked matches to keep for each \code{query} element.}
+
+\item{decreasing}{for \code{TopRankedMatchesParam}: \code{logical(1)} whether scores
+should be ordered increasing or decreasing. Defaults to
+\code{decreasing = FALSE}.}
 
 \item{score}{for \code{addMatches}: \code{numeric} (same length than \code{queryValue}) or
 \code{data.frame} (same number of rows than \code{queryValue}) specifying the scores
@@ -241,14 +245,20 @@ indices or values of \code{query} and \code{target}. If \code{queryValue} and
 \code{targetValue} are provided, matches for these value pairs are kept or
 removed. Parameter index\verb{allows to filter matches providing their index in the [matches()] matrix. Note that}filterMatches\verb{removes only matches from the [matches()] matrix from the}Matched\verb{object but thus not alter the}query\code{or}target` in the object. See examples below for more
 information.
-\item \code{TopRankMatchesParam}: for each query element the matches are ranked
+\item \code{TopRankedMatchesParam}: for each query element the matches are ranked
 according to their score and only the \code{n} best of them are kept (if \code{n}
 is larger than the number of matches for a given query element all the
-matches are returned). If besides variable \code{"score"} also variable
-\code{"score_rt"} is available in the \code{Matched} object (e.g. that is the case
-for the \code{Matched} object returned by \code{\link[=matchValues]{matchValues()}} for \code{param} objects
-involving a retention time comparison), the ranking is computed on the
-product of the values of the two variables.
+matches are returned). For the ranking (ordering) R's \code{rank} function is
+used, thus, smaller score values (representing smaller differences
+between expected and observed m/z values) are considered \emph{better}. By
+setting parameter \code{decreasing = TRUE} matches can be ranked in decreasing
+order (i.e. higher scores are ranked higher and are thus selected).
+If besides variable \code{"score"} also variable \code{"score_rt"} is available in
+the \code{Matched} object (e.g. that is the case for the \code{Matched} object
+returned by \code{\link[=matchValues]{matchValues()}} for \code{param} objects involving a retention
+time comparison), the ordering of the matches is based on the product of
+the ranks of the two variables (ranking of retention time differences
+is performed on the absolute value of \code{"score_rt"}).
 }
 \item \code{pruneTarget} \emph{cleans} the object by removing non-matched
 \strong{target} elements.
@@ -429,8 +439,9 @@ mo$target
 ## and query 2 (column `"col1"` containing value `2`) with target 2 (value
 ## `13`). In addition we also want to keep query element 5 (value `5` in
 ## column `"col1"`) with the target with value `15`:
-mo_sub <- filterMatches(mo, queryValue = c(1, 2, 5), queryColname = "col1",
-    targetValue = c(12, 13, 15))
+mo_sub <- filterMatches(mo,
+    SelectMatchesParam(queryValue = c(1, 2, 5), queryColname = "col1",
+                       targetValue = c(12, 13, 15)))
 matchedData(mo_sub)
 
 ## Alternatively to specifying the matches to filter with `queryValue` and
@@ -439,16 +450,25 @@ matchedData(mo_sub)
 matches(mo)
 
 ## To keep only matches like in the example above we could use:
-mo_sub <- filterMatches(mo, index = c(1, 3, 5))
+mo_sub <- filterMatches(mo, SelectMatchesParam(index = c(1, 3, 5)))
 matchedData(mo_sub)
 
 ## Note also that, instead of keeping the specified matches, it would be
 ## possible to remove them by setting `keep = FALSE`. Below we remove
 ## selected matches from the object:
-mo_sub <- filterMatches(mo, queryValue = c(2, 2), queryColname = "col1",
-    targetValue = c(12, 14), keep = FALSE)
+mo_sub <- filterMatches(mo,
+    SelectMatchesParam(queryValue = c(2, 2), queryColname = "col1",
+                       targetValue = c(12, 14), keep = FALSE))
 mo_sub$col1
 mo_sub$target
+
+## As alternative to *manually* selecting matches it is also possible to
+## filter matches keeping only the *best matches* using the
+## `TopRankedMatchesParam`. This will rank matches for each query based on
+## their *score* value and select the best *n* matches with lowest score
+## values (i.e. smallest difference in m/z values).
+mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+matchedData(mo_sub)
 
 ########
 ## Adding matches using `addMatches`

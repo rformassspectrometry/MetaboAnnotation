@@ -63,14 +63,20 @@
 #'     from the [matches()] matrix from the `Matched` object but thus not alter
 #'     the `query` or `target` in the object. See examples below for more
 #'     information.
-#'   - `TopRankMatchesParam`: for each query element the matches are ranked
+#'   - `TopRankedMatchesParam`: for each query element the matches are ranked
 #'     according to their score and only the `n` best of them are kept (if `n`
 #'     is larger than the number of matches for a given query element all the
-#'     matches are returned). If besides variable `"score"` also variable
-#'     `"score_rt"` is available in the `Matched` object (e.g. that is the case
-#'     for the `Matched` object returned by [matchValues()] for `param` objects
-#'     involving a retention time comparison), the ranking is computed on the
-#'     product of the values of the two variables.
+#'     matches are returned). For the ranking (ordering) R's `rank` function is
+#'     used, thus, smaller score values (representing smaller differences
+#'     between expected and observed m/z values) are considered *better*. By
+#'     setting parameter `decreasing = TRUE` matches can be ranked in decreasing
+#'     order (i.e. higher scores are ranked higher and are thus selected).
+#'     If besides variable `"score"` also variable `"score_rt"` is available in
+#'     the `Matched` object (e.g. that is the case for the `Matched` object
+#'     returned by [matchValues()] for `param` objects involving a retention
+#'     time comparison), the ordering of the matches is based on the product of
+#'     the ranks of the two variables (ranking of retention time differences
+#'     is performed on the absolute value of `"score_rt"`).
 #'
 #' - `pruneTarget` *cleans* the object by removing non-matched
 #'   **target** elements.
@@ -130,6 +136,10 @@
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
 #'
+#' @param decreasing for `TopRankedMatchesParam`: `logical(1)` whether scores
+#'   should be ordered increasing or decreasing. Defaults to
+#'   `decreasing = FALSE`.
+#'
 #' @param drop for `[`: ignored.
 #'
 #' @param i `integer` or `logical` defining the `query` elements to keep.
@@ -150,14 +160,14 @@
 #'   mapping of elements between the `query` and the `target` objects.
 #'
 #' @param metadata `list` with optional additional metadata.
-#' 
-#' @param n for `TopRankMatchesParam`: number of best ranked matches to keep
-#'   for each `query` element.
+#'
+#' @param n for `TopRankedMatchesParam`: `integer(1)` with number of best
+#'   ranked matches to keep for each `query` element.
 #'
 #' @param name for `$`: the name of the column (or variable) to extract.
 #'
 #' @param object a `Matched` object.
-#' 
+#'
 #' @param param for `filterMatches`: parameter object to select and customize
 #'   the filtering procedure.
 #'
@@ -344,8 +354,9 @@
 #' ## and query 2 (column `"col1"` containing value `2`) with target 2 (value
 #' ## `13`). In addition we also want to keep query element 5 (value `5` in
 #' ## column `"col1"`) with the target with value `15`:
-#' mo_sub <- filterMatches(mo, queryValue = c(1, 2, 5), queryColname = "col1",
-#'     targetValue = c(12, 13, 15))
+#' mo_sub <- filterMatches(mo,
+#'     SelectMatchesParam(queryValue = c(1, 2, 5), queryColname = "col1",
+#'                        targetValue = c(12, 13, 15)))
 #' matchedData(mo_sub)
 #'
 #' ## Alternatively to specifying the matches to filter with `queryValue` and
@@ -354,16 +365,25 @@
 #' matches(mo)
 #'
 #' ## To keep only matches like in the example above we could use:
-#' mo_sub <- filterMatches(mo, index = c(1, 3, 5))
+#' mo_sub <- filterMatches(mo, SelectMatchesParam(index = c(1, 3, 5)))
 #' matchedData(mo_sub)
 #'
 #' ## Note also that, instead of keeping the specified matches, it would be
 #' ## possible to remove them by setting `keep = FALSE`. Below we remove
 #' ## selected matches from the object:
-#' mo_sub <- filterMatches(mo, queryValue = c(2, 2), queryColname = "col1",
-#'     targetValue = c(12, 14), keep = FALSE)
+#' mo_sub <- filterMatches(mo,
+#'     SelectMatchesParam(queryValue = c(2, 2), queryColname = "col1",
+#'                        targetValue = c(12, 14), keep = FALSE))
 #' mo_sub$col1
 #' mo_sub$target
+#'
+#' ## As alternative to *manually* selecting matches it is also possible to
+#' ## filter matches keeping only the *best matches* using the
+#' ## `TopRankedMatchesParam`. This will rank matches for each query based on
+#' ## their *score* value and select the best *n* matches with lowest score
+#' ## values (i.e. smallest difference in m/z values).
+#' mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+#' matchedData(mo_sub)
 #'
 #' ########
 #' ## Adding matches using `addMatches`
@@ -887,12 +907,13 @@ pruneTarget <- function(object) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("filterMatches", c("Matched", "missing"), function (object, queryValue = integer(),
-                                                targetValue = integer(),
-                                                queryColname = character(),
-                                                targetColname = character(),
-                                                index = integer(),
-                                                keep = TRUE, ...) {
+setMethod("filterMatches",
+          c("Matched", "missing"), function (object, queryValue = integer(),
+                                             targetValue = integer(),
+                                             queryColname = character(),
+                                             targetColname = character(),
+                                             index = integer(),
+                                             keep = TRUE, ...) {
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
         stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
     if (!length(index) && length(queryValue))
@@ -957,16 +978,18 @@ SelectMatchesParam <-
         new("SelectMatchesParam",
             queryValue = queryValue, targetValue = targetValue,
             queryColname = queryColname, targetColname = targetColname,
-            index = index, keep = keep)
+            index = as.integer(index), keep = keep)
     }
 
 #' @noRd
-setClass("TopRankMatchesParam",
+setClass("TopRankedMatchesParam",
          slots = c(
-             n = "integer"),
+             n = "integer",
+             decreasing = "logical"),
          contains = "Param",
          prototype = prototype(
-             n = 1L),
+             n = 1L,
+             decreasing = FALSE),
          validity = function(object) {
              msg <- NULL
              if (length(object@n) != 1 || object@n <= 0)
@@ -979,8 +1002,8 @@ setClass("TopRankMatchesParam",
 #' @importFrom methods new
 #'
 #' @export
-TopRankMatchesParam <- function(n = 1L) {
-    new("TopRankMatchesParam", n = n)
+TopRankedMatchesParam <- function(n = 1L, decreasing = FALSE) {
+    new("TopRankedMatchesParam", n = as.integer(n), decreasing = decreasing[1L])
 }
 
 #' @rdname Matched
@@ -989,7 +1012,8 @@ TopRankMatchesParam <- function(n = 1L) {
 #'
 #' @export
 setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
-                                                                         param, ...) {
+                                                                         param,
+                                                                         ...) {
     index <- param@index
     if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
         stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
@@ -1013,11 +1037,12 @@ setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("filterMatches", c("Matched", "TopRankMatchesParam"),
+setMethod("filterMatches", c("Matched", "TopRankedMatchesParam"),
           function (object, param, ...) {
-              rank <- object@matches$score
+              sign <- ifelse(param@decreasing, yes = -1, no = 1)
+              rank <- rank(object@matches$score * sign)
               if ("score_rt" %in% colnames(object@matches))
-                  rank <- rank * rank(object@matches$score_rt)
+                  rank <- rank * rank(abs(object@matches$score_rt) * sign)
               seq_len_nm <- seq_len(nrow(object@matches))
               tmp <- split.data.frame(cbind(seq_len_nm, rank),
                                       object@matches$query_idx)
