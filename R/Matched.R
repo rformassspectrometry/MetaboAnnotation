@@ -914,21 +914,12 @@ setMethod("filterMatches",
                                              targetColname = character(),
                                              index = integer(),
                                              keep = TRUE, ...) {
-    if (length(index) && any(!index %in% seq_len(nrow(object@matches))))
-        stop("some indices in \"index\" are out-of-bounds", call. = FALSE)
-    if (!length(index) && length(queryValue))
-        index  <- .findMatchesIdxs(.objectToMatch(object@query,
-                                                  object@queryAssay),
-                                   .objectToMatch(object@target,
-                                                  object@targetAssay),
-                                   object@matches, queryValue,
-                                   targetValue, queryColname,
-                                   targetColname)
-    if (keep) to_keep <- seq_len(nrow(object@matches)) %in% index
-    else to_keep <- !seq_len(nrow(object@matches)) %in% index
-    object@matches <- object@matches[to_keep, , drop = FALSE]
-    validObject(object)
-    object
+              param <- SelectMatchesParam(queryValue = queryValue,
+                                          targetValue = targetValue,
+                                          queryColname = queryColname,
+                                          targetColname = targetColname,
+                                          index = index, keep = keep)
+              filterMatches(object, param, ...)
 })
 
 #' @noRd
@@ -1028,6 +1019,7 @@ setMethod("filterMatches", c("Matched", "SelectMatchesParam"), function (object,
     if (param@keep) to_keep <- seq_len(nrow(object@matches)) %in% index
     else to_keep <- !seq_len(nrow(object@matches)) %in% index
     object@matches <- object@matches[to_keep, , drop = FALSE]
+    object@metadata <- c(object@metadata, param = param)
     validObject(object)
     object
 })
@@ -1050,6 +1042,7 @@ setMethod("filterMatches", c("Matched", "TopRankedMatchesParam"),
                   x[order(x[, 2])[seq_len(min(param@n, nrow(x)))], 1]))
               to_keep <- seq_len_nm %in% index
               object@matches <- object@matches[to_keep, , drop = FALSE]
+              object@metadata <- c(object@metadata, param = param)
               validObject(object)
               object
           })

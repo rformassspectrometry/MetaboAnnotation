@@ -607,6 +607,8 @@ test_that("filterMatches,Matched works", {
     expect_equal(mosub@matches, mo@matches[idxs, ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "SelectMatchesParam")
     ## in range indexes
     idxs <- c(1, 3, 5)
     mosub <- filterMatches(mo, index = idxs)
@@ -702,6 +704,8 @@ test_that("filterMatches,Matched,SelectMatchesParam works", {
     expect_equal(mosub@matches, mo@matches[idxs, ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "SelectMatchesParam")
     ## in range indexes
     idxs <- c(1L, 3L, 5L)
     mosub <- filterMatches(mo, SelectMatchesParam(index = idxs))
@@ -801,6 +805,8 @@ test_that("filterMatches,Matched,TopRankedMatchesParam works", {
     expect_equal(mosub@matches, mo@matches[c(1L, 3L, 5L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "TopRankedMatchesParam")
 
     mosub <- filterMatches(mo, TopRankedMatchesParam(n = 2L))
     expect_equal(mosub@matches, mo@matches[c(1L, 3L, 4L, 5L), ])
