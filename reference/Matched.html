@@ -163,12 +163,12 @@ SelectMatchesParam(
   keep = TRUE
 )
 
-TopRankMatchesParam(n = 1L)
+TopRankedMatchesParam(n = 1L, decreasing = FALSE)
 
 # S4 method for Matched,SelectMatchesParam
 filterMatches(object, param, ...)
 
-# S4 method for Matched,TopRankMatchesParam
+# S4 method for Matched,TopRankedMatchesParam
 filterMatches(object, param, ...)
 
 # S4 method for Matched
@@ -256,8 +256,12 @@ are compared.</p></dd>
 <dd><p>for <code>SelectMatchesParam</code>: <code>logical</code>. If <code>keep = TRUE</code> the matches
 are kept, if <code>keep = FALSE</code> they are removed.</p></dd>
 <dt>n</dt>
-<dd><p>for <code>TopRankMatchesParam</code>: number of best ranked matches to keep
-for each <code>query</code> element.</p></dd>
+<dd><p>for <code>TopRankedMatchesParam</code>: <code>integer(1)</code> with number of best
+ranked matches to keep for each <code>query</code> element.</p></dd>
+<dt>decreasing</dt>
+<dd><p>for <code>TopRankedMatchesParam</code>: <code>logical(1)</code> whether scores
+should be ordered increasing or decreasing. Defaults to
+<code>decreasing = FALSE</code>.</p></dd>
 <dt>score</dt>
 <dd><p>for <code>addMatches</code>: <code>numeric</code> (same length than <code>queryValue</code>) or
 <code>data.frame</code> (same number of rows than <code>queryValue</code>) specifying the scores
@@ -303,14 +307,23 @@ indices or values of <code>query</code> and <code>target</code>. If <code>queryV
 <code>targetValue</code> are provided, matches for these value pairs are kept or
 removed. Parameter index<code>allows to filter matches providing their index in the [matches()] matrix. Note that</code>filterMatches<code>removes only matches from the [matches()] matrix from the</code>Matched<code>object but thus not alter the</code>query<code>or</code>target` in the object. See examples below for more
 information.</p></li>
-<li><p><code>TopRankMatchesParam</code>: for each query element the matches are ranked
+<li><p><code>TopRankedMatchesParam</code>: for each query element the matches are ranked
 according to their score and only the <code>n</code> best of them are kept (if <code>n</code>
 is larger than the number of matches for a given query element all the
-matches are returned). If besides variable <code>"score"</code> also variable
-<code>"score_rt"</code> is available in the <code>Matched</code> object (e.g. that is the case
-for the <code>Matched</code> object returned by <code><a href="matchValues.html">matchValues()</a></code> for <code>param</code> objects
-involving a retention time comparison), the ranking is computed on the
-product of the values of the two variables.</p></li>
+matches are returned). For the ranking (ordering) R's <code>rank</code> function is
+used on the absolute values of the scores (variable <code>"score"</code>), thus,
+smaller score values (representing e.g. smaller differences between
+expected and observed m/z values) are considered <em>better</em>. By
+setting parameter <code>decreasing = TRUE</code> matches can be ranked in decreasing
+order (i.e. higher scores are ranked higher and are thus selected).
+If besides variable <code>"score"</code> also variable <code>"score_rt"</code> is available in
+the <code>Matched</code> object (which is the case for the <code>Matched</code> object
+returned by <code><a href="matchValues.html">matchValues()</a></code> for <code>param</code> objects involving a retention
+time comparison), the ordering of the matches is based on the product of
+the ranks of the two variables (ranking of retention time differences
+is performed on the absolute value of <code>"score_rt"</code>). Thus, matches with
+small (or, depending on parameter <code>decreasing</code>, large) values for
+<code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p></li>
 </ul></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
@@ -544,8 +557,9 @@ eventual additional columns.</p></li>
 <span class="r-in"><span class="co">## and query 2 (column `"col1"` containing value `2`) with target 2 (value</span></span>
 <span class="r-in"><span class="co">## `13`). In addition we also want to keep query element 5 (value `5` in</span></span>
 <span class="r-in"><span class="co">## column `"col1"`) with the target with value `15`:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">    targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">13</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span>
+<span class="r-in">    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
+<span class="r-in">                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">13</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
@@ -568,7 +582,7 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5          5   0.9</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## To keep only matches like in the example above we could use:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">SelectMatchesParam</span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
@@ -582,12 +596,29 @@ eventual additional columns.</p></li>
 <span class="r-in"><span class="co">## Note also that, instead of keeping the specified matches, it would be</span></span>
 <span class="r-in"><span class="co">## possible to remove them by setting `keep = FALSE`. Below we remove</span></span>
 <span class="r-in"><span class="co">## selected matches from the object:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">    targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span>
+<span class="r-in">    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
+<span class="r-in">                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">mo_sub</span><span class="op">$</span><span class="va">col1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
 <span class="r-in"><span class="va">mo_sub</span><span class="op">$</span><span class="va">target</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 13 NA NA 15</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## As alternative to *manually* selecting matches it is also possible to</span></span>
+<span class="r-in"><span class="co">## filter matches keeping only the *best matches* using the</span></span>
+<span class="r-in"><span class="co">## `TopRankedMatchesParam`. This will rank matches for each query based on</span></span>
+<span class="r-in"><span class="co">## their *score* value and select the best *n* matches with lowest score</span></span>
+<span class="r-in"><span class="co">## values (i.e. smallest difference in m/z values).</span></span>
+<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">TopRankedMatchesParam</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1         6     12       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2         7     12       0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10     15       0.9</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">########</span></span>
 <span class="r-in"><span class="co">## Adding matches using `addMatches`</span></span>
