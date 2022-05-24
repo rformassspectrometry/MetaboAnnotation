@@ -607,6 +607,8 @@ test_that("filterMatches,Matched works", {
     expect_equal(mosub@matches, mo@matches[idxs, ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "SelectMatchesParam")
     ## in range indexes
     idxs <- c(1, 3, 5)
     mosub <- filterMatches(mo, index = idxs)
@@ -685,7 +687,9 @@ test_that("filterMatches,Matched works", {
                                            target_idx = integer(),
                                            score = numeric()))
 
-    ###### SelectMatchesParam
+})
+
+test_that("filterMatches,Matched,SelectMatchesParam works", {
     #### query and target data.frames
     mo <- Matched(
         q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
@@ -700,12 +704,16 @@ test_that("filterMatches,Matched works", {
     expect_equal(mosub@matches, mo@matches[idxs, ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "SelectMatchesParam")
     ## in range indexes
     idxs <- c(1L, 3L, 5L)
     mosub <- filterMatches(mo, SelectMatchesParam(index = idxs))
     expect_equal(mosub@matches, mo@matches[idxs, ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    mosub_old <- filterMatches(mo, index = idxs)
+    expect_equal(mosub@matches, mosub_old@matches)
     mosub <- filterMatches(mo, SelectMatchesParam(index = idxs, keep = FALSE))
     expect_equal(mosub@matches, mo@matches[-idxs, ])
     ## keep matches based on query and target input values
@@ -786,23 +794,26 @@ test_that("filterMatches,Matched works", {
     expect_equal(mosub@matches, data.frame(query_idx = integer(),
                                            target_idx = integer(),
                                            score = numeric()))
+})
 
-    ###### TopRankMatchesParam
+test_that("filterMatches,Matched,TopRankedMatchesParam works", {
     mo <- Matched(
         q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = c(4, 4, 1, 3, 1)))
-    mosub <- filterMatches(mo, TopRankMatchesParam())
+    mosub <- filterMatches(mo, TopRankedMatchesParam())
     expect_equal(mosub@matches, mo@matches[c(1L, 3L, 5L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "TopRankedMatchesParam")
 
-    mosub <- filterMatches(mo, TopRankMatchesParam(n = 2L))
+    mosub <- filterMatches(mo, TopRankedMatchesParam(n = 2L))
     expect_equal(mosub@matches, mo@matches[c(1L, 3L, 4L, 5L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
 
-    mosub <- filterMatches(mo, TopRankMatchesParam(n = 10L))
+    mosub <- filterMatches(mo, TopRankedMatchesParam(n = 10L))
     expect_equal(mosub@matches, mo@matches)
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
@@ -811,22 +822,38 @@ test_that("filterMatches,Matched works", {
         q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
                                      score = c(4, 4, 1, 3, 1),
-                                     score_rt = c(1, 1, 1, 2, 1)))
+                                     score_rt = c(1, -1, -1, -2, 1)))
 
-    mosub <- filterMatches(mo, TopRankMatchesParam())
+    mosub <- filterMatches(mo, TopRankedMatchesParam())
     expect_equal(mosub@matches, mo@matches[c(1L, 3L, 5L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
 
-    mosub <- filterMatches(mo, TopRankMatchesParam(n = 2L))
+    mosub <- filterMatches(mo, TopRankedMatchesParam(n = 2L))
     expect_equal(mosub@matches, mo@matches[c(1L, 2L, 3L, 5L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
-    
-    mosub <- filterMatches(mo, TopRankMatchesParam(n = 10L))
+
+    mosub <- filterMatches(mo, TopRankedMatchesParam(n = 10L))
     expect_equal(mosub@matches, mo@matches)
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))
+
+    q1 <- data.frame(col1 = 1:5, col2 = 6:10)
+    t2 <- 11:16
+    mo <- Matched(q1, t2,
+                  matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                       target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                       score = seq(0.5, 0.9, by = 0.1)))
+    res <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+    expect_equal(res@matches$query_idx, c(1, 2, 5))
+    expect_equal(res@matches$target_idx, c(2, 2, 5))
+    expect_equal(res@matches$score, c(0.5, 0.6, 0.9))
+
+    res <- filterMatches(mo, TopRankedMatchesParam(n = 1L, decreasing = TRUE))
+    expect_equal(res@matches$query_idx, c(1, 2, 5))
+    expect_equal(res@matches$target_idx, c(2, 4, 5))
+    expect_equal(res@matches$score, c(0.5, 0.8, 0.9))
 })
 
 test_that("addMatches,Matched works", {
@@ -960,23 +987,23 @@ test_that(".subset_qt works", {
 test_that("SelectMatchesParam works", {
     res <- SelectMatchesParam()
     expect_true(is(res, "SelectMatchesParam"))
-    
-    expect_error(SelectMatchesParam(queryValue = "A", targetValue = 1:2), 
+
+    expect_error(SelectMatchesParam(queryValue = "A", targetValue = 1:2),
                  "must have the same length")
-    expect_error(SelectMatchesParam(queryColname = c("A", "b")), 
+    expect_error(SelectMatchesParam(queryColname = c("A", "b")),
                  "cannot be of length greater than 1")
-    expect_error(SelectMatchesParam(targetColname = c("A", "b")), 
+    expect_error(SelectMatchesParam(targetColname = c("A", "b")),
                  "cannot be of length greater than 1")
-    expect_error(SelectMatchesParam(index = c(1L, -2L)), 
+    expect_error(SelectMatchesParam(index = c(1L, -2L)),
                  "must contain positive integers")
-    expect_error(SelectMatchesParam(keep = rep(TRUE, 2)), 
+    expect_error(SelectMatchesParam(keep = rep(TRUE, 2)),
                  "must be a logical of length 1")
 })
 
-test_that("TopRankMatchesParam works", {
-    res <- TopRankMatchesParam()
-    expect_true(is(res, "TopRankMatchesParam"))
-    
-    expect_error(TopRankMatchesParam(n = c(2L, 3L)), "length 1")
-    expect_error(TopRankMatchesParam(n = -4L), "positive integer")
+test_that("TopRankedMatchesParam works", {
+    res <- TopRankedMatchesParam()
+    expect_true(is(res, "TopRankedMatchesParam"))
+
+    expect_error(TopRankedMatchesParam(n = c(2L, 3L)), "length 1")
+    expect_error(TopRankedMatchesParam(n = -4L), "positive integer")
 })

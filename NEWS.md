@@ -4,7 +4,7 @@
 
 - Extend `filterMatches` framework (issue
   [#81](https://github.com/rformassspectrometry/MetaboAnnotation/issues/81)).
-  `SelectMatchesParam` and `TopRankMatchesParam` added to perform respectively
+  `SelectMatchesParam` and `TopRankedMatchesParam` added to perform respectively
   manual filtering and keeping only the best ranked matches for each `query`
   element.
 
