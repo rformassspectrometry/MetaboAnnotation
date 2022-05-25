@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.2
+
+- `matchApply` function to allow applying any function to each match (issue
+  [#84](https://github.com/rformassspectrometry/MetaboAnnotation/issues/84)).
+  
 ## Changes in 1.1.1
 
 - Extend `filterMatches` framework (issue

@@ -25,6 +25,7 @@
 \alias{filterMatches,Matched,SelectMatchesParam-method}
 \alias{filterMatches,Matched,TopRankedMatchesParam-method}
 \alias{addMatches,Matched-method}
+\alias{matchApply}
 \title{Representation of generic objects matches}
 \usage{
 addMatches(object, ...)
@@ -102,6 +103,8 @@ TopRankedMatchesParam(n = 1L, decreasing = FALSE)
   score = rep(NA_real_, length(queryValue)),
   isIndex = FALSE
 )
+
+matchApply(object, FUN, returnMatched = TRUE, ...)
 }
 \arguments{
 \item{object}{a \code{Matched} object.}
@@ -187,6 +190,18 @@ for the matches to add. If not specified, a \code{NA} will be used as score.}
 
 \item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
 \code{targetValue} are expected to be vectors of indices.}
+
+\item{FUN}{for \code{matchApply}: user defined \code{function} that have the
+parameters \code{matches} (for this a \code{data.frame} is expected to be passed),
+\code{query} and \code{target}. \code{FUN} can also have additional parameters (the value
+for these parameters should be provided in the \code{matchApply} call). The
+function must return a \code{data.frame} with the same columns of \code{matches}
+(or more).}
+
+\item{returnMatched}{for \code{matchApply}: \code{logical}. If \code{returnMatched = FALSE}
+\code{matchApply} returns a \code{data.frame} representing updated matches between
+\code{query} and \code{target}, if \code{returnMatched = TRUE} returns a complete
+\code{Matched} object.}
 }
 \value{
 See individual method description above for details.
@@ -219,7 +234,7 @@ function providing the \code{query} and \code{target} objects as well as the \co
 \code{data.frame} with two columns of integer indices defining which elements
 from \emph{query} match which element from \emph{target}.
 \itemize{
-\item \code{[} subset the object selecting \code{query} object elements to keep with
+\item \code{[}: subset the object selecting \code{query} object elements to keep with
 parameter \code{i}. The resulting object will contain all the matches
 for the selected query elements. The \code{target} object will by default be
 returned as-is.
@@ -263,7 +278,14 @@ is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
 }
-\item \code{pruneTarget} \emph{cleans} the object by removing non-matched
+\item \code{matchApply}: allows to apply a user defined function \code{FUN} to each subset
+of matches corresponding to a \code{query} element. This produces a list of
+\code{data.frame}s that are subsequently combined into a single \code{data.frame}
+representing updated matches between \code{query} and \code{target}. Such
+\code{data.frame} can be returned directly (\code{returnMatches = FALSE}) or a
+\code{Matched} object can be returned to represent modified matches
+(\code{returnMatches = TRUE}).
+\item \code{pruneTarget}: \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }
 }

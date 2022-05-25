@@ -1007,3 +1007,50 @@ test_that("TopRankedMatchesParam works", {
     expect_error(TopRankedMatchesParam(n = c(2L, 3L)), "length 1")
     expect_error(TopRankedMatchesParam(n = -4L), "positive integer")
 })
+
+test_that("matchApply,Matched works", {
+    mo <- Matched(
+        query = data.frame(val = 1:5, name = letters[1:5]),
+        target = data.frame(val = 11:16, name = LETTERS[1:6]),
+        matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                             target_idx = c(2L, 2L, 3L, 4L, 5L),
+                             score = seq(0.5, 0.9, by = 0.1)))
+
+    fun0 <- function(matches, threshold) {
+        matches[matches$score < threshold, ]
+    }
+
+    expect_error(matchApply(mo, fun0, threshold = 0.75), "must have each one")
+    
+    fun1 <- function(matches, query, target, threshold) {
+        matches[matches$score < threshold, ]
+    }
+
+    res <- matchApply(mo, fun1, threshold = 0.75)
+    expect_true(is(res, "Matched"))
+    expect_identical(query(res), query(mo))
+    expect_identical(target(res), target(mo))
+    expect_true(all(res$score < 0.75, na.rm = TRUE))
+    expect_true(is(matchApply(mo, fun1, FALSE, threshold = 0.75), "data.frame"))
+
+    fun2 <- function(matches, query, target, cmpds_subs) {
+        matches[target[matches$target_idx, "name"] %in% cmpds_subs, ]
+    }
+
+    res <- matchApply(mo, fun2, cmpds_subs = c("A", "B", "D"))
+    expect_identical(query(res), query(mo))
+    expect_identical(target(res), target(mo))
+    expect_true(all(res$target_name %in% c("A", "B", "D", NA)))
+
+    fun3 <- function(matches, query, target) {
+        matches[which.min(matches$score), ]
+    }
+
+    res <- matchApply(mo, fun3)
+    expect_identical(query(res), query(mo))
+    expect_identical(target(res), target(mo))
+    expect_identical(res@matches$query_idx, mo@matches[c(1, 2, 5), "query_idx"])
+    expect_identical(res@matches$target_idx,
+                     mo@matches[c(1, 2, 5), "target_idx"])
+    expect_identical(res@matches$score, mo@matches[c(1, 2, 5), "score"])
+})

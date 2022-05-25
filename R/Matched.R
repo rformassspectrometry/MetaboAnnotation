@@ -32,7 +32,7 @@
 #' `data.frame` with two columns of integer indices defining which elements
 #' from *query* match which element from *target*.
 #'
-#' - `[` subset the object selecting `query` object elements to keep with
+#' - `[`: subset the object selecting `query` object elements to keep with
 #'   parameter `i`. The resulting object will contain all the matches
 #'   for the selected query elements. The `target` object will by default be
 #'   returned as-is.
@@ -81,7 +81,15 @@
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
 #'
-#' - `pruneTarget` *cleans* the object by removing non-matched
+#' - `matchApply`: allows to apply a user defined function `FUN` to each subset
+#'   of matches corresponding to a `query` element. This produces a list of
+#'   `data.frame`s that are subsequently combined into a single `data.frame`
+#'   representing updated matches between `query` and `target`. Such
+#'   `data.frame` can be returned directly (`returnMatches = FALSE`) or a
+#'   `Matched` object can be returned to represent modified matches
+#'   (`returnMatches = TRUE`).
+#'   
+#' - `pruneTarget`: *cleans* the object by removing non-matched
 #'   **target** elements.
 #'
 #'
@@ -144,6 +152,13 @@
 #'   `decreasing = FALSE`.
 #'
 #' @param drop for `[`: ignored.
+#' 
+#' @param FUN for `matchApply`: user defined `function` that have the
+#'  parameters `matches` (for this a `data.frame` is expected to be passed),
+#'  `query` and `target`. `FUN` can also have additional parameters (the value
+#'  for these parameters should be provided in the `matchApply` call). The
+#'  function must return a `data.frame` with the same columns of `matches`
+#'  (or more).
 #'
 #' @param i `integer` or `logical` defining the `query` elements to keep.
 #'
@@ -173,6 +188,11 @@
 #'
 #' @param param for `filterMatches`: parameter object to select and customize
 #'   the filtering procedure.
+#' 
+#' @param returnMatched for `matchApply`: `logical`. If `returnMatched = FALSE`
+#'   `matchApply` returns a `data.frame` representing updated matches between
+#'   `query` and `target`, if `returnMatched = TRUE` returns a complete
+#'   `Matched` object.
 #'
 #' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
 #'   `data.frame` (same number of rows than `queryValue`) specifying the scores
@@ -1122,3 +1142,21 @@ setMethod("addMatches", "Matched",
               validObject(object)
               object
           })
+
+#' @rdname Matched
+#'
+#' @importFrom methods validObject formalArgs
+#'
+#' @export
+matchApply <- function(object, FUN, returnMatched = TRUE, ...) {
+    if (any(!c("matches", "query", "target") %in% formalArgs(FUN)))
+        stop("`FUN` must have each one of the arguments ",
+             "\"matches\", \"query\", \"target\"")
+    tmp <- split.data.frame(object@matches, object@matches$query_idx)
+    tmp <- do.call(rbind, lapply(tmp, FUN, object@query, object@target, ...))
+    rownames(tmp) <- seq_len(nrow(tmp))
+    if(!returnMatched) return(tmp)
+    object@matches <- tmp
+    validObject(object)
+    object
+}
