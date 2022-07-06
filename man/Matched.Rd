@@ -191,17 +191,15 @@ for the matches to add. If not specified, a \code{NA} will be used as score.}
 \item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
 \code{targetValue} are expected to be vectors of indices.}
 
-\item{FUN}{for \code{matchApply}: user defined \code{function} that have the
-parameters \code{matches} (for this a \code{data.frame} is expected to be passed),
-\code{query} and \code{target}. \code{FUN} can also have additional parameters (the value
-for these parameters should be provided in the \code{matchApply} call). The
-function must return a \code{data.frame} with the same columns of \code{matches}
-(or more).}
+\item{FUN}{for \code{matchApply}: user defined \code{function} that takes a
+\code{Matched} object as a first argument and returns a valid modified
+\code{Matched} representing updated matches. \code{FUN} can also have additional
+parameters (their value should be provided in the \code{matchApply} call).}
 
 \item{returnMatched}{for \code{matchApply}: \code{logical}. If \code{returnMatched = FALSE}
-\code{matchApply} returns a \code{data.frame} representing updated matches between
-\code{query} and \code{target}, if \code{returnMatched = TRUE} returns a complete
-\code{Matched} object.}
+\code{matchApply} returns a \code{list} of length 1 \code{Matched} objects representing
+updated matches between each element of \code{query} and \code{target}; if
+\code{returnMatched = TRUE} returns a complete \code{Matched} object.}
 }
 \value{
 See individual method description above for details.
@@ -278,13 +276,14 @@ is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
 }
-\item \code{matchApply}: allows to apply a user defined function \code{FUN} to each subset
-of matches corresponding to a \code{query} element. This produces a list of
-\code{data.frame}s that are subsequently combined into a single \code{data.frame}
-representing updated matches between \code{query} and \code{target}. Such
-\code{data.frame} can be returned directly (\code{returnMatches = FALSE}) or a
-\code{Matched} object can be returned to represent modified matches
-(\code{returnMatches = TRUE}).
+\item \code{matchApply}: applies a user defined function \code{FUN} to each subset of
+matches in a \code{Matched} object corresponding to a \code{query} element. This
+allows to modify each subset of matches (e.g.by removing some) and produces
+a \code{list} of length 1 \code{Matched} objects for each \code{query} element.
+This \code{list} can be returned directly (\code{returnMatched = FALSE}) or its
+elements can be combined into a single \code{Matched} object
+(\code{returnMatched = TRUE}).representing the updated matches between \code{query}
+and \code{target} (\code{returnMatches = TRUE}).
 \item \code{pruneTarget}: \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }
@@ -493,6 +492,24 @@ mo_sub$target
 ## their *score* value and select the best *n* matches with lowest score
 ## values (i.e. smallest difference in m/z values).
 mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+matchedData(mo_sub)
+
+########
+## Selecting the best match for each `query` element with `matchApply`
+
+## It is also possible to select for each `query` element the match with the
+## lowest score using `matchApply`. We manually define a function to select
+## the best match for each query and give it as input to `matchApply`
+## together with the `Matched` object itself. We obtain the same results as
+## in the `filterMatches` example above.
+
+FUN <- function(x) {
+    if(nrow(x@matches) > 1)
+        x@matches <- x@matches[order(x@matches$score)[1], , drop = FALSE]
+    x
+}
+
+mo_sub <- matchApply(mo, FUN)
 matchedData(mo_sub)
 
 ########
