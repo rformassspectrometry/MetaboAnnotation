@@ -1008,7 +1008,7 @@ test_that("TopRankedMatchesParam works", {
     expect_error(TopRankedMatchesParam(n = -4L), "positive integer")
 })
 
-test_that("matchApply,Matched works", {
+test_that("endoapply,Matched works", {
     mo <- Matched(
         query = data.frame(val = 1:5, name = letters[1:5]),
         target = data.frame(val = 11:16, name = LETTERS[1:6]),
@@ -1021,12 +1021,11 @@ test_that("matchApply,Matched works", {
         x
     }
 
-    res <- matchApply(mo, fun0, threshold = 0.75)
+    res <- endoapply(mo, fun0, threshold = 0.75)
     expect_true(is(res, "Matched"))
     expect_identical(query(res), query(mo))
     expect_identical(target(res), target(mo))
     expect_true(all(res$score < 0.75, na.rm = TRUE))
-    expect_true(is(matchApply(mo, fun0, FALSE, threshold = 0.75), "list"))
 
     fun1 <- function(x, cmpds_subs) {
         x@matches <- x@matches[x@target[x@matches$target_idx, "name"]
@@ -1034,21 +1033,37 @@ test_that("matchApply,Matched works", {
         x
     }
 
-    res <- matchApply(mo, fun1, cmpds_subs = c("A", "B", "D"))
+    res <- endoapply(mo, fun1, cmpds_subs = c("A", "B", "D"))
     expect_identical(query(res), query(mo))
     expect_identical(target(res), target(mo))
     expect_true(all(res$target_name %in% c("A", "B", "D", NA)))
-
+    
     fun2 <- function(x) {
         x@matches <- x@matches[which.min(x@matches$score), ]
         x
     }
 
-    res <- matchApply(mo, fun2)
+    res <- endoapply(mo, fun2)
     expect_identical(query(res), query(mo))
     expect_identical(target(res), target(mo))
     expect_identical(res@matches$query_idx, mo@matches[c(1, 2, 5), "query_idx"])
     expect_identical(res@matches$target_idx,
                      mo@matches[c(1, 2, 5), "target_idx"])
     expect_identical(res@matches$score, mo@matches[c(1, 2, 5), "score"])
+})
+
+test_that("lapply,Matched works", {
+    mo <- Matched(query = q1, target = t1,
+                  matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                       target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                       score = seq(0.5, 0.9, by = 0.1)))
+
+    fun0 <- function(x, threshold) {
+        x@matches[x@matches$score < threshold, "score"]
+    }
+
+    res <- lapply(mo, fun0, threshold = 0.75)
+    expect_true(is(res, "list"))
+    expect_identical(length(res), length(mo))
+    expect_true(all(unlist(res) < 0.75))
 })

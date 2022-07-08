@@ -51,6 +51,11 @@
 #'   both cases its length (or number of rows) has to match the length of
 #'   `queryValue`. See examples below for more information.
 #'
+#' - `endoapply`: applies a user defined function `FUN` to each subset of
+#'   matches in a `Matched` object corresponding to a `query` element. The
+#'   results are then combined in a single `Matched` object representing updated
+#'   matches. Note that `FUN` has to return a `Matched` object.
+#'
 #' - `filterMatches`: filter matches in a `Matched` object using different
 #'    approaches depending on the class of `param`:
 #'
@@ -81,14 +86,10 @@
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
 #'
-#' - `matchApply`: applies a user defined function `FUN` to each subset of
-#'   matches in a `Matched` object corresponding to a `query` element. This
-#'   allows to modify each subset of matches (e.g.by removing some) and produces
-#'   a `list` of length 1 `Matched` objects for each `query` element.
-#'   This `list` can be returned directly (`returnMatched = FALSE`) or its
-#'   elements can be combined into a single `Matched` object
-#'   (`returnMatched = TRUE`).representing the updated matches between `query`
-#'   and `target` (`returnMatches = TRUE`).
+#' - `lapply`: applies a user defined function `FUN` to each subset of
+#'   matches in a `Matched` object for each `query` element. It returns a
+#'   `list` of `length(object)` elements where each element is the output of
+#'   `FUN` applied to each subset of matches.
 #'   
 #' - `pruneTarget`: *cleans* the object by removing non-matched
 #'   **target** elements.
@@ -154,10 +155,11 @@
 #'
 #' @param drop for `[`: ignored.
 #' 
-#' @param FUN for `matchApply`: user defined `function` that takes a
-#'   `Matched` object as a first argument and returns a valid modified
-#'   `Matched` representing updated matches. `FUN` can also have additional
-#'   parameters (their value should be provided in the `matchApply` call).
+#' @param FUN for `lapply` and `endoapply`: user defined `function` that takes a
+#'   `Matched` object as a first parameter and possibly additional parameters
+#'   (that need to be provided in the `lapply` or `endoapply` call. For lapply
+#'   `FUN` can return any object while for `endoapply` it must return a
+#'   `Matched` object.
 #'
 #' @param i `integer` or `logical` defining the `query` elements to keep.
 #'
@@ -187,11 +189,6 @@
 #'
 #' @param param for `filterMatches`: parameter object to select and customize
 #'   the filtering procedure.
-#' 
-#' @param returnMatched for `matchApply`: `logical`. If `returnMatched = FALSE`
-#'   `matchApply` returns a `list` of length 1 `Matched` objects representing
-#'   updated matches between each element of `query` and `target`; if
-#'   `returnMatched = TRUE` returns a complete `Matched` object.
 #'
 #' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
 #'   `data.frame` (same number of rows than `queryValue`) specifying the scores
@@ -236,6 +233,8 @@
 #'   `targetValue` have to match.
 #'
 #' @param x `Matched` object.
+#' 
+#' @param X `Matched` object.
 #'
 #' @param ... additional parameters.
 #'
@@ -408,11 +407,11 @@
 #' matchedData(mo_sub)
 #'
 #' ########
-#' ## Selecting the best match for each `query` element with `matchApply`
+#' ## Selecting the best match for each `query` element with `endoapply`
 #' 
 #' ## It is also possible to select for each `query` element the match with the
-#' ## lowest score using `matchApply`. We manually define a function to select
-#' ## the best match for each query and give it as input to `matchApply`
+#' ## lowest score using `endoapply`. We manually define a function to select
+#' ## the best match for each query and give it as input to `endoapply`
 #' ## together with the `Matched` object itself. We obtain the same results as
 #' ## in the `filterMatches` example above.
 #' 
@@ -422,7 +421,7 @@
 #'     x
 #' }
 #' 
-#' mo_sub <- matchApply(mo, FUN)
+#' mo_sub <- endoapply(mo, FUN)
 #' matchedData(mo_sub)
 #' 
 #' ########
@@ -1161,16 +1160,36 @@ setMethod("addMatches", "Matched",
           })
 
 #' @rdname Matched
-#'
-#' @importFrom methods validObject formalArgs
+#' 
+#' @importFrom methods validObject
+#' 
+#' @importFrom S4Vectors endoapply
 #'
 #' @export
-matchApply <- function(object, FUN, returnMatched = TRUE, ...) {
-    res <- lapply(seq_along(object), function(i) FUN(object[i], ...)@matches)
-    if(!returnMatched) return(res)
-    tmp <- do.call(rbind, res)
-    tmp$query_idx <- rep(seq_along(res), sapply(res, nrow))
-    object@matches <- tmp
+setMethod("endoapply", "ANY", function(object, FUN, ...) {
+    endoapply(object, FUN, ...)
+})
+
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
+setMethod("endoapply", "Matched", function(object, FUN, ...) {
+    tmp <- lapply(seq_along(object), function(i) FUN(object[i], ...)@matches)
+    matches <- do.call(rbind, tmp)
+    matches$query_idx <- rep(seq_along(tmp), sapply(tmp, nrow))
+    object@matches <- matches
     validObject(object)
     object
-}
+})
+
+#' @rdname Matched
+#'
+#' @importFrom BiocGenerics lapply
+#'
+#' @export
+setMethod("lapply", "Matched", function(X, FUN, ...) {
+    lapply(seq_along(X), function(i) FUN(X[i], ...))
+})
+
