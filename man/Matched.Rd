@@ -4,6 +4,7 @@
 \alias{addMatches}
 \alias{filterMatches}
 \alias{matchedData}
+\alias{endoapply}
 \alias{Matched}
 \alias{Matched-class}
 \alias{[,Matched-method}
@@ -25,6 +26,9 @@
 \alias{filterMatches,Matched,SelectMatchesParam-method}
 \alias{filterMatches,Matched,TopRankedMatchesParam-method}
 \alias{addMatches,Matched-method}
+\alias{endoapply,ANY-method}
+\alias{endoapply,Matched-method}
+\alias{lapply,Matched-method}
 \title{Representation of generic objects matches}
 \usage{
 addMatches(object, ...)
@@ -32,6 +36,8 @@ addMatches(object, ...)
 filterMatches(object, param, ...)
 
 matchedData(object, ...)
+
+endoapply(object, ...)
 
 Matched(
   query = list(),
@@ -102,6 +108,12 @@ TopRankedMatchesParam(n = 1L, decreasing = FALSE)
   score = rep(NA_real_, length(queryValue)),
   isIndex = FALSE
 )
+
+\S4method{endoapply}{ANY}(object, FUN, ...)
+
+\S4method{endoapply}{Matched}(object, FUN, ...)
+
+\S4method{lapply}{Matched}(X, FUN, ...)
 }
 \arguments{
 \item{object}{a \code{Matched} object.}
@@ -187,6 +199,14 @@ for the matches to add. If not specified, a \code{NA} will be used as score.}
 
 \item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
 \code{targetValue} are expected to be vectors of indices.}
+
+\item{FUN}{for \code{lapply} and \code{endoapply}: user defined \code{function} that takes a
+\code{Matched} object as a first parameter and possibly additional parameters
+(that need to be provided in the \code{lapply} or \code{endoapply} call. For lapply
+\code{FUN} can return any object while for \code{endoapply} it must return a
+\code{Matched} object.}
+
+\item{X}{\code{Matched} object.}
 }
 \value{
 See individual method description above for details.
@@ -219,7 +239,7 @@ function providing the \code{query} and \code{target} objects as well as the \co
 \code{data.frame} with two columns of integer indices defining which elements
 from \emph{query} match which element from \emph{target}.
 \itemize{
-\item \code{[} subset the object selecting \code{query} object elements to keep with
+\item \code{[}: subset the object selecting \code{query} object elements to keep with
 parameter \code{i}. The resulting object will contain all the matches
 for the selected query elements. The \code{target} object will by default be
 returned as-is.
@@ -236,6 +256,10 @@ provide the score for the match. It can be a numeric with the score or a
 \code{data.frame} with additional information on the manually added matches. In
 both cases its length (or number of rows) has to match the length of
 \code{queryValue}. See examples below for more information.
+\item \code{endoapply}: applies a user defined function \code{FUN} to each subset of
+matches in a \code{Matched} object corresponding to a \code{query} element. The
+results are then combined in a single \code{Matched} object representing updated
+matches. Note that \code{FUN} has to return a \code{Matched} object.
 \item \code{filterMatches}: filter matches in a \code{Matched} object using different
 approaches depending on the class of \code{param}:
 \itemize{
@@ -263,7 +287,11 @@ is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
 }
-\item \code{pruneTarget} \emph{cleans} the object by removing non-matched
+\item \code{lapply}: applies a user defined function \code{FUN} to each subset of
+matches in a \code{Matched} object for each \code{query} element. It returns a
+\code{list} of \code{length(object)} elements where each element is the output of
+\code{FUN} applied to each subset of matches.
+\item \code{pruneTarget}: \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }
 }
@@ -471,6 +499,24 @@ mo_sub$target
 ## their *score* value and select the best *n* matches with lowest score
 ## values (i.e. smallest difference in m/z values).
 mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+matchedData(mo_sub)
+
+########
+## Selecting the best match for each `query` element with `endoapply`
+
+## It is also possible to select for each `query` element the match with the
+## lowest score using `endoapply`. We manually define a function to select
+## the best match for each query and give it as input to `endoapply`
+## together with the `Matched` object itself. We obtain the same results as
+## in the `filterMatches` example above.
+
+FUN <- function(x) {
+    if(nrow(x@matches) > 1)
+        x@matches <- x@matches[order(x@matches$score)[1], , drop = FALSE]
+    x
+}
+
+mo_sub <- endoapply(mo, FUN)
 matchedData(mo_sub)
 
 ########

@@ -15,3 +15,9 @@ setGeneric("filterMatches", function(object, param, ...)
 #' @exportMethod matchedData
 setGeneric("matchedData", function(object, ...)
     standardGeneric("matchedData"))
+
+#' @rdname Matched
+#'
+#' @exportMethod endoapply
+setGeneric("endoapply", function(object, ...)
+    standardGeneric("endoapply"))

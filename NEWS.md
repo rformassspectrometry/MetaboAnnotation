@@ -1,5 +1,14 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.2
+
+- `lapply` and `endoapply` methods (issue
+  [#84](https://github.com/rformassspectrometry/MetaboAnnotation/issues/84)).
+  `lapply` allows to apply any function to each subset of matches for each
+  `query` element and returns the corresponding `list` of results.
+  `endoapply` is similar but applies a function returning a `Matched` and
+  returns a `Matched` representing updated matches.
+  
 ## Changes in 1.1.1
 
 - Extend `filterMatches` framework (issue
