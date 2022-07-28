@@ -375,9 +375,10 @@ provide the score for the match. It can be a numeric with the score or a
 both cases its length (or number of rows) has to match the length of
 <code>queryValue</code>. See examples below for more information.</p></li>
 <li><p><code>endoapply</code>: applies a user defined function <code>FUN</code> to each subset of
-matches in a <code>Matched</code> object corresponding to a <code>query</code> element. The
-results are then combined in a single <code>Matched</code> object representing updated
-matches. Note that <code>FUN</code> has to return a <code>Matched</code> object.</p></li>
+matches in a <code>Matched</code> object corresponding to a <code>query</code> element (i.e. for
+each <code>x[i]</code> with <code>i</code> being 1 to <code>length(x)</code>). The results are then combined
+in a single <code>Matched</code> object representing updated matches. Note that <code>FUN</code>
+has to return a <code>Matched</code> object.</p></li>
 <li><p><code>filterMatches</code>: filter matches in a <code>Matched</code> object using different
 approaches depending on the class of <code>param</code>:</p><ul><li><p><code>SelectMatchesParam</code>: keeps or removes (respectively when parameter
 <code>keep = TRUE</code> and <code>keep = FALSE</code>) matches corresponding to certain
@@ -404,9 +405,10 @@ small (or, depending on parameter <code>decreasing</code>, large) values for
 <code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p></li>
 </ul></li>
 <li><p><code>lapply</code>: applies a user defined function <code>FUN</code> to each subset of
-matches in a <code>Matched</code> object for each <code>query</code> element. It returns a
-<code>list</code> of <code>length(object)</code> elements where each element is the output of
-<code>FUN</code> applied to each subset of matches.</p></li>
+matches in a <code>Matched</code> object for each <code>query</code> element (i.e. to each <code>x[i]</code>
+with <code>i</code> from <code>1</code> to <code>length(x)</code>). It returns a <code>list</code> of <code>length(object)</code>
+elements where each element is the output of <code>FUN</code> applied to each subset
+of matches.</p></li>
 <li><p><code>pruneTarget</code>: <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
 </ul></div>
