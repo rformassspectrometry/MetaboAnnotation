@@ -142,7 +142,7 @@ retention times and m/z values, respectively.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -409,11 +409,15 @@ retention times and m/z values, respectively.</p></li>
 <dd><p>for any <code>param</code> object: <code>numeric(1)</code> defining the maximal
 acceptable absolute difference in m/z (or in mass for <code>Mz2MassParam</code>)
 to consider them <em>matching</em>.</p></dd>
+
+
 <dt>ppm</dt>
 <dd><p>for any <code>param</code> object: <code>numeric(1)</code> defining the maximal
 acceptable m/z-dependent (or mass-dependent for <code>Mz2MassParam</code>)
 difference (in parts-per-million) in m/z values to consider them to
 be <em>matching</em>.</p></dd>
+
+
 <dt>adducts</dt>
 <dd><p>for <code>Mass2MzParam</code> or <code>Mass2MzRtParam</code>: either <code>character</code>
 with adduct names from <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html" class="external-link">MetaboCoreUtils::adducts()</a></code> or <code>data.frame</code> with
@@ -425,18 +429,26 @@ and <em>multiplicative</em> part of the calculation. See
 <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/adductNames.html" class="external-link">MetaboCoreUtils::adducts()</a></code> for the expected format or use
 <code>MetaboCoreUtils::adductNames("positive")</code> and
 <code>MetaboCoreUtils::adductNames("negative")</code> for valid adduct names.</p></dd>
+
+
 <dt>toleranceRt</dt>
 <dd><p>for <code>Mass2MzRtParam</code> or <code>MzRtParam</code>: <code>numeric(1)</code>
 defining the maximal acceptable absolute difference in retention time
 values to consider them them <em>matching</em>.</p></dd>
+
+
 <dt>queryAdducts</dt>
 <dd><p>for <code>Mz2MassParam</code>. Adducts used to derive mass
 values from query m/z values. The expected format is the same as that
 for parameter <code>adducts</code>.</p></dd>
+
+
 <dt>targetAdducts</dt>
 <dd><p>for <code>Mz2MassParam</code>. Adducts used to derive mass
 values from target m/z values. The expected format is the same as that
 for parameter <code>adducts</code>.</p></dd>
+
+
 <dt>query</dt>
 <dd><p>feature table containing information on MS1 features. Can be
 a <code>numeric</code>, <code>data.frame</code>, <code>DataFrame</code>, <code>matrix</code>, <code>SummarizedExperiment</code>
@@ -444,14 +456,22 @@ or <code>QFeatures</code>. It is expected to contain m/z values and can contain 
 other variables. Matchings based on both m/z and retention time can be
 performed when a column with retention times is present in both <code>query</code>
 and <code>target</code>.</p></dd>
+
+
 <dt>target</dt>
 <dd><p>compound table with metabolites to compare against. The
 expected types are the same as those for <code>query</code>.</p></dd>
+
+
 <dt>param</dt>
 <dd><p>parameter object defining the matching approach and containing
 the settings for that approach. See description above for details.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>currently ignored.</p></dd>
+
+
 <dt>valueColname</dt>
 <dd><p><code>character</code> specifying the name of the column in
 <code>query</code> or/and the one in <code>target</code>with the desired values for the
@@ -459,21 +479,29 @@ matching. This parameter should only be used when <code>param</code> is
 <code>valueParam</code> and in this case it must be provided (unless both <code>query</code>
 and <code>target</code> are <code>numeric</code>). It can be <code>character(1)</code> or <code>character(2)</code>
 in a similar way to <code>mzColname</code>.</p></dd>
+
+
 <dt>targetAssay</dt>
 <dd><p><code>character(1)</code> specifying the name of the assay of the
 provided <code>QFeatures</code> that should be used for the matching (values from
 this assay's <code>rowData</code> will be used for matching). Only used if <code>target</code>
 is an instance of a <code>QFeatures</code> object.</p></dd>
+
+
 <dt>queryAssay</dt>
 <dd><p><code>character(1)</code> specifying the name of the assay of the
 provided <code>QFeatures</code> that should be used for the matching (values from
 this assay's <code>rowData</code> will be used for matching). Only used if <code>query</code>
 is an instance of a <code>QFeatures</code> object.</p></dd>
+
+
 <dt>massColname</dt>
 <dd><p><code>character(1)</code> with the name of the column in <code>target</code>
 containing the mass of compounds. To be used when <code>param</code> is
 <code>Mass2MzParam</code> or <code>Mass2MzRtParam</code> (and target is not already <code>numeric</code>
 with the masses). Defaults to <code>massColname = "exactmass"</code>.</p></dd>
+
+
 <dt>mzColname</dt>
 <dd><p><code>character</code> specifying the name(s) of the column(s) in
 <code>query</code> or/and <code>target</code>with the m/z values. If one among <code>query</code> and
@@ -485,17 +513,24 @@ only to be specified for <code>query</code>) then <code>mzColname</code> is expe
 is expected to be <code>character(2)</code> (or <code>character(1)</code> and in this last case
 the two column names are assumed to be the same). If not specified the
 assumed default name for columns with m/z values is <code>"mz"</code>.</p></dd>
+
+
 <dt>rtColname</dt>
 <dd><p><code>character(2)</code> with the name of the column containing
 the compounds retention times in <code>query</code> and the name for the one in
 <code>target</code>. It can also be <code>character(1)</code> if the two names are the same.
 To be used when <code>param</code> is <code>MzRtParam</code> or <code>Mass2MzRtParam</code>.
 Defaults to <code>rtColname = c("rt", "rt")</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><a href="Matched.html">Matched</a> object representing the result.
-Depending on the <code>param</code> object different <em>scores</em> representing the quality
+    
+
+<p><a href="Matched.html">Matched</a> object representing the result.</p>
+
+
+<p>Depending on the <code>param</code> object different <em>scores</em> representing the quality
 of the match are provided. This comprises absolute as well as relative
 differences (column/variables <code>"score"</code> and <code>"ppm_error"</code> respectively).
 If <code>param</code> is a <code>Mz2MassParam</code>, <code>"score"</code> and <code>"ppm_error"</code> represent
@@ -503,7 +538,10 @@ differences of the compared masses (calculated from the provided m/z values).
 If <code>param</code> an <code>MzParam</code>, <code>MzRtParam</code>, <code>Mass2MzParam</code> or <code>Mass2MzRtParam</code>,
 <code>"score"</code> and <code>"ppm_error"</code> represent absolute and relative differences of
 m/z values.
-Additionally, if <code>param</code> is either an <code>MzRtParam</code> or <code>Mass2MzRtParam</code>differences between query and target retention times for each matched
+Additionally, if <code>param</code> is either an <code>MzRtParam</code> or <code>Mass2MzRtParam</code></p>
+
+
+<p>differences between query and target retention times for each matched
 element is available in the column/variable <code>"score_rt"</code> in the returned
 <code>Matched</code> object.
 Negative values of <code>"score"</code> (or <code>"score_rt"</code>) indicate that the m/z or mass
@@ -740,12 +778,12 @@ element.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  12.0006 -0.000618121 51.507450</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 342.9996  0.000418854  1.221151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  23.0006 -0.000598265 26.010866</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 230.9999  0.000124972  0.541004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       query  target       score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;AsIs&gt;  &lt;AsIs&gt;   &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA       12      NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       343 343.000 0.000240707  0.701772</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA.1     23      NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       231 230.999 0.001190749  5.154785</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span>
 <span class="r-in"><span class="co">## only that the matching is performed on the object's `rowData`.</span></span>
@@ -873,7 +911,7 @@ element.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
     </footer></div>

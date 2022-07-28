@@ -112,7 +112,7 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -244,18 +244,26 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 <dd><p><code>function</code> used to map peaks between the compared spectra.
 Defaults for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/Spectra/man/joinPeaks.html" class="external-link">joinPeaks()</a></code>. See
 <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> for details.</p></dd>
+
+
 <dt>tolerance</dt>
 <dd><p><code>numeric(1)</code> for an absolute maximal accepted difference
 between m/z values. This will be used in <code>compareSpectra</code> as well as for
 eventual precursor m/z matching.</p></dd>
+
+
 <dt>ppm</dt>
 <dd><p><code>numeric(1)</code> for a relative, m/z-dependent, maximal accepted
 difference between m/z values. This will be used in <code>compareSpectra</code> as
 well as for eventual precursor m/z matching.</p></dd>
+
+
 <dt>FUN</dt>
 <dd><p><code>function</code> used to calculate similarity between spectra. Defaults
 for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code>. See
 <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code> for details.</p></dd>
+
+
 <dt>requirePrecursor</dt>
 <dd><p><code>logical(1)</code> whether only target spectra are
 considered in the similarity calculation with a precursor m/z that matches
@@ -264,6 +272,8 @@ the precursor m/z of the query spectrum (considering also <code>ppm</code> and
 will complete much faster, but will not find any hits for target (or query
 spectra) with missing precursor m/z. It is suggested to check first the
 availability of the precursor m/z in <code>target</code> and <code>query</code>.</p></dd>
+
+
 <dt>requirePrecursorPeak</dt>
 <dd><p><code>logical(1)</code> whether only target spectra will be
 considered in the spectra similarity calculation that have a peak with an
@@ -271,6 +281,8 @@ m/z matching the precursor m/z of the query spectrum. Defaults to
 <code>requirePrecursorPeak = FALSE</code>. It is suggested to check first the
 availability of the precursor m/z in <code>query</code>, as no match will be reported
 for query spectra with missing precursor m/z.</p></dd>
+
+
 <dt>THRESHFUN</dt>
 <dd><p><code>function</code> applied to the similarity score to define which
 target spectra are considered <em>matching</em>. Defaults to
@@ -281,6 +293,8 @@ scores from the comparison of a query spectrum with all target spectra (as
 returned by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code>) as input and returns a
 <code>logical</code> vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.</p></dd>
+
+
 <dt>toleranceRt</dt>
 <dd><p><code>numeric</code> of length 1 or equal to the number of query
 spectra defining the maximal accepted (absolute) difference in retention
@@ -288,6 +302,8 @@ time between query and target spectra. By default
 (with <code>toleranceRt = Inf</code>) the retention time-based filter is not
 considered. See help of <code>CompareSpectraParam</code> above for more
 information.</p></dd>
+
+
 <dt>percentRt</dt>
 <dd><p><code>numeric</code> of length 1 or equal to the number of query
 spectra defining the maximal accepted relative difference in retention
@@ -298,29 +314,44 @@ spectrum and all target spectra with a retention time within query rt
 time-based filter is not considered. Thus, to consider the <code>percentRt</code>
 parameter, <code>toleranceRt</code> should be set to a value different than that.
 See help of <code>CompareSpectraParam</code> above for more information.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>for <code>CompareSpectraParam</code>: additional parameters passed along
 to the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> call.</p></dd>
+
+
 <dt>THRESHFUN_REVERSE</dt>
 <dd><p>for <code>MatchForwardReverseParam</code>: optional additional
 <em>thresholding function</em> to filter the results on the reverse score. If
 specified the same format than <code>THRESHFUN</code> is expected.</p></dd>
+
+
 <dt>query</dt>
 <dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a> object with the query spectra.</p></dd>
+
+
 <dt>target</dt>
 <dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a> object with the target
 (reference) spectra to compare <code>query</code> against.</p></dd>
+
+
 <dt>param</dt>
 <dd><p>for <code>matchSpectra</code>: parameter object (such as
 <code>CompareSpectraParam</code>) defining the settings for the matching.</p></dd>
+
+
 <dt>BPPARAM</dt>
 <dd><p>for <code>matchSpectra</code>: parallel processing setup (see the
 <code>BiocParallel</code> package for more information). Parallel processing is
 disabled by default.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>matchSpectra</code> returns a <code><a href="MatchedSpectra.html">MatchedSpectra()</a></code> object. Constructor
+    
+
+<p><code>matchSpectra</code> returns a <code><a href="MatchedSpectra.html">MatchedSpectra()</a></code> object. Constructor
 functions return an instance of the class.</p>
     </div>
     <div class="section level2">
@@ -350,6 +381,9 @@ functions return an instance of the class.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     tapply, union, unique, unsplit, which.max, which.min</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘S4Vectors’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:MetaboAnnotation’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     endoapply</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     I, expand.grid, unname</span>
@@ -489,7 +523,7 @@ functions return an instance of the class.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
     </footer></div>
