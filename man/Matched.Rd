@@ -276,9 +276,10 @@ provide the score for the match. It can be a numeric with the score or a
 both cases its length (or number of rows) has to match the length of
 \code{queryValue}. See examples below for more information.
 \item \code{endoapply}: applies a user defined function \code{FUN} to each subset of
-matches in a \code{Matched} object corresponding to a \code{query} element. The
-results are then combined in a single \code{Matched} object representing updated
-matches. Note that \code{FUN} has to return a \code{Matched} object.
+matches in a \code{Matched} object corresponding to a \code{query} element (i.e. for
+each \code{x[i]} with \code{i} being 1 to \code{length(x)}). The results are then combined
+in a single \code{Matched} object representing updated matches. Note that \code{FUN}
+has to return a \code{Matched} object.
 \item \code{filterMatches}: filter matches in a \code{Matched} object using different
 approaches depending on the class of \code{param}:
 \itemize{
@@ -317,9 +318,10 @@ variable).
 }
 }
 \item \code{lapply}: applies a user defined function \code{FUN} to each subset of
-matches in a \code{Matched} object for each \code{query} element. It returns a
-\code{list} of \code{length(object)} elements where each element is the output of
-\code{FUN} applied to each subset of matches.
+matches in a \code{Matched} object for each \code{query} element (i.e. to each \code{x[i]}
+with \code{i} from \code{1} to \code{length(x)}). It returns a \code{list} of \code{length(object)}
+elements where each element is the output of \code{FUN} applied to each subset
+of matches.
 \item \code{pruneTarget}: \emph{cleans} the object by removing non-matched
 \strong{target} elements.
 }

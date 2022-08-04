@@ -52,9 +52,10 @@
 #'   `queryValue`. See examples below for more information.
 #'
 #' - `endoapply`: applies a user defined function `FUN` to each subset of
-#'   matches in a `Matched` object corresponding to a `query` element. The
-#'   results are then combined in a single `Matched` object representing updated
-#'   matches. Note that `FUN` has to return a `Matched` object.
+#'   matches in a `Matched` object corresponding to a `query` element (i.e. for
+#'   each `x[i]` with `i` being 1 to `length(x)`). The results are then combined
+#'   in a single `Matched` object representing updated matches. Note that `FUN`
+#'   has to return a `Matched` object.
 #'
 #' - `filterMatches`: filter matches in a `Matched` object using different
 #'    approaches depending on the class of `param`:
@@ -95,9 +96,10 @@
 #'     variable). 
 #'
 #' - `lapply`: applies a user defined function `FUN` to each subset of
-#'   matches in a `Matched` object for each `query` element. It returns a
-#'   `list` of `length(object)` elements where each element is the output of
-#'   `FUN` applied to each subset of matches.
+#'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
+#'   with `i` from `1` to `length(x)`). It returns a `list` of `length(object)`
+#'   elements where each element is the output of `FUN` applied to each subset
+#'   of matches.
 #'
 #' - `pruneTarget`: *cleans* the object by removing non-matched
 #'   **target** elements.
@@ -254,7 +256,7 @@
 #'   `targetValue` have to match.
 #'
 #' @param x `Matched` object.
-#' 
+#'
 #' @param X `Matched` object.
 #'
 #' @param ... additional parameters.
@@ -448,7 +450,7 @@
 #'         x@matches <- x@matches[order(x@matches$score)[1], , drop = FALSE]
 #'     x
 #' }
-#' 
+#'
 #' mo_sub <- endoapply(mo, FUN)
 #' matchedData(mo_sub)
 #'
@@ -1231,9 +1233,9 @@ setMethod("addMatches", "Matched",
           })
 
 #' @rdname Matched
-#' 
+#'
 #' @importFrom methods validObject
-#' 
+#'
 #' @importFrom S4Vectors endoapply
 #'
 #' @export
@@ -1249,7 +1251,7 @@ setMethod("endoapply", "ANY", function(object, FUN, ...) {
 setMethod("endoapply", "Matched", function(object, FUN, ...) {
     tmp <- lapply(seq_along(object), function(i) FUN(object[i], ...)@matches)
     matches <- do.call(rbind, tmp)
-    matches$query_idx <- rep(seq_along(tmp), sapply(tmp, nrow))
+    matches$query_idx <- rep(seq_along(tmp), vapply(tmp, nrow, integer(1)))
     object@matches <- matches
     validObject(object)
     object
@@ -1263,4 +1265,3 @@ setMethod("endoapply", "Matched", function(object, FUN, ...) {
 setMethod("lapply", "Matched", function(X, FUN, ...) {
     lapply(seq_along(X), function(i) FUN(X[i], ...))
 })
-
