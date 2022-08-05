@@ -882,7 +882,7 @@ test_that("filterMatches,Matched,ScoreThresholdParam works", {
     expect_equal(target(mosub), target(mo))
 
     expect_error(filterMatches(mo, ScoreThresholdParam(threshold = 2.5,
-                                                       filterScoreRt = TRUE)),
+                                                       column = "notpresent")),
                  "variable not present")
 
     mo <- Matched(
@@ -892,7 +892,7 @@ test_that("filterMatches,Matched,ScoreThresholdParam works", {
                                      score_rt = c(1, -1, -1, -2, 1)))
 
     mosub <- filterMatches(mo, ScoreThresholdParam(threshold = 0,
-                                                   filterScoreRt = TRUE))
+                                                   column = "score_rt"))
     expect_equal(mosub@matches, mo@matches[c(2L, 3L, 4L), ])
     expect_equal(query(mosub), query(mo))
     expect_equal(target(mosub), target(mo))

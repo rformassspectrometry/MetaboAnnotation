@@ -97,7 +97,7 @@ SelectMatchesParam(
 
 TopRankedMatchesParam(n = 1L, decreasing = FALSE)
 
-ScoreThresholdParam(threshold = 0, above = FALSE, filterScoreRt = FALSE)
+ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
 
 \S4method{filterMatches}{Matched,SelectMatchesParam}(object, param, ...)
 
@@ -206,11 +206,9 @@ threshold to consider for the filtering.}
 to keep matches above (\code{above = TRUE}) or below (\code{above = FALSE}) a certain
 threshold.}
 
-\item{filterScoreRt}{for \code{ScoreThresholdParam} : \code{logical(1)} specifying
-whether filtering should be based on retention time score
-(\code{filterScoreRt = TRUE}) i.e. on variable \code{"rt_score"}. The default is
-\code{filterScoreRt = FALSE} and in this case filtering is based on \code{"score"}
-variable.}
+\item{column}{for \code{ScoreThresholdParam}: \code{character(1)} specifying the name
+of the score variable to consider for the filtering (the default is
+\code{column = "score"}).}
 
 \item{score}{for \code{addMatches}: \code{numeric} (same length than \code{queryValue}) or
 \code{data.frame} (same number of rows than \code{queryValue}) specifying the scores
@@ -307,14 +305,16 @@ is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
 \itemize{
-\item \code{ScoreThresholdParam}: keeps only the matches whose score is above or
-below a certain threshold (respectively when parameter \code{above = TRUE}
-and \code{above = FALSE}). When parameter \code{filterScoreRt = TRUE} (by default
-\code{filterScoreRt = FALSE}) the filtering is done considering the
-\code{"score_rt"} variable (that measure how good is a match in terms of
-retention time). Note that this can be done only if the \code{Matched} object
-contains the variable \code{"score_rt"} (not always present unlike \code{"score"}
-variable).
+\item \code{ScoreThresholdParam}: keeps only the matches whose score is strictly
+above or strictly below a certain threshold (respectively when parameter
+\code{above = TRUE} and \code{above = FALSE}). The name of the column containing
+the scores to be used for the filtering can be specified with parameter
+\code{column}. The default for \code{column} is \code{"score"}. Such variable is present
+in each \code{Matched} object. The name of other score variables (if present)
+can be provided. For example \code{column = "score_rt"} can be used to filter
+matches based on retention time scores for \code{Matched} objects returned
+by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a retention time
+comparison are used.
 }
 }
 \item \code{lapply}: applies a user defined function \code{FUN} to each subset of

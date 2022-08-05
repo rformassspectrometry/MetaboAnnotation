@@ -86,14 +86,16 @@
 #'     is performed on the absolute value of `"score_rt"`). Thus, matches with
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
-#'     - `ScoreThresholdParam`: keeps only the matches whose score is above or
-#'     below a certain threshold (respectively when parameter `above = TRUE`
-#'     and `above = FALSE`). When parameter `filterScoreRt = TRUE` (by default
-#'     `filterScoreRt = FALSE`) the filtering is done considering the
-#'     `"score_rt"` variable (that measure how good is a match in terms of
-#'     retention time). Note that this can be done only if the `Matched` object
-#'     contains the variable `"score_rt"` (not always present unlike `"score"`
-#'     variable). 
+#'     - `ScoreThresholdParam`: keeps only the matches whose score is strictly
+#'     above or strictly below a certain threshold (respectively when parameter
+#'     `above = TRUE` and `above = FALSE`). The name of the column containing
+#'     the scores to be used for the filtering can be specified with parameter
+#'     `column`. The default for `column` is `"score"`. Such variable is present
+#'     in each `Matched` object. The name of other score variables (if present)
+#'     can be provided. For example `column = "score_rt"` can be used to filter
+#'     matches based on retention time scores for `Matched` objects returned
+#'     by [matchValues()] when `param` objects involving a retention time
+#'     comparison are used.
 #'
 #' - `lapply`: applies a user defined function `FUN` to each subset of
 #'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
@@ -160,6 +162,10 @@
 #'   to keep matches above (`above = TRUE`) or below (`above = FALSE`) a certain
 #'   threshold.
 #'
+#' @param column for `ScoreThresholdParam`: `character(1)` specifying the name
+#'   of the score variable to consider for the filtering (the default is
+#'   `column = "score"`).
+#'
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
 #'
@@ -168,12 +174,6 @@
 #'   `decreasing = FALSE`.
 #'
 #' @param drop for `[`: ignored.
-#' 
-#' @param filterScoreRt  for `ScoreThresholdParam` : `logical(1)` specifying
-#'   whether filtering should be based on retention time score
-#'   (`filterScoreRt = TRUE`) i.e. on variable `"rt_score"`. The default is
-#'   `filterScoreRt = FALSE` and in this case filtering is based on `"score"`
-#'   variable.
 #'
 #' @param FUN for `lapply` and `endoapply`: user defined `function` that takes a
 #'   `Matched` object as a first parameter and possibly additional parameters
@@ -1071,12 +1071,12 @@ setClass("ScoreThresholdParam",
          slots = c(
              threshold = "numeric",
              above = "logical",
-             filterScoreRt = "logical"),
+             column = "character"),
          contains = "Param",
          prototype = prototype(
              threshold = 0,
              above = FALSE,
-             filterScoreRt = FALSE)
+             column = "score")
          )
 
 #' @rdname Matched
@@ -1085,9 +1085,9 @@ setClass("ScoreThresholdParam",
 #'
 #' @export
 ScoreThresholdParam <- function(threshold = 0, above = FALSE,
-                                filterScoreRt = FALSE) {
+                                column = "score") {
     new("ScoreThresholdParam", threshold = threshold[1L], above = above[1L],
-        filterScoreRt = filterScoreRt[1L])
+        column = column[1L])
 }
 
 #' @rdname Matched
@@ -1147,12 +1147,12 @@ setMethod("filterMatches", c("Matched", "TopRankedMatchesParam"),
 #' @export
 setMethod("filterMatches", c("Matched", "ScoreThresholdParam"),
           function (object, param, ...) {
-              scorename <- ifelse(param@filterScoreRt, "score_rt", "score")
-              if (!scorename %in% colnames(object@matches))
-                  stop("\"",scorename, "\" variable not present in `object`")
+              if (!param@column %in% colnames(object@matches))
+                  stop("\"", param@column,
+                       "\" variable not present in `object`")
               if (param@above)
-                  to_keep <- object@matches[, scorename] > param@threshold  
-              else to_keep <- object@matches[, scorename] < param@threshold
+                  to_keep <- object@matches[, param@column] > param@threshold  
+              else to_keep <- object@matches[, param@column] < param@threshold
               object@matches <- object@matches[to_keep, , drop = FALSE]
               object@metadata <- c(object@metadata, param = param)
               validObject(object)
