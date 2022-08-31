@@ -169,3 +169,21 @@ test_that("matchSpectra,MatchForwardReverseParam works", {
     expect_true(all(res_2@matches$reverse_score > 0.9))
     expect_equal(unique(res_2@matches$query_idx), c(2, 4, 8))
 })
+
+test_that("matchSpectra,Spectra,CompDb works", {
+    cdb <- new("CompDb")
+
+    res <- matchSpectra(pest_ms2, cdb, CompareSpectraParam())
+    expect_s4_class(res, "MatchedSpectra")
+    expect_equal(length(res), 13)
+    expect_s4_class(target(res), "Spectra")
+    expect_equal(length(target(res)), 0)
+
+    fl <- system.file("sql", "CompDb.MassBank.sql", package = "CompoundDb")
+    cdb <- CompoundDb::CompDb(fl)
+    res <- matchSpectra(pest_ms2, cdb, CompareSpectraParam())
+    expect_s4_class(res, "MatchedSpectra")
+    expect_equal(length(res), 13)
+    expect_s4_class(target(res), "Spectra")
+    expect_equal(length(target(res)), 70)
+})

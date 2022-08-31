@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.1.2
+Version: 1.1.3
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -39,7 +39,8 @@ Imports:
     BiocParallel,
     SummarizedExperiment,
     QFeatures,
-    graphics
+    graphics,
+    CompoundDb
 Suggests:
     testthat,
     knitr,
@@ -56,4 +57,16 @@ BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
 URL: https://github.com/RforMassSpectrometry/MetaboAnnotation
 biocViews: Infrastructure, Metabolomics, MassSpectrometry
 Roxygen: list(markdown=TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
+Collate:
+    'AllClassUnions.R'
+    'AllGenerics.R'
+    'CompAnnotationSource.R'
+    'CompDbSource.R'
+    'Matched.R'
+    'MatchedSpectra.R'
+    'hidden-aliases.R'
+    'matchFormula.R'
+    'matchSpectra.R'
+    'matchValues.R'
+    'validateMatchedSpectra.R'

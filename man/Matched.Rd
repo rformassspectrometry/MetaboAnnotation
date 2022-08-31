@@ -42,8 +42,7 @@ endoapply(object, ...)
 Matched(
   query = list(),
   target = list(),
-  matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric()),
+  matches = data.frame(query_idx = integer(), target_idx = integer(), score = numeric()),
   queryAssay = character(),
   targetAssay = character(),
   metadata = list()

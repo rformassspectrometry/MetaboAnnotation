@@ -6,6 +6,7 @@
 \alias{MatchForwardReverseParam-class}
 \alias{MatchForwardReverseParam}
 \alias{matchSpectra,Spectra,Spectra,CompareSpectraParam-method}
+\alias{matchSpectra,Spectra,CompDb,Param-method}
 \alias{matchSpectra,Spectra,Spectra,MatchForwardReverseParam-method}
 \title{Matching MS Spectra against a reference}
 \usage{
@@ -37,6 +38,8 @@ MatchForwardReverseParam(
 )
 
 \S4method{matchSpectra}{Spectra,Spectra,CompareSpectraParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+
+\S4method{matchSpectra}{Spectra,CompDb,Param}(query, target, param, BPPARAM = BiocParallel::SerialParam())
 
 \S4method{matchSpectra}{Spectra,Spectra,MatchForwardReverseParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
 }
@@ -123,11 +126,16 @@ disabled by default.}
 functions return an instance of the class.
 }
 \description{
-\code{matchSpectra} with both \code{query} and \code{target} being a \link{Spectra} object
-matches each spectra in \code{query} against all spectra in \code{target} and reports
-matches with a similarity that passes the \code{THRESHFUN} condition. The
-parameters for the matching can be specified with one of the \code{param} objects
-listed below:
+\code{matchSpectra} compares experimental (\emph{query}) MS2 spectra against
+reference (\emph{target}) MS2 spectra and reports matches with a similarity that
+passing a specified threshold. The function performs the similarity
+calculation between each query spectrum against each target spectrum.
+Parameters \code{query} and \code{target} can be used to define the query and target
+spectra, respectively, while parameter \code{param} allows to define and configure
+the similarity calculation and matching condition. Parameter \code{query} takes
+a \link{Spectra} object while \code{target} can be either a \link{Spectra} object or a
+\link{CompDb} (reference library) object defined in the \code{CompoundDb} package.
+Currently supported parameter objects defining the matching are:
 \itemize{
 \item \code{CompareSpectraParam}: the \emph{generic} parameter object allowing to set all
 settings for the \code{\link[=compareSpectra]{compareSpectra()}} call that is used to perform the
@@ -236,6 +244,22 @@ csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
 mtches <- matchSpectra(pest_ms2, minimb, csp)
 mtches
 matches(mtches)
+
+## A `CompDb` compound annotation database could also be used with
+## parameter `target`. Below we load the test `CompDb` database from the
+## `CompoundDb` Bioconductor package.
+library(CompoundDb)
+fl <- system.file("sql", "CompDb.MassBank.sql", package = "CompoundDb")
+cdb <- CompDb(fl)
+res <- matchSpectra(pest_ms2, cdb, CompareSpectraParam())
+
+## We do however not find any matches since the used compound annotation
+## database contains only a very small subset of the MassBank.
+res
+
+## As `target` we have now however the MS2 spectra data from the compound
+## annotation database
+target(res)
 
 ## See the package vignette for details, descriptions and more examples.
 }

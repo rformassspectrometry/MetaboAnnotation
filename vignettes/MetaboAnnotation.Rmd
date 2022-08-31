@@ -357,7 +357,10 @@ small `Spectra` object is provided within this package but it would be possible
 to use any other `Spectra` object instead (see the
 [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/) for different
 ways and options to provide access to spectral libraries/databases *via*
-`Spectra`).
+`Spectra`). As an alternative, it would also be possible to use a `CompDb`
+object representing a compound annotation database (defined in the
+`r Biocpkg("CompoundDb")` package) with parameter `target`. See the
+`matchSpectra` help page for more details.
 
 ```{r}
 load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))

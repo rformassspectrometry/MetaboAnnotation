@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.3
+
+- `matchSpectra`: support a `CompDb` with parameter `target`.
+
 ## Changes in 1.1.2
 
 - `lapply` and `endoapply` methods (issue
@@ -8,7 +12,7 @@
   `query` element and returns the corresponding `list` of results.
   `endoapply` is similar but applies a function returning a `Matched` and
   returns a `Matched` representing updated matches.
-  
+
 ## Changes in 1.1.1
 
 - Extend `filterMatches` framework (issue
