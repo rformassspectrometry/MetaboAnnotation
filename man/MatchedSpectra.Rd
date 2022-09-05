@@ -16,8 +16,7 @@
 MatchedSpectra(
   query = Spectra(),
   target = Spectra(),
-  matches = data.frame(query_idx = integer(), target_idx = integer(), score =
-    numeric())
+  matches = data.frame(query_idx = integer(), target_idx = integer(), score = numeric())
 )
 
 \S4method{spectraVariables}{MatchedSpectra}(object)
