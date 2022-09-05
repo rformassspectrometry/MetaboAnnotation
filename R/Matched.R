@@ -86,6 +86,16 @@
 #'     is performed on the absolute value of `"score_rt"`). Thus, matches with
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
+#'     - `ScoreThresholdParam`: keeps only the matches whose score is strictly
+#'     above or strictly below a certain threshold (respectively when parameter
+#'     `above = TRUE` and `above = FALSE`). The name of the column containing
+#'     the scores to be used for the filtering can be specified with parameter
+#'     `column`. The default for `column` is `"score"`. Such variable is present
+#'     in each `Matched` object. The name of other score variables (if present)
+#'     can be provided. For example `column = "score_rt"` can be used to filter
+#'     matches based on retention time scores for `Matched` objects returned
+#'     by [matchValues()] when `param` objects involving a retention time
+#'     comparison are used.
 #'
 #' - `lapply`: applies a user defined function `FUN` to each subset of
 #'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
@@ -147,6 +157,14 @@
 #'
 #' - `whichQuery` returns an `integer` with the indices of the elements in
 #'   *query* that match at least one element in *target*.
+#'
+#' @param above for `ScoreThresholdParam` : `logical(1)` specifying whether
+#'   to keep matches above (`above = TRUE`) or below (`above = FALSE`) a certain
+#'   threshold.
+#'
+#' @param column for `ScoreThresholdParam`: `character(1)` specifying the name
+#'   of the score variable to consider for the filtering (the default is
+#'   `column = "score"`).
 #'
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
@@ -215,6 +233,9 @@
 #'   (together with `queryValue`) the pair of query and target elements for
 #'   which a match should be manually added. Lengths of `queryValue` and
 #'   `targetValue` have to match.
+#'
+#' @param threshold for `ScoreThresholdParam` : `numeric(1)` specifying the
+#'   threshold to consider for the filtering.
 #'
 #' @param query object with the query elements.
 #'
@@ -406,6 +427,13 @@
 #' ## their *score* value and select the best *n* matches with lowest score
 #' ## values (i.e. smallest difference in m/z values).
 #' mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+#' matchedData(mo_sub)
+#'
+#' ## Additionally it is possible to select matches based on a threshold
+#' ## for their *score*. Below we keep matches with score below 0.75 (one
+#' ## could select matches with *score* greater than the threshold by setting
+#' ## `ScoreThresholdParam` parameter `above = TRUE`.
+#' mo_sub <- filterMatches(mo, ScoreThresholdParam(threshold = 0.75))
 #' matchedData(mo_sub)
 #'
 #' ########
@@ -1025,7 +1053,7 @@ setClass("TopRankedMatchesParam",
          validity = function(object) {
              msg <- NULL
              if (length(object@n) != 1 || object@n <= 0)
-                 msg <- "'n' must have length 1 be a positive integer"
+                 msg <- "'n' must be a length 1 positive integer"
              msg
          })
 
@@ -1036,6 +1064,30 @@ setClass("TopRankedMatchesParam",
 #' @export
 TopRankedMatchesParam <- function(n = 1L, decreasing = FALSE) {
     new("TopRankedMatchesParam", n = as.integer(n), decreasing = decreasing[1L])
+}
+
+#' @noRd
+setClass("ScoreThresholdParam",
+         slots = c(
+             threshold = "numeric",
+             above = "logical",
+             column = "character"),
+         contains = "Param",
+         prototype = prototype(
+             threshold = 0,
+             above = FALSE,
+             column = "score")
+         )
+
+#' @rdname Matched
+#'
+#' @importFrom methods new
+#'
+#' @export
+ScoreThresholdParam <- function(threshold = 0, above = FALSE,
+                                column = "score") {
+    new("ScoreThresholdParam", threshold = threshold[1L], above = above[1L],
+        column = column[1L])
 }
 
 #' @rdname Matched
@@ -1082,6 +1134,25 @@ setMethod("filterMatches", c("Matched", "TopRankedMatchesParam"),
               index <- do.call("c", lapply(tmp, function(x)
                   x[order(x[, 2])[seq_len(min(param@n, nrow(x)))], 1]))
               to_keep <- seq_len_nm %in% index
+              object@matches <- object@matches[to_keep, , drop = FALSE]
+              object@metadata <- c(object@metadata, param = param)
+              validObject(object)
+              object
+          })
+
+#' @rdname Matched
+#'
+#' @importFrom methods validObject
+#'
+#' @export
+setMethod("filterMatches", c("Matched", "ScoreThresholdParam"),
+          function (object, param, ...) {
+              if (!param@column %in% colnames(object@matches))
+                  stop("\"", param@column,
+                       "\" variable not present in `object`")
+              if (param@above)
+                  to_keep <- object@matches[, param@column] > param@threshold  
+              else to_keep <- object@matches[, param@column] < param@threshold
               object@matches <- object@matches[to_keep, , drop = FALSE]
               object@metadata <- c(object@metadata, param = param)
               validObject(object)

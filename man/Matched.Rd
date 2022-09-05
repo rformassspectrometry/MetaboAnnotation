@@ -23,8 +23,10 @@
 \alias{filterMatches,Matched,missing-method}
 \alias{SelectMatchesParam}
 \alias{TopRankedMatchesParam}
+\alias{ScoreThresholdParam}
 \alias{filterMatches,Matched,SelectMatchesParam-method}
 \alias{filterMatches,Matched,TopRankedMatchesParam-method}
+\alias{filterMatches,Matched,ScoreThresholdParam-method}
 \alias{addMatches,Matched-method}
 \alias{endoapply,ANY-method}
 \alias{endoapply,Matched-method}
@@ -94,9 +96,13 @@ SelectMatchesParam(
 
 TopRankedMatchesParam(n = 1L, decreasing = FALSE)
 
+ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
+
 \S4method{filterMatches}{Matched,SelectMatchesParam}(object, param, ...)
 
 \S4method{filterMatches}{Matched,TopRankedMatchesParam}(object, param, ...)
+
+\S4method{filterMatches}{Matched,ScoreThresholdParam}(object, param, ...)
 
 \S4method{addMatches}{Matched}(
   object,
@@ -192,6 +198,17 @@ ranked matches to keep for each \code{query} element.}
 should be ordered increasing or decreasing. Defaults to
 \code{decreasing = FALSE}.}
 
+\item{threshold}{for \code{ScoreThresholdParam} : \code{numeric(1)} specifying the
+threshold to consider for the filtering.}
+
+\item{above}{for \code{ScoreThresholdParam} : \code{logical(1)} specifying whether
+to keep matches above (\code{above = TRUE}) or below (\code{above = FALSE}) a certain
+threshold.}
+
+\item{column}{for \code{ScoreThresholdParam}: \code{character(1)} specifying the name
+of the score variable to consider for the filtering (the default is
+\code{column = "score"}).}
+
 \item{score}{for \code{addMatches}: \code{numeric} (same length than \code{queryValue}) or
 \code{data.frame} (same number of rows than \code{queryValue}) specifying the scores
 for the matches to add. If not specified, a \code{NA} will be used as score.}
@@ -286,6 +303,18 @@ the ranks of the two variables (ranking of retention time differences
 is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
+\itemize{
+\item \code{ScoreThresholdParam}: keeps only the matches whose score is strictly
+above or strictly below a certain threshold (respectively when parameter
+\code{above = TRUE} and \code{above = FALSE}). The name of the column containing
+the scores to be used for the filtering can be specified with parameter
+\code{column}. The default for \code{column} is \code{"score"}. Such variable is present
+in each \code{Matched} object. The name of other score variables (if present)
+can be provided. For example \code{column = "score_rt"} can be used to filter
+matches based on retention time scores for \code{Matched} objects returned
+by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a retention time
+comparison are used.
+}
 }
 \item \code{lapply}: applies a user defined function \code{FUN} to each subset of
 matches in a \code{Matched} object for each \code{query} element (i.e. to each \code{x[i]}
@@ -500,6 +529,13 @@ mo_sub$target
 ## their *score* value and select the best *n* matches with lowest score
 ## values (i.e. smallest difference in m/z values).
 mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+matchedData(mo_sub)
+
+## Additionally it is possible to select matches based on a threshold
+## for their *score*. Below we keep matches with score below 0.75 (one
+## could select matches with *score* greater than the threshold by setting
+## `ScoreThresholdParam` parameter `above = TRUE`.
+mo_sub <- filterMatches(mo, ScoreThresholdParam(threshold = 0.75))
 matchedData(mo_sub)
 
 ########
