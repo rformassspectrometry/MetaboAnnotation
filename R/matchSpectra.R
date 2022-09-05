@@ -13,8 +13,11 @@
 #' Parameters `query` and `target` can be used to define the query and target
 #' spectra, respectively, while parameter `param` allows to define and configure
 #' the similarity calculation and matching condition. Parameter `query` takes
-#' a [Spectra] object while `target` can be either a [Spectra] object or a
-#' [CompDb] (reference library) object defined in the `CompoundDb` package.
+#' a [Spectra] object while `target` can be either a [Spectra] object, a
+#' [CompDb] (reference library) object defined in the `CompoundDb` package or
+#' a [CompAnnotationSource] (e.g. a [CompDbSource()] with the reference or
+#' connection information to a supported annotation resource).
+#'
 #' Currently supported parameter objects defining the matching are:
 #'
 #' - `CompareSpectraParam`: the *generic* parameter object allowing to set all
@@ -110,7 +113,8 @@
 #'   availability of the precursor m/z in `query`, as no match will be reported
 #'   for query spectra with missing precursor m/z.
 #'
-#' @param target for `matchSpectra`: [Spectra] object with the target
+#' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
+#'   [CompAnnotationSource] (such as [CompDbSource]) with the target
 #'   (reference) spectra to compare `query` against.
 #'
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
@@ -153,8 +157,11 @@
 #'
 #' @rdname CompareSpectraParam
 #'
-#' @return `matchSpectra` returns a [MatchedSpectra()] object. Constructor
-#'     functions return an instance of the class.
+#' @return `matchSpectra` returns a [MatchedSpectra()] object with the matching
+#'   results. If `target` is a `CompAnnotationSource` only matching target
+#'   spectra will be reported.
+#'
+#'   Constructor functions return an instance of the class.
 #'
 #' @exportClass CompareSpectraParam
 #'

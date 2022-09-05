@@ -360,7 +360,8 @@ ways and options to provide access to spectral libraries/databases *via*
 `Spectra`). As an alternative, it would also be possible to use a `CompDb`
 object representing a compound annotation database (defined in the
 `r Biocpkg("CompoundDb")` package) with parameter `target`. See the
-`matchSpectra` help page for more details.
+`matchSpectra` help page or section *Query against multiple reference databases*
+below for more details.
 
 ```{r}
 load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
@@ -562,6 +563,22 @@ Matches can be also further validated using an interactive Shiny app by calling
 be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
+
+### Query against multiple reference databases
+
+Getting access to reference spectra can sometimes be a little cumbersome since
+it might involve lookup and download of specific resources or eventual
+conversion of these into a format suitable for import. To simplify this process,
+the concept of *compound annotation sources* was introduced. These represent
+references (links) to annotation resources and take care of retrieving the
+annotation resources making integration of various annotation resources easier
+for the end user. In addition, such *compound annotation sources* (object
+extending `CompAnnotationSource`) can be combined to allow matching query
+spectra against multiple reference libraries in a single call.
+
+DESCRIBE THE APPROACH...
+
+
 
 # Session information {-}
 

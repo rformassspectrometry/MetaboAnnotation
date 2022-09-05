@@ -35,7 +35,7 @@ Imports:
     ProtGenerics,
     methods,
     S4Vectors,
-    Spectra (>= 1.5.7),
+    Spectra (>= 1.7.2),
     BiocParallel,
     SummarizedExperiment,
     QFeatures,

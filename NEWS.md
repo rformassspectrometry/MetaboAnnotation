@@ -3,6 +3,10 @@
 ## Changes in 1.1.3
 
 - `matchSpectra`: support a `CompDb` with parameter `target`.
+- Add `CompAnnotionSource` classes to support definition of references to
+  annotation resources.
+- Add `CompDbSource` class defining a reference to a `CompDb` database.
+- `matchSpectra`: support for `CompDbSource` with parameter `target`.
 
 ## Changes in 1.1.2
 
