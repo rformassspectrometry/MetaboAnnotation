@@ -856,6 +856,48 @@ test_that("filterMatches,Matched,TopRankedMatchesParam works", {
     expect_equal(res@matches$score, c(0.5, 0.8, 0.9))
 })
 
+
+test_that("filterMatches,Matched,ScoreThresholdParam works", {
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = c(4, 4, 1, 3, 1)))
+
+    mosub <- filterMatches(mo, ScoreThresholdParam())
+    expect_equal(mosub@matches, mo@matches[integer(0), ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+    expect_s4_class(mosub@metadata[[length(mosub@metadata)]],
+                    "ScoreThresholdParam")
+
+    mosub <- filterMatches(mo, ScoreThresholdParam(threshold = 2.5))
+    expect_equal(mosub@matches, mo@matches[c(3L, 5L), ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+
+    mosub <- filterMatches(mo, ScoreThresholdParam(threshold = 2.5,
+                                                   above = TRUE))
+    expect_equal(mosub@matches, mo@matches[c(1L, 2L, 4L), ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+
+    expect_error(filterMatches(mo, ScoreThresholdParam(threshold = 2.5,
+                                                       column = "notpresent")),
+                 "variable not present")
+
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = c(4, 4, 1, 3, 1),
+                                     score_rt = c(1, -1, -1, -2, 1)))
+
+    mosub <- filterMatches(mo, ScoreThresholdParam(threshold = 0,
+                                                   column = "score_rt"))
+    expect_equal(mosub@matches, mo@matches[c(2L, 3L, 4L), ])
+    expect_equal(query(mosub), query(mo))
+    expect_equal(target(mosub), target(mo))
+})
+
 test_that("addMatches,Matched works", {
     #### query and target data.frames
     mo <- Matched(

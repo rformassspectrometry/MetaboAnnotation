@@ -1,5 +1,12 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.3
+
+- Extend `filterMatches` framework (issue
+  [#86](https://github.com/rformassspectrometry/MetaboAnnotation/issues/86)).
+  `ScoreThresholdParam` added to perform filtering the matches based on a
+  threshold for the scores.
+  
 ## Changes in 1.1.2
 
 - `lapply` and `endoapply` methods (issue
