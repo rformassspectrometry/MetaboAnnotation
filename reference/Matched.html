@@ -13,7 +13,7 @@ structures such as SummarizedExperiments or QFeatures. Combinations of
 all these different data types are also supported. Matches are represented
 between elements of one-dimensional objects, or rows for two-dimensional
 objects (including SummarizedExperiment or QFeatures). For QFeatures()
-objects matches to only one of the assays within the object is supported."><title>Representation of generic objects matches — addMatches • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Representation of generic objects matches — addMatches"><meta property="og:description" content="Matches between query and target generic objects can be represented by
+objects matches to only one of the assays within the object is supported."><title>Representation of generic objects matches — addMatches • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Representation of generic objects matches — addMatches"><meta property="og:description" content="Matches between query and target generic objects can be represented by
 the Matched object. By default, all data accessors work as
 left joins between the query and the target object, i.e. values are
 returned for each query object with eventual duplicated entries (values)
@@ -38,7 +38,7 @@ objects matches to only one of the assays within the object is supported."><meta
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -167,10 +167,15 @@ SelectMatchesParam(
 
 TopRankedMatchesParam(n = 1L, decreasing = FALSE)
 
+ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
+
 # S4 method for Matched,SelectMatchesParam
 filterMatches(object, param, ...)
 
 # S4 method for Matched,TopRankedMatchesParam
+filterMatches(object, param, ...)
+
+# S4 method for Matched,ScoreThresholdParam
 filterMatches(object, param, ...)
 
 # S4 method for Matched
@@ -319,6 +324,23 @@ should be ordered increasing or decreasing. Defaults to
 <code>decreasing = FALSE</code>.</p></dd>
 
 
+<dt>threshold</dt>
+<dd><p>for <code>ScoreThresholdParam</code> : <code>numeric(1)</code> specifying the
+threshold to consider for the filtering.</p></dd>
+
+
+<dt>above</dt>
+<dd><p>for <code>ScoreThresholdParam</code> : <code>logical(1)</code> specifying whether
+to keep matches above (<code>above = TRUE</code>) or below (<code>above = FALSE</code>) a certain
+threshold.</p></dd>
+
+
+<dt>column</dt>
+<dd><p>for <code>ScoreThresholdParam</code>: <code>character(1)</code> specifying the name
+of the score variable to consider for the filtering (the default is
+<code>column = "score"</code>).</p></dd>
+
+
 <dt>score</dt>
 <dd><p>for <code>addMatches</code>: <code>numeric</code> (same length than <code>queryValue</code>) or
 <code>data.frame</code> (same number of rows than <code>queryValue</code>) specifying the scores
@@ -402,7 +424,17 @@ time comparison), the ordering of the matches is based on the product of
 the ranks of the two variables (ranking of retention time differences
 is performed on the absolute value of <code>"score_rt"</code>). Thus, matches with
 small (or, depending on parameter <code>decreasing</code>, large) values for
-<code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p></li>
+<code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p><ul><li><p><code>ScoreThresholdParam</code>: keeps only the matches whose score is strictly
+above or strictly below a certain threshold (respectively when parameter
+<code>above = TRUE</code> and <code>above = FALSE</code>). The name of the column containing
+the scores to be used for the filtering can be specified with parameter
+<code>column</code>. The default for <code>column</code> is <code>"score"</code>. Such variable is present
+in each <code>Matched</code> object. The name of other score variables (if present)
+can be provided. For example <code>column = "score_rt"</code> can be used to filter
+matches based on retention time scores for <code>Matched</code> objects returned
+by <code><a href="matchValues.html">matchValues()</a></code> when <code>param</code> objects involving a retention time
+comparison are used.</p></li>
+</ul></li>
 </ul></li>
 <li><p><code>lapply</code>: applies a user defined function <code>FUN</code> to each subset of
 matches in a <code>Matched</code> object for each <code>query</code> element (i.e. to each <code>x[i]</code>
@@ -469,57 +501,57 @@ eventual additional columns.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## Creating a `Matched` object.</span></span>
-<span class="r-in"><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span>, col2 <span class="op">=</span> <span class="fl">17</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Define matches between query row 1 with target row 2 and, query row 2</span></span>
-<span class="r-in"><span class="co">## with target rows 2,3,4 and query row 5 with target row 5.</span></span>
-<span class="r-in"><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">q1</span>, <span class="va">t1</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span>
-<span class="r-in">                                 target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>,</span>
-<span class="r-in">                                 score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mo</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Creating a `Matched` object.</span></span></span>
+<span class="r-in"><span><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span>, col2 <span class="op">=</span> <span class="fl">17</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Define matches between query row 1 with target row 2 and, query row 2</span></span></span>
+<span class="r-in"><span><span class="co">## with target rows 2,3,4 and query row 5 with target row 5.</span></span></span>
+<span class="r-in"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">q1</span>, <span class="va">t1</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mo</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 5 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 6 (4 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which of the query elements (rows) match at least one target</span></span>
-<span class="r-in"><span class="co">## element (row)?</span></span>
-<span class="r-in"><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which of the query elements (rows) match at least one target</span></span></span>
+<span class="r-in"><span><span class="co">## element (row)?</span></span></span>
+<span class="r-in"><span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which target elements (rows) match at least one query element (row)?</span></span>
-<span class="r-in"><span class="fu">whichTarget</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which target elements (rows) match at least one query element (row)?</span></span></span>
+<span class="r-in"><span><span class="fu">whichTarget</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting variable "col1" from query object .</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting variable "col1" from query object .</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We have duplicated values for the entries of `col1` related to query</span></span>
-<span class="r-in"><span class="co">## elements (rows) matched to multiple rows of the target object). The</span></span>
-<span class="r-in"><span class="co">## value of `col1` is returned for each element (row) in the query.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting variable "col1" from target object. To access columns from</span></span>
-<span class="r-in"><span class="co">## target we have to prefix the name of the column by `"target_"`.</span></span>
-<span class="r-in"><span class="co">## Note that only values of `col1` for rows matching at least one query</span></span>
-<span class="r-in"><span class="co">## row are returned and an NA is reported for query rows without matching</span></span>
-<span class="r-in"><span class="co">## target rows.</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">target_col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We have duplicated values for the entries of `col1` related to query</span></span></span>
+<span class="r-in"><span><span class="co">## elements (rows) matched to multiple rows of the target object). The</span></span></span>
+<span class="r-in"><span><span class="co">## value of `col1` is returned for each element (row) in the query.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting variable "col1" from target object. To access columns from</span></span></span>
+<span class="r-in"><span><span class="co">## target we have to prefix the name of the column by `"target_"`.</span></span></span>
+<span class="r-in"><span><span class="co">## Note that only values of `col1` for rows matching at least one query</span></span></span>
+<span class="r-in"><span><span class="co">## row are returned and an NA is reported for query rows without matching</span></span></span>
+<span class="r-in"><span><span class="co">## target rows.</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">target_col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The 3rd and 4th query rows do not match any target row, thus `NA` is</span></span>
-<span class="r-in"><span class="co">## returned.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## `matchedData` can be used to extract all (or selected) columns</span></span>
-<span class="r-in"><span class="co">## from the object. Same as with `$`, a left join between the columns</span></span>
-<span class="r-in"><span class="co">## from the query and the target is performed. Below we extract selected</span></span>
-<span class="r-in"><span class="co">## columns from the object as a DataFrame.</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"target_col1"</span>,</span>
-<span class="r-in">                                   <span class="st">"target_col2"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The 3rd and 4th query rows do not match any target row, thus `NA` is</span></span></span>
+<span class="r-in"><span><span class="co">## returned.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## `matchedData` can be used to extract all (or selected) columns</span></span></span>
+<span class="r-in"><span><span class="co">## from the object. Same as with `$`, a left join between the columns</span></span></span>
+<span class="r-in"><span><span class="co">## from the query and the target is performed. Below we extract selected</span></span></span>
+<span class="r-in"><span><span class="co">## columns from the object as a DataFrame.</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"target_col1"</span>,</span></span>
+<span class="r-in"><span>                                   <span class="st">"target_col2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 7 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target_col1 target_col2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt;   &lt;integer&gt;   &lt;integer&gt;</span>
@@ -530,59 +562,59 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8          NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9          NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10          15          21</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">target_col1</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">target_col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The example matched object contains all query and all target</span></span>
-<span class="r-in"><span class="co">## elements (rows). Below we subset the object keeping only query rows that</span></span>
-<span class="r-in"><span class="co">## are matched to at least one target row.</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## mo_sub contains now only 3 query rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The example matched object contains all query and all target</span></span></span>
+<span class="r-in"><span><span class="co">## elements (rows). Below we subset the object keeping only query rows that</span></span></span>
+<span class="r-in"><span><span class="co">## are matched to at least one target row.</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## mo_sub contains now only 3 query rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## while the original object contains all 5 query rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## while the original object contains all 5 query rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Both objects contain however still the full target object:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Both objects contain however still the full target object:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## With the `pruneTarget` we can however reduce also the target rows to</span></span>
-<span class="r-in"><span class="co">## only those that match at least one query row</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## With the `pruneTarget` we can however reduce also the target rows to</span></span></span>
+<span class="r-in"><span><span class="co">## only those that match at least one query row</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">########</span></span>
-<span class="r-in"><span class="co">## Creating a `Matched` object with a `data.frame` for `query` and a `vector`</span></span>
-<span class="r-in"><span class="co">## for `target`. The matches are specified in the same way as the example</span></span>
-<span class="r-in"><span class="co">## before.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">t2</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span></span>
-<span class="r-in"><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span><span class="va">q1</span>, <span class="va">t2</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span>
-<span class="r-in">    target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## *target* is a simple vector and has thus no columns. The matched values</span></span>
-<span class="r-in"><span class="co">## from target, if it does not have dimensions and hence column names, can</span></span>
-<span class="r-in"><span class="co">## be retrieved with `$target`</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">target</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">########</span></span></span>
+<span class="r-in"><span><span class="co">## Creating a `Matched` object with a `data.frame` for `query` and a `vector`</span></span></span>
+<span class="r-in"><span><span class="co">## for `target`. The matches are specified in the same way as the example</span></span></span>
+<span class="r-in"><span><span class="co">## before.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">t2</span> <span class="op">&lt;-</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span></span></span>
+<span class="r-in"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span><span class="va">q1</span>, <span class="va">t2</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## *target* is a simple vector and has thus no columns. The matched values</span></span></span>
+<span class="r-in"><span><span class="co">## from target, if it does not have dimensions and hence column names, can</span></span></span>
+<span class="r-in"><span><span class="co">## be retrieved with `$target`</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">target</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Note that in this case "target" is returned by the function `colnames`</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Note that in this case "target" is returned by the function `colnames`</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "col1"   "col2"   "target" "score" </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## As before, we can extract all data as a `DataFrame`</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## As before, we can extract all data as a `DataFrame`</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 7 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -593,58 +625,58 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Note that the columns of the obtained `DataFrame` are the same as the</span></span>
-<span class="r-in"><span class="co">## corresponding vectors obtained with `$`</span></span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Note that the columns of the obtained `DataFrame` are the same as the</span></span></span>
+<span class="r-in"><span><span class="co">## corresponding vectors obtained with `$`</span></span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">target</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">target</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Also subsetting and pruning works in the same way as the example above.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## mo_sub contains now only 3 query rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Also subsetting and pruning works in the same way as the example above.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## mo_sub contains now only 3 query rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## while the original object contains all 5 query rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## while the original object contains all 5 query rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Both object contain however still the full target object:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Both object contain however still the full target object:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Reducing the target elements to only those that match at least one query</span></span>
-<span class="r-in"><span class="co">## row</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Reducing the target elements to only those that match at least one query</span></span></span>
+<span class="r-in"><span><span class="co">## row</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">########</span></span>
-<span class="r-in"><span class="co">## Filtering `Matched` with `filterMatches`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Inspecting the matches in `mo`:</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">########</span></span></span>
+<span class="r-in"><span><span class="co">## Filtering `Matched` with `filterMatches`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Inspecting the matches in `mo`:</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">target</span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">target</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We have thus target *12* matched to both query elements with values 1 and</span></span>
-<span class="r-in"><span class="co">## 2, and query element 2 is matching 3 target elements. Let's assume we want</span></span>
-<span class="r-in"><span class="co">## to resolve this multiple mappings to keep from them only the match between</span></span>
-<span class="r-in"><span class="co">## query 1 (column `"col1"` containing value `1`) with target 1 (value `12`)</span></span>
-<span class="r-in"><span class="co">## and query 2 (column `"col1"` containing value `2`) with target 2 (value</span></span>
-<span class="r-in"><span class="co">## `13`). In addition we also want to keep query element 5 (value `5` in</span></span>
-<span class="r-in"><span class="co">## column `"col1"`) with the target with value `15`:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span>
-<span class="r-in">    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">13</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We have thus target *12* matched to both query elements with values 1 and</span></span></span>
+<span class="r-in"><span><span class="co">## 2, and query element 2 is matching 3 target elements. Let's assume we want</span></span></span>
+<span class="r-in"><span><span class="co">## to resolve this multiple mappings to keep from them only the match between</span></span></span>
+<span class="r-in"><span><span class="co">## query 1 (column `"col1"` containing value `1`) with target 1 (value `12`)</span></span></span>
+<span class="r-in"><span><span class="co">## and query 2 (column `"col1"` containing value `2`) with target 2 (value</span></span></span>
+<span class="r-in"><span><span class="co">## `13`). In addition we also want to keep query element 5 (value `5` in</span></span></span>
+<span class="r-in"><span><span class="co">## column `"col1"`) with the target with value `15`:</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
+<span class="r-in"><span>                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">13</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -653,21 +685,21 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Alternatively to specifying the matches to filter with `queryValue` and</span></span>
-<span class="r-in"><span class="co">## `targetValue` it is also possible to specify directly the index of the</span></span>
-<span class="r-in"><span class="co">## match(es) in the `matches` `data.frame`:</span></span>
-<span class="r-in"><span class="fu">matches</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Alternatively to specifying the matches to filter with `queryValue` and</span></span></span>
+<span class="r-in"><span><span class="co">## `targetValue` it is also possible to specify directly the index of the</span></span></span>
+<span class="r-in"><span><span class="co">## match(es) in the `matches` `data.frame`:</span></span></span>
+<span class="r-in"><span><span class="fu">matches</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   query_idx target_idx score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         1          2   0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2          2   0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         2          3   0.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         2          4   0.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5          5   0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## To keep only matches like in the example above we could use:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">SelectMatchesParam</span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To keep only matches like in the example above we could use:</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">SelectMatchesParam</span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -676,25 +708,25 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Note also that, instead of keeping the specified matches, it would be</span></span>
-<span class="r-in"><span class="co">## possible to remove them by setting `keep = FALSE`. Below we remove</span></span>
-<span class="r-in"><span class="co">## selected matches from the object:</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span>
-<span class="r-in">    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mo_sub</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Note also that, instead of keeping the specified matches, it would be</span></span></span>
+<span class="r-in"><span><span class="co">## possible to remove them by setting `keep = FALSE`. Below we remove</span></span></span>
+<span class="r-in"><span><span class="co">## selected matches from the object:</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">SelectMatchesParam</span><span class="op">(</span>queryValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
+<span class="r-in"><span>                       targetValue <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">14</span><span class="op">)</span>, keep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 3 4 5</span>
-<span class="r-in"><span class="va">mo_sub</span><span class="op">$</span><span class="va">target</span></span>
+<span class="r-in"><span><span class="va">mo_sub</span><span class="op">$</span><span class="va">target</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 13 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## As alternative to *manually* selecting matches it is also possible to</span></span>
-<span class="r-in"><span class="co">## filter matches keeping only the *best matches* using the</span></span>
-<span class="r-in"><span class="co">## `TopRankedMatchesParam`. This will rank matches for each query based on</span></span>
-<span class="r-in"><span class="co">## their *score* value and select the best *n* matches with lowest score</span></span>
-<span class="r-in"><span class="co">## values (i.e. smallest difference in m/z values).</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">TopRankedMatchesParam</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## As alternative to *manually* selecting matches it is also possible to</span></span></span>
+<span class="r-in"><span><span class="co">## filter matches keeping only the *best matches* using the</span></span></span>
+<span class="r-in"><span><span class="co">## `TopRankedMatchesParam`. This will rank matches for each query based on</span></span></span>
+<span class="r-in"><span><span class="co">## their *score* value and select the best *n* matches with lowest score</span></span></span>
+<span class="r-in"><span><span class="co">## values (i.e. smallest difference in m/z values).</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">TopRankedMatchesParam</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -703,44 +735,61 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">########</span></span>
-<span class="r-in"><span class="co">## Selecting the best match for each `query` element with `endoapply`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## It is also possible to select for each `query` element the match with the</span></span>
-<span class="r-in"><span class="co">## lowest score using `endoapply`. We manually define a function to select</span></span>
-<span class="r-in"><span class="co">## the best match for each query and give it as input to `endoapply`</span></span>
-<span class="r-in"><span class="co">## together with the `Matched` object itself. We obtain the same results as</span></span>
-<span class="r-in"><span class="co">## in the `filterMatches` example above.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">FUN</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in">        <span class="va">x</span><span class="op">@</span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span>
-<span class="r-in">    <span class="va">x</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">endoapply</span><span class="op">(</span><span class="va">mo</span>, <span class="va">FUN</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Additionally it is possible to select matches based on a threshold</span></span></span>
+<span class="r-in"><span><span class="co">## for their *score*. Below we keep matches with score below 0.75 (one</span></span></span>
+<span class="r-in"><span><span class="co">## could select matches with *score* greater than the threshold by setting</span></span></span>
+<span class="r-in"><span><span class="co">## `ScoreThresholdParam` parameter `above = TRUE`.</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">filterMatches</span><span class="op">(</span><span class="va">mo</span>, <span class="fu">ScoreThresholdParam</span><span class="op">(</span>threshold <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6 rows and 4 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1         6     12       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2         7     12       0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1         2         7     13       0.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     NA        NA</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">########</span></span></span>
+<span class="r-in"><span><span class="co">## Selecting the best match for each `query` element with `endoapply`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## It is also possible to select for each `query` element the match with the</span></span></span>
+<span class="r-in"><span><span class="co">## lowest score using `endoapply`. We manually define a function to select</span></span></span>
+<span class="r-in"><span><span class="co">## the best match for each query and give it as input to `endoapply`</span></span></span>
+<span class="r-in"><span><span class="co">## together with the `Matched` object itself. We obtain the same results as</span></span></span>
+<span class="r-in"><span><span class="co">## in the `filterMatches` example above.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">FUN</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>        <span class="va">x</span><span class="op">@</span><span class="va">matches</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">x</span><span class="op">@</span><span class="va">matches</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, , drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span></span></span>
+<span class="r-in"><span>    <span class="va">x</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">endoapply</span><span class="op">(</span><span class="va">mo</span>, <span class="va">FUN</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in as(from, to_class, strict = FALSE):</span> no method or default for coercing “list” to “Matched”</span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 5 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target     score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         1         6     12       0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         2         7     12       0.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8     NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9     NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">########</span></span>
-<span class="r-in"><span class="co">## Adding matches using `addMatches`</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## `addMatches` allows to manually add matches. Below we add a new match</span></span>
-<span class="r-in"><span class="co">## between the `query` element with a value of `1` in column `"col1"` and</span></span>
-<span class="r-in"><span class="co">## the target element with a value of `15`. Parameter `score` allows to</span></span>
-<span class="r-in"><span class="co">## assign a score value to the match.</span></span>
-<span class="r-in"><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">    targetValue <span class="op">=</span> <span class="fl">15</span>, score <span class="op">=</span> <span class="fl">1.40</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6 rows and 4 columns</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           1         6     12       0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           2         7     12       0.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.1         2         7     13       0.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     NA        NA</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">########</span></span></span>
+<span class="r-in"><span><span class="co">## Adding matches using `addMatches`</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## `addMatches` allows to manually add matches. Below we add a new match</span></span></span>
+<span class="r-in"><span><span class="co">## between the `query` element with a value of `1` in column `"col1"` and</span></span></span>
+<span class="r-in"><span><span class="co">## the target element with a value of `15`. Parameter `score` allows to</span></span></span>
+<span class="r-in"><span><span class="co">## assign a score value to the match.</span></span></span>
+<span class="r-in"><span><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
+<span class="r-in"><span>    targetValue <span class="op">=</span> <span class="fl">15</span>, score <span class="op">=</span> <span class="fl">1.40</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 8 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -752,17 +801,17 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     15       0.9</span>
-<span class="r-in"><span class="co">## Matches are always sorted by `query`, thus, the new match is listed as</span></span>
-<span class="r-in"><span class="co">## second match.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Alternatively, we can also provide a `data.frame` with parameter `score`</span></span>
-<span class="r-in"><span class="co">## which enables us to add additional information to the added match. Below</span></span>
-<span class="r-in"><span class="co">## we define the score and an additional column specifying that this match</span></span>
-<span class="r-in"><span class="co">## was added manually. This information will then also be available in the</span></span>
-<span class="r-in"><span class="co">## `matchedData`.</span></span>
-<span class="r-in"><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">    targetValue <span class="op">=</span> <span class="fl">15</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>score <span class="op">=</span> <span class="fl">5</span>, manual <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co">## Matches are always sorted by `query`, thus, the new match is listed as</span></span></span>
+<span class="r-in"><span><span class="co">## second match.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Alternatively, we can also provide a `data.frame` with parameter `score`</span></span></span>
+<span class="r-in"><span><span class="co">## which enables us to add additional information to the added match. Below</span></span></span>
+<span class="r-in"><span><span class="co">## we define the score and an additional column specifying that this match</span></span></span>
+<span class="r-in"><span><span class="co">## was added manually. This information will then also be available in the</span></span></span>
+<span class="r-in"><span><span class="co">## `matchedData`.</span></span></span>
+<span class="r-in"><span><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
+<span class="r-in"><span>    targetValue <span class="op">=</span> <span class="fl">15</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>score <span class="op">=</span> <span class="fl">5</span>, manual <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 8 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score    manual</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt; &lt;logical&gt;</span>
@@ -774,11 +823,11 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     15       0.9        NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The match will get a score of NA if we're not providing any score.</span></span>
-<span class="r-in"><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span>
-<span class="r-in">    targetValue <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The match will get a score of NA if we're not providing any score.</span></span></span>
+<span class="r-in"><span><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
+<span class="r-in"><span>    targetValue <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 8 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;integer&gt; &lt;AsIs&gt; &lt;numeric&gt;</span>
@@ -790,11 +839,11 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           3         8     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4           4         9     NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5           5        10     15       0.9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Creating a `Matched` object with a `SummarizedExperiment` for `query` and</span></span>
-<span class="r-in"><span class="co">## a `vector` for `target`. The matches are specified in the same way as</span></span>
-<span class="r-in"><span class="co">## the example before.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Creating a `Matched` object with a `SummarizedExperiment` for `query` and</span></span></span>
+<span class="r-in"><span><span class="co">## a `vector` for `target`. The matches are specified in the same way as</span></span></span>
+<span class="r-in"><span><span class="co">## the example before.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MatrixGenerics</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: matrixStats</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
@@ -833,59 +882,59 @@ eventual additional columns.</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:matrixStats’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     anyMissing, rowMedians</span>
-<span class="r-in"><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
-<span class="r-in">  assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  rowData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span>
-<span class="r-in">  colData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>cD1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, cD2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span>, col2 <span class="op">=</span> <span class="fl">17</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Define matches between row 1 in rowData(q1) with target row 2 and,</span></span>
-<span class="r-in"><span class="co">## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target</span></span>
-<span class="r-in"><span class="co">## row 5.</span></span>
-<span class="r-in"><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">q1</span>, <span class="va">t1</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span>
-<span class="r-in">                                target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>,</span>
-<span class="r-in">                                 score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mo</span></span>
+<span class="r-in"><span><span class="va">q1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rowData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, col2 <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  colData <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>cD1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, cD2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">t1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>col1 <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">16</span>, col2 <span class="op">=</span> <span class="fl">17</span><span class="op">:</span><span class="fl">22</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Define matches between row 1 in rowData(q1) with target row 2 and,</span></span></span>
+<span class="r-in"><span><span class="co">## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target</span></span></span>
+<span class="r-in"><span><span class="co">## row 5.</span></span></span>
+<span class="r-in"><span><span class="va">mo</span> <span class="op">&lt;-</span> <span class="fu">Matched</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">q1</span>, <span class="va">t1</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">5L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">2L</span>, <span class="fl">3L</span>, <span class="fl">4L</span>, <span class="fl">5L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                 score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.9</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mo</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 5 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 5 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 6 (4 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which of the query elements (rows) match at least one target</span></span>
-<span class="r-in"><span class="co">## element (row)?</span></span>
-<span class="r-in"><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which of the query elements (rows) match at least one target</span></span></span>
+<span class="r-in"><span><span class="co">## element (row)?</span></span></span>
+<span class="r-in"><span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which target elements (rows) match at least one query element (row)?</span></span>
-<span class="r-in"><span class="fu">whichTarget</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which target elements (rows) match at least one query element (row)?</span></span></span>
+<span class="r-in"><span><span class="fu">whichTarget</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting variable "col1" from rowData(q1).</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting variable "col1" from rowData(q1).</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We have duplicated values for the entries of `col1` related to rows of</span></span>
-<span class="r-in"><span class="co">## rowData(q1) matched to multiple rows of the target data.frame t1. The</span></span>
-<span class="r-in"><span class="co">## value of `col1` is returned for each row in the rowData of query.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting variable "col1" from target object. To access columns from</span></span>
-<span class="r-in"><span class="co">## target we have to prefix the name of the column by `"target_"`.</span></span>
-<span class="r-in"><span class="co">## Note that only values of `col1` for rows matching at least one row in</span></span>
-<span class="r-in"><span class="co">## rowData of query are returned and an NA is reported for those without</span></span>
-<span class="r-in"><span class="co">## matching target rows.</span></span>
-<span class="r-in"><span class="va">mo</span><span class="op">$</span><span class="va">target_col1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We have duplicated values for the entries of `col1` related to rows of</span></span></span>
+<span class="r-in"><span><span class="co">## rowData(q1) matched to multiple rows of the target data.frame t1. The</span></span></span>
+<span class="r-in"><span><span class="co">## value of `col1` is returned for each row in the rowData of query.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting variable "col1" from target object. To access columns from</span></span></span>
+<span class="r-in"><span><span class="co">## target we have to prefix the name of the column by `"target_"`.</span></span></span>
+<span class="r-in"><span><span class="co">## Note that only values of `col1` for rows matching at least one row in</span></span></span>
+<span class="r-in"><span><span class="co">## rowData of query are returned and an NA is reported for those without</span></span></span>
+<span class="r-in"><span><span class="co">## matching target rows.</span></span></span>
+<span class="r-in"><span><span class="va">mo</span><span class="op">$</span><span class="va">target_col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The 3rd and 4th query rows do not match any target row, thus `NA` is</span></span>
-<span class="r-in"><span class="co">## returned.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## `matchedData` can be used to extract all (or selected) columns</span></span>
-<span class="r-in"><span class="co">## from the object. Same as with `$`, a left join between the columns</span></span>
-<span class="r-in"><span class="co">## from the query and the target is performed. Below we extract selected</span></span>
-<span class="r-in"><span class="co">## columns from the object as a DataFrame.</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"target_col1"</span>,</span>
-<span class="r-in">                                  <span class="st">"target_col2"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The 3rd and 4th query rows do not match any target row, thus `NA` is</span></span></span>
+<span class="r-in"><span><span class="co">## returned.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## `matchedData` can be used to extract all (or selected) columns</span></span></span>
+<span class="r-in"><span><span class="co">## from the object. Same as with `$`, a left join between the columns</span></span></span>
+<span class="r-in"><span><span class="co">## from the query and the target is performed. Below we extract selected</span></span></span>
+<span class="r-in"><span><span class="co">## columns from the object as a DataFrame.</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchedData</span><span class="op">(</span><span class="va">mo</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"col1"</span>, <span class="st">"col2"</span>, <span class="st">"target_col1"</span>,</span></span>
+<span class="r-in"><span>                                  <span class="st">"target_col2"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 7 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        col1      col2 target_col1 target_col2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;integer&gt; &lt;integer&gt;   &lt;integer&gt;   &lt;integer&gt;</span>
@@ -896,36 +945,36 @@ eventual additional columns.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         3         8          NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         4         9          NA          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5         5        10          15          21</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 2 2 3 4 5</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">target_col1</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">target_col1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12 12 13 14 NA NA 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The example `Matched` object contains all rows in the</span></span>
-<span class="r-in"><span class="co">## `rowData` of the `SummarizedExperiment` and all target rows. Below we</span></span>
-<span class="r-in"><span class="co">## subset the object keeping only rows that are matched to at least one</span></span>
-<span class="r-in"><span class="co">## target row.</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## mo_sub contains now a `SummarizedExperiment` with only 3 rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The example `Matched` object contains all rows in the</span></span></span>
+<span class="r-in"><span><span class="co">## `rowData` of the `SummarizedExperiment` and all target rows. Below we</span></span></span>
+<span class="r-in"><span><span class="co">## subset the object keeping only rows that are matched to at least one</span></span></span>
+<span class="r-in"><span><span class="co">## target row.</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="va">mo</span><span class="op">[</span><span class="fu">whichQuery</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## mo_sub contains now a `SummarizedExperiment` with only 3 rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## while the original object contains a `SummarizedExperiment` with all 5</span></span>
-<span class="r-in"><span class="co">## rows:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## while the original object contains a `SummarizedExperiment` with all 5</span></span></span>
+<span class="r-in"><span><span class="co">## rows:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">query</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Both objects contain however still the full target object:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Both objects contain however still the full target object:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## With the `pruneTarget` we can however reduce also the target rows to</span></span>
-<span class="r-in"><span class="co">## only those that match at least one in the `rowData` of query</span></span>
-<span class="r-in"><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## With the `pruneTarget` we can however reduce also the target rows to</span></span></span>
+<span class="r-in"><span><span class="co">## only those that match at least one in the `rowData` of query</span></span></span>
+<span class="r-in"><span><span class="va">mo_sub</span> <span class="op">&lt;-</span> <span class="fu">pruneTarget</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu">target</span><span class="op">(</span><span class="va">mo_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 </code></pre></div>
     </div>

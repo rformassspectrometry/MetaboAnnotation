@@ -50,7 +50,7 @@ only matches with a spectra similarity fulfilling both THRESHFUN and
 THRESHFUN_REVERSE are returned. With the default
 THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
 
-"><title>Matching MS Spectra against a reference — CompareSpectraParam • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Matching MS Spectra against a reference — CompareSpectraParam"><meta property="og:description" content="matchSpectra with both query and target being a Spectra object
+"><title>Matching MS Spectra against a reference — CompareSpectraParam • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Matching MS Spectra against a reference — CompareSpectraParam"><meta property="og:description" content="matchSpectra with both query and target being a Spectra object
 matches each spectra in query against all spectra in target and reports
 matches with a similarity that passes the THRESHFUN condition. The
 parameters for the matching can be specified with one of the param objects
@@ -112,7 +112,7 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -204,38 +204,38 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CompareSpectraParam</span><span class="op">(</span>
-  MAPFUN <span class="op">=</span> <span class="va">joinPeaks</span>,
-  tolerance <span class="op">=</span> <span class="fl">0</span>,
-  ppm <span class="op">=</span> <span class="fl">5</span>,
-  FUN <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">ndotproduct</a></span>,
-  requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,
-  requirePrecursorPeak <span class="op">=</span> <span class="cn">FALSE</span>,
-  THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0.7</span><span class="op">)</span>,
-  toleranceRt <span class="op">=</span> <span class="cn">Inf</span>,
-  percentRt <span class="op">=</span> <span class="fl">0</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">MatchForwardReverseParam</span><span class="op">(</span>
-  MAPFUN <span class="op">=</span> <span class="va">joinPeaks</span>,
-  tolerance <span class="op">=</span> <span class="fl">0</span>,
-  ppm <span class="op">=</span> <span class="fl">5</span>,
-  FUN <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">ndotproduct</a></span>,
-  requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,
-  requirePrecursorPeak <span class="op">=</span> <span class="cn">FALSE</span>,
-  THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0.7</span><span class="op">)</span>,
-  THRESHFUN_REVERSE <span class="op">=</span> <span class="cn">NULL</span>,
-  toleranceRt <span class="op">=</span> <span class="cn">Inf</span>,
-  percentRt <span class="op">=</span> <span class="fl">0</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for Spectra,Spectra,CompareSpectraParam</span>
-<span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, BPPARAM <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for Spectra,Spectra,MatchForwardReverseParam</span>
-<span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, BPPARAM <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CompareSpectraParam</span><span class="op">(</span></span>
+<span>  MAPFUN <span class="op">=</span> <span class="va">joinPeaks</span>,</span>
+<span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ppm <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">ndotproduct</a></span>,</span>
+<span>  requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  requirePrecursorPeak <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>  toleranceRt <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  percentRt <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">MatchForwardReverseParam</span><span class="op">(</span></span>
+<span>  MAPFUN <span class="op">=</span> <span class="va">joinPeaks</span>,</span>
+<span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ppm <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  FUN <span class="op">=</span> <span class="fu">MsCoreUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">ndotproduct</a></span>,</span>
+<span>  requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  requirePrecursorPeak <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
+<span>  THRESHFUN_REVERSE <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  toleranceRt <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  percentRt <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for Spectra,Spectra,CompareSpectraParam</span></span>
+<span><span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, BPPARAM <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for Spectra,Spectra,MatchForwardReverseParam</span></span>
+<span><span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, BPPARAM <span class="op">=</span> <span class="fu">BiocParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html" class="external-link">SerialParam</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -361,8 +361,8 @@ functions return an instance of the class.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: S4Vectors</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: stats4</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: BiocGenerics</span>
@@ -402,67 +402,67 @@ functions return an instance of the class.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:ProtGenerics’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     addProcessing</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msdata</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pest_ms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterMsLevel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">fl</span><span class="op">)</span>, <span class="fl">2L</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## subset to selected spectra.</span></span>
-<span class="r-in"><span class="va">pest_ms2</span> <span class="op">&lt;-</span> <span class="va">pest_ms2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">808</span>, <span class="fl">809</span>, <span class="fl">945</span><span class="op">:</span><span class="fl">955</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Load a small example MassBank data set</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Match spectra with the default similarity score (normalized dot product)</span></span>
-<span class="r-in"><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">mtches</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msdata</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pest_ms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">filterMsLevel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">fl</span><span class="op">)</span>, <span class="fl">2L</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## subset to selected spectra.</span></span></span>
+<span class="r-in"><span><span class="va">pest_ms2</span> <span class="op">&lt;-</span> <span class="va">pest_ms2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">808</span>, <span class="fl">809</span>, <span class="fl">945</span><span class="op">:</span><span class="fl">955</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Load a small example MassBank data set</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Match spectra with the default similarity score (normalized dot product)</span></span></span>
+<span class="r-in"><span><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">mtches</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 16 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 13 (5 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 100 (11 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Are there any matching spectra for the first query spectrum?</span></span>
-<span class="r-in"><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Are there any matching spectra for the first query spectrum?</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 1 (0 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 100 (0 matched)</span>
-<span class="r-in"><span class="co">## No</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## And for the second query spectrum?</span></span>
-<span class="r-in"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
+<span class="r-in"><span><span class="co">## No</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## And for the second query spectrum?</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 1 (1 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 100 (4 matched)</span>
-<span class="r-in"><span class="co">## The second query spectrum matches 4 target spectra. The scores for these</span></span>
-<span class="r-in"><span class="co">## matches are:</span></span>
-<span class="r-in"><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">score</span></span>
+<span class="r-in"><span><span class="co">## The second query spectrum matches 4 target spectra. The scores for these</span></span></span>
+<span class="r-in"><span><span class="co">## matches are:</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">score</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7869556 0.8855473 0.7234894 0.7219942</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## To access the score for the full data set</span></span>
-<span class="r-in"><span class="va">mtches</span><span class="op">$</span><span class="va">score</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To access the score for the full data set</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span><span class="op">$</span><span class="va">score</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]        NA 0.7869556 0.8855473 0.7234894 0.7219942        NA 0.7769746</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.7577286        NA 0.7433718 0.7019807 0.7081274        NA 0.7320465</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] 0.8106258 0.7290458 0.8168876 0.7247800 0.7412586 0.7198787        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22]        NA        NA        NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Below we use a THRESHFUN that returns for each query spectrum the (first)</span></span>
-<span class="r-in"><span class="co">## best matching target spectrum.</span></span>
-<span class="r-in"><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">FALSE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span>
-<span class="r-in">    THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mtches</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Below we use a THRESHFUN that returns for each query spectrum the (first)</span></span></span>
+<span class="r-in"><span><span class="co">## best matching target spectrum.</span></span></span>
+<span class="r-in"><span><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">FALSE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 13 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 13 (13 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 100 (10 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Each of the query spectra is matched to one target spectrum</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Each of the query spectra is matched to one target spectrum</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 13</span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matches</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matches</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    query_idx target_idx        score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          1          1 0.000000e+00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2          2         73 8.855473e-01</span>
@@ -477,41 +477,41 @@ functions return an instance of the class.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11        11         53 4.323403e-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12        12         47 3.469648e-03</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13        13         71 7.612480e-06</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Match spectra considering also measured retention times. This requires</span></span>
-<span class="r-in"><span class="co">## that both query and target spectra have non-missing retention times.</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">pest_ms2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Match spectra considering also measured retention times. This requires</span></span></span>
+<span class="r-in"><span><span class="co">## that both query and target spectra have non-missing retention times.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">pest_ms2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 361.651 361.741 377.609 377.699 378.120 378.539 378.779 378.869 378.959</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10] 379.379 380.059 380.609 381.029</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [26] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [51] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [76] NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Target spectra don't have retention times. Below we artificially set</span></span>
-<span class="r-in"><span class="co">## retention times to show how an additional retention time filter would</span></span>
-<span class="r-in"><span class="co">## work.</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">361</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Matching spectra requiring a matching precursor m/z and the difference</span></span>
-<span class="r-in"><span class="co">## of retention times between query and target spectra to be &lt;= 2 seconds.</span></span>
-<span class="r-in"><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span>
-<span class="r-in">    toleranceRt <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mtches</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Target spectra don't have retention times. Below we artificially set</span></span></span>
+<span class="r-in"><span><span class="co">## retention times to show how an additional retention time filter would</span></span></span>
+<span class="r-in"><span><span class="co">## work.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">rtime</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">361</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">minimb</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Matching spectra requiring a matching precursor m/z and the difference</span></span></span>
+<span class="r-in"><span><span class="co">## of retention times between query and target spectra to be &lt;= 2 seconds.</span></span></span>
+<span class="r-in"><span><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu">CompareSpectraParam</span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    toleranceRt <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, <span class="va">csp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mtches</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class MatchedSpectra </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 13 (1 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 100 (4 matched)</span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matches</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matches</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   query_idx target_idx     score</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1         2         70 0.7869556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         2         73 0.8855473</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         2         75 0.7234894</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4         2         76 0.7219942</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## See the package vignette for details, descriptions and more examples.</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## See the package vignette for details, descriptions and more examples.</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

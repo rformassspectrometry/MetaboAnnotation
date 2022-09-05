@@ -4,7 +4,7 @@ MatchedSpectra object. Functions like the matchSpectra() function will
 return this type of object. By default, all data accessors work as
 left joins between the query and the target spectra, i.e. values are
 returned for each query spectrum with eventual duplicated entries (values)
-if the query spectrum matches more than one target spectrum."><title>Representation of Spectra matches — MatchedSpectra • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Representation of Spectra matches — MatchedSpectra"><meta property="og:description" content="Matches between query and target spectra can be represented by the
+if the query spectrum matches more than one target spectrum."><title>Representation of Spectra matches — MatchedSpectra • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Representation of Spectra matches — MatchedSpectra"><meta property="og:description" content="Matches between query and target spectra can be represented by the
 MatchedSpectra object. Functions like the matchSpectra() function will
 return this type of object. By default, all data accessors work as
 left joins between the query and the target spectra, i.e. values are
@@ -20,7 +20,7 @@ if the query spectrum matches more than one target spectrum."><meta property="og
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -254,69 +254,69 @@ can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## Creating a dummy MatchedSpectra object.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span></span>
-<span class="r-in">    msLevel <span class="op">=</span> <span class="fl">2L</span>, rtime <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span>
-<span class="r-in">    spectrum_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>, <span class="st">"h"</span>, <span class="st">"i"</span>, <span class="st">"j"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span></span>
-<span class="r-in">    msLevel <span class="op">=</span> <span class="fl">2L</span>, rtime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,</span>
-<span class="r-in">    spectrum_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Define matches between query spectrum 1 with target spectra 2 and 5,</span></span>
-<span class="r-in"><span class="co">## query spectrum 2 with target spectrum 2 and query spectrum 4 with target</span></span>
-<span class="r-in"><span class="co">## spectra 8, 12 and 15.</span></span>
-<span class="r-in"><span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu">MatchedSpectra</span><span class="op">(</span></span>
-<span class="r-in">    <span class="va">sp1</span>, <span class="va">sp2</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">4L</span>, <span class="fl">4L</span>, <span class="fl">4L</span><span class="op">)</span>,</span>
-<span class="r-in">                                   target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">5L</span>, <span class="fl">2L</span>, <span class="fl">8L</span>, <span class="fl">12L</span>, <span class="fl">15L</span><span class="op">)</span>,</span>
-<span class="r-in">                                   score <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which of the query spectra match at least one target spectrum?</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Creating a dummy MatchedSpectra object.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    msLevel <span class="op">=</span> <span class="fl">2L</span>, rtime <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    spectrum_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>, <span class="st">"e"</span>, <span class="st">"f"</span>, <span class="st">"g"</span>, <span class="st">"h"</span>, <span class="st">"i"</span>, <span class="st">"j"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/DataFrame-class.html" class="external-link">DataFrame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    msLevel <span class="op">=</span> <span class="fl">2L</span>, rtime <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    spectrum_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span>, <span class="st">"E"</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sp1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sp2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a></span><span class="op">(</span><span class="va">df2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Define matches between query spectrum 1 with target spectra 2 and 5,</span></span></span>
+<span class="r-in"><span><span class="co">## query spectrum 2 with target spectrum 2 and query spectrum 4 with target</span></span></span>
+<span class="r-in"><span><span class="co">## spectra 8, 12 and 15.</span></span></span>
+<span class="r-in"><span><span class="va">ms</span> <span class="op">&lt;-</span> <span class="fu">MatchedSpectra</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">sp1</span>, <span class="va">sp2</span>, matches <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>query_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">1L</span>, <span class="fl">2L</span>, <span class="fl">4L</span>, <span class="fl">4L</span>, <span class="fl">4L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                   target_idx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">5L</span>, <span class="fl">2L</span>, <span class="fl">8L</span>, <span class="fl">12L</span>, <span class="fl">15L</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                   score <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which of the query spectra match at least one target spectrum?</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting spectra variables: accessor methods for spectra variables act</span></span>
-<span class="r-in"><span class="co">## as "left joins", i.e. they return a value for each query spectrum, with</span></span>
-<span class="r-in"><span class="co">## eventually duplicated elements if one query spectrum matches more than</span></span>
-<span class="r-in"><span class="co">## one target spectrum.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Which target spectrum matches at least one query spectrum?</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">whichTarget</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting spectra variables: accessor methods for spectra variables act</span></span></span>
+<span class="r-in"><span><span class="co">## as "left joins", i.e. they return a value for each query spectrum, with</span></span></span>
+<span class="r-in"><span><span class="co">## eventually duplicated elements if one query spectrum matches more than</span></span></span>
+<span class="r-in"><span><span class="co">## one target spectrum.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Which target spectrum matches at least one query spectrum?</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">whichTarget</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2  5  8 12 15</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting the retention times of the query spectra.</span></span>
-<span class="r-in"><span class="va">ms</span><span class="op">$</span><span class="va">rtime</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting the retention times of the query spectra.</span></span></span>
+<span class="r-in"><span><span class="va">ms</span><span class="op">$</span><span class="va">rtime</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1  1  2  3  4  4  4  5  6  7  8  9 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We have duplicated retention times for query spectrum 1 (matches 2 target</span></span>
-<span class="r-in"><span class="co">## spectra) and 4 (matches 3 target spectra). The retention time is returned</span></span>
-<span class="r-in"><span class="co">## for each query spectrum.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Extracting retention times of the target spectra. Note that only retention</span></span>
-<span class="r-in"><span class="co">## times for target spectra matching at least one query spectrum are returned</span></span>
-<span class="r-in"><span class="co">## and an NA is reported for query spectra without matching target spectrum.</span></span>
-<span class="r-in"><span class="va">ms</span><span class="op">$</span><span class="va">target_rtime</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We have duplicated retention times for query spectrum 1 (matches 2 target</span></span></span>
+<span class="r-in"><span><span class="co">## spectra) and 4 (matches 3 target spectra). The retention time is returned</span></span></span>
+<span class="r-in"><span><span class="co">## for each query spectrum.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Extracting retention times of the target spectra. Note that only retention</span></span></span>
+<span class="r-in"><span><span class="co">## times for target spectra matching at least one query spectrum are returned</span></span></span>
+<span class="r-in"><span><span class="co">## and an NA is reported for query spectra without matching target spectrum.</span></span></span>
+<span class="r-in"><span><span class="va">ms</span><span class="op">$</span><span class="va">target_rtime</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  2  5  2 NA  8  2  5 NA NA NA NA NA NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The first query spectrum matches target spectra 2 and 5, thus their</span></span>
-<span class="r-in"><span class="co">## retention times are returned as well as the retention time of the second</span></span>
-<span class="r-in"><span class="co">## target spectrum that matches also query spectrum 2. The 3rd query spectrum</span></span>
-<span class="r-in"><span class="co">## does match any target spectrum, thus `NA` is returned. Query spectrum 4</span></span>
-<span class="r-in"><span class="co">## matches target spectra 8, 12, and 15, thus the next reported retention</span></span>
-<span class="r-in"><span class="co">## times are those from these 3 target spectra. None of the remaining 6 query</span></span>
-<span class="r-in"><span class="co">## spectra matches any target spectra and thus `NA` is reported for each of</span></span>
-<span class="r-in"><span class="co">## them.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## `spectraData` can be used to extract all (or selected) spectra variables</span></span>
-<span class="r-in"><span class="co">## from the object. Same as with `$`, a left join between the specta</span></span>
-<span class="r-in"><span class="co">## variables from the query spectra and the target spectra is performed. The</span></span>
-<span class="r-in"><span class="co">## prefix `"target_"` is used to label the spectra variables from the target</span></span>
-<span class="r-in"><span class="co">## spectra. Below we extract selected spectra variables from the object.</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">ms</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"spectrum_id"</span>,</span>
-<span class="r-in">    <span class="st">"target_rtime"</span>, <span class="st">"target_spectrum_id"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The first query spectrum matches target spectra 2 and 5, thus their</span></span></span>
+<span class="r-in"><span><span class="co">## retention times are returned as well as the retention time of the second</span></span></span>
+<span class="r-in"><span><span class="co">## target spectrum that matches also query spectrum 2. The 3rd query spectrum</span></span></span>
+<span class="r-in"><span><span class="co">## does match any target spectrum, thus `NA` is returned. Query spectrum 4</span></span></span>
+<span class="r-in"><span><span class="co">## matches target spectra 8, 12, and 15, thus the next reported retention</span></span></span>
+<span class="r-in"><span><span class="co">## times are those from these 3 target spectra. None of the remaining 6 query</span></span></span>
+<span class="r-in"><span><span class="co">## spectra matches any target spectra and thus `NA` is reported for each of</span></span></span>
+<span class="r-in"><span><span class="co">## them.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## `spectraData` can be used to extract all (or selected) spectra variables</span></span></span>
+<span class="r-in"><span><span class="co">## from the object. Same as with `$`, a left join between the specta</span></span></span>
+<span class="r-in"><span><span class="co">## variables from the query spectra and the target spectra is performed. The</span></span></span>
+<span class="r-in"><span><span class="co">## prefix `"target_"` is used to label the spectra variables from the target</span></span></span>
+<span class="r-in"><span><span class="co">## spectra. Below we extract selected spectra variables from the object.</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">ms</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtime"</span>, <span class="st">"spectrum_id"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"target_rtime"</span>, <span class="st">"target_spectrum_id"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 13 rows and 4 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         rtime spectrum_id target_rtime target_spectrum_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;integer&gt; &lt;character&gt;    &lt;integer&gt;        &lt;character&gt;</span>
@@ -331,38 +331,38 @@ can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11          8           h           NA                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12          9           i           NA                 NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13         10           j           NA                 NA</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">spectrum_id</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">spectrum_id</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "a" "a" "b" "c" "d" "d" "d" "e" "f" "g" "h" "i" "j"</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">target_spectrum_id</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">target_spectrum_id</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "B" "E" "B" NA  "C" "B" "E" NA  NA  NA  NA  NA  NA </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Again, all values for query spectra are returned and for query spectra not</span></span>
-<span class="r-in"><span class="co">## matching any target spectrum NA is reported as value for the respecive</span></span>
-<span class="r-in"><span class="co">## variable.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The example matched spectra object contains all query and all target</span></span>
-<span class="r-in"><span class="co">## spectra. Below we subset the object keeping only query spectra that are</span></span>
-<span class="r-in"><span class="co">## matched to at least one target spectrum.</span></span>
-<span class="r-in"><span class="va">ms_sub</span> <span class="op">&lt;-</span> <span class="va">ms</span><span class="op">[</span><span class="fu"><a href="Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ms_sub contains now only 3 query spectra:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Again, all values for query spectra are returned and for query spectra not</span></span></span>
+<span class="r-in"><span><span class="co">## matching any target spectrum NA is reported as value for the respecive</span></span></span>
+<span class="r-in"><span><span class="co">## variable.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The example matched spectra object contains all query and all target</span></span></span>
+<span class="r-in"><span><span class="co">## spectra. Below we subset the object keeping only query spectra that are</span></span></span>
+<span class="r-in"><span><span class="co">## matched to at least one target spectrum.</span></span></span>
+<span class="r-in"><span><span class="va">ms_sub</span> <span class="op">&lt;-</span> <span class="va">ms</span><span class="op">[</span><span class="fu"><a href="Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ms_sub contains now only 3 query spectra:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## while the original object contains all 10 query spectra:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## while the original object contains all 10 query spectra:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Both object contain however still the full target `Spectra`:</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Both object contain however still the full target `Spectra`:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 200</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## With the `pruneTarget` we can however reduce also the target spectra to</span></span>
-<span class="r-in"><span class="co">## only those that match at least one query spectrum</span></span>
-<span class="r-in"><span class="va">ms_sub</span> <span class="op">&lt;-</span> <span class="fu"><a href="Matched.html">pruneTarget</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## With the `pruneTarget` we can however reduce also the target spectra to</span></span></span>
+<span class="r-in"><span><span class="co">## only those that match at least one query spectrum</span></span></span>
+<span class="r-in"><span><span class="va">ms_sub</span> <span class="op">&lt;-</span> <span class="fu"><a href="Matched.html">pruneTarget</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms_sub</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 </code></pre></div>
     </div>

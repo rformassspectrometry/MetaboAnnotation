@@ -65,7 +65,7 @@ retention times between query and target. Parameters rtColname and
 mzColname of matchValues allow to specify which columns contain the
 retention times and m/z values, respectively.
 
-"><title>Matching of numeric values — ValueParam • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Matching of numeric values — ValueParam"><meta property="og:description" content="The matchValues method matches elements from query with those in target
+"><title>Matching of numeric values — ValueParam • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Matching of numeric values — ValueParam"><meta property="og:description" content="The matchValues method matches elements from query with those in target
 using different matching approaches depending on parameter param.
 Generally, query is expected to contain MS experimental values
 (m/z and possibly retention time) while target reference values. query
@@ -142,7 +142,7 @@ retention times and m/z values, respectively.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -249,158 +249,158 @@ retention times and m/z values, respectively.</p></li>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ValueParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-<span class="fu">MzParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-<span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>, tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-
-<span class="fu">Mass2MzRtParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>, tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span>, toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu">MzRtParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">0</span>, toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="fu">Mz2MassParam</span><span class="op">(</span>
-  queryAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,
-  targetAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M-H]-"</span><span class="op">)</span>,
-  tolerance <span class="op">=</span> <span class="fl">0</span>,
-  ppm <span class="op">=</span> <span class="fl">5</span>
-<span class="op">)</span>
-
-<span class="fu">Mz2MassRtParam</span><span class="op">(</span>
-  queryAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,
-  targetAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,
-  tolerance <span class="op">=</span> <span class="fl">0</span>,
-  ppm <span class="op">=</span> <span class="fl">5</span>,
-  toleranceRt <span class="op">=</span> <span class="fl">0</span>
-<span class="op">)</span>
-
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S4 method for numeric,numeric,ValueParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span>
-
-<span class="co"># S4 method for numeric,data.frameOrSimilar,ValueParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,numeric,ValueParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,ValueParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for numeric,numeric,Mass2MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span>
-
-<span class="co"># S4 method for numeric,data.frameOrSimilar,Mass2MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,numeric,Mass2MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  mzColname <span class="op">=</span> <span class="st">"mz"</span>,
-  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for numeric,data.frameOrSimilar,MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,numeric,MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,
-  mzColname <span class="op">=</span> <span class="st">"mz"</span>,
-  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzRtParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,
-  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for numeric,numeric,Mz2MassParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span>
-
-<span class="co"># S4 method for numeric,data.frameOrSimilar,Mz2MassParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,numeric,Mz2MassParam</span>
-<span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam</span>
-<span class="fu">matchValues</span><span class="op">(</span>
-  <span class="va">query</span>,
-  <span class="va">target</span>,
-  <span class="va">param</span>,
-  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,
-  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,
-  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,
-  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ValueParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">MzParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>, tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">Mass2MzRtParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>, tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">5</span>, toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">MzRtParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">0</span>, toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">Mz2MassParam</span><span class="op">(</span></span>
+<span>  queryAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
+<span>  targetAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M-H]-"</span><span class="op">)</span>,</span>
+<span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ppm <span class="op">=</span> <span class="fl">5</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">Mz2MassRtParam</span><span class="op">(</span></span>
+<span>  queryAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
+<span>  targetAdducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
+<span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ppm <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  toleranceRt <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,numeric,ValueParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,data.frameOrSimilar,ValueParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,numeric,ValueParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,ValueParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  valueColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,numeric,Mass2MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,data.frameOrSimilar,Mass2MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,numeric,Mass2MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="st">"mz"</span>,</span>
+<span>  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,data.frameOrSimilar,MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,numeric,MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  massColname <span class="op">=</span> <span class="st">"exactmass"</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="st">"mz"</span>,</span>
+<span>  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzRtParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,numeric,Mz2MassParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for numeric,data.frameOrSimilar,Mz2MassParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,numeric,Mz2MassParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mz2MassParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,Mz2MassRtParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -559,50 +559,50 @@ element.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="co">## Create a simple "target/reference" compound table</span></span>
-<span class="r-in"><span class="va">target_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">   name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Tryptophan"</span>, <span class="st">"Leucine"</span>, <span class="st">"Isoleucine"</span><span class="op">)</span>,</span>
-<span class="r-in">   formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C11H12N2O2"</span>, <span class="st">"C6H13NO2"</span>, <span class="st">"C6H13NO2"</span><span class="op">)</span>,</span>
-<span class="r-in">   exactmass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="fl">131.094629</span>, <span class="fl">131.094629</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create a "feature" table with m/z of features. We calculate m/z for</span></span>
-<span class="r-in"><span class="co">## certain adducts of some of the compounds in the reference table.</span></span>
-<span class="r-in"><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">    feature_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FT001"</span>, <span class="st">"FT002"</span>, <span class="st">"FT003"</span><span class="op">)</span>,</span>
-<span class="r-in">    mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
-<span class="r-in">           <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">131.094629</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
-<span class="r-in">           <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Define the parameters for the matching</span></span>
-<span class="r-in"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span>
-<span class="r-in">    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">    tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">    ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">## Create a simple "target/reference" compound table</span></span></span>
+<span class="r-in"><span><span class="va">target_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>   name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Tryptophan"</span>, <span class="st">"Leucine"</span>, <span class="st">"Isoleucine"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C11H12N2O2"</span>, <span class="st">"C6H13NO2"</span>, <span class="st">"C6H13NO2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   exactmass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="fl">131.094629</span>, <span class="fl">131.094629</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a "feature" table with m/z of features. We calculate m/z for</span></span></span>
+<span class="r-in"><span><span class="co">## certain adducts of some of the compounds in the reference table.</span></span></span>
+<span class="r-in"><span><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    feature_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FT001"</span>, <span class="st">"FT002"</span>, <span class="st">"FT003"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">131.094629</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>           <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1e-6</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Define the parameters for the matching</span></span></span>
+<span class="r-in"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tolerance <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>    ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## List the available variables/columns</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## List the available variables/columns</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "feature_id"       "mz"               "target_name"      "target_formula"  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5] "target_exactmass" "adduct"           "score"            "ppm_error"       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## feature_id and mz are from the query data frame, while target_name,</span></span>
-<span class="r-in"><span class="co">## target_formula and target_exactmass are from the query object (columns</span></span>
-<span class="r-in"><span class="co">## from the target object have a prefix *target_* added to the original</span></span>
-<span class="r-in"><span class="co">## column name. Columns adduct, score and ppm_error represent the results</span></span>
-<span class="r-in"><span class="co">## of the matching: adduct the adduct/ion of the original compound for which</span></span>
-<span class="r-in"><span class="co">## the m/z matches, score the absolute difference of the query and target</span></span>
-<span class="r-in"><span class="co">## m/z and ppm_error the relative difference in m/z values.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Get the full matching result:</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## feature_id and mz are from the query data frame, while target_name,</span></span></span>
+<span class="r-in"><span><span class="co">## target_formula and target_exactmass are from the query object (columns</span></span></span>
+<span class="r-in"><span><span class="co">## from the target object have a prefix *target_* added to the original</span></span></span>
+<span class="r-in"><span><span class="co">## column name. Columns adduct, score and ppm_error represent the results</span></span></span>
+<span class="r-in"><span><span class="co">## of the matching: adduct the adduct/ion of the original compound for which</span></span></span>
+<span class="r-in"><span><span class="co">## the m/z matches, score the absolute difference of the query and target</span></span></span>
+<span class="r-in"><span><span class="co">## m/z and ppm_error the relative difference in m/z values.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Get the full matching result:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
@@ -616,32 +616,32 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+     0e+00 0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+     0e+00 0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       [M+Na]+     1e-06 0.00440375</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We have thus matches of FT002 to two different compounds (but with the</span></span>
-<span class="r-in"><span class="co">## same mass).</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Individual columns can also be accessed with the $ operator:</span></span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">feature_id</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We have thus matches of FT002 to two different compounds (but with the</span></span></span>
+<span class="r-in"><span><span class="co">## same mass).</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Individual columns can also be accessed with the $ operator:</span></span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">feature_id</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "FT001" "FT002" "FT002" "FT003"</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">target_name</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">target_name</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Tryptophan" "Leucine"    "Isoleucine" "Tryptophan"</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">ppm_error</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">ppm_error</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.000000000 0.000000000 0.000000000 0.004403752</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We repeat the matching requiring an exact match</span></span>
-<span class="r-in"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span>
-<span class="r-in">    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">    tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">    ppm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We repeat the matching requiring an exact match</span></span></span>
+<span class="r-in"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tolerance <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>    ppm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (2 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
@@ -655,22 +655,22 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        [M+H]+         0         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1      [M+H]+         0         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3            NA        NA        NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The last feature could thus not be matched to any compound.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## At last we use also different adduct definitions.</span></span>
-<span class="r-in"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span>
-<span class="r-in">    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+K]+"</span>, <span class="st">"[M+Li]+"</span><span class="op">)</span>,</span>
-<span class="r-in">    tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">    ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The last feature could thus not be matched to any compound.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## At last we use also different adduct definitions.</span></span></span>
+<span class="r-in"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzParam</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+K]+"</span>, <span class="st">"[M+Li]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    tolerance <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>    ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (0 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (0 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 8 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature_id        mz target_name target_formula target_exactmass      adduct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt; &lt;character&gt;</span>
@@ -682,42 +682,42 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA        NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA        NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## No matches were found.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We can also match a "feature" table with a target data.frame taking into</span></span>
-<span class="r-in"><span class="co">## account both m/z and retention time values.</span></span>
-<span class="r-in"><span class="va">target_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Tryptophan"</span>, <span class="st">"Leucine"</span>, <span class="st">"Isoleucine"</span><span class="op">)</span>,</span>
-<span class="r-in">  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C11H12N2O2"</span>, <span class="st">"C6H13NO2"</span>, <span class="st">"C6H13NO2"</span><span class="op">)</span>,</span>
-<span class="r-in">  exactmass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="fl">131.094629</span>, <span class="fl">131.094629</span><span class="op">)</span>,</span>
-<span class="r-in">  rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">140</span>, <span class="fl">140</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span class="r-in">  feature_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FT001"</span>, <span class="st">"FT002"</span>, <span class="st">"FT003"</span><span class="op">)</span>,</span>
-<span class="r-in">  mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
-<span class="r-in">         <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">131.094629</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span>
-<span class="r-in">         <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1e-6</span><span class="op">)</span>,</span>
-<span class="r-in">  rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">140</span>, <span class="fl">150.1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Define the parameters for the matching</span></span>
-<span class="r-in"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzRtParam</span><span class="op">(</span></span>
-<span class="r-in">  adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  ppm <span class="op">=</span> <span class="fl">20</span>,</span>
-<span class="r-in">  toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## No matches were found.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We can also match a "feature" table with a target data.frame taking into</span></span></span>
+<span class="r-in"><span><span class="co">## account both m/z and retention time values.</span></span></span>
+<span class="r-in"><span><span class="va">target_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Tryptophan"</span>, <span class="st">"Leucine"</span>, <span class="st">"Isoleucine"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C11H12N2O2"</span>, <span class="st">"C6H13NO2"</span>, <span class="st">"C6H13NO2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  exactmass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="fl">131.094629</span>, <span class="fl">131.094629</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">140</span>, <span class="fl">140</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  feature_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FT001"</span>, <span class="st">"FT002"</span>, <span class="st">"FT003"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mz <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">131.094629</span>, <span class="st">"[M+H]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>         <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="fl">204.089878</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1e-6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">150</span>, <span class="fl">140</span>, <span class="fl">150.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Define the parameters for the matching</span></span></span>
+<span class="r-in"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzRtParam</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  ppm <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>  toleranceRt <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (2 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Get the full matching result:</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Get the full matching result:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 11 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
@@ -731,29 +731,29 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+         0         0         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+         0         0         0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3          NA          NA        NA        NA        NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## FT003 could not be matched to any compound, FT002 was matched to two</span></span>
-<span class="r-in"><span class="co">## different compounds (but with the same mass).</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We repeat the matching allowing a positive tolerance for the matches</span></span>
-<span class="r-in"><span class="co">## between rt values</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Define the parameters for the matching</span></span>
-<span class="r-in"><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzRtParam</span><span class="op">(</span></span>
-<span class="r-in">  adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">  tolerance <span class="op">=</span> <span class="fl">0</span>,</span>
-<span class="r-in">  ppm <span class="op">=</span> <span class="fl">20</span>,</span>
-<span class="r-in">  toleranceRt <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## FT003 could not be matched to any compound, FT002 was matched to two</span></span></span>
+<span class="r-in"><span><span class="co">## different compounds (but with the same mass).</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We repeat the matching allowing a positive tolerance for the matches</span></span></span>
+<span class="r-in"><span><span class="co">## between rt values</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Define the parameters for the matching</span></span></span>
+<span class="r-in"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu">Mass2MzRtParam</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  ppm <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>  toleranceRt <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">fts</span>, <span class="va">target_df</span>, <span class="va">parm</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Get the full matching result:</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Get the full matching result:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 11 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
@@ -767,65 +767,65 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2         140      [M+H]+     0e+00 0.00000000       0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2.1       140      [M+H]+     0e+00 0.00000000       0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3         150     [M+Na]+     1e-06 0.00440375       0.1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Also FT003 was matched in this case</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## It is also possible to match directly m/z values</span></span>
-<span class="r-in"><span class="va">mz1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">343</span>, <span class="fl">23</span>, <span class="fl">231</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mz2</span> <span class="op">&lt;-</span> <span class="va">mz1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">mz1</span>, <span class="va">mz2</span>, <span class="fu">MzParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Also FT003 was matched in this case</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## It is also possible to match directly m/z values</span></span></span>
+<span class="r-in"><span><span class="va">mz1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">343</span>, <span class="fl">23</span>, <span class="fl">231</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mz2</span> <span class="op">&lt;-</span> <span class="va">mz1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">mz1</span>, <span class="va">mz2</span>, <span class="fu">MzParam</span><span class="op">(</span>tolerance <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12       NA           NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 343.0008 -0.000769080   2.24221</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  23.0008 -0.000842732  36.63917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 230.9988  0.001249855   5.41066</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span>
-<span class="r-in"><span class="co">## only that the matching is performed on the object's `rowData`.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Below we create a simple SummarizedExperiment with some random assay data.</span></span>
-<span class="r-in"><span class="co">## Note that results from a data preprocessing with the `xcms` package could</span></span>
-<span class="r-in"><span class="co">## be extracted as a `SummarizedExperiment` with the `quantify` method from</span></span>
-<span class="r-in"><span class="co">## the `xcms` package.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
-<span class="r-in">    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">    rowData <span class="op">=</span> <span class="va">fts</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We can now perform the matching of this SummarizedExperiment against the</span></span>
-<span class="r-in"><span class="co">## target_df as before.</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">se</span>, <span class="va">target_df</span>,</span>
-<span class="r-in">    param <span class="op">=</span> <span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">        tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  12.0005 -0.000515372 42.945851</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 342.9999  0.000117024  0.341179</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  23.0002 -0.000243249 10.575923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 231.0007 -0.000706081  3.056619</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span></span>
+<span class="r-in"><span><span class="co">## only that the matching is performed on the object's `rowData`.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Below we create a simple SummarizedExperiment with some random assay data.</span></span></span>
+<span class="r-in"><span><span class="co">## Note that results from a data preprocessing with the `xcms` package could</span></span></span>
+<span class="r-in"><span><span class="co">## be extracted as a `SummarizedExperiment` with the `quantify` method from</span></span></span>
+<span class="r-in"><span><span class="co">## the `xcms` package.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    rowData <span class="op">=</span> <span class="va">fts</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We can now perform the matching of this SummarizedExperiment against the</span></span></span>
+<span class="r-in"><span><span class="co">## target_df as before.</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">se</span>, <span class="va">target_df</span>,</span></span>
+<span class="r-in"><span>    param <span class="op">=</span> <span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Getting the available columns</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Getting the available columns</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "feature_id"       "mz"               "rt"               "target_name"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "target_formula"   "target_exactmass" "target_rt"        "adduct"          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "score"            "ppm_error"       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## The query columns represent the columns of the object's `rowData`</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The query columns represent the columns of the object's `rowData`</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 3 rows and 3 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature_id        mz        rt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1       FT001   205.097     150.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       FT002   132.102     140.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       FT003   227.079     150.1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## matchedData also returns the query object's rowData along with the</span></span>
-<span class="r-in"><span class="co">## matching entries in the target object.</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## matchedData also returns the query object's rowData along with the</span></span></span>
+<span class="r-in"><span><span class="co">## matching entries in the target object.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 10 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
@@ -839,9 +839,9 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2       140      [M+H]+     0e+00 0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3       140      [M+H]+     0e+00 0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       150     [M+Na]+     1e-06 0.00440375</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## While `query` will return the full SummarizedExperiment.</span></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## While `query` will return the full SummarizedExperiment.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 3 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(0):</span>
@@ -850,11 +850,11 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(3): feature_id mz rt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colnames: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(0):</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## To illustrate use with a QFeatures object we first create a simple</span></span>
-<span class="r-in"><span class="co">## QFeatures object with two assays, `"ions"` representing the full feature</span></span>
-<span class="r-in"><span class="co">## data.frame and `"compounds"` a subset of it.</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">QFeatures</a></span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## To illustrate use with a QFeatures object we first create a simple</span></span></span>
+<span class="r-in"><span><span class="co">## QFeatures object with two assays, `"ions"` representing the full feature</span></span></span>
+<span class="r-in"><span><span class="co">## data.frame and `"compounds"` a subset of it.</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">QFeatures</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: MultiAssayExperiment</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘QFeatures’</span>
@@ -864,29 +864,29 @@ element.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     sweep</span>
-<span class="r-in"><span class="va">qf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ions <span class="op">=</span> <span class="va">se</span>, compounds <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">qf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ions <span class="op">=</span> <span class="va">se</span>, compounds <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>colData rownames and ExperimentList colnames are empty</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>An empty 'sampleMap' may cause unexpected behavior</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## We can perform the same matching as before, but need to specify which of</span></span>
-<span class="r-in"><span class="co">## the assays in the QFeatures should be used for the matching. Below we</span></span>
-<span class="r-in"><span class="co">## perform the matching using the "ions" assay.</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">qf</span>, <span class="va">target_df</span>, queryAssay <span class="op">=</span> <span class="st">"ions"</span>,</span>
-<span class="r-in">    param <span class="op">=</span> <span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
-<span class="r-in">        tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## We can perform the same matching as before, but need to specify which of</span></span></span>
+<span class="r-in"><span><span class="co">## the assays in the QFeatures should be used for the matching. Below we</span></span></span>
+<span class="r-in"><span><span class="co">## perform the matching using the "ions" assay.</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">matchValues</span><span class="op">(</span><span class="va">qf</span>, <span class="va">target_df</span>, queryAssay <span class="op">=</span> <span class="st">"ions"</span>,</span></span>
+<span class="r-in"><span>    param <span class="op">=</span> <span class="fu">Mass2MzParam</span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>        tolerance <span class="op">=</span> <span class="fl">0</span>, ppm <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Object of class Matched </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Total number of matches: 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of query objects: 3 (3 matched)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of target objects: 3 (3 matched)</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## colnames returns now the colnames of the `rowData` of the `"ions"` assay.</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## colnames returns now the colnames of the `rowData` of the `"ions"` assay.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "feature_id"       "mz"               "rt"               "target_name"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [5] "target_formula"   "target_exactmass" "target_rt"        "adduct"          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9] "score"            "ppm_error"       </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 10 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    feature_id        mz        rt target_name target_formula target_exactmass</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;character&gt; &lt;numeric&gt; &lt;numeric&gt; &lt;character&gt;    &lt;character&gt;        &lt;numeric&gt;</span>
