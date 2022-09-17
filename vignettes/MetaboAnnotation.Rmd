@@ -22,6 +22,12 @@ BiocStyle::markdown()
 **Authors**: `r packageDescription("MetaboAnnotation")[["Author"]] `<br />
 **Compiled**: `r date()`
 
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+library(MetaboAnnotation)
+library(Spectra)
+library(AnnotationHub)
+```
+
 
 # Introduction
 
@@ -612,7 +618,7 @@ annotation resource will load the locally cached version instead. Upcoming
 MassBank database releases will be added to `AnnotationHub` after their official
 release and all previous releases will be available as well.
 
-```{r}
+```{r, message = FALSE}
 mbank <- MassBankSource("2022.06")
 mbank
 ```
