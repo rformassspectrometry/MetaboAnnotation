@@ -53,11 +53,11 @@ Suggests:
     plotly,
     shiny,
     shinyjs,
-    DT
+    DT,
+    AnnotationHub
 Enhances:
     RMariaDB,
-    RSQLite,
-    AnnotationHub
+    RSQLite
 License: Artistic-2.0
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues

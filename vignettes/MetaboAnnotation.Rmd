@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures}
+  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub}
 bibliography: references.bib
 ---
 

@@ -19,9 +19,9 @@
 #'   needs to be provided with parameter `dbfile`.
 #'
 #' - `MassBankSource`: retrieves a `CompDb` database for the specified MassBank
-#'   release from Bioconductor's online `AnnotationHub` (if it exists) and uses
-#'   that. Note that `AnnotationHub` resources are cached locally and thus only
-#'   downloaded the first time.
+#'   release from Bioconductor's online `AnnotationHub` (if it exists) and
+#'   uses that. Note that `AnnotationHub` resources are cached locally and thus
+#'   only downloaded the first time.
 #'   The function has parameters `release` which allows to define the desired
 #'   MassBank release (e.g. `release = "2021.03"` or `release = "2022.06"`)
 #'   and `...` which allows to pass optional parameters to the `AnnotationHub`
