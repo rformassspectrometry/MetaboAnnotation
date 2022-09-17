@@ -43,7 +43,7 @@
 #' @param x A `CompDbSource` object.
 #'
 #' @param ... For `CompDbSource`: ignored. For `MassBankSource`: optional
-#'     parameters passed to the [AnnotationHub()] constructor function.
+#'     parameters passed to the `AnnotationHub` constructor function.
 #'
 #' @name CompDbSource
 #'

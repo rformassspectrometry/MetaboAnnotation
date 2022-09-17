@@ -15,7 +15,7 @@
 #' the similarity calculation and matching condition. Parameter `query` takes
 #' a [Spectra] object while `target` can be either a [Spectra] object, a
 #' [CompDb] (reference library) object defined in the `CompoundDb` package or
-#' a [CompAnnotationSource] (e.g. a [CompDbSource()] or a [SpectraDbSource()]
+#' a [CompAnnotationSource] (e.g. a [CompDbSource()])
 #' with the reference or connection information to a supported annotation
 #' resource).
 #'
@@ -115,7 +115,7 @@
 #'   for query spectra with missing precursor m/z.
 #'
 #' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
-#'   [CompAnnotationSource] (such as [CompDbSource] or [SpectraDbSource]) with
+#'   [CompAnnotationSource] (such as [CompDbSource]) with
 #'   the target (reference) spectra to compare `query` against.
 #'
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
@@ -243,7 +243,9 @@
 #' ## annotation database
 #' target(res)
 #'
-#' ## See the package vignette for details, descriptions and more examples.
+#' ## See the package vignette for details, descriptions and more examples,
+#' ## also on how to retrieve e.g. MassBank reference databases from
+#' ## Bioconductor's AnnotationHub.
 NULL
 
 setClass("CompareSpectraParam",

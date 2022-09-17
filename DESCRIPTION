@@ -43,8 +43,7 @@ Imports:
     SummarizedExperiment,
     QFeatures,
     graphics,
-    CompoundDb,
-    DBI
+    CompoundDb
 Suggests:
     testthat,
     knitr,
@@ -73,7 +72,6 @@ Collate:
     'CompDbSource.R'
     'Matched.R'
     'MatchedSpectra.R'
-    'SpectraDbSource.R'
     'hidden-aliases.R'
     'matchFormula.R'
     'matchSpectra.R'

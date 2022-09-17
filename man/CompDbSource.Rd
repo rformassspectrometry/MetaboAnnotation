@@ -23,7 +23,7 @@ path).}
 \item{x}{A \code{CompDbSource} object.}
 
 \item{...}{For \code{CompDbSource}: ignored. For \code{MassBankSource}: optional
-parameters passed to the \code{\link[=AnnotationHub]{AnnotationHub()}} constructor function.}
+parameters passed to the \code{AnnotationHub} constructor function.}
 
 \item{object}{A \code{CompDbSource} object.}
 
@@ -43,14 +43,14 @@ New \code{CompDbSource} objects can be created using the functions:
 \code{CompDb} database. The (SQLite) database file (including the full path)
 needs to be provided with parameter \code{dbfile}.
 \item \code{MassBankSource}: retrieves a \code{CompDb} database for the specified MassBank
-release from \code{\link[=AnnotationHub]{AnnotationHub()}} (if it exists) and uses that. Note that
-\code{AnnotationHub} resources are cached locally and thus only downloaded the
-first time. The function has parameters \code{release} which allows to define
-the desired MassBank release (e.g. \code{release = "2021.03"} or
-\code{release = "2022.06"}) and \code{...} which allows to pass optional parameters
-to the \code{AnnotationHub} constructor function, such as \code{localHub = TRUE} to
-use only the cached data and avoid updating/retrieving updates from the
-internet.
+release from Bioconductor's online \code{AnnotationHub} (if it exists) and uses
+that. Note that \code{AnnotationHub} resources are cached locally and thus only
+downloaded the first time.
+The function has parameters \code{release} which allows to define the desired
+MassBank release (e.g. \code{release = "2021.03"} or \code{release = "2022.06"})
+and \code{...} which allows to pass optional parameters to the \code{AnnotationHub}
+constructor function, such as \code{localHub = TRUE} to use only the cached
+data and avoid updating/retrieving updates from the internet.
 }
 
 Other functions:
