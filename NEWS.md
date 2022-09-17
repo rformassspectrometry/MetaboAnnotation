@@ -1,5 +1,11 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.5
+
+- Add `SpectraDbSource` allowing to define generic annotation resources for
+  all resources that provide a `MsBackend` to access the data as a `Spectra`
+  object.
+
 ## Changes in 1.1.4
 
 - `matchSpectra`: support a `CompDb` with parameter `target`.
