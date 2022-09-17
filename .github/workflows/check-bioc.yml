@@ -194,6 +194,7 @@ jobs:
           BiocManager::install("HenrikBengtsson/matrixStats")
           BiocManager::install("SummarizedExperiment", dependencies = TRUE, ask = FALSE, update = FALSE)
           BiocManager::install("QFeatures", dependencies = TRUE, ask = FALSE, update = FALSE)
+          BiocManager::install("AnnotationHub", dependencies = TRUE, ask = FALSE, update = FALSE)
 
           message(paste('****', Sys.time(), 'force installation of selected packages ****'))
           BiocManager::install(c("BiocStyle", "rmarkdown", "magick", "Spectra"))
