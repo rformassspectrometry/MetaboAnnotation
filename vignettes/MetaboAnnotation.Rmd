@@ -23,9 +23,9 @@ BiocStyle::markdown()
 **Compiled**: `r date()`
 
 ```{r message = FALSE, warning = FALSE, echo = FALSE}
+library(AnnotationHub)
 library(MetaboAnnotation)
 library(Spectra)
-library(AnnotationHub)
 ```
 
 
