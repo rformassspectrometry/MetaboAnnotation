@@ -25,7 +25,10 @@ Authors@R:
       person(given = "Carolin", family = "Huber",
              email = "carolin-elisabeth.huber@ufz.de",
              role = c("aut"),
-             comment = c(ORCID = "0000-0002-9355-8948")))
+             comment = c(ORCID = "0000-0002-9355-8948")),
+      person(given = "Nir", family = "Shachaf",
+             email = "nir.shachaf@weizmann.ac.il",
+	     role = "ctb"))
 Depends:
     R (>= 4.0.0)
 Imports:
@@ -40,7 +43,8 @@ Imports:
     SummarizedExperiment,
     QFeatures,
     graphics,
-    CompoundDb
+    CompoundDb,
+    DBI
 Suggests:
     testthat,
     knitr,
@@ -51,6 +55,10 @@ Suggests:
     shiny,
     shinyjs,
     DT
+Enhances:
+    RMariaDB,
+    RSQLite,
+    AnnotationHub
 License: Artistic-2.0
 VignetteBuilder: knitr
 BugReports: https://github.com/RforMassSpectrometry/MetaboAnnotation/issues
@@ -65,6 +73,7 @@ Collate:
     'CompDbSource.R'
     'Matched.R'
     'MatchedSpectra.R'
+    'SpectraDbSource.R'
     'hidden-aliases.R'
     'matchFormula.R'
     'matchSpectra.R'

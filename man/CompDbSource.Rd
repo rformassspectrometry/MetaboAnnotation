@@ -5,6 +5,7 @@
 \alias{CompDbSource-class}
 \alias{metadata,CompDbSource-method}
 \alias{show,CompDbSource-method}
+\alias{MassBankSource}
 \title{Compound Annotation Sources for \code{CompDb} databases}
 \usage{
 CompDbSource(dbfile = character())
@@ -12,6 +13,8 @@ CompDbSource(dbfile = character())
 \S4method{metadata}{CompDbSource}(x, ...)
 
 \S4method{show}{CompDbSource}(object)
+
+MassBankSource(release = "2021.03", ...)
 }
 \arguments{
 \item{dbfile}{\code{character(1)} with the database file (including the full
@@ -19,9 +22,13 @@ path).}
 
 \item{x}{A \code{CompDbSource} object.}
 
-\item{...}{ignored.}
+\item{...}{For \code{CompDbSource}: ignored. For \code{MassBankSource}: optional
+parameters passed to the \code{\link[=AnnotationHub]{AnnotationHub()}} constructor function.}
 
 \item{object}{A \code{CompDbSource} object.}
+
+\item{release}{A \code{character(1)} defining the version/release of MassBank that
+should be used.}
 }
 \description{
 \code{CompDbSource} objects represent references to \link{CompDb} database-backed
@@ -35,6 +42,15 @@ New \code{CompDbSource} objects can be created using the functions:
 \item \code{CompDbSource}: create a new \code{CompDbSource} object from an existing
 \code{CompDb} database. The (SQLite) database file (including the full path)
 needs to be provided with parameter \code{dbfile}.
+\item \code{MassBankSource}: retrieves a \code{CompDb} database for the specified MassBank
+release from \code{\link[=AnnotationHub]{AnnotationHub()}} (if it exists) and uses that. Note that
+\code{AnnotationHub} resources are cached locally and thus only downloaded the
+first time. The function has parameters \code{release} which allows to define
+the desired MassBank release (e.g. \code{release = "2021.03"} or
+\code{release = "2022.06"}) and \code{...} which allows to pass optional parameters
+to the \code{AnnotationHub} constructor function, such as \code{localHub = TRUE} to
+use only the cached data and avoid updating/retrieving updates from the
+internet.
 }
 
 Other functions:
@@ -51,6 +67,10 @@ ann_src <- CompDbSource(fl)
 
 ## The object contains only the reference/link to the annotation resource.
 ann_src
+
+## Retrieve a CompDb with MassBank data for a certain MassBank release
+mb_src <- MassBankSource("2021.03")
+mb_src
 }
 \author{
 Johannes Rainer

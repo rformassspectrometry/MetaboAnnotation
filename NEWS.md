@@ -7,6 +7,8 @@
   annotation resources.
 - Add `CompDbSource` class defining a reference to a `CompDb` database.
 - `matchSpectra`: support for `CompDbSource` with parameter `target`.
+- Add `SpectraDbSource` class defining a reference to a database which can be
+  accessed with a dedicated `MsBackend` class.
 
 ## Changes in 1.1.3
 

@@ -38,3 +38,14 @@ test_that("matchSpectra,Spectra,CompDbSource works", {
     expect_equal(MetaboAnnotation::matches(res)$target_idx, 1:4)
     expect_s4_class(target(res)@backend, "MsBackendDataFrame")
 })
+
+test_that("MassBankSource works with AnnotationHub", {
+    if (requireNamespace("AnnotationHub", quietly = TRUE)) {
+        expect_error(MassBankSource(release = "other"), "not found")
+        expect_error(MassBankSource(release = ""), "ambiguous")
+
+        mb <- MassBankSource("2021.03")
+        expect_s4_class(mb, "CompDbSource")
+        expect_true(length(mb@dbfile) == 1L)
+    }
+})

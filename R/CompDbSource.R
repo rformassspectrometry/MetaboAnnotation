@@ -18,6 +18,16 @@
 #'   `CompDb` database. The (SQLite) database file (including the full path)
 #'   needs to be provided with parameter `dbfile`.
 #'
+#' - `MassBankSource`: retrieves a `CompDb` database for the specified MassBank
+#'   release from Bioconductor's online `AnnotationHub` (if it exists) and uses
+#'   that. Note that `AnnotationHub` resources are cached locally and thus only
+#'   downloaded the first time.
+#'   The function has parameters `release` which allows to define the desired
+#'   MassBank release (e.g. `release = "2021.03"` or `release = "2022.06"`)
+#'   and `...` which allows to pass optional parameters to the `AnnotationHub`
+#'   constructor function, such as `localHub = TRUE` to use only the cached
+#'   data and avoid updating/retrieving updates from the internet.
+#'
 #' Other functions:
 #'
 #' - `metadata`: get metadata (information) on the annotation resource.
@@ -27,9 +37,13 @@
 #'
 #' @param object A `CompDbSource` object.
 #'
+#' @param release A `character(1)` defining the version/release of MassBank that
+#'     should be used.
+#'
 #' @param x A `CompDbSource` object.
 #'
-#' @param ... ignored.
+#' @param ... For `CompDbSource`: ignored. For `MassBankSource`: optional
+#'     parameters passed to the [AnnotationHub()] constructor function.
 #'
 #' @name CompDbSource
 #'
@@ -44,6 +58,10 @@
 #'
 #' ## The object contains only the reference/link to the annotation resource.
 #' ann_src
+#'
+#' ## Retrieve a CompDb with MassBank data for a certain MassBank release
+#' mb_src <- MassBankSource("2021.03")
+#' mb_src
 NULL
 
 #' @description
@@ -125,8 +143,20 @@ setMethod(
         res
     })
 
-## MassBankSource <- function(release = "2021.03") {
-##     ## connect to AnnotationHub.
-##     ## query for release.
-##     ## get the CompDb and add it to the CompDbSource.
-## }
+#' @export
+#'
+#' @rdname CompDbSource
+MassBankSource <- function(release = "2021.03", ...) {
+    if (!requireNamespace("AnnotationHub", quietly = TRUE))
+        stop("'MassBankSource' requires the 'AnnotationHub' package.\n",
+             "Please install it with 'BiocManager::install(",
+             "\"AnnotationHub\")' and try again.")
+    ah <- AnnotationHub::AnnotationHub(...)
+    res <- AnnotationHub::query(ah, c("MassBank", release))
+    if (!length(res))
+        stop("MassBank release \"", release, "\" not found in AnnotationHub")
+    if (length(res) > 1)
+        stop("Provided release is ambiguous: ", length(res), " data sets in ",
+             "AnnotationHub match the provided release information.")
+    CompDbSource(AnnotationHub::fileName(res))
+}
