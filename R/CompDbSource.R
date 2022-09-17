@@ -158,8 +158,6 @@ MassBankSource <- function(release = "2021.03", ...) {
     if (length(res) > 1)
         stop("Provided release is ambiguous: ", length(res), " data sets in ",
              "AnnotationHub match the provided release information.")
-    fn <- AnnotationHub::fileName(res)
-    if (!length(fn) || is.na(fn))
-        stop("AnnotationHub returned empty database: ", fn)
+    fn <- unname(AnnotationHub::cache(res))
     CompDbSource(fn)
 }

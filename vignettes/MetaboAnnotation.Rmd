@@ -618,13 +618,6 @@ annotation resource will load the locally cached version instead. Upcoming
 MassBank database releases will be added to `AnnotationHub` after their official
 release and all previous releases will be available as well.
 
-```{r}
-ah <- AnnotationHub()
-res <- AnnotationHub::query(ah, "MassBank")
-if (length(res) != 2)
-    stop("Got ", length(res), " results from AH ", ah@.db_path)
-```
-
 ```{r, message = FALSE}
 mbank <- MassBankSource("2022.06")
 mbank
