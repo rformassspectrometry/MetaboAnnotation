@@ -72,6 +72,11 @@ ann_src
 mb_src <- MassBankSource("2021.03")
 mb_src
 }
+\seealso{
+Other Compound annotation sources: 
+\code{\link{SpectraDbSource}}
+}
 \author{
 Johannes Rainer
 }
+\concept{Compound annotation sources}

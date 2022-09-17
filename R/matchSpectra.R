@@ -15,7 +15,7 @@
 #' the similarity calculation and matching condition. Parameter `query` takes
 #' a [Spectra] object while `target` can be either a [Spectra] object, a
 #' [CompDb] (reference library) object defined in the `CompoundDb` package or
-#' a [CompAnnotationSource] (e.g. a [CompDbSource()])
+#' a [CompAnnotationSource] (e.g. a [CompDbSource()] or a [SpectraDbSource()])
 #' with the reference or connection information to a supported annotation
 #' resource).
 #'
@@ -115,7 +115,7 @@
 #'   for query spectra with missing precursor m/z.
 #'
 #' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
-#'   [CompAnnotationSource] (such as [CompDbSource]) with
+#'   [CompAnnotationSource] (such as [CompDbSource] or [SpectraDbSource]) with
 #'   the target (reference) spectra to compare `query` against.
 #'
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference

@@ -47,6 +47,8 @@
 #'
 #' @name CompDbSource
 #'
+#' @family Compound annotation sources
+#'
 #' @author Johannes Rainer
 #'
 #' @examples
