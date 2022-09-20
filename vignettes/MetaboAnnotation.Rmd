@@ -9,17 +9,24 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures}
+  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub}
 bibliography: references.bib
 ---
 
 ```{r style, echo = FALSE, results = 'asis'}
+library(BiocStyle)
 BiocStyle::markdown()
 ```
 
 **Package**: `r BiocStyle::Biocpkg("MetaboAnnotation")`<br />
 **Authors**: `r packageDescription("MetaboAnnotation")[["Author"]] `<br />
 **Compiled**: `r date()`
+
+```{r message = FALSE, warning = FALSE, echo = FALSE}
+library(AnnotationHub)
+library(MetaboAnnotation)
+library(Spectra)
+```
 
 
 # Introduction
@@ -354,10 +361,14 @@ annotate by matching them against a spectral reference library.
 We thus load below a `Spectra` object that represents MS2 data from a very small
 subset of [MassBank](https://massbank.eu/MassBank/) release *2021.03*. This
 small `Spectra` object is provided within this package but it would be possible
-to use any other `Spectra` object instead (see the
-[SpectraTutorials](https://jorainer.github.io/SpectraTutorials/) for different
-ways and options to provide access to spectral libraries/databases *via*
-`Spectra`).
+to use any other `Spectra` object with reference fragment spectra instead (see
+also the [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/)
+workshop). As an alternative, it would also be possible to use a `CompDb` object
+representing a compound annotation database (defined in the
+`r Biocpkg("CompoundDb")` package) with parameter `target`. See the
+`matchSpectra` help page or section *Query against multiple reference
+databases* below for more details and options to retrieve such annotation
+resources from Bioconductor's `r Biocpkg("AnnotationHub")`.
 
 ```{r}
 load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
@@ -473,19 +484,19 @@ plotSpectraMirror(mtches[2])
 Not unexpectedly, the peak intensities of query and target spectra are on
 different scales. While this was no problem for the similarity calculation (the
 normalized dot-product which is used by default is independent of the absolute
-peak values) it is not ideal for visualization. Thus, we apply below a
-*normalization* function to both the query and target spectra and plot the
+peak values) it is not ideal for visualization. Thus, we apply below a simple
+scaling function to both the query and target spectra and plot the
 spectra again afterwards (see the help for `addProcessing` in the `Spectra`
 package for more details on spectra data manipulations). This function will
 replace the absolute spectra intensities with intensities relative to the
-maximum intensity of the spectrum.
+maximum intensity of each spectrum.
 
 ```{r}
-norm_int <- function(x) {
+scale_int <- function(x) {
     x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"], na.rm = TRUE)
     x
 }
-mtches <- addProcessing(mtches, norm_int)
+mtches <- addProcessing(mtches, scale_int)
 plotSpectraMirror(mtches[2])
 ```
 
@@ -559,6 +570,83 @@ Matches can be also further validated using an interactive Shiny app by calling
 be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
+
+
+### Query against multiple reference databases
+
+Getting access to reference spectra can sometimes be a little cumbersome since
+it might involve lookup and download of specific resources or eventual
+conversion of these into a format suitable for import. `MetaboAnnotation`
+provides *compound annotation sources* to simplify this process. These
+annotation source objects represent references (links) to annotation resources
+and can be used in the `matchSpectra` call to define the targed/reference
+spectra. The annotation source object takes then care, upon request, of
+retrieving the annotation data or connecting to the annotation resources.
+
+Also, *compound annotation sources* can be combined to allow
+matching query spectra against multiple reference libraries in a single call.
+
+At present `MetaboAnnotation` supports the following types of *compound
+annotation sources* (i.e. objects extending `CompAnnotationSource`):
+
+- Annotation resources that provide their data as a `CompDb` database (defined
+  by the `r BiocStyle::Biocpkg("CompoundDb")`) package. These are supported by
+  the `CompDbSource` class.
+
+- Annotation resources for which a dedicated `MsBackend` backend is available
+  hence supporting to access the data *via* a `Spectra` object. These are
+  supported by the `SpectraDbSource` class.
+
+Various helper functions, specific for the annotation resource, are available to
+create such annotation source objects:
+
+- `CompDbSource`: creates a compound annotation source object from the provided
+  `CompDb` SQLite data base file. This function can be used to integrate an
+  existing (locally available) `CompDb` annotation database into an annotation
+  workflow.
+
+- `MassBankSource`: creates a annotation source object for a specific MassBank
+  release. The desired release can be specified with the `release` parameter
+  (e.g. `release = "2021.03"` or `release = "2022.06"`). The function will then
+  download the respective annotation database from Bioconductor's
+  `r Biocpkg("AnnotationHub")`.
+
+In the example below we create a annotation source for MassBank release
+*2022.06*. This call will lookup the requested version in Biocondutor's (online)
+`AnnotationHub` and download the data. Subsequent requests for the same
+annotation resource will load the locally cached version instead. Upcoming
+MassBank database releases will be added to `AnnotationHub` after their official
+release and all previous releases will be available as well.
+
+```{r, message = FALSE}
+mbank <- MassBankSource("2022.06")
+mbank
+```
+
+We can now use that annotation source object in the `matchSpectra` call to
+compare the experimental spectra from the previous examples against that release
+of MassBank.
+
+```{r}
+res <- matchSpectra(
+    pest_ms2, mbank,
+    param = CompareSpectraParam(requirePrecursor = TRUE, ppm = 10))
+res
+```
+
+The result object contains only the matching fragment spectra from the reference
+database.
+
+```{r}
+target(res)
+```
+
+And the names of the compounds with matching fragment spectra.
+
+```{r}
+matchedData(res)$target_name
+```
+
 
 # Session information {-}
 

@@ -1,32 +1,3 @@
-#' @title Spectral matching
-#'
-#' @description
-#'
-#' The `matchSpectra` method matches (compares) spectra from `query` with those
-#' from `target` based on settings specified with `param` and returns the result
-#' from this as a [MatchedSpectra] object.
-#'
-#' @param query [Spectra] object with the (experimental) spectra.
-#'
-#' @param target spectral data to compare against. Can be another [Spectra].
-#'
-#' @param param parameter object containing the settings for the matching (e.g.
-#'     eventual prefiltering settings, cut-off value for similarity above which
-#'     spectra are considered matching etc).
-#'
-#' @param ... optional parameters.
-#'
-#' @return a [MatchedSpectra] object with the spectra matching results.
-#'
-#' @author Johannes Rainer
-#'
-#' @seealso [CompareSpectraParam()] for the comparison between [Spectra]
-#'     objects.
-#'
-#' @export
-setGeneric("matchSpectra", function(query, target, param, ...)
-           standardGeneric("matchSpectra"))
-
 #' @title Matching MS Spectra against a reference
 #'
 #' @aliases CompareSpectraParam-class MatchForwardReverseParam-class
@@ -35,11 +6,20 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'
 #' @description
 #'
-#' `matchSpectra` with both `query` and `target` being a [Spectra] object
-#' matches each spectra in `query` against all spectra in `target` and reports
-#' matches with a similarity that passes the `THRESHFUN` condition. The
-#' parameters for the matching can be specified with one of the `param` objects
-#' listed below:
+#' `matchSpectra` compares experimental (*query*) MS2 spectra against
+#' reference (*target*) MS2 spectra and reports matches with a similarity that
+#' passing a specified threshold. The function performs the similarity
+#' calculation between each query spectrum against each target spectrum.
+#' Parameters `query` and `target` can be used to define the query and target
+#' spectra, respectively, while parameter `param` allows to define and configure
+#' the similarity calculation and matching condition. Parameter `query` takes
+#' a [Spectra] object while `target` can be either a [Spectra] object, a
+#' [CompDb] (reference library) object defined in the `CompoundDb` package or
+#' a [CompAnnotationSource] (e.g. a [CompDbSource()])
+#' with the reference or connection information to a supported annotation
+#' resource).
+#'
+#' Currently supported parameter objects defining the matching are:
 #'
 #' - `CompareSpectraParam`: the *generic* parameter object allowing to set all
 #'   settings for the [compareSpectra()] call that is used to perform the
@@ -134,8 +114,9 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'   availability of the precursor m/z in `query`, as no match will be reported
 #'   for query spectra with missing precursor m/z.
 #'
-#' @param target for `matchSpectra`: [Spectra] object with the target
-#'   (reference) spectra to compare `query` against.
+#' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
+#'   [CompAnnotationSource] (such as [CompDbSource]) with
+#'   the target (reference) spectra to compare `query` against.
 #'
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
 #'   between m/z values. This will be used in `compareSpectra` as well as for
@@ -177,8 +158,11 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #'
 #' @rdname CompareSpectraParam
 #'
-#' @return `matchSpectra` returns a [MatchedSpectra()] object. Constructor
-#'     functions return an instance of the class.
+#' @return `matchSpectra` returns a [MatchedSpectra()] object with the matching
+#'   results. If `target` is a `CompAnnotationSource` only matching target
+#'   spectra will be reported.
+#'
+#'   Constructor functions return an instance of the class.
 #'
 #' @exportClass CompareSpectraParam
 #'
@@ -243,7 +227,25 @@ setGeneric("matchSpectra", function(query, target, param, ...)
 #' mtches
 #' matches(mtches)
 #'
-#' ## See the package vignette for details, descriptions and more examples.
+#' ## A `CompDb` compound annotation database could also be used with
+#' ## parameter `target`. Below we load the test `CompDb` database from the
+#' ## `CompoundDb` Bioconductor package.
+#' library(CompoundDb)
+#' fl <- system.file("sql", "CompDb.MassBank.sql", package = "CompoundDb")
+#' cdb <- CompDb(fl)
+#' res <- matchSpectra(pest_ms2, cdb, CompareSpectraParam())
+#'
+#' ## We do however not find any matches since the used compound annotation
+#' ## database contains only a very small subset of the MassBank.
+#' res
+#'
+#' ## As `target` we have now however the MS2 spectra data from the compound
+#' ## annotation database
+#' target(res)
+#'
+#' ## See the package vignette for details, descriptions and more examples,
+#' ## also on how to retrieve e.g. MassBank reference databases from
+#' ## Bioconductor's AnnotationHub.
 NULL
 
 setClass("CompareSpectraParam",
@@ -385,6 +387,18 @@ setMethod(
             else .match_spectra_parallel(query, target, param, BPPARAM)
         }
         else .match_spectra_without_precursor(query, target, param)
+    })
+
+#' @importClassesFrom CompoundDb CompDb
+#'
+#' @rdname CompareSpectraParam
+#'
+#' @export
+setMethod(
+    "matchSpectra", signature(query = "Spectra", target = "CompDb",
+                              param = "Param"),
+    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+        matchSpectra(query, Spectra(target), param = param, BPPARAM = BPPARAM)
     })
 
 .match_spectra <- function(query, target, param) {

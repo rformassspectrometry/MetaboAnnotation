@@ -1,12 +1,20 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.4
+
+- `matchSpectra`: support a `CompDb` with parameter `target`.
+- Add `CompAnnotionSource` classes to support definition of references to
+  annotation resources.
+- Add `CompDbSource` class defining a reference to a `CompDb` database.
+- `matchSpectra`: support for `CompDbSource` with parameter `target`.
+
 ## Changes in 1.1.3
 
 - Extend `filterMatches` framework (issue
   [#86](https://github.com/rformassspectrometry/MetaboAnnotation/issues/86)).
   `ScoreThresholdParam` added to perform filtering the matches based on a
   threshold for the scores.
-  
+
 ## Changes in 1.1.2
 
 - `lapply` and `endoapply` methods (issue
@@ -15,7 +23,7 @@
   `query` element and returns the corresponding `list` of results.
   `endoapply` is similar but applies a function returning a `Matched` and
   returns a `Matched` representing updated matches.
-  
+
 ## Changes in 1.1.1
 
 - Extend `filterMatches` framework (issue
