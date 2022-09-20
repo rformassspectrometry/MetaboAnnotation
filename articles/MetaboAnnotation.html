@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,7 +98,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.16/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
-[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>)<br><strong>Compiled</strong>: Mon Sep 5 06:01:11 2022</p>
+[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
+[ctb]<br><strong>Compiled</strong>: Tue Sep 20 11:19:07 2022</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -490,30 +491,6 @@ data frame from the example above as <code>rowData</code> and adding a
 <span><span class="co">##     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span></span>
 <span><span class="co">##     rowWeightedSds, rowWeightedVars</span></span></code></pre>
 <pre><code><span><span class="co">## Loading required package: GenomicRanges</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: stats4</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: BiocGenerics</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'BiocGenerics'</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     IQR, mad, sd, var, xtabs</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span></span>
-<span><span class="co">##     dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span></span>
-<span><span class="co">##     grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span></span>
-<span><span class="co">##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span></span>
-<span><span class="co">##     rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span></span>
-<span><span class="co">##     union, unique, unsplit, which.max, which.min</span></span></code></pre>
-<pre><code><span><span class="co">## Loading required package: S4Vectors</span></span></code></pre>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Attaching package: 'S4Vectors'</span></span></code></pre>
-<pre><code><span><span class="co">## The following object is masked from 'package:MetaboAnnotation':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     endoapply</span></span></code></pre>
-<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##     expand.grid, I, unname</span></span></code></pre>
 <pre><code><span><span class="co">## Loading required package: IRanges</span></span></code></pre>
 <pre><code><span><span class="co">## Loading required package: GenomeInfoDb</span></span></code></pre>
 <pre><code><span><span class="co">## Loading required package: Biobase</span></span></code></pre>
@@ -530,7 +507,10 @@ data frame from the example above as <code>rowData</code> and adding a
 <pre><code><span><span class="co">## The following objects are masked from 'package:matrixStats':</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##     anyMissing, rowMedians</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## The following object is masked from 'package:AnnotationHub':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     cache</span></span></code></pre>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span>
 <span>    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>nrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">ms1_features</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>    rowData <span class="op">=</span> <span class="va">ms1_features</span><span class="op">)</span></span></code></pre></div>
@@ -540,7 +520,7 @@ perform the matching. Matching will be performed on the object’s
 <code>SummarizedExperiment</code> will be matched against the target
 using e.g. m/z values available in columns of the object’s
 <code>rowData</code>:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">parm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchValues.html">Mass2MzParam</a></span><span class="op">(</span>adducts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span>,</span>
 <span>                     tolerance <span class="op">=</span> <span class="fl">0.005</span>, ppm <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="va">matched_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchValues.html">matchValues</a></span><span class="op">(</span><span class="va">se</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span><span class="op">)</span></span>
@@ -553,13 +533,13 @@ using e.g. m/z values available in columns of the object’s
 <code>SummarizedExperiment</code>, but <code>colnames</code> and
 <code>matchedData</code> will access the respective information from the
 <code>rowData</code> of this <code>SummarizedExperiment</code>:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "feature_id"        "mz"                "rtime"            </span></span>
 <span><span class="co">##  [4] "target_headgroup"  "target_name"       "target_exactmass" </span></span>
 <span><span class="co">##  [7] "target_formula"    "target_chain_type" "target_rtime"     </span></span>
 <span><span class="co">## [10] "adduct"            "score"             "ppm_error"</span></span></code></pre>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 10046 rows and 12 columns</span></span>
 <span><span class="co">##          feature_id        mz     rtime target_headgroup   target_name</span></span>
@@ -603,7 +583,7 @@ using e.g. m/z values available in columns of the object’s
 <span><span class="co">## 10046      [M+H]+ -0.0004240  0.435885</span></span></code></pre>
 <p>Subsetting the result object, to e.g. just matched elements will also
 subset the <code>SummarizedExperiment</code>.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matched_sub</span> <span class="op">&lt;-</span> <span class="va">matched_features</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">matched_features</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="../reference/Matched.html">query</a></span><span class="op">(</span><span class="va">matched_sub</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## class: SummarizedExperiment </span></span>
@@ -624,7 +604,7 @@ using our <code>SummarizedExperiment</code> as an assay of name
 <code>"features"</code>. For now we don’t add any additional assay to
 that <code>QFeatures</code>, thus, the object contains only this single
 data set.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/QFeatures" class="external-link">QFeatures</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Loading required package: MultiAssayExperiment</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
@@ -632,10 +612,13 @@ data set.</p>
 <pre><code><span><span class="co">## The following object is masked from 'package:MultiAssayExperiment':</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##     longFormat</span></span></code></pre>
+<pre><code><span><span class="co">## The following object is masked from 'package:AnnotationHub':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     display</span></span></code></pre>
 <pre><code><span><span class="co">## The following object is masked from 'package:base':</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##     sweep</span></span></code></pre>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">qf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>features <span class="op">=</span> <span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">qf</span></span></code></pre></div>
 <pre><code><span><span class="co">## An instance of class QFeatures containing 1 assays:</span></span>
@@ -644,7 +627,7 @@ data set.</p>
 <code>QFeatures</code> objects but the user needs to define the assay
 which should be used for the matching with the <code>queryAssay</code>
 parameter.</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">matched_qf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchValues.html">matchValues</a></span><span class="op">(</span><span class="va">qf</span>, <span class="va">target_df</span>, param <span class="op">=</span> <span class="va">parm</span>, queryAssay <span class="op">=</span> <span class="st">"features"</span><span class="op">)</span></span>
 <span><span class="va">matched_qf</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class Matched </span></span>
@@ -654,13 +637,13 @@ parameter.</p>
 <p><code>colnames</code> and <code>matchedData</code> allow to access
 the <code>rowData</code> of the <code>SummarizedExperiment</code> stored
 in the <code>QFeatures</code>’ <code>"features"</code> assay:</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">matched_qf</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "feature_id"        "mz"                "rtime"            </span></span>
 <span><span class="co">##  [4] "target_headgroup"  "target_name"       "target_exactmass" </span></span>
 <span><span class="co">##  [7] "target_formula"    "target_chain_type" "target_rtime"     </span></span>
 <span><span class="co">## [10] "adduct"            "score"             "ppm_error"</span></span></code></pre>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">matched_qf</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## DataFrame with 10046 rows and 12 columns</span></span>
 <span><span class="co">##          feature_id        mz     rtime target_headgroup   target_name</span></span>
@@ -721,7 +704,7 @@ we assign <em>feature identifiers</em> to each spectrum (again, for this
 example these are arbitrary IDs, but in a <em>real</em> data analysis
 such identifiers could indicate to which LC-MS feature these spectra
 belong).</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/Spectra" class="external-link">Spectra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">msdata</span><span class="op">)</span></span>
 <span><span class="va">fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"TripleTOF-SWATH"</span>, <span class="st">"PestMix1_DDA.mzML"</span>, package <span class="op">=</span> <span class="st">"msdata"</span><span class="op">)</span></span>
@@ -754,7 +737,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Mon Sep  5 06:01:36 2022]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Tue Sep 20 11:19:31 2022]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -763,10 +746,16 @@ library.</p>
 data from a very small subset of <a href="https://massbank.eu/MassBank/" class="external-link">MassBank</a> release
 <em>2021.03</em>. This small <code>Spectra</code> object is provided
 within this package but it would be possible to use any other
-<code>Spectra</code> object instead (see the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>
-for different ways and options to provide access to spectral
-libraries/databases <em>via</em> <code>Spectra</code>).</p>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<code>Spectra</code> object with reference fragment spectra instead (see
+also the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>
+workshop). As an alternative, it would also be possible to use a
+<code>CompDb</code> object representing a compound annotation database
+(defined in the <em><a href="https://bioconductor.org/packages/3.16/CompoundDb" class="external-link">CompoundDb</a></em>
+package) with parameter <code>target</code>. See the
+<code>matchSpectra</code> help page or section <em>Query against
+multiple reference databases</em> below for more details and options to
+retrieve such annotation resources from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.16/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p>
+<div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">minimb</span></span></code></pre></div>
 <pre><code><span><span class="co">## MSn data (Spectra) with 100 spectra in a MsBackendDataFrame backend:</span></span>
@@ -808,7 +797,7 @@ m/z (accepting a deviation defined by parameters <code>ppm</code> and
 <code>CompareSpectraParam</code> considers spectra with a similarity
 score higher than 0.7 as <em>matching</em> and these are thus
 reported.</p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>,</span>
 <span>                       param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                                   ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
@@ -823,7 +812,7 @@ of object contains all query spectra, all target spectra, the matching
 information and the parameter object with the settings of the matching.
 The object can be subsetted to e.g. matching results for a specific
 query spectrum:</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class MatchedSpectra </span></span>
 <span><span class="co">## Total number of matches: 0 </span></span>
@@ -832,7 +821,7 @@ query spectrum:</p>
 <p>In this case, for the first query spectrum, no match was found among
 the target spectra. Below we subset the <code>MatchedSpectra</code> to
 results for the second query spectrum:</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class MatchedSpectra </span></span>
 <span><span class="co">## Total number of matches: 4 </span></span>
@@ -848,7 +837,7 @@ spectra) can be extracted from the result object with the
 <code>Spectra</code> object). The <code>spectraVariables</code> function
 can be used to list all available spectra variables in the result
 object:</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraVariables</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "msLevel"                        "rtime"                         </span></span>
 <span><span class="co">##  [3] "acquisitionNum"                 "scanIndex"                     </span></span>
@@ -898,14 +887,14 @@ similarity score.</p>
 <p>We could thus use <code>$target_compound_name</code> to extract the
 compound name of the matching target spectra for the second query
 spectrum:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></span></code></pre>
 <p>The same information can also be extracted on the <em>full</em>
 <code>MatchedSpectra</code>. Below we use <code>$spectrum_id</code> to
 extract the query spectra identifiers we added above from the full
 result object.</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span><span class="op">$</span><span class="va">spectrum_id</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] "sp_1"  "sp_2"  "sp_2"  "sp_2"  "sp_2"  "sp_3"  "sp_4"  "sp_4"  "sp_5" </span></span>
 <span><span class="co">## [10] "sp_6"  "sp_6"  "sp_6"  "sp_7"  "sp_8"  "sp_8"  "sp_8"  "sp_8"  "sp_8" </span></span>
@@ -928,7 +917,7 @@ below the <code>spectraData</code> function to extract specific data
 from our result object, i.e. the spectrum and feature IDs for the query
 spectra we defined above, the MS2 spectra similarity score, and the
 target spectra’s ID and compound name.</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"feature_id"</span>,</span>
 <span>                                             <span class="st">"score"</span>, <span class="st">"target_spectrum_id"</span>,</span>
 <span>                                             <span class="st">"target_compound_name"</span><span class="op">)</span><span class="op">)</span></span>
@@ -963,31 +952,31 @@ the matching results for one query spectrum. Note also that an
 interactive, <code>shiny</code>-based, validation of matching results is
 available with the <code>validateMatchedSpectra</code> function. Below
 we call this function to show all matches for the second spectrum.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-29-1.png" width="700"></p>
+<p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
 <p>Not unexpectedly, the peak intensities of query and target spectra
 are on different scales. While this was no problem for the similarity
 calculation (the normalized dot-product which is used by default is
 independent of the absolute peak values) it is not ideal for
-visualization. Thus, we apply below a <em>normalization</em> function to
-both the query and target spectra and plot the spectra again afterwards
-(see the help for <code>addProcessing</code> in the <code>Spectra</code>
+visualization. Thus, we apply below a simple scaling function to both
+the query and target spectra and plot the spectra again afterwards (see
+the help for <code>addProcessing</code> in the <code>Spectra</code>
 package for more details on spectra data manipulations). This function
 will replace the absolute spectra intensities with intensities relative
-to the maximum intensity of the spectrum.</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">norm_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+to the maximum intensity of each spectrum.</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">scale_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="va">x</span></span>
 <span><span class="op">}</span></span>
-<span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/hidden_aliases.html" class="external-link">addProcessing</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="va">norm_int</span><span class="op">)</span></span>
+<span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/hidden_aliases.html" class="external-link">addProcessing</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="va">scale_int</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/spectra-plotting.html" class="external-link">plotSpectraMirror</a></span><span class="op">(</span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-30-1.png" width="700"></p>
+<p><img src="MetaboAnnotation_files/figure-html/unnamed-chunk-31-1.png" width="700"></p>
 <p>The query spectrum seems to nicely match the identified target
 spectra. Below we extract the compound name of the target spectra for
 this second query spectrum.</p>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mtches</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">$</span><span class="va">target_compound_name</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "Azaconazole" "Azaconazole" "Azaconazole" "Azaconazole"</span></span></code></pre>
 <p>As alternative to the <code>CompareSpectraParam</code> we could also
@@ -1009,7 +998,7 @@ These values are available as spectra variables
 <code>"reverse_score"</code> and <code>"presence_ratio"</code> in the
 result object). Below we perform the same spectra matching as above, but
 using the <code>MatchForwardReverseParam</code>.</p>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">MatchForwardReverseParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">mp</span><span class="op">)</span></span>
 <span><span class="va">mtches</span></span></code></pre></div>
@@ -1019,7 +1008,7 @@ using the <code>MatchForwardReverseParam</code>.</p>
 <span><span class="co">## Number of target objects: 100 (11 matched)</span></span></code></pre>
 <p>Below we extract the query and target spectra IDs, the compound name
 and all scores.</p>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">spectraData</a></span><span class="op">(</span><span class="va">mtches</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"spectrum_id"</span>, <span class="st">"target_spectrum_id"</span>,</span>
 <span>                          <span class="st">"target_compound_name"</span>, <span class="st">"score"</span>, <span class="st">"reverse_score"</span>,</span>
@@ -1083,7 +1072,7 @@ matching</em> target spectrum for each query spectrum, independently of
 whether the similarity score is higher than a certain threshold. Below
 we perform such an analysis defining a <code>THRESHFUN</code> that
 selects always the best match.</p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">select_top_match</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -1133,6 +1122,117 @@ by calling <code>validateMatchedSpectra</code> on the
 TRUE or FALSE in this app. By closing the app via the Save &amp; Close
 button a filtered <code>MatchedSpectra</code> is returned, containing
 only matches manually validated.</p>
+<div class="section level4">
+<h4 id="query-against-multiple-reference-databases">Query against multiple reference databases<a class="anchor" aria-label="anchor" href="#query-against-multiple-reference-databases"></a>
+</h4>
+<p>Getting access to reference spectra can sometimes be a little
+cumbersome since it might involve lookup and download of specific
+resources or eventual conversion of these into a format suitable for
+import. <code>MetaboAnnotation</code> provides <em>compound annotation
+sources</em> to simplify this process. These annotation source objects
+represent references (links) to annotation resources and can be used in
+the <code>matchSpectra</code> call to define the targed/reference
+spectra. The annotation source object takes then care, upon request, of
+retrieving the annotation data or connecting to the annotation
+resources.</p>
+<p>Also, <em>compound annotation sources</em> can be combined to allow
+matching query spectra against multiple reference libraries in a single
+call.</p>
+<p>At present <code>MetaboAnnotation</code> supports the following types
+of <em>compound annotation sources</em> (i.e. objects extending
+<code>CompAnnotationSource</code>):</p>
+<ul>
+<li><p>Annotation resources that provide their data as a
+<code>CompDb</code> database (defined by the <em><a href="https://bioconductor.org/packages/3.16/CompoundDb" class="external-link">CompoundDb</a></em>)
+package. These are supported by the <code>CompDbSource</code>
+class.</p></li>
+<li><p>Annotation resources for which a dedicated <code>MsBackend</code>
+backend is available hence supporting to access the data <em>via</em> a
+<code>Spectra</code> object. These are supported by the
+<code>SpectraDbSource</code> class.</p></li>
+</ul>
+<p>Various helper functions, specific for the annotation resource, are
+available to create such annotation source objects:</p>
+<ul>
+<li><p><code>CompDbSource</code>: creates a compound annotation source
+object from the provided <code>CompDb</code> SQLite data base file. This
+function can be used to integrate an existing (locally available)
+<code>CompDb</code> annotation database into an annotation
+workflow.</p></li>
+<li><p><code>MassBankSource</code>: creates a annotation source object
+for a specific MassBank release. The desired release can be specified
+with the <code>release</code> parameter
+(e.g. <code>release = "2021.03"</code> or
+<code>release = "2022.06"</code>). The function will then download the
+respective annotation database from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.16/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p></li>
+</ul>
+<p>In the example below we create a annotation source for MassBank
+release <em>2022.06</em>. This call will lookup the requested version in
+Biocondutor’s (online) <code>AnnotationHub</code> and download the data.
+Subsequent requests for the same annotation resource will load the
+locally cached version instead. Upcoming MassBank database releases will
+be added to <code>AnnotationHub</code> after their official release and
+all previous releases will be available as well.</p>
+<div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">mbank</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompDbSource.html">MassBankSource</a></span><span class="op">(</span><span class="st">"2022.06"</span><span class="op">)</span></span>
+<span><span class="va">mbank</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class CompDbSource </span></span>
+<span><span class="co">## Metadata information:</span></span>
+<span><span class="co">##   - source: MassBank</span></span>
+<span><span class="co">##   - url: https://massbank.eu/MassBank/</span></span>
+<span><span class="co">##   - source_version: 2022.06</span></span>
+<span><span class="co">##   - source_date: 2022-06-21</span></span>
+<span><span class="co">##   - organism: NA</span></span>
+<span><span class="co">##   - db_creation_date: Tue Aug 30 06:51:39 2022</span></span>
+<span><span class="co">##   - supporting_package: CompoundDb</span></span>
+<span><span class="co">##   - supporting_object: CompDb</span></span></code></pre>
+<p>We can now use that annotation source object in the
+<code>matchSpectra</code> call to compare the experimental spectra from
+the previous examples against that release of MassBank.</p>
+<div class="sourceCode" id="cb96"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span></span>
+<span>    <span class="va">pest_ms2</span>, <span class="va">mbank</span>,</span>
+<span>    param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">res</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class MatchedSpectra </span></span>
+<span><span class="co">## Total number of matches: 14 </span></span>
+<span><span class="co">## Number of query objects: 13 (6 matched)</span></span>
+<span><span class="co">## Number of target objects: 10 (10 matched)</span></span></code></pre>
+<p>The result object contains only the matching fragment spectra from
+the reference database.</p>
+<div class="sourceCode" id="cb98"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">target</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## MSn data (Spectra) with 10 spectra in a MsBackendDataFrame backend:</span></span>
+<span><span class="co">##      msLevel     rtime scanIndex</span></span>
+<span><span class="co">##    &lt;integer&gt; &lt;numeric&gt; &lt;integer&gt;</span></span>
+<span><span class="co">## 1          2        NA        NA</span></span>
+<span><span class="co">## 2          2        NA        NA</span></span>
+<span><span class="co">## 3          2        NA        NA</span></span>
+<span><span class="co">## 4          2        NA        NA</span></span>
+<span><span class="co">## 5          2        NA        NA</span></span>
+<span><span class="co">## 6          2        NA        NA</span></span>
+<span><span class="co">## 7          2        NA        NA</span></span>
+<span><span class="co">## 8          2        NA        NA</span></span>
+<span><span class="co">## 9          2        NA        NA</span></span>
+<span><span class="co">## 10         2        NA        NA</span></span>
+<span><span class="co">##  ... 46 more variables/columns.</span></span>
+<span><span class="co">## Processing:</span></span>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Tue Sep 20 11:19:40 2022]</span></span></code></pre>
+<p>And the names of the compounds with matching fragment spectra.</p>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] NA                         "Azaconazole"             </span></span>
+<span><span class="co">##  [3] "Azaconazole"              "Azaconazole"             </span></span>
+<span><span class="co">##  [5] "Azaconazole"              NA                        </span></span>
+<span><span class="co">##  [7] "triphenylphosphineoxide"  "triphenylphosphineoxide" </span></span>
+<span><span class="co">##  [9] "Triphenylphosphine oxide" "N,N-Dimethyldodecylamine"</span></span>
+<span><span class="co">## [11] "Dimethachlor"             NA                        </span></span>
+<span><span class="co">## [13] "Dimethachlor"             "Triphenylphosphine oxide"</span></span>
+<span><span class="co">## [15] "triphenylphosphineoxide"  "triphenylphosphineoxide" </span></span>
+<span><span class="co">## [17] "Triphenylphosphine oxide" NA                        </span></span>
+<span><span class="co">## [19] NA                         NA                        </span></span>
+<span><span class="co">## [21] NA</span></span></code></pre>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -1159,36 +1259,70 @@ only matches manually validated.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] msdata_0.37.0               Spectra_1.7.2              </span></span>
-<span><span class="co">##  [3] ProtGenerics_1.29.0         BiocParallel_1.31.12       </span></span>
-<span><span class="co">##  [5] QFeatures_1.7.1             MultiAssayExperiment_1.23.6</span></span>
-<span><span class="co">##  [7] SummarizedExperiment_1.27.2 Biobase_2.57.1             </span></span>
-<span><span class="co">##  [9] GenomicRanges_1.49.1        GenomeInfoDb_1.33.5        </span></span>
-<span><span class="co">## [11] IRanges_2.31.2              S4Vectors_0.35.3           </span></span>
-<span><span class="co">## [13] BiocGenerics_0.43.1         MatrixGenerics_1.9.1       </span></span>
-<span><span class="co">## [15] matrixStats_0.62.0-9003     MetaboAnnotation_1.1.3     </span></span>
-<span><span class="co">## [17] BiocStyle_2.25.0           </span></span>
+<span><span class="co">##  [1] msdata_0.37.0               QFeatures_1.7.1            </span></span>
+<span><span class="co">##  [3] MultiAssayExperiment_1.23.8 SummarizedExperiment_1.27.3</span></span>
+<span><span class="co">##  [5] Biobase_2.57.1              GenomicRanges_1.49.1       </span></span>
+<span><span class="co">##  [7] GenomeInfoDb_1.33.7         IRanges_2.31.2             </span></span>
+<span><span class="co">##  [9] MatrixGenerics_1.9.1        matrixStats_0.62.0-9003    </span></span>
+<span><span class="co">## [11] Spectra_1.7.2               ProtGenerics_1.29.0        </span></span>
+<span><span class="co">## [13] BiocParallel_1.31.12        S4Vectors_0.35.4           </span></span>
+<span><span class="co">## [15] MetaboAnnotation_1.1.4      AnnotationHub_3.5.1        </span></span>
+<span><span class="co">## [17] BiocFileCache_2.5.0         dbplyr_2.2.1               </span></span>
+<span><span class="co">## [19] BiocGenerics_0.43.4         BiocStyle_2.25.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] Rcpp_1.0.9              lattice_0.20-45         rprojroot_2.0.3        </span></span>
-<span><span class="co">##  [4] digest_0.6.29           R6_2.5.1                evaluate_0.16          </span></span>
-<span><span class="co">##  [7] highr_0.9               zlibbioc_1.43.0         rlang_1.0.5            </span></span>
-<span><span class="co">## [10] lazyeval_0.2.2          jquerylib_0.1.4         MetaboCoreUtils_1.5.2  </span></span>
-<span><span class="co">## [13] Matrix_1.4-1            rmarkdown_2.16          mzR_2.31.1             </span></span>
-<span><span class="co">## [16] pkgdown_2.0.6.9000      textshaping_0.3.6       desc_1.4.1             </span></span>
-<span><span class="co">## [19] stringr_1.4.1           igraph_1.3.4            RCurl_1.98-1.8         </span></span>
-<span><span class="co">## [22] DelayedArray_0.23.1     compiler_4.2.1          xfun_0.32              </span></span>
-<span><span class="co">## [25] pkgconfig_2.0.3         systemfonts_1.0.4       htmltools_0.5.3        </span></span>
-<span><span class="co">## [28] GenomeInfoDbData_1.2.8  bookdown_0.28           codetools_0.2-18       </span></span>
-<span><span class="co">## [31] MASS_7.3-58.1           bitops_1.0-7            grid_4.2.1             </span></span>
-<span><span class="co">## [34] jsonlite_1.8.0          AnnotationFilter_1.21.0 magrittr_2.0.3         </span></span>
-<span><span class="co">## [37] MsCoreUtils_1.9.1       ncdf4_1.19              cli_3.3.0              </span></span>
-<span><span class="co">## [40] stringi_1.7.8           cachem_1.0.6            XVector_0.37.1         </span></span>
-<span><span class="co">## [43] fs_1.5.2                bslib_0.4.0             ragg_1.2.2             </span></span>
-<span><span class="co">## [46] tools_4.2.1             purrr_0.3.4             parallel_4.2.1         </span></span>
-<span><span class="co">## [49] fastmap_1.1.0           yaml_2.3.5              clue_0.3-61            </span></span>
-<span><span class="co">## [52] cluster_2.1.4           BiocManager_1.30.18     memoise_2.0.1          </span></span>
-<span><span class="co">## [55] knitr_1.40              sass_0.4.2</span></span></code></pre>
+<span><span class="co">##   [1] colorspace_2.0-3              rjson_0.2.21                 </span></span>
+<span><span class="co">##   [3] ellipsis_0.3.2                MetaboCoreUtils_1.5.2        </span></span>
+<span><span class="co">##   [5] rprojroot_2.0.3               XVector_0.37.1               </span></span>
+<span><span class="co">##   [7] base64enc_0.1-3               fs_1.5.2                     </span></span>
+<span><span class="co">##   [9] clue_0.3-61                   mzR_2.31.1                   </span></span>
+<span><span class="co">##  [11] DT_0.25                       bit64_4.0.5                  </span></span>
+<span><span class="co">##  [13] interactiveDisplayBase_1.35.0 AnnotationDbi_1.59.1         </span></span>
+<span><span class="co">##  [15] fansi_1.0.3                   xml2_1.3.3                   </span></span>
+<span><span class="co">##  [17] codetools_0.2-18              ncdf4_1.19                   </span></span>
+<span><span class="co">##  [19] cachem_1.0.6                  knitr_1.40                   </span></span>
+<span><span class="co">##  [21] jsonlite_1.8.0                cluster_2.1.4                </span></span>
+<span><span class="co">##  [23] png_0.1-7                     shiny_1.7.2                  </span></span>
+<span><span class="co">##  [25] BiocManager_1.30.18           compiler_4.2.1               </span></span>
+<span><span class="co">##  [27] httr_1.4.4                    Matrix_1.5-1                 </span></span>
+<span><span class="co">##  [29] assertthat_0.2.1              fastmap_1.1.0                </span></span>
+<span><span class="co">##  [31] lazyeval_0.2.2                cli_3.4.0                    </span></span>
+<span><span class="co">##  [33] later_1.3.0                   htmltools_0.5.3              </span></span>
+<span><span class="co">##  [35] tools_4.2.1                   igraph_1.3.4                 </span></span>
+<span><span class="co">##  [37] gtable_0.3.1                  glue_1.6.2                   </span></span>
+<span><span class="co">##  [39] GenomeInfoDbData_1.2.8        dplyr_1.0.10                 </span></span>
+<span><span class="co">##  [41] rsvg_2.3.1                    rappdirs_0.3.3               </span></span>
+<span><span class="co">##  [43] Rcpp_1.0.9                    jquerylib_0.1.4              </span></span>
+<span><span class="co">##  [45] pkgdown_2.0.6.9000            vctrs_0.4.1                  </span></span>
+<span><span class="co">##  [47] Biostrings_2.65.6             xfun_0.33                    </span></span>
+<span><span class="co">##  [49] stringr_1.4.1                 mime_0.12                    </span></span>
+<span><span class="co">##  [51] lifecycle_1.0.2               zlibbioc_1.43.0              </span></span>
+<span><span class="co">##  [53] MASS_7.3-58.1                 scales_1.2.1                 </span></span>
+<span><span class="co">##  [55] CompoundDb_1.1.6              ragg_1.2.2                   </span></span>
+<span><span class="co">##  [57] promises_1.2.0.1              parallel_4.2.1               </span></span>
+<span><span class="co">##  [59] AnnotationFilter_1.21.0       yaml_2.3.5                   </span></span>
+<span><span class="co">##  [61] curl_4.3.2                    memoise_2.0.1                </span></span>
+<span><span class="co">##  [63] gridExtra_2.3                 ggplot2_3.3.6                </span></span>
+<span><span class="co">##  [65] sass_0.4.2                    stringi_1.7.8                </span></span>
+<span><span class="co">##  [67] RSQLite_2.2.17                highr_0.9                    </span></span>
+<span><span class="co">##  [69] BiocVersion_3.16.0            desc_1.4.2                   </span></span>
+<span><span class="co">##  [71] filelock_1.0.2                rlang_1.0.5                  </span></span>
+<span><span class="co">##  [73] pkgconfig_2.0.3               systemfonts_1.0.4            </span></span>
+<span><span class="co">##  [75] bitops_1.0-7                  lattice_0.20-45              </span></span>
+<span><span class="co">##  [77] evaluate_0.16                 purrr_0.3.4                  </span></span>
+<span><span class="co">##  [79] ChemmineR_3.49.2              htmlwidgets_1.5.4            </span></span>
+<span><span class="co">##  [81] bit_4.0.4                     tidyselect_1.1.2             </span></span>
+<span><span class="co">##  [83] magrittr_2.0.3                bookdown_0.29                </span></span>
+<span><span class="co">##  [85] R6_2.5.1                      generics_0.1.3               </span></span>
+<span><span class="co">##  [87] DelayedArray_0.23.2           DBI_1.1.3                    </span></span>
+<span><span class="co">##  [89] pillar_1.8.1                  MsCoreUtils_1.9.1            </span></span>
+<span><span class="co">##  [91] KEGGREST_1.37.3               RCurl_1.98-1.8               </span></span>
+<span><span class="co">##  [93] tibble_3.1.8                  crayon_1.5.1                 </span></span>
+<span><span class="co">##  [95] utf8_1.2.2                    rmarkdown_2.16               </span></span>
+<span><span class="co">##  [97] grid_4.2.1                    blob_1.2.3                   </span></span>
+<span><span class="co">##  [99] digest_0.6.29                 xtable_1.8-4                 </span></span>
+<span><span class="co">## [101] httpuv_1.6.6                  textshaping_0.3.6            </span></span>
+<span><span class="co">## [103] munsell_0.5.0                 bslib_0.4.0</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
