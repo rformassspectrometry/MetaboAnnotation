@@ -3,20 +3,19 @@
 \name{SpectraDbSource}
 \alias{SpectraDbSource}
 \alias{SpectraDbSource-class}
-\alias{RemoteWeizMassSource}
-\alias{LocalWeizMassSource}
+\alias{WeizMassSource}
 \alias{show,SpectraDbSource-method}
 \title{Compond Annotation Sources for databases supporting \code{Spectra}}
 \usage{
-RemoteWeizMassSource(
+WeizMassSource(
   IagreeToTheLicense = FALSE,
-  host = character(),
+  sqlite = FALSE,
+  version = character(),
   user = character(),
   pass = character(),
+  host = character(),
   dbname = character()
 )
-
-LocalWeizMassSource(IagreeToTheLicense = FALSE, dbfile = character())
 
 \S4method{show}{SpectraDbSource}(object)
 }
@@ -24,22 +23,22 @@ LocalWeizMassSource(IagreeToTheLicense = FALSE, dbfile = character())
 \item{IagreeToTheLicense}{\code{logical(1)} specifying whether the user accepts
 to the WeizMass license agreement or not.}
 
-\item{host}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
-name (address) of the host with the WeizMass database.}
-
 \item{user}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
 username to access the WeizMass database.}
 
 \item{pass}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
 password to access the WeizMass database.}
 
+\item{host}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
+name (address) of the host with the WeizMass database.}
+
 \item{dbname}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
 name of the database on the server.}
 
+\item{object}{A \code{SpectraDbSource} object.}
+
 \item{dbfile}{For \code{LocalWeizMassSource}: \code{character(1)} with the (SQLite)
 database file.}
-
-\item{object}{A \code{SpectraDbSource} object.}
 }
 \description{
 \code{SpectraDbSource} objects represent references to annotation databases that

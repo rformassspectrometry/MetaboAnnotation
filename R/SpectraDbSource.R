@@ -77,6 +77,7 @@ setClass(
               user = "character",
               pass = "character",
               dbname = "character",
+              version = "character",
               description = "character",
               drv = "DBIDriver",
               backend = "MsBackend"),
@@ -84,39 +85,49 @@ setClass(
                      user = character(),
                      pass = character(),
                      dbname = character(),
+                     version = character(),
                      description = character(),
                      drv = NULL,
                      backend = NULL))
 
-#' @export
-#'
-#' @rdname SpectraDbSource
-RemoteWeizMassSource <- function(IagreeToTheLicense = FALSE, host = character(),
-                                 user = character(), pass = character(),
-                                 dbname = character()) {
-    if (!IagreeToTheLicense)
-        stop("You must agree to the WeizMass license agreement.")
-    if (!requireNamespace("MsBackendWeizMass", quietly = TRUE))
-        stop("The use of 'RemoteWeizMassSource' requires package ",
-             "'MsBackendWeizMass'. Please install it with ",
-             "'BiocInstaller::install(",
-             "\"RforMassSpectrometry/MsBackendWeizMass\")'.")
+.sql_weiz_mass <- function(host = character(), user = character(),
+                           pass = character(), dbname = character(),
+                           version = character()) {
     if (!requireNamespace("RMariaDB", quietly = TRUE))
         stop("The use of 'RemoteWeizMassSource' requires package ",
              "'RMariaDB'. Please install it with ",
              "'BiocInstaller::install(\"RMariaDB\")'.")
     backend <- MsBackendWeizMass::MsBackendWeizMass()
     drv <- RMariaDB::MariaDB()
+    vrs <- ""
+    if (length(version))
+        vrs <- paste0(" version ", version)
     new("SpectraDbSource", host = host, user = user, pass = pass,
-        dbname = dbname, drv = drv, backend = backend,
-        description = "Spectra source: WeizMass")
+        dbname = dbname, drv = drv, backend = backend, version = version,
+        description = paste0("Spectra source: WeizMass", vrs))
+}
+
+.sqlite_weiz_mass <- function(dbname = character(), ...) {
+    if (!requireNamespace("RSQLite", quietly = TRUE))
+        stop("The use of 'LocalWeizMassSource' requires package ",
+             "'RSQLite'. Please install it with ",
+             "'BiocInstaller::install(\"RSQLite\")'.")
+    if (!length(dbname))
+        stop("Parameter 'dbname' is mandatory for 'sqlite = TRUE'")
+    backend <- MsBackendWeizMass::MsBackendWeizMass()
+    drv <- RSQLite::SQLite()
+    new("SpectraDbSource", dbname = dbname, drv = drv, backend = backend,
+        description = paste0("Spectra source: WeizMass\n",
+                             "Database file: ", basename(dbname)))
 }
 
 #' @export
 #'
 #' @rdname SpectraDbSource
-LocalWeizMassSource <- function(IagreeToTheLicense = FALSE,
-                                dbfile = character()) {
+WeizMassSource <- function(IagreeToTheLicense = FALSE, sqlite = FALSE,
+                           version = character(), user = character(),
+                           pass = character(), host = character(),
+                           dbname = character()) {
     if (!IagreeToTheLicense)
         stop("You must agree to the WeizMass license agreement.")
     if (!requireNamespace("MsBackendWeizMass", quietly = TRUE))
@@ -124,31 +135,11 @@ LocalWeizMassSource <- function(IagreeToTheLicense = FALSE,
              "'MsBackendWeizMass'. Please install it with ",
              "'BiocInstaller::install(",
              "\"RforMassSpectrometry/MsBackendWeizMass\")'.")
-    if (!requireNamespace("RSQLite", quietly = TRUE))
-        stop("The use of 'LocalWeizMassSource' requires package ",
-             "'RSQLite'. Please install it with ",
-             "'BiocInstaller::install(\"RSQLite\")'.")
-    backend <- MsBackendWeizMass::MsBackendWeizMass()
-    drv <- RSQLite::SQLite()
-    new("SpectraDbSource", dbname = dbfile, drv = drv, backend = backend,
-        description = paste0("Spectra source: WeizMass\n",
-                             "Database file: ", basename(dbfile)))
+    if (sqlite)
+        .sqlite_weiz_mass(dbname = dbname)
+    else .sql_weiz_mass(version = version, user = user, pass = pass,
+                        host = host, dbname = dbname)
 }
-
-## #' @export
-## #'
-## #' @rdname SpectraDbSource
-## MassBankDbSource <- function(dbname = "MassBank", host = "localhost",
-##                              user = "massbank", pass = "massbank",
-##                              drv = RMariaDB::MariaDB()) {
-##     if (!requireNamespace("MsBackendMassbank", quietly = TRUE))
-##         stop("The use of 'MassBankDbSource' requires package ",
-##              "'MsBackendMassbank'. Please install it with ",
-##              "'BiocInstaller::install(\"MsBackendMassbank\")'.")
-##     new("SpectraDbSource", dbname = dbname, drv = drv,
-##         backend = MsBackendMassbank::MsBackendMassbankSql(),
-##         user = user, host = host, pass = pass)
-## }
 
 #' @rdname SpectraDbSource
 setMethod("show", "SpectraDbSource", function(object) {
@@ -158,14 +149,16 @@ setMethod("show", "SpectraDbSource", function(object) {
 })
 
 #' @importFrom utils read.table
-.get_weizmass_conf <- function() {
+.get_weizmass_conf <- function(version = character()) {
     ## Options:
     ## - read from file within the package
     ## - get from environment variables
     ## - define within the source code
-    cfg <- read.table(system.file("cfg", "wm.cfg",
-                                  package = "MetaboAnnotation"),
-                      sep = "=")
+    fl <- system.file("cfg", paste0("wm", version, ".cfg"),
+                      package = "MetaboAnnotation")
+    if (fl == "")
+        stop("No configuration for WeizMass version \"", version, "\" found")
+    cfg <- read.table(fl, sep = "=")
     c(user = cfg[cfg[, 1] == "user", 2],
       pass = cfg[cfg[, 1] == "pass", 2],
       host = cfg[cfg[, 1] == "host", 2],
@@ -190,18 +183,19 @@ setMethod(
         } else {
             if (!length(target@user)) {
                 if (inherits(target@backend, "MsBackendWeizMass")) {
-                    cr <- .get_weizmass_conf()
+                    cr <- .get_weizmass_conf(target@version)
                     target@user <- cr["user"]
                     target@pass <- cr["pass"]
-                } else stop("Missing 'user' and 'pass'")
+                    target@host <- cr["host"]
+                    target@dbname <- cr["dbname"]
+                } else stop("Missing parameters 'dbname', 'host', 'user'",
+                            " and 'pass'")
             }
             con <- dbConnect(target@drv, host = target@host,
                              user = target@user, pass = target@pass,
                              dbname = target@dbname)
         }
-        ## create a specific backend
         be <- backendInitialize(target@backend, con)
-        ## get the Spectra from the backend and call matchSpectra
         res <- matchSpectra(query, Spectra(be), param = param,
                             BPPARAM = BPPARAM)
         ## keep only matching reference/target spectra and change the

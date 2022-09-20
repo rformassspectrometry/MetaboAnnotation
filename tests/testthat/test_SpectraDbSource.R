@@ -1,31 +1,62 @@
 test_that(".get_weizmass_conf works", {
     res <- .get_weizmass_conf()
     expect_equal(names(res), c("user", "pass", "host", "dbname"))
+    expect_error(MetaboAnnotation:::.get_weizmass_conf("4"), "No configuration")
 })
 
-test_that("RemoteWeizMassSource works", {
-    expect_error(RemoteWeizMassSource(), "license")
-    res <- RemoteWeizMassSource(TRUE)
-    expect_s4_class(res@backend, "MsBackendWeizMass")
-    expect_s4_class(res@drv, "MariaDBDriver")
-
-    expect_output(show(res), "MsBackendWeizMass")
-    expect_output(show(res), "Spectra source: WeizMass")
+test_that("WeizMassSource works", {
+    expect_error(WeizMassSource(), "license")
+    if (requireNamespace("MsBackendWeizMass", quietly = TRUE) &&
+        requireNamespace("RSQLite", quietly = TRUE)) {
+        res <- WeizMassSource(TRUE, sqlite = TRUE, dbname = tempfile())
+        expect_s4_class(res@backend, "MsBackendWeizMass")
+        expect_s4_class(res@drv, "SQLiteDriver")
+        expect_true(length(res@dbname) == 1L)
+        expect_output(show(res), "MsBackendWeizMass")
+        expect_output(show(res), "Spectra source: WeizMass")
+    }
+    if (requireNamespace("MsBackendWeizMass", quietly = TRUE) &&
+        requireNamespace("RMariaDB", quietly = TRUE)) {
+        res <- WeizMassSource(TRUE, host = "localhost")
+        expect_s4_class(res@backend, "MsBackendWeizMass")
+        expect_s4_class(res@drv, "MariaDBDriver")
+        expect_equal(res@host, "localhost")
+        expect_equal(res@user, character())
+        expect_output(show(res), "MsBackendWeizMass")
+        expect_output(show(res), "Spectra source: WeizMass")
+    }
 })
 
-test_that("LocalWeizMassSource works", {
-    expect_error(LocalWeizMassSource(), "license")
-    res <- LocalWeizMassSource(TRUE)
-    expect_s4_class(res@backend, "MsBackendWeizMass")
-    expect_s4_class(res@drv, "SQLiteDriver")
+test_that(".sqlite_weiz_mass works", {
+    if (requireNamespace("MsBackendWeizMass", quietly = TRUE) &&
+        requireNamespace("RMariaDB", quietly = TRUE)) {
+        res <- .sqlite_weiz_mass("dbname")
+        expect_equal(res@dbname, "dbname")
+        expect_s4_class(res@drv, "SQLiteDriver")
+        expect_s4_class(res@backend, "MsBackendWeizMass")
+        expect_error(.sqlite_weiz_mass(), "'dbname' is mandatory")
+    }
 })
 
-test_that("matchSpectra,SpectraDbSource LocalWeizMass works", {
+test_that(".sql_weiz_mass works", {
+    if (requireNamespace("MsBackendWeizMass", quietly = TRUE) &&
+        requireNamespace("RMariaDB", quietly = TRUE)) {
+        res <- .sql_weiz_mass(host = "localhost", version = "4")
+        expect_equal(res@version, "4")
+        expect_equal(res@user, character())
+        expect_equal(res@host, "localhost")
+        expect_s4_class(res@drv, "MariaDBDriver")
+        expect_s4_class(res@backend, "MsBackendWeizMass")
+    }
+})
+
+test_that("matchSpectra,SpectraDbSource SQLite WeizMass works", {
     ## only evaluate if MsBackendWeizMass is installed
-    if (requireNamespace("MsBackendWeizMass", quietly = TRUE)) {
+    if (requireNamespace("MsBackendWeizMass", quietly = TRUE) &&
+        requireNamespace("RSQLite", quietly = TRUE)) {
         fl <- system.file("sqlite", "weizmassv2.sqlite",
                           package = "MsBackendWeizMass")
-        src <- LocalWeizMassSource(TRUE, dbfile = fl)
+        src <- WeizMassSource(TRUE, sqlite = TRUE, dbname = fl)
         res <- matchSpectra(pest_ms2, src, param = CompareSpectraParam())
         expect_s4_class(res, "MatchedSpectra")
         expect_equal(query(res), pest_ms2)
@@ -44,7 +75,7 @@ test_that("matchSpectra,SpectraDbSource LocalWeizMass works", {
     }
 })
 
-test_that("matchSpectra,SpectraDbSource RemoteWeizMass works", {
+test_that("matchSpectra,SpectraDbSource MySQL WeizMass works", {
     ## Only perform test if connection to database works, i.e. on a development
     ## machine.
     do_test <- FALSE
@@ -59,12 +90,12 @@ test_that("matchSpectra,SpectraDbSource RemoteWeizMass works", {
         }
     }
     if (do_test && requireNamespace("MsBackendWeizMass", quietly = TRUE)) {
-        src <- RemoteWeizMassSource(TRUE, dbname = "weiz_mass",
-                                    host = "localhost")
-        expect_equal(src@host, "localhost")
-        expect_equal(src@dbname, "weiz_mass")
+        src <- WeizMassSource(TRUE)
+        expect_equal(src@host, character())
+        expect_equal(src@dbname, character())
         expect_equal(src@user, character())
         expect_equal(src@pass, character())
+        expect_equal(src@version, character())
         res <- matchSpectra(pest_ms2, src, param = CompareSpectraParam())
         expect_s4_class(res, "MatchedSpectra")
         expect_equal(query(res), pest_ms2)
@@ -83,9 +114,8 @@ test_that("matchSpectra,SpectraDbSource RemoteWeizMass works", {
         expect_true(length(target(res)) == 1L)
         expect_equal(peaksData(qry), peaksData(target(res)))
 
-        src <- RemoteWeizMassSource(TRUE, dbname = "weiz_mass",
-                                    host = "localhost", user = "other",
-                                    pass = "na")
+        src <- WeizMassSource(TRUE, dbname = "weiz_mass", host = "localhost",
+                              user = "other", pass = "na")
         expect_equal(src@user, "other")
         expect_equal(src@pass, "na")
 
