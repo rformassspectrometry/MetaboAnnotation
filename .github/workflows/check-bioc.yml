@@ -196,6 +196,7 @@ jobs:
           BiocManager::install("QFeatures", dependencies = TRUE, ask = FALSE, update = FALSE)
           BiocManager::install("AnnotationHub", dependencies = TRUE, ask = FALSE, update = FALSE)
           BiocManager::install("RforMassSpectrometry/CompoundDb")
+          BiocManager::install("RMariaDB")
           library(AnnotationHub)
           ah <- AnnotationHub()
 

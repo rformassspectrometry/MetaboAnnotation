@@ -24,28 +24,23 @@
 #' New `SpectraDbSource` objects should not be created manually, but using one
 #' of the constructor functions listed below. Functions are available for
 #' different annotation databases that provide also useful defaults simplifying
-#' thus access to these resources.
+#' access to these resources.
 #'
-#' - `RemoteWeizMassSource`: connects to a *remote* WeizMass (MySQL) database
-#'   hosted on a remote server. Parameter `user`, `pass`, `host` and `dbname`
-#'   are optional and allow connection to a non-standard (default) WeizMass
-#'   database (e.g. a local installation).
+#' - `WeizMassSource`: provides access to a WeizMass database. This database
+#'   can be a SQLite database (in which case the `sqlite` parameter has to be
+#'   set to `TRUE` and the database file has to be provided with the `dbname`
+#'   parameter) or a (remote) WeizMass database. In the latter case the version
+#'   of the resource has to be provided. Alternatively, using parameters `host`,
+#'   `dbname`, `user` and `pass` it is possible to connect to a custom location
+#'   of a WeizMass database.
 #'   For WeizMass databases, users have to agree to the WeizMass license by
 #'   specifically setting parameter `IagreeToTheLicense` to `TRUE`.
 #'
-#' - `LocalWeizMassSource`: connects to a *local* WeizMass database available as
-#'   a *SQLite* database file. The database file has to be provided with the
-#'   `dbfile` parameter.
-#'   For WeizMass databases, users have to agree to the WeizMass license by
-#'   specifically setting parameter `IagreeToTheLicense` to `TRUE`.
+#' @param dbname For `WeizMassSource`: optional `character(1)` with the
+#'     name of the database on the server. If `sqlite = TRUE` the file name
+#'     of the SQLite database needs to be defined with this parameter.
 #'
-#' @param dbfile For `LocalWeizMassSource`: `character(1)` with the (SQLite)
-#'     database file.
-#'
-#' @param dbname For `RemoteWeizMassSource`: optional `character(1)` with the
-#'     name of the database on the server.
-#'
-#' @param host For `RemoteWeizMassSource`: optional `character(1)` with the
+#' @param host For `WeizMassSource`: optional `character(1)` with the
 #'     name (address) of the host with the WeizMass database.
 #'
 #' @param IagreeToTheLicense `logical(1)` specifying whether the user accepts
@@ -53,11 +48,14 @@
 #'
 #' @param object A `SpectraDbSource` object.
 #'
-#' @param pass For `RemoteWeizMassSource`: optional `character(1)` with the
+#' @param pass For `WeizMassSource`: optional `character(1)` with the
 #'     password to access the WeizMass database.
 #'
-#' @param user For `RemoteWeizMassSource`: optional `character(1)` with the
+#' @param user For `WeizMassSource`: optional `character(1)` with the
 #'     username to access the WeizMass database.
+#'
+#' @param version For `WeizMassSource`: `character(1)` specifying the version
+#'     (release) of the database to connect to.
 #'
 #' @author Johannes Rainer, Nir Shachaf
 #'

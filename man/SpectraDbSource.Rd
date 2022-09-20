@@ -23,22 +23,23 @@ WeizMassSource(
 \item{IagreeToTheLicense}{\code{logical(1)} specifying whether the user accepts
 to the WeizMass license agreement or not.}
 
-\item{user}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
+\item{version}{For \code{WeizMassSource}: \code{character(1)} specifying the version
+(release) of the database to connect to.}
+
+\item{user}{For \code{WeizMassSource}: optional \code{character(1)} with the
 username to access the WeizMass database.}
 
-\item{pass}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
+\item{pass}{For \code{WeizMassSource}: optional \code{character(1)} with the
 password to access the WeizMass database.}
 
-\item{host}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
+\item{host}{For \code{WeizMassSource}: optional \code{character(1)} with the
 name (address) of the host with the WeizMass database.}
 
-\item{dbname}{For \code{RemoteWeizMassSource}: optional \code{character(1)} with the
-name of the database on the server.}
+\item{dbname}{For \code{WeizMassSource}: optional \code{character(1)} with the
+name of the database on the server. If \code{sqlite = TRUE} the file name
+of the SQLite database needs to be defined with this parameter.}
 
 \item{object}{A \code{SpectraDbSource} object.}
-
-\item{dbfile}{For \code{LocalWeizMassSource}: \code{character(1)} with the (SQLite)
-database file.}
 }
 \description{
 \code{SpectraDbSource} objects represent references to annotation databases that
@@ -59,17 +60,15 @@ from the reference (target) database.
 New \code{SpectraDbSource} objects should not be created manually, but using one
 of the constructor functions listed below. Functions are available for
 different annotation databases that provide also useful defaults simplifying
-thus access to these resources.
+access to these resources.
 \itemize{
-\item \code{RemoteWeizMassSource}: connects to a \emph{remote} WeizMass (MySQL) database
-hosted on a remote server. Parameter \code{user}, \code{pass}, \code{host} and \code{dbname}
-are optional and allow connection to a non-standard (default) WeizMass
-database (e.g. a local installation).
-For WeizMass databases, users have to agree to the WeizMass license by
-specifically setting parameter \code{IagreeToTheLicense} to \code{TRUE}.
-\item \code{LocalWeizMassSource}: connects to a \emph{local} WeizMass database available as
-a \emph{SQLite} database file. The database file has to be provided with the
-\code{dbfile} parameter.
+\item \code{WeizMassSource}: provides access to a WeizMass database. This database
+can be a SQLite database (in which case the \code{sqlite} parameter has to be
+set to \code{TRUE} and the database file has to be provided with the \code{dbname}
+parameter) or a (remote) WeizMass database. In the latter case the version
+of the resource has to be provided. Alternatively, using parameters \code{host},
+\code{dbname}, \code{user} and \code{pass} it is possible to connect to a custom location
+of a WeizMass database.
 For WeizMass databases, users have to agree to the WeizMass license by
 specifically setting parameter \code{IagreeToTheLicense} to \code{TRUE}.
 }

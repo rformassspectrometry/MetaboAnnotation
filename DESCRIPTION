@@ -43,7 +43,8 @@ Imports:
     SummarizedExperiment,
     QFeatures,
     graphics,
-    CompoundDb
+    CompoundDb,
+    DBI
 Suggests:
     testthat,
     knitr,

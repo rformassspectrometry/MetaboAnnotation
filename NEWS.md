@@ -5,6 +5,7 @@
 - Add `SpectraDbSource` allowing to define generic annotation resources for
   all resources that provide a `MsBackend` to access the data as a `Spectra`
   object.
+- Add `WeizMassSource` to allow connections to WeizMass databases.
 
 ## Changes in 1.1.4
 
