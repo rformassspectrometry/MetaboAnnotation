@@ -18,6 +18,7 @@
 \alias{whichQuery}
 \alias{$,Matched-method}
 \alias{colnames,Matched-method}
+\alias{scoreVariables}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
 \alias{filterMatches,Matched,missing-method}
@@ -70,6 +71,8 @@ whichQuery(object)
 \S4method{$}{Matched}(x, name)
 
 \S4method{colnames}{Matched}(x)
+
+scoreVariables(object)
 
 \S4method{matchedData}{Matched}(object, columns = colnames(object), ...)
 
@@ -311,10 +314,11 @@ above or strictly below a certain threshold (respectively when parameter
 the scores to be used for the filtering can be specified with parameter
 \code{column}. The default for \code{column} is \code{"score"}. Such variable is present
 in each \code{Matched} object. The name of other score variables (if present)
-can be provided. For example \code{column = "score_rt"} can be used to filter
-matches based on retention time scores for \code{Matched} objects returned
-by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a retention time
-comparison are used.
+can be provided (the names of all score variables can be obtained with
+\code{scoreVariables()} function). For example \code{column = "score_rt"} can be
+used to filter matches based on retention time scores for \code{Matched}
+objects returned by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a
+retention time comparison are used.
 }
 }
 \item \code{lapply}: applies a user defined function \code{FUN} to each subset of
@@ -367,6 +371,9 @@ columns \code{"query_idx"} (index of the element in \code{query}), \code{"target
 eventual additional columns.
 \item \code{target} returns the \emph{target} object.
 \item \code{query} returns the \emph{query} object.
+\item \code{scoreVariables} returns the names of the score variables stored in the
+\code{Matched} object (precisely the names of the variables in \code{matches(object)}
+containing the string "score" in their name ignoring the case).
 \item \code{whichTarget} returns an \code{integer} with the indices of the elements in
 \emph{target} that match at least one element in \emph{query}.
 \item \code{whichQuery} returns an \code{integer} with the indices of the elements in
