@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.5
+
+- `scoreVariables` function to return the names of the score variables in a
+  `Matched` object.
+
 ## Changes in 1.1.4
 
 - `matchSpectra`: support a `CompDb` with parameter `target`.
