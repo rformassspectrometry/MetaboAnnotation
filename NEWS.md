@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.5
+
+- Fix issues on BioC build machines.
+
 ## Changes in 1.1.4
 
 - `matchSpectra`: support a `CompDb` with parameter `target`.
