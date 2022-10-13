@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.1
 
+## Changes in 1.1.6
+
+- `scoreVariables` function to return the names of the score variables in a
+  `Matched` object.
+
 ## Changes in 1.1.5
 
 - Fix issues on BioC build machines.
