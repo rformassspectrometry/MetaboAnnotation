@@ -38,7 +38,7 @@ objects matches to only one of the assays within the object is supported."><meta
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,6 +137,8 @@ $(x, name)
 
 # S4 method for Matched
 colnames(x)
+
+scoreVariables(object)
 
 # S4 method for Matched
 matchedData(object, columns = colnames(object), ...)
@@ -429,10 +431,11 @@ above or strictly below a certain threshold (respectively when parameter
 the scores to be used for the filtering can be specified with parameter
 <code>column</code>. The default for <code>column</code> is <code>"score"</code>. Such variable is present
 in each <code>Matched</code> object. The name of other score variables (if present)
-can be provided. For example <code>column = "score_rt"</code> can be used to filter
-matches based on retention time scores for <code>Matched</code> objects returned
-by <code><a href="matchValues.html">matchValues()</a></code> when <code>param</code> objects involving a retention time
-comparison are used.</p></li>
+can be provided (the names of all score variables can be obtained with
+<code>scoreVariables()</code> function). For example <code>column = "score_rt"</code> can be
+used to filter matches based on retention time scores for <code>Matched</code>
+objects returned by <code><a href="matchValues.html">matchValues()</a></code> when <code>param</code> objects involving a
+retention time comparison are used.</p></li>
 </ul></li>
 </ul></li>
 <li><p><code>lapply</code>: applies a user defined function <code>FUN</code> to each subset of
@@ -484,6 +487,9 @@ columns <code>"query_idx"</code> (index of the element in <code>query</code>), <
 eventual additional columns.</p></li>
 <li><p><code>target</code> returns the <em>target</em> object.</p></li>
 <li><p><code>query</code> returns the <em>query</em> object.</p></li>
+<li><p><code>scoreVariables</code> returns the names of the score variables stored in the
+<code>Matched</code> object (precisely the names of the variables in <code>matches(object)</code>
+containing the string "score" in their name ignoring the case).</p></li>
 <li><p><code>whichTarget</code> returns an <code>integer</code> with the indices of the elements in
 <em>target</em> that match at least one element in <em>query</em>.</p></li>
 <li><p><code>whichQuery</code> returns an <code>integer</code> with the indices of the elements in

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,11 +50,16 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1" id="metaboannotation-11">MetaboAnnotation 1.1<a class="anchor" aria-label="anchor" href="#metaboannotation-11"></a></h2>
 <div class="section level3">
-<h3 id="changes-in-1-1">Changes in 1.1.5<a class="anchor" aria-label="anchor" href="#changes-in-1-1"></a></h3>
+<h3 id="changes-in-1-1">Changes in 1.1.6<a class="anchor" aria-label="anchor" href="#changes-in-1-1"></a></h3>
+<ul><li>
+<code>scoreVariables</code> function to return the names of the score variables in a <code>Matched</code> object.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changes-in-1-1-1">Changes in 1.1.5<a class="anchor" aria-label="anchor" href="#changes-in-1-1-1"></a></h3>
 <ul><li>Fix issues on BioC build machines.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-1-1-1">Changes in 1.1.4<a class="anchor" aria-label="anchor" href="#changes-in-1-1-1"></a></h3>
+<h3 id="changes-in-1-1-2">Changes in 1.1.4<a class="anchor" aria-label="anchor" href="#changes-in-1-1-2"></a></h3>
 <ul><li>
 <code>matchSpectra</code>: support a <code>CompDb</code> with parameter <code>target</code>.</li>
 <li>Add <code>CompAnnotionSource</code> classes to support definition of references to annotation resources.</li>
@@ -63,16 +68,16 @@
 <code>matchSpectra</code>: support for <code>CompDbSource</code> with parameter <code>target</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-1-1-2">Changes in 1.1.3<a class="anchor" aria-label="anchor" href="#changes-in-1-1-2"></a></h3>
+<h3 id="changes-in-1-1-3">Changes in 1.1.3<a class="anchor" aria-label="anchor" href="#changes-in-1-1-3"></a></h3>
 <ul><li>Extend <code>filterMatches</code> framework (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/86" class="external-link">#86</a>). <code>ScoreThresholdParam</code> added to perform filtering the matches based on a threshold for the scores.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-1-1-3">Changes in 1.1.2<a class="anchor" aria-label="anchor" href="#changes-in-1-1-3"></a></h3>
+<h3 id="changes-in-1-1-4">Changes in 1.1.2<a class="anchor" aria-label="anchor" href="#changes-in-1-1-4"></a></h3>
 <ul><li>
 <code>lapply</code> and <code>endoapply</code> methods (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/84" class="external-link">#84</a>). <code>lapply</code> allows to apply any function to each subset of matches for each <code>query</code> element and returns the corresponding <code>list</code> of results. <code>endoapply</code> is similar but applies a function returning a <code>Matched</code> and returns a <code>Matched</code> representing updated matches.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changes-in-1-1-4">Changes in 1.1.1<a class="anchor" aria-label="anchor" href="#changes-in-1-1-4"></a></h3>
+<h3 id="changes-in-1-1-5">Changes in 1.1.1<a class="anchor" aria-label="anchor" href="#changes-in-1-1-5"></a></h3>
 <ul><li>Extend <code>filterMatches</code> framework (issue <a href="https://github.com/rformassspectrometry/MetaboAnnotation/issues/81" class="external-link">#81</a>). <code>SelectMatchesParam</code> and <code>TopRankedMatchesParam</code> added to perform respectively manual filtering and keeping only the best ranked matches for each <code>query</code> element.</li>
 </ul></div>
 </div>
