@@ -32,11 +32,16 @@ test_that("matchSpectra,Spectra,CompDbSource works", {
     expect_s4_class(target(res)@backend, "MsBackendDataFrame")
     expect_true(length(target(res)) == 0)
 
-    qry <- Spectra(CompoundDb::CompDb(fl))[3]
-    res <- matchSpectra(qry, src, param = CompareSpectraParam())
-    expect_true(length(target(res)) == 4)
-    expect_equal(MetaboAnnotation::matches(res)$target_idx, 1:4)
-    expect_s4_class(target(res)@backend, "MsBackendDataFrame")
+    library(CompoundDb)
+    library(BiocParallel)
+    register(SerialParam())
+    if (file.exists(fl)) {
+        qry <- Spectra(CompoundDb::CompDb(fl))[3]
+        res <- matchSpectra(qry, src, param = CompareSpectraParam())
+        expect_true(length(target(res)) == 4)
+        expect_equal(MetaboAnnotation::matches(res)$target_idx, 1:4)
+        expect_s4_class(target(res)@backend, "MsBackendDataFrame")
+    }
 })
 
 test_that("MassBankSource works with AnnotationHub", {
