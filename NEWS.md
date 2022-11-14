@@ -1,11 +1,26 @@
-# MetaboAnnotation 1.1
+# MetaboAnnotation 1.3
 
-## Changes in 1.1.5
+## Changes in 1.3.1
 
 - Add `SpectraDbSource` allowing to define generic annotation resources for
   all resources that provide a `MsBackend` to access the data as a `Spectra`
   object.
 - Add `WeizMassSource` to allow connections to WeizMass databases.
+
+## Changes in 1.3.0
+
+- Bioconductor 3.17 developmental version.
+
+# MetaboAnnotation 1.1
+
+## Changes in 1.1.6
+
+- `scoreVariables` function to return the names of the score variables in a
+  `Matched` object.
+
+## Changes in 1.1.5
+
+- Fix issues on BioC build machines.
 
 ## Changes in 1.1.4
 

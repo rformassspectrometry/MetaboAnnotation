@@ -92,10 +92,11 @@
 #'     the scores to be used for the filtering can be specified with parameter
 #'     `column`. The default for `column` is `"score"`. Such variable is present
 #'     in each `Matched` object. The name of other score variables (if present)
-#'     can be provided. For example `column = "score_rt"` can be used to filter
-#'     matches based on retention time scores for `Matched` objects returned
-#'     by [matchValues()] when `param` objects involving a retention time
-#'     comparison are used.
+#'     can be provided (the names of all score variables can be obtained with
+#'     `scoreVariables()` function). For example `column = "score_rt"` can be
+#'     used to filter matches based on retention time scores for `Matched`
+#'     objects returned by [matchValues()] when `param` objects involving a
+#'     retention time comparison are used.
 #'
 #' - `lapply`: applies a user defined function `FUN` to each subset of
 #'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
@@ -151,6 +152,10 @@
 #' - `target` returns the *target* object.
 #'
 #' - `query` returns the *query* object.
+#'
+#' - `scoreVariables` returns the names of the score variables stored in the
+#'   `Matched` object (precisely the names of the variables in `matches(object)`
+#'   containing the string "score" in their name ignoring the case).
 #'
 #' - `whichTarget` returns an `integer` with the indices of the elements in
 #'   *target* that match at least one element in *query*.
@@ -698,6 +703,14 @@ setMethod("colnames", "Matched", function(x) {
   .colnames(.objectToMatch(x@query, x@queryAssay),
             .objectToMatch(x@target, x@targetAssay), x@matches)
 })
+
+#' @rdname Matched
+#'
+#' @export
+scoreVariables <- function(object) {
+    matchescols <- colnames(object@matches)
+    matchescols[grep("score", matchescols, ignore.case = TRUE)]
+}
 
 #' @importMethodsFrom S4Vectors cbind
 #'

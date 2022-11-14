@@ -1109,3 +1109,17 @@ test_that("lapply,Matched works", {
     expect_identical(length(res), length(mo))
     expect_true(all(unlist(res) < 0.75))
 })
+
+test_that("scoreVariables,Matched works", {
+
+    expect_identical(scoreVariables(Matched()), "score")
+
+    mo <- Matched(query = 1:5, target = 1:6,
+                  matches = data.frame(query_idx = 1:5,
+                                       target_idx = 1:5,
+                                       score = 1:5,
+                                       Score2 = 1:5,
+                                       thirdscore = 1:5,
+                                       other = letters[1:5]))
+    expect_identical(scoreVariables(mo), c("score", "Score2", "thirdscore"))
+})
