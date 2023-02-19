@@ -1,3 +1,11 @@
+# MetaboAnnotation 1.3
+
+## Changes in 1.3.1
+
+- Small changes in `matchSpectra` to avoid unnecessary object creation.
+- Use `backendBpparam` to disable parallel processing of `matchSpectra` if the
+  backend does not support it.
+
 # MetaboAnnotation 1.1
 
 ## Changes in 1.1.6

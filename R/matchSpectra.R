@@ -315,10 +315,10 @@ CompareSpectraParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
                                 requirePrecursorPeak = FALSE,
                                 THRESHFUN = function(x) which(x >= 0.7),
                                 toleranceRt = Inf, percentRt = 0, ...) {
-    new("CompareSpectraParam", MAPFUN = MAPFUN, tolerance = tolerance,
-        ppm = ppm, FUN = FUN, requirePrecursor = requirePrecursor[1L],
+    new("CompareSpectraParam", MAPFUN = force(MAPFUN), tolerance = tolerance,
+        ppm = ppm, FUN = force(FUN), requirePrecursor = requirePrecursor[1L],
         requirePrecursorPeak = requirePrecursorPeak[1L],
-        THRESHFUN = THRESHFUN, toleranceRt = toleranceRt,
+        THRESHFUN = force(THRESHFUN), toleranceRt = toleranceRt,
         percentRt = percentRt, dots = list(...))
 }
 
@@ -371,6 +371,8 @@ MatchForwardReverseParam <- function(MAPFUN = joinPeaks, tolerance = 0, ppm = 5,
 
 #' @importMethodsFrom Spectra spectraNames containsMz filterPrecursorMzRange
 #'
+#' @importMethodsFrom Spectra backendBpparam
+#'
 #' @rdname CompareSpectraParam
 #'
 #' @export
@@ -379,6 +381,7 @@ setMethod(
     signature(query = "Spectra", target = "Spectra",
               param = "CompareSpectraParam"),
     function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+        BPPARAM <- .check_bpparam(query, target, BPPARAM)
         if (length(query) == 1 || param@requirePrecursor ||
             param@requirePrecursorPeak || any(is.finite(param@toleranceRt)) ||
             any(param@percentRt != 0)) {
@@ -388,6 +391,17 @@ setMethod(
         }
         else .match_spectra_without_precursor(query, target, param)
     })
+
+#' Returns SerialParam if any of the backends does not support parallel
+#' processing.
+#'
+#' @noRd
+.check_bpparam <- function(query, target, BPPARAM) {
+    BPPARAM <- backendBpparam(query, BPPARAM)
+    if (!is(BPPARAM, "SerialParam"))
+        BPPARAM <- backendBpparam(target, BPPARAM)
+    BPPARAM
+}
 
 #' @importClassesFrom CompoundDb CompDb
 #'
@@ -426,10 +440,12 @@ setMethod(
                                          percentRt = percentRt,
                                          sn = snames)
     }
-    maps <- do.call(rbind, res)
-    res <- MatchedSpectra(query, target, maps)
-    res@metadata <- list(param = param)
-    res
+    maps <- do.call(rbind.data.frame, res)
+    if (!nrow(maps))
+        maps <- data.frame(query_idx = integer(), target_idx = integer(),
+                           score = numeric())
+    .matched_spectra(query = query, target = target, matches = maps,
+                     metadata = list(param = param), validate = FALSE)
 }
 
 .match_spectra_parallel <- function(query, target, param, BPPARAM) {
@@ -457,10 +473,13 @@ setMethod(
                      toleranceRt = toleranceRt,
                      percentRt = percentRt,
                      sn = snames, BPPARAM = BPPARAM)
-    maps <- do.call(rbind, maps)
-    res <- MatchedSpectra(query, target, maps)
-    res@metadata <- list(param = param)
-    res
+    maps <- do.call(rbind.data.frame, maps)
+    if (!nrow(maps))
+        maps <- data.frame(query_idx = integer(),
+                           target_idx = integer(),
+                           score = numeric())
+    .matched_spectra(query = query, target = target, matches = maps,
+                     metadata = list(param = param), validate = FALSE)
 }
 
 #' This version does not use a loop but performs the comparison all in one. It
@@ -481,12 +500,14 @@ setMethod(
     }
     else maps <- data.frame(query_idx = integer(), target_idx = integer(),
                             score = numeric())
-    res <- MatchedSpectra(query, target, maps)
-    res@metadata <- list(param = param)
-    res
+    .matched_spectra(query = query, target = target, matches = maps,
+                     metadata = list(param = param), validate = FALSE)
 }
 
 #' @importMethodsFrom Spectra filterRt rtime
+#'
+#' @return `data.frame` with matches or `NULL` (if not matches passed the
+#'     filter).
 #'
 #' @noRd
 .get_matches_spectra <- function(i, query, target, parlist, THRESHFUN, precMz,
@@ -515,14 +536,16 @@ setMethod(
                           target_idx = integer(),
                           score = numeric()))
     cor <- base::do.call(compareSpectra,
-                         c(list(x = qi, y = target), parlist))
-    keep <- THRESHFUN(cor)
+                         c(list(x = qi, y = target, SIMPLIFY = FALSE), parlist))
+    keep <- THRESHFUN(as.vector(cor))
     if (is.logical(keep))
         keep <- which(keep)
     kl <- length(keep)
-    data.frame(query_idx = rep(i, kl),
-               target_idx = match(spectraNames(target)[keep], sn),
-               score = cor[keep])
+    if (kl)
+        data.frame(query_idx = rep(i, kl),
+                   target_idx = match(spectraNames(target)[keep], sn),
+                   score = cor[keep])
+    else NULL
 }
 
 #' @rdname CompareSpectraParam

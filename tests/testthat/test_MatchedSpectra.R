@@ -29,6 +29,18 @@ test_that("MatchedSpectra works", {
     expect_true(is(target(ms), "Spectra"))
     expect_equal(whichQuery(ms), c(1L, 2L, 4L))
     expect_equal(whichTarget(ms), c(2L, 5L, 8L, 12L, 15L))
+
+    ms <- .matched_spectra(
+        sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),
+                                       target_idx = c(2L, 5L, 2L, 8L, 12L, 15L),
+                                       score = 1:6))
+    expect_true(validObject(ms))
+    expect_true(length(ms) == 10)
+    expect_output(show(ms), "5 matched")
+    expect_true(is(query(ms), "Spectra"))
+    expect_true(is(target(ms), "Spectra"))
+    expect_equal(whichQuery(ms), c(1L, 2L, 4L))
+    expect_equal(whichTarget(ms), c(2L, 5L, 8L, 12L, 15L))
 })
 
 test_that(".subset_matches_nodim and [ works", {
