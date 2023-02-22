@@ -19,6 +19,9 @@
 #' with the reference or connection information to a supported annotation
 #' resource).
 #'
+#' Some notes on performance and information on parallel processing are
+#' provided in the vignette.
+#'
 #' Currently supported parameter objects defining the matching are:
 #'
 #' - `CompareSpectraParam`: the *generic* parameter object allowing to set all
@@ -70,7 +73,7 @@
 #'
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
 #'   `BiocParallel` package for more information). Parallel processing is
-#'   disabled by default.
+#'   disabled by default (with the default setting `BPPARAM = SerialParam()`).
 #'
 #' @param FUN `function` used to calculate similarity between spectra. Defaults
 #'   for `CompareSpectraParam` to [MsCoreUtils::ndotproduct()]. See
@@ -384,11 +387,8 @@ setMethod(
         BPPARAM <- .check_bpparam(query, target, BPPARAM)
         if (length(query) == 1 || param@requirePrecursor ||
             param@requirePrecursorPeak || any(is.finite(param@toleranceRt)) ||
-            any(param@percentRt != 0)) {
-            if (is(BPPARAM, "SerialParam"))
-                .match_spectra(query, target, param)
-            else .match_spectra_parallel(query, target, param, BPPARAM)
-        }
+            any(param@percentRt != 0))
+            .match_spectra(query, target, param, BPPARAM)
         else .match_spectra_without_precursor(query, target, param)
     })
 
@@ -415,40 +415,7 @@ setMethod(
         matchSpectra(query, Spectra(target), param = param, BPPARAM = BPPARAM)
     })
 
-.match_spectra <- function(query, target, param) {
-    parms <- .compare_spectra_parms_list(param)
-    queryl <- length(query)
-    toleranceRt <- param@toleranceRt
-    percentRt <- param@percentRt
-    if (length(toleranceRt) == 1L)
-        toleranceRt <- rep(toleranceRt, queryl)
-    if (length(percentRt) == 1L)
-        percentRt <- rep(percentRt, queryl)
-    if (length(percentRt) != queryl || length(toleranceRt) != queryl)
-        stop("Length of 'toleranceRt' and 'percentRt' has to be either 1 or ",
-             "equal to the number of query spectra")
-    if (is.null(spectraNames(target)))
-        spectraNames(target) <- seq_along(target)
-    snames <- spectraNames(target)
-    res <- vector("list", queryl)
-    for (i in seq_len(queryl)) {
-        res[[i]] <- .get_matches_spectra(i, query, target, parms,
-                                         param@THRESHFUN,
-                                         param@requirePrecursor,
-                                         param@requirePrecursorPeak,
-                                         toleranceRt = toleranceRt,
-                                         percentRt = percentRt,
-                                         sn = snames)
-    }
-    maps <- do.call(rbind.data.frame, res)
-    if (!nrow(maps))
-        maps <- data.frame(query_idx = integer(), target_idx = integer(),
-                           score = numeric())
-    .matched_spectra(query = query, target = target, matches = maps,
-                     metadata = list(param = param), validate = FALSE)
-}
-
-.match_spectra_parallel <- function(query, target, param, BPPARAM) {
+.match_spectra <- function(query, target, param, BPPARAM) {
     parms <- .compare_spectra_parms_list(param)
     queryl <- length(query)
     toleranceRt <- param@toleranceRt
@@ -532,9 +499,7 @@ setMethod(
                                 ppm = parlist$ppm,
                                 tolerance = parlist$tolerance)]
     if (!length(target))
-        return(data.frame(query_idx = integer(),
-                          target_idx = integer(),
-                          score = numeric()))
+        return(NULL)
     cor <- base::do.call(compareSpectra,
                          c(list(x = qi, y = target, SIMPLIFY = FALSE), parlist))
     keep <- THRESHFUN(as.vector(cor))
@@ -543,7 +508,7 @@ setMethod(
     kl <- length(keep)
     if (kl)
         data.frame(query_idx = rep(i, kl),
-                   target_idx = match(spectraNames(target)[keep], sn),
+                   target_idx = base::match(spectraNames(target)[keep], sn),
                    score = cor[keep])
     else NULL
 }

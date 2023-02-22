@@ -44,27 +44,21 @@ test_that(".compare_spectra, .compare_spectra_without_precursor work", {
 
     res <- .match_spectra(pest_ms2, minimb, prm)
     res_2 <- .match_spectra_without_precursor(pest_ms2, minimb, prm)
-    res_3 <- .match_spectra_parallel(pest_ms2, minimb, prm, SerialParam())
     expect_equal(res@matches, res_2@matches)
-    expect_equal(res@matches, res_3@matches)
 
     ## returns integer.
     prm <- CompareSpectraParam(requirePrecursor = FALSE,
                                THRESHFUN = function(x) which.max(x))
     res <- .match_spectra(pest_ms2, minimb, prm)
     res_2 <- .match_spectra_without_precursor(pest_ms2, minimb, prm)
-    res_3 <- .match_spectra_parallel(pest_ms2, minimb, prm, SerialParam())
     expect_equal(res@matches, res_2@matches)
-    expect_equal(res@matches, res_3@matches)
 
     ## no matches
     prm <- CompareSpectraParam(requirePrecursor = FALSE,
                                THRESHFUN = function (x) which(x > 20))
     res <- MetaboAnnotation:::.match_spectra(pest_ms2, minimb, prm)
     res_2 <- MetaboAnnotation:::.match_spectra_without_precursor(pest_ms2, minimb, prm)
-    res_3 <- MetaboAnnotation:::.match_spectra_parallel(pest_ms2, minimb, prm, SerialParam())
     expect_equal(res@matches, res_2@matches)
-    expect_equal(res@matches, res_3@matches)
 })
 
 test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
