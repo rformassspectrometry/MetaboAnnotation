@@ -54,7 +54,8 @@ Suggests:
     shiny,
     shinyjs,
     DT,
-    AnnotationHub
+    AnnotationHub,
+    microbenchmark
 Enhances:
     RMariaDB,
     RSQLite

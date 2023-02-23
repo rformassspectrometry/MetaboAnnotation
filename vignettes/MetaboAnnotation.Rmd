@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub}
+  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub,microbenchmark}
 bibliography: references.bib
 ---
 
@@ -392,9 +392,8 @@ considers spectra with a similarity score higher than 0.7 as *matching* and
 these are thus reported.
 
 ```{r}
-mtches <- matchSpectra(pest_ms2, minimb,
-                       param = CompareSpectraParam(requirePrecursor = TRUE,
-                                                   ppm = 10))
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10)
+mtches <- matchSpectra(pest_ms2, minimb, param = csp)
 mtches
 ```
 
@@ -551,9 +550,9 @@ analysis defining a `THRESHFUN` that selects always the best match.
 select_top_match <- function(x) {
     which.max(x)
 }
-csp <- CompareSpectraParam(ppm = 10, requirePrecursor = FALSE,
-                           THRESHFUN = select_top_match)
-mtches <- matchSpectra(pest_ms2, minimb, param = csp)
+csp2 <- CompareSpectraParam(ppm = 10, requirePrecursor = FALSE,
+                            THRESHFUN = select_top_match)
+mtches <- matchSpectra(pest_ms2, minimb, param = csp2)
 res <- spectraData(mtches, columns = c("spectrum_id", "target_spectrum_id",
                                        "target_compound_name", "score"))
 as.data.frame(res)
@@ -570,7 +569,6 @@ Matches can be also further validated using an interactive Shiny app by calling
 be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
-
 
 ### Query against multiple reference databases
 
@@ -646,6 +644,61 @@ And the names of the compounds with matching fragment spectra.
 ```{r}
 matchedData(res)$target_name
 ```
+
+
+### Performance and parallel processing
+
+Pre-filtering the target spectra based on similar precursor m/z (using
+`requirePrecursor = TRUE` generally speeds up the call because a spectra
+comparison needs only to be performed on subsets of target spectra. Performance
+of the `matchSpectra` function depends however also on the backend used for the
+query and target `Spectra`. For some backends the peaks data (i.e. m/z and
+intensity values) might not be already loaded into memory and hence spectra
+comparisons might be slower because that data needs to be first loaded. As an
+example, for `Spectra` objects, such as our `pest_ms2` variable, that use the
+`MsBackendMzR`backend, the peaks data needs to be loaded from the raw data files
+before the spectra similarity scores can be calculated. Changing the backend to
+an in-memory data representation before `matchSpectra` can thus improve the
+performance (at the cost of a higher memory demand).
+
+Below we change the backends of the `pest_ms2` and `minimb` objects to
+`MsBackendMemory` which keeps all data (spectra and peaks data) in memory and we
+compare the performance against the originally used `MsBackendMzR` (for
+`pest_ms2`) and `MsBackendDataFrame` (for `minimb`).
+
+```{r}
+pest_ms2_mem <- setBackend(pest_ms2, MsBackendMemory())
+minimb_mem <- setBackend(minimb, MsBackendMemory())
+library(microbenchmark)
+microbenchmark(compareSpectra(pest_ms2, minimb, param = csp),
+               compareSpectra(pest_ms2_mem, minimb_mem, param = csp),
+               times = 5)
+```
+
+There is a considerable performance gain by using the `MsBackendMemory` over the
+two other backends, that comes however at the cost of a higher memory
+demand. Thus, for large data sets (or reference libraries) this might not be an
+option. See also [issue
+#93](https://github.com/rformassspectrometry/MetaboAnnotation/issues/93) in the
+`MetaboAnnotation` github repository for more benchmarks and information on
+performance of `matchSpectra`.
+
+If for `target` a `Spectra` using a SQL database-based backend is used (such as
+a `MsBackendMassbankSql`, `MsBackendCompDb` or `MsBackendSql`) and spectra
+matching is performed with `requirePrecursorMz = TRUE`, simply *caching* the
+precursor m/z values of all target spectra in memory improves the performance of
+`matchSpectra` considerably. This can be easily done with e.g.
+`target_sps$precursorMz <- precursorMz(target_sps)` where `target_sps` is the
+`Spectra` object that uses one of the above mentioned backends. With this call
+all precursor m/z values will be cached within `target_sps` and any
+`precursorMz(target_sps)` call (which is used by `matchSpectra` to select the
+candidate spectra against which to compare a query spectrum) will not require
+a separate SQL call.
+
+Parallel processing can also improve performance, but might not be possible for
+all backends. In particular, backends based on SQL databases don't allow
+parallel processing because the database connection can not be shared across
+different processes.
 
 
 # Session information {-}
