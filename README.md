@@ -2,7 +2,7 @@
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check-bioc](https://github.com/RforMassSpectrometry/MetaboAnnotation/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RforMassSpectrometry/MetaboAnnotation/actions?query=workflow%3AR-CMD-check-bioc)
-[![codecov.io](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation/coverage.svg?branch=devel)](http://codecov.io/github/RforMassSpectrometry/MetaboAnnotation?branch=devel)
+[![codecov](https://codecov.io/gh/rformassspectrometry/MetaboAnnotation/branch/devel/graph/badge.svg?token=RLMRUJGOQD)](https://codecov.io/gh/rformassspectrometry/MetaboAnnotation)
 [![license](https://img.shields.io/badge/license-Artistic--2.0-brightgreen.svg)](https://opensource.org/licenses/Artistic-2.0)
 [![years in bioc](http://bioconductor.org/shields/years-in-bioc/MetaboAnnotation.svg)](https://bioconductor.org/packages/release/bioc/html/MetaboAnnotation.html)
 [![Ranking by downloads](http://bioconductor.org/shields/downloads/release/MetaboAnnotation.svg)](https://bioconductor.org/packages/stats/bioc/MetaboAnnotation/)
