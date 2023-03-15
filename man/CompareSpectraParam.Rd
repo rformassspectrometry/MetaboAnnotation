@@ -58,7 +58,7 @@ the target (reference) spectra to compare \code{query} against.}
 
 \item{BPPARAM}{for \code{matchSpectra}: parallel processing setup (see the
 \code{BiocParallel} package for more information). Parallel processing is
-disabled by default.}
+disabled by default (with the default setting \code{BPPARAM = SerialParam()}).}
 
 \item{MAPFUN}{\code{function} used to map peaks between the compared spectra.
 Defaults for \code{CompareSpectraParam} to \code{\link[=joinPeaks]{joinPeaks()}}. See
@@ -145,6 +145,9 @@ a \link{Spectra} object while \code{target} can be either a \link{Spectra} objec
 a \link{CompAnnotationSource} (e.g. a \code{\link[=CompDbSource]{CompDbSource()}})
 with the reference or connection information to a supported annotation
 resource).
+
+Some notes on performance and information on parallel processing are
+provided in the vignette.
 
 Currently supported parameter objects defining the matching are:
 \itemize{

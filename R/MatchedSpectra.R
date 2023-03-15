@@ -252,7 +252,22 @@ MatchedSpectra <- function(query = Spectra(), target = Spectra(),
                            matches = data.frame(query_idx = integer(),
                                                 target_idx = integer(),
                                                 score = numeric())) {
-    new("MatchedSpectra", query = query, target = target, matches = matches)
+    .matched_spectra(query = query, target = target, matches = matches)
+}
+
+.matched_spectra <- function(query = Spectra(), target = Spectra(),
+                             matches = data.frame(query_idx = integer(),
+                                                  target_idx = integer(),
+                                                  score = numeric()),
+                             metadata = list(), validate = TRUE) {
+    res <- new("MatchedSpectra")
+    slot(res, "query", check = FALSE) <- query
+    slot(res, "target", check = FALSE) <- target
+    slot(res, "matches", check = FALSE) <- matches
+    slot(res, "metadata", check = FALSE) <- metadata
+    if (validate)
+        validObject(res)
+    res
 }
 
 setValidity("MatchedSpectra", function(object) {
