@@ -142,7 +142,7 @@ retention times and m/z values, respectively.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -783,12 +783,12 @@ element.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target       score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;   &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  11.9998 0.000219906 18.325798</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 342.9995 0.000452455  1.319113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  22.9991 0.000909526 39.546185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 230.9998 0.000182970  0.792078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     query   target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12       NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 342.9995  0.000474677   1.38390</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  22.9995  0.000522058  22.69868</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 231.0008 -0.000751912   3.25502</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span></span>
 <span class="r-in"><span><span class="co">## only that the matching is performed on the object's `rowData`.</span></span></span>

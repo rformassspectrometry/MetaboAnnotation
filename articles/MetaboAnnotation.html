@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Wed Mar 15 09:37:59 2023</p>
+[ctb]<br><strong>Compiled</strong>: Mon Apr 3 09:01:40 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -734,7 +734,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Wed Mar 15 09:38:26 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Mon Apr  3 09:02:20 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1225,7 +1225,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Wed Mar 15 09:38:35 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Mon Apr  3 09:02:33 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1274,11 +1274,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr     min      lq     mean</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 67.2593 67.9097 69.23976</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 40.7599 41.3270 50.52762</span></span>
-<span><span class="co">##   median      uq     max neval</span></span>
-<span><span class="co">##  68.8900 70.8986 71.2412     5</span></span>
-<span><span class="co">##  41.9433 57.0508 71.5571     5</span></span></code></pre>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 78.8020 81.4730 86.77730</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 48.9098 50.6018 65.20918</span></span>
+<span><span class="co">##   median      uq      max neval</span></span>
+<span><span class="co">##  84.8251 92.6239  96.1625     5</span></span>
+<span><span class="co">##  55.3477 66.1143 105.0723     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1311,13 +1311,13 @@ connection can not be shared across different processes.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2023-03-09 r83957)</span></span>
+<pre><code><span><span class="co">## R Under development (unstable) (2023-03-16 r83996)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span></span>
 <span><span class="co">## Running under: Ubuntu 22.04.2 LTS</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Matrix products: default</span></span>
 <span><span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 </span></span>
-<span><span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## locale:</span></span>
 <span><span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></span>
@@ -1336,15 +1336,15 @@ connection can not be shared across different processes.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] microbenchmark_1.4.9        msdata_0.39.0              </span></span>
-<span><span class="co">##  [3] QFeatures_1.9.2             MultiAssayExperiment_1.25.7</span></span>
+<span><span class="co">##  [3] QFeatures_1.9.3             MultiAssayExperiment_1.25.7</span></span>
 <span><span class="co">##  [5] SummarizedExperiment_1.29.1 Biobase_2.59.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.51.4        GenomeInfoDb_1.35.15       </span></span>
-<span><span class="co">##  [9] IRanges_2.33.0              MatrixGenerics_1.11.0      </span></span>
-<span><span class="co">## [11] matrixStats_0.63.0-9003     Spectra_1.9.13             </span></span>
-<span><span class="co">## [13] ProtGenerics_1.31.0         BiocParallel_1.33.9        </span></span>
-<span><span class="co">## [15] S4Vectors_0.37.4            MetaboAnnotation_1.3.1     </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.51.4        GenomeInfoDb_1.35.16       </span></span>
+<span><span class="co">##  [9] IRanges_2.33.0              MatrixGenerics_1.11.1      </span></span>
+<span><span class="co">## [11] matrixStats_0.63.0-9003     Spectra_1.9.15             </span></span>
+<span><span class="co">## [13] ProtGenerics_1.31.0         BiocParallel_1.33.12       </span></span>
+<span><span class="co">## [15] S4Vectors_0.37.4            MetaboAnnotation_1.3.2     </span></span>
 <span><span class="co">## [17] AnnotationHub_3.7.3         BiocFileCache_2.7.2        </span></span>
-<span><span class="co">## [19] dbplyr_2.3.1                BiocGenerics_0.45.0        </span></span>
+<span><span class="co">## [19] dbplyr_2.3.2                BiocGenerics_0.45.3        </span></span>
 <span><span class="co">## [21] BiocStyle_2.27.1           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
@@ -1353,16 +1353,16 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##   [5] magrittr_2.0.3                clue_0.3-64                  </span></span>
 <span><span class="co">##   [7] compiler_4.3.0                RSQLite_2.3.0                </span></span>
 <span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.4            </span></span>
-<span><span class="co">##  [11] vctrs_0.5.2                   stringr_1.5.0                </span></span>
+<span><span class="co">##  [11] vctrs_0.6.1                   stringr_1.5.0                </span></span>
 <span><span class="co">##  [13] pkgconfig_2.0.3               MetaboCoreUtils_1.7.0        </span></span>
 <span><span class="co">##  [15] crayon_1.5.2                  fastmap_1.1.1                </span></span>
 <span><span class="co">##  [17] XVector_0.39.0                ellipsis_0.3.2               </span></span>
 <span><span class="co">##  [19] utf8_1.2.3                    promises_1.2.0.1             </span></span>
-<span><span class="co">##  [21] rmarkdown_2.20                ragg_1.2.5                   </span></span>
+<span><span class="co">##  [21] rmarkdown_2.21                ragg_1.2.5                   </span></span>
 <span><span class="co">##  [23] purrr_1.0.1                   bit_4.0.5                    </span></span>
-<span><span class="co">##  [25] xfun_0.37                     zlibbioc_1.45.0              </span></span>
+<span><span class="co">##  [25] xfun_0.38                     zlibbioc_1.45.0              </span></span>
 <span><span class="co">##  [27] cachem_1.0.7                  ChemmineR_3.51.1             </span></span>
-<span><span class="co">##  [29] jsonlite_1.8.4                blob_1.2.3                   </span></span>
+<span><span class="co">##  [29] jsonlite_1.8.4                blob_1.2.4                   </span></span>
 <span><span class="co">##  [31] highr_0.10                    later_1.3.0                  </span></span>
 <span><span class="co">##  [33] DelayedArray_0.25.0           interactiveDisplayBase_1.37.0</span></span>
 <span><span class="co">##  [35] cluster_2.1.4                 parallel_4.3.0               </span></span>
@@ -1374,14 +1374,14 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [47] httpuv_1.6.9                  tidyselect_1.2.0             </span></span>
 <span><span class="co">##  [49] yaml_2.3.7                    codetools_0.2-19             </span></span>
 <span><span class="co">##  [51] curl_5.0.0                    lattice_0.20-45              </span></span>
-<span><span class="co">##  [53] tibble_3.2.0                  withr_2.5.0                  </span></span>
+<span><span class="co">##  [53] tibble_3.2.1                  withr_2.5.0                  </span></span>
 <span><span class="co">##  [55] shiny_1.7.4                   KEGGREST_1.39.0              </span></span>
 <span><span class="co">##  [57] evaluate_0.20                 desc_1.4.2                   </span></span>
-<span><span class="co">##  [59] xml2_1.3.3                    Biostrings_2.67.0            </span></span>
-<span><span class="co">##  [61] pillar_1.8.1                  BiocManager_1.30.20          </span></span>
+<span><span class="co">##  [59] xml2_1.3.3                    Biostrings_2.67.2            </span></span>
+<span><span class="co">##  [61] pillar_1.9.0                  BiocManager_1.30.20          </span></span>
 <span><span class="co">##  [63] filelock_1.0.2                DT_0.27                      </span></span>
 <span><span class="co">##  [65] ncdf4_1.21                    generics_0.1.3               </span></span>
-<span><span class="co">##  [67] rprojroot_2.0.3               RCurl_1.98-1.10              </span></span>
+<span><span class="co">##  [67] rprojroot_2.0.3               RCurl_1.98-1.12              </span></span>
 <span><span class="co">##  [69] BiocVersion_3.17.1            ggplot2_3.4.1                </span></span>
 <span><span class="co">##  [71] munsell_0.5.0                 scales_1.2.1                 </span></span>
 <span><span class="co">##  [73] xtable_1.8-4                  glue_1.6.2                   </span></span>
@@ -1389,14 +1389,14 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [77] mzR_2.33.0                    fs_1.6.1                     </span></span>
 <span><span class="co">##  [79] grid_4.3.0                    MsCoreUtils_1.11.5           </span></span>
 <span><span class="co">##  [81] AnnotationDbi_1.61.2          colorspace_2.1-0             </span></span>
-<span><span class="co">##  [83] GenomeInfoDbData_1.2.9        cli_3.6.0                    </span></span>
+<span><span class="co">##  [83] GenomeInfoDbData_1.2.10       cli_3.6.1                    </span></span>
 <span><span class="co">##  [85] rappdirs_0.3.3                textshaping_0.3.6            </span></span>
 <span><span class="co">##  [87] rsvg_2.4.0                    fansi_1.0.4                  </span></span>
-<span><span class="co">##  [89] dplyr_1.1.0                   AnnotationFilter_1.23.0      </span></span>
-<span><span class="co">##  [91] gtable_0.3.1                  sass_0.4.5                   </span></span>
+<span><span class="co">##  [89] dplyr_1.1.1                   AnnotationFilter_1.23.0      </span></span>
+<span><span class="co">##  [91] gtable_0.3.3                  sass_0.4.5                   </span></span>
 <span><span class="co">##  [93] digest_0.6.31                 rjson_0.2.21                 </span></span>
-<span><span class="co">##  [95] htmlwidgets_1.6.1             memoise_2.0.1                </span></span>
-<span><span class="co">##  [97] htmltools_0.5.4               pkgdown_2.0.7.9000           </span></span>
+<span><span class="co">##  [95] htmlwidgets_1.6.2             memoise_2.0.1                </span></span>
+<span><span class="co">##  [97] htmltools_0.5.5               pkgdown_2.0.7.9000           </span></span>
 <span><span class="co">##  [99] lifecycle_1.0.3               httr_1.4.5                   </span></span>
 <span><span class="co">## [101] CompoundDb_1.3.3              mime_0.12                    </span></span>
 <span><span class="co">## [103] bit64_4.0.5                   MASS_7.3-58.3</span></span></code></pre>
