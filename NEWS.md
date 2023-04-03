@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.3
 
+## Changes in 1.3.2
+
+- Add `mzR` as suggested package to ensure package vignettes can be built.
+
 ## Changes in 1.3.1
 
 - Small changes in `matchSpectra` to avoid unnecessary object creation.
