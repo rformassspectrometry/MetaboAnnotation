@@ -17,18 +17,12 @@ function provides high-level functions to simplify matching of LC-MS/MS spectra
 against spectral libraries and objects and functionality to represent and manage
 such matched data.
 
+For more information see the package
+[homepage](https://rformassspectrometry.github.io/MetaboAnnotation).
 
 # Contributions
 
-Contributions are generally welcome, but should follow the [contribution
+Contributions are highly welcome and should follow the [contribution
 guidelines](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions).
 Also, please check the coding style guidelines in the [RforMassSpectrometry
 vignette](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html).
-
-
-## Authors and Contributors
-
-- Andrea Vicini
-- Michael Witting
-- Johannes Rainer
-- Carolin Huber
