@@ -783,12 +783,12 @@ element.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  12.0000  3.55419e-05  2.961836</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 343.0001 -1.05399e-04  0.307285</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  22.9989  1.08730e-03 47.276300</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 230.9996  3.76805e-04  1.631192</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     query   target       score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;   &lt;AsIs&gt;   &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12       NA          NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 342.9998 0.000245960  0.717084</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  22.9991 0.000941839 40.951198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 230.9986 0.001387610  6.007007</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span></span>
 <span class="r-in"><span><span class="co">## only that the matching is performed on the object's `rowData`.</span></span></span>
