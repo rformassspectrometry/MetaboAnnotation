@@ -40,11 +40,29 @@ MatchForwardReverseParam(
   ...
 )
 
-\S4method{matchSpectra}{Spectra,Spectra,CompareSpectraParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+\S4method{matchSpectra}{Spectra,Spectra,CompareSpectraParam}(
+  query,
+  target,
+  param,
+  rtColname = c("rtime", "rtime"),
+  BPPARAM = BiocParallel::SerialParam()
+)
 
-\S4method{matchSpectra}{Spectra,CompDb,Param}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+\S4method{matchSpectra}{Spectra,CompDb,Param}(
+  query,
+  target,
+  param,
+  rtColname = c("rtime", "rtime"),
+  BPPARAM = BiocParallel::SerialParam()
+)
 
-\S4method{matchSpectra}{Spectra,Spectra,MatchForwardReverseParam}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+\S4method{matchSpectra}{Spectra,Spectra,MatchForwardReverseParam}(
+  query,
+  target,
+  param,
+  rtColname = c("rtime", "rtime"),
+  BPPARAM = BiocParallel::SerialParam()
+)
 }
 \arguments{
 \item{query}{for \code{matchSpectra}: \link{Spectra} object with the query spectra.}
@@ -124,6 +142,12 @@ to the \code{\link[=compareSpectra]{compareSpectra()}} call.}
 \item{THRESHFUN_REVERSE}{for \code{MatchForwardReverseParam}: optional additional
 \emph{thresholding function} to filter the results on the reverse score. If
 specified the same format than \code{THRESHFUN} is expected.}
+
+\item{rtColname}{\code{character(2)} with the name of the spectra variable
+containing the retention time information for compounds to be used in
+retention time matching (only used if \code{toleranceRt} is not \code{Inf}).
+It can also be \code{character(1)} if the two names are the same.
+Defaults to \code{rtColname = c("rtime", "rtime")}.}
 }
 \value{
 \code{matchSpectra} returns a \code{\link[=MatchedSpectra]{MatchedSpectra()}} object with the matching
@@ -258,6 +282,9 @@ csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
 mtches <- matchSpectra(pest_ms2, minimb, csp)
 mtches
 matches(mtches)
+
+## Note that parameter `rtColname` can be used to define different spectra
+## variables with retention time information (such as retention indices etc).
 
 ## A `CompDb` compound annotation database could also be used with
 ## parameter `target`. Below we load the test `CompDb` database from the
