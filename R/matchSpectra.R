@@ -117,6 +117,12 @@
 #'   availability of the precursor m/z in `query`, as no match will be reported
 #'   for query spectra with missing precursor m/z.
 #'
+#' @param rtColname `character(2)` with the name of the spectra variable
+#'     containing the retention time information for compounds to be used in
+#'     retention time matching (only used if `toleranceRt` is not `Inf`).
+#'     It can also be `character(1)` if the two names are the same.
+#'     Defaults to `rtColname = c("rtime", "rtime")`.
+#'
 #' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
 #'   [CompAnnotationSource] (such as [CompDbSource]) with
 #'   the target (reference) spectra to compare `query` against.
@@ -229,6 +235,9 @@
 #' mtches <- matchSpectra(pest_ms2, minimb, csp)
 #' mtches
 #' matches(mtches)
+#'
+#' ## Note that parameter `rtColname` can be used to define different spectra
+#' ## variables with retention time information (such as retention indices etc).
 #'
 #' ## A `CompDb` compound annotation database could also be used with
 #' ## parameter `target`. Below we load the test `CompDb` database from the
@@ -383,12 +392,13 @@ setMethod(
     "matchSpectra",
     signature(query = "Spectra", target = "Spectra",
               param = "CompareSpectraParam"),
-    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+    function(query, target, param, rtColname = c("rtime", "rtime"),
+             BPPARAM = BiocParallel::SerialParam()) {
         BPPARAM <- .check_bpparam(query, target, BPPARAM)
         if (length(query) == 1 || param@requirePrecursor ||
             param@requirePrecursorPeak || any(is.finite(param@toleranceRt)) ||
             any(param@percentRt != 0))
-            .match_spectra(query, target, param, BPPARAM)
+            .match_spectra(query, target, param, rtColname = rtColname, BPPARAM)
         else .match_spectra_without_precursor(query, target, param)
     })
 
@@ -411,11 +421,16 @@ setMethod(
 setMethod(
     "matchSpectra", signature(query = "Spectra", target = "CompDb",
                               param = "Param"),
-    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
-        matchSpectra(query, Spectra(target), param = param, BPPARAM = BPPARAM)
+    function(query, target, param, rtColname = c("rtime", "rtime"),
+             BPPARAM = BiocParallel::SerialParam()) {
+        matchSpectra(query, Spectra(target), param = param,
+                     rtColname = rtColname, BPPARAM = BPPARAM)
     })
 
-.match_spectra <- function(query, target, param, BPPARAM) {
+.match_spectra <- function(query, target, param,
+                           rtColname = c("rtime", "rtime"), BPPARAM) {
+    if (length(rtColname) != 2)
+        rtColname <- rep(rtColname[1L], 2)
     parms <- .compare_spectra_parms_list(param)
     queryl <- length(query)
     toleranceRt <- param@toleranceRt
@@ -439,6 +454,8 @@ setMethod(
                      precMzPeak = param@requirePrecursorPeak,
                      toleranceRt = toleranceRt,
                      percentRt = percentRt,
+                     query_rt_col = rtColname[1L],
+                     target_rt_col = rtColname[2L],
                      sn = snames, BPPARAM = BPPARAM)
     maps <- do.call(rbind.data.frame, maps)
     if (!nrow(maps))
@@ -471,7 +488,9 @@ setMethod(
                      metadata = list(param = param), validate = FALSE)
 }
 
-#' @importMethodsFrom Spectra filterRt rtime
+#' @importMethodsFrom Spectra filterRt rtime spectraData
+#'
+#' @importFrom MsCoreUtils between
 #'
 #' @return `data.frame` with matches or `NULL` (if not matches passed the
 #'     filter).
@@ -479,15 +498,19 @@ setMethod(
 #' @noRd
 .get_matches_spectra <- function(i, query, target, parlist, THRESHFUN, precMz,
                                  precMzPeak, toleranceRt = Inf,
-                                 percentRt = 0, sn) {
+                                 percentRt = 0, sn, query_rt_col = "rtime",
+                                 target_rt_col = "rtime") {
     qi <- query[i]
     if (is.finite(toleranceRt[i])) {
+        rt_qi <- spectraData(qi, query_rt_col)[, 1L]
         if (toleranceRt[i] == 0 && percentRt[i] == 0)
             trt <- 0.0000001
         else
-            trt <- toleranceRt[i] + rtime(qi) * percentRt[i] / 100
-        target <- filterRt(
-            target, rt = rtime(qi) + c(-trt, trt))
+            trt <- toleranceRt[i] + rt_qi * percentRt[i] / 100
+        if (target_rt_col != "rtime") {
+            rt_t <- spectraData(target, target_rt_col)[, 1L]
+            target <- target[between(rt_t, rt_qi + c(-trt, trt))]
+        } else target <- filterRt(target, rt = rt_qi + c(-trt, trt))
     }
     if (precMz) {
         pmz <- precursorMz(qi)
@@ -524,9 +547,10 @@ setMethod(
     "matchSpectra",
     signature(query = "Spectra", target = "Spectra",
               param = "MatchForwardReverseParam"),
-    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+    function(query, target, param, rtColname = c("rtime", "rtime"),
+             BPPARAM = BiocParallel::SerialParam()) {
         res <- matchSpectra(query, target, as(param, "CompareSpectraParam"),
-                            BPPARAM = BPPARAM)
+                            rtColname = rtColname, BPPARAM = BPPARAM)
         ## Loop over the matches and assign additional stuff...
         nm <- nrow(res@matches)
         res@matches$reverse_score <- rep(NA_real_, nm)
