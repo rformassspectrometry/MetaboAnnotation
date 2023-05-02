@@ -31,20 +31,21 @@ library(Spectra)
 
 # Introduction
 
-The `MetaboAnnotation` package defines high-level user functionality to support
-and facilitate annotation of MS-based metabolomics data [@rainer_modular_2022].
+The `r Biocpkg("MetaboAnnotation")` package defines high-level user
+functionality to support and facilitate annotation of MS-based metabolomics data
+[@rainer_modular_2022].
 
 
 # Installation
 
-The package can be installed with the `BiocManager` package. To
+The package can be installed with the *BiocManager* package. To
 install `BiocManager` use `install.packages("BiocManager")` and, after that,
 `BiocManager::install("MetaboAnnotation")` to install this package.
 
 
 # General description
 
-`MetaboAnnotation` provides a set of *matching* functions that allow comparison
+*MetaboAnnotation* provides a set of *matching* functions that allow comparison
 (and matching) between *query* and *target* entities. These entities can be
 chemical formulas, numeric values (e.g. m/z or retention times) or fragment
 spectra. The available matching functions are:
@@ -65,7 +66,7 @@ returned which streamlines and simplifies handling of the potential one-to-many
 # Example use cases
 
 The following sections illustrate example use cases of the functionality
-provided by the `MetaboAnnotation` package.
+provided by the *MetaboAnnotation* package.
 
 ```{r, message = FALSE}
 library(MetaboAnnotation)
@@ -81,9 +82,9 @@ analyzed in further downstream experiments and analyses.
 
 The following example loads the feature table from a lipidomics experiments and
 matches the measured m/z values against reference masses from LipidMaps. Below
-we use a `data.frame` as *reference* database, but a
-[`CompDb`](https://github.com/EuracBiomedicalResearch/CompoundDb) compound
-database instance would also be supported.
+we use a `data.frame` as *reference* database, but a `CompDb` compound database
+instance (as created by the `r Biocpkg("CompoundDb")` package) would also be
+supported.
 
 ```{r, message = FALSE}
 ms1_features <- read.table(system.file("extdata", "MS1_example.txt",
@@ -285,7 +286,7 @@ Subsetting the result object, to e.g. just matched elements will also subset the
 
 ```{r}
 matched_sub <- matched_features[whichQuery(matched_features)]
-query(matched_sub)
+MetaboAnnotation::query(matched_sub)
 ```
 
 A `QFeatures` object is essentially a container for several
@@ -558,17 +559,24 @@ res <- spectraData(mtches, columns = c("spectrum_id", "target_spectrum_id",
 as.data.frame(res)
 ```
 
-
 Note that this whole example would work on any `Spectra` object with MS2
 spectra. Such objects could also be extracted from an `xcms`-based LC-MS/MS data
 analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
-`r Biocpkg("xcms")` package. Also,
+`r Biocpkg("xcms")` package. Note also that retention times could in addition be
+considered in the matching by selecting a non-infinite value for the
+`toleranceRt` of any of the parameter classes. By default this uses the
+retention times provided by the query and target spectra (i.e. spectra variable
+`"rtime"`) but it is also possible to specify any other spectra variable for the
+additional retention time matching (e.g. retention indices instead of times)
+using the `rtColname` parameter of the `matchSpectra` function (see
+`?matchSpectra` help page for more information).
 
 Matches can be also further validated using an interactive Shiny app by calling
 `validateMatchedSpectra` on the `MatchedSpectra` object. Individual matches can
 be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
+
 
 ### Query against multiple reference databases
 

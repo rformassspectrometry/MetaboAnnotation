@@ -1,3 +1,11 @@
+# MetaboAnnotation 1.5
+
+## Changes in 1.5.1
+
+- Add possibility to select the spectra variable for retention time matching in
+  `matchSpectra` (issue
+  [#98](https://github.com/rformassspectrometry/MetaboAnnotation/issues/98)).
+
 # MetaboAnnotation 1.3
 
 ## Changes in 1.3.2
