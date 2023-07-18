@@ -492,11 +492,11 @@ replace the absolute spectra intensities with intensities relative to the
 maximum intensity of each spectrum.
 
 ```{r}
-scale_int <- function(x) {
+norm_int <- function(x,...) {
     x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"], na.rm = TRUE)
     x
 }
-mtches <- addProcessing(mtches, scale_int)
+mtches <- addProcessing(mtches, norm_int)
 plotSpectraMirror(mtches[2])
 ```
 
