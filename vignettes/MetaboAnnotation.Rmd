@@ -256,7 +256,8 @@ above as `rowData` and adding a `matrix` with random values as assay.
 library(SummarizedExperiment)
 
 se <- SummarizedExperiment(
-    assays = matrix(nrow = nrow(ms1_features), ncol = 4),
+    assays = matrix(rnorm(nrow(ms1_features) * 4), ncol = 4,
+                    dimnames = list(NULL, c("a", "b", "c", "d"))),
     rowData = ms1_features)
 ```
 

@@ -482,7 +482,8 @@ matchedData(res)
 ## the `xcms` package.
 library(SummarizedExperiment)
 se <- SummarizedExperiment(
-    assays = matrix(rnorm(12), nrow = 3, ncol = 4),
+    assays = matrix(rnorm(12), nrow = 3, ncol = 4,
+    dimnames = list(NULL, c("a", "b", "c", "d"))),
     rowData = fts)
 
 ## We can now perform the matching of this SummarizedExperiment against the
