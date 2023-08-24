@@ -13,7 +13,7 @@
 \alias{[,Matched,ANY,ANY,ANY-method}
 \alias{matches}
 \alias{target}
-\alias{query}
+\alias{query,Matched-method}
 \alias{whichTarget}
 \alias{whichQuery}
 \alias{$,Matched-method}
@@ -40,7 +40,7 @@ filterMatches(object, param, ...)
 
 matchedData(object, ...)
 
-endoapply(object, ...)
+endoapply(X, FUN, ...)
 
 Matched(
   query = list(),
@@ -61,7 +61,7 @@ matches(object)
 
 target(object)
 
-query(object)
+\S4method{query}{Matched}(x, pattern, ...)
 
 whichTarget(object)
 
@@ -117,9 +117,9 @@ ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
   isIndex = FALSE
 )
 
-\S4method{endoapply}{ANY}(object, FUN, ...)
+\S4method{endoapply}{ANY}(X, FUN, ...)
 
-\S4method{endoapply}{Matched}(object, FUN, ...)
+\S4method{endoapply}{Matched}(X, FUN, ...)
 
 \S4method{lapply}{Matched}(X, FUN, ...)
 }
@@ -130,6 +130,14 @@ ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
 
 \item{param}{for \code{filterMatches}: parameter object to select and customize
 the filtering procedure.}
+
+\item{X}{\code{Matched} object.}
+
+\item{FUN}{for \code{lapply} and \code{endoapply}: user defined \code{function} that takes a
+\code{Matched} object as a first parameter and possibly additional parameters
+(that need to be provided in the \code{lapply} or \code{endoapply} call. For lapply
+\code{FUN} can return any object while for \code{endoapply} it must return a
+\code{Matched} object.}
 
 \item{query}{object with the query elements.}
 
@@ -158,6 +166,8 @@ performed).}
 \item{j}{for \code{[}: ignored.}
 
 \item{drop}{for \code{[}: ignored.}
+
+\item{pattern}{for \code{query}: ignored.}
 
 \item{name}{for \code{$}: the name of the column (or variable) to extract.}
 
@@ -218,14 +228,6 @@ for the matches to add. If not specified, a \code{NA} will be used as score.}
 
 \item{isIndex}{for \code{addMatches}: specifies if \code{queryValue} and
 \code{targetValue} are expected to be vectors of indices.}
-
-\item{FUN}{for \code{lapply} and \code{endoapply}: user defined \code{function} that takes a
-\code{Matched} object as a first parameter and possibly additional parameters
-(that need to be provided in the \code{lapply} or \code{endoapply} call. For lapply
-\code{FUN} can return any object while for \code{endoapply} it must return a
-\code{Matched} object.}
-
-\item{X}{\code{Matched} object.}
 }
 \value{
 See individual method description above for details.

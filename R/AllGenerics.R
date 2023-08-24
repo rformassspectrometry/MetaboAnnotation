@@ -19,7 +19,7 @@ setGeneric("matchedData", function(object, ...)
 #' @rdname Matched
 #'
 #' @exportMethod endoapply
-setGeneric("endoapply", function(object, ...)
+setGeneric("endoapply", function(X, FUN, ...)
     standardGeneric("endoapply"))
 
 #' @title Spectral matching
