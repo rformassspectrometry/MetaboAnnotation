@@ -142,7 +142,7 @@ retention times and m/z values, respectively.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -783,12 +783,12 @@ element.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  12.0000 -3.60651e-05   3.00542</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 342.9998  2.11734e-04   0.61730</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  23.0004 -3.66115e-04  15.91781</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 231.0012 -1.19727e-03   5.18296</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     query   target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12       NA           NA        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 342.9993  0.000690232   2.01234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  22.9996  0.000385772  16.77297</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 231.0010 -0.000972021   4.20787</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span></span>
 <span class="r-in"><span><span class="co">## only that the matching is performed on the object's `rowData`.</span></span></span>
@@ -799,7 +799,8 @@ element.</p>
 <span class="r-in"><span><span class="co">## the `xcms` package.</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/RangedSummarizedExperiment-class.html" class="external-link">SummarizedExperiment</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span>, ncol <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    rowData <span class="op">=</span> <span class="va">fts</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## We can now perform the matching of this SummarizedExperiment against the</span></span></span>
@@ -846,14 +847,14 @@ element.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       150     [M+Na]+     1e-06 0.00440375</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## While `query` will return the full SummarizedExperiment.</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="Matched.html">query</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">query</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 3 4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metadata(0):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): ''</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rownames: NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rowData names(3): feature_id mz rt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> colnames: NULL</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> colnames(4): A B C D</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> colData names(0):</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## To illustrate use with a QFeatures object we first create a simple</span></span></span>
@@ -870,8 +871,6 @@ element.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     sweep</span>
 <span class="r-in"><span><span class="va">qf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>ions <span class="op">=</span> <span class="va">se</span>, compounds <span class="op">=</span> <span class="va">se</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>colData rownames and ExperimentList colnames are empty</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>An empty 'sampleMap' may cause unexpected behavior</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## We can perform the same matching as before, but need to specify which of</span></span></span>
 <span class="r-in"><span><span class="co">## the assays in the QFeatures should be used for the matching. Below we</span></span></span>
