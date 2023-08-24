@@ -1079,7 +1079,7 @@ test_that("endoapply,Matched works", {
     expect_identical(query(res), query(mo))
     expect_identical(target(res), target(mo))
     expect_true(all(res$target_name %in% c("A", "B", "D", NA)))
-    
+
     fun2 <- function(x) {
         x@matches <- x@matches[which.min(x@matches$score), ]
         x

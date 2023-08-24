@@ -133,8 +133,10 @@ test_that("matchValues, ValueParam works", {
                      c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
 
     ## data.frame, SummarizedExperiment
-    trgt_se <- SummarizedExperiment(assays = data.frame(matrix(NA, 10, 2)),
-                                    rowData = trgt)
+    trgt_se <- SummarizedExperiment(
+        assays = data.frame(matrix(NA, 10, 2,
+                                   dimnames = list(NULL, c("A", "B")))),
+        rowData = trgt)
     par <- ValueParam(tolerance = 0)
 
     expect_error(matchValues(qry, trgt_se, par),
@@ -323,10 +325,11 @@ test_that("matchValues,Mass2MzParam works", {
 
     ## SummarizedExperiment, data.frame
     par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
-    cmpds_se <- SummarizedExperiment(assays = data.frame(matrix(NA, 3, 2)),
-                                     rowData = cmpds,
-                                     colData = data.frame(cD1 = c(NA, NA),
-                                                          cD2 = c(NA, NA)))
+    cmpds_se <- SummarizedExperiment(
+        assays = data.frame(matrix(NA, 3, 2)),
+        rowData = cmpds,
+        colData = data.frame(cD1 = c(NA, NA),
+                             cD2 = c(NA, NA)))
     res <- matchValues(x, cmpds_se, par)
     expect_equal(query(res), x)
     expect_equal(target(res), cmpds_se)
@@ -708,9 +711,11 @@ test_that("matchValues, MzRtParam works", {
     trgt <- data.frame(id = c("X", "Y", "Z"),
                        mz = c(3.5, 8, 5.5),
                        rt = c(4.5, 8.7, 10))
-    ions <- SummarizedExperiment(matrix(rnorm(12), nrow = 6, ncol = 2),
+    ions <- SummarizedExperiment(matrix(rnorm(12), nrow = 6, ncol = 2,
+                                        dimnames = list(NULL, c("a", "b"))),
                                  rowData = ions)
-    cmps <- SummarizedExperiment(matrix(rnorm(6), nrow = 3, ncol = 2),
+    cmps <- SummarizedExperiment(matrix(rnorm(6), nrow = 3, ncol = 2,
+                                        dimnames = list(NULL, c("a", "b"))),
                                  rowData = cmps)
     qf <- QFeatures(list(ions = ions, compounds = cmps))
     prm <- MzRtParam(tolerance = 0.5, toleranceRt = 0.5)

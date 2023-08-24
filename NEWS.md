@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.2
+
+- Fix vignette, examples and unit tests using `QFeatures`.
+- Import `query` from `AnnotationHub`.
+
 ## Changes in 1.5.1
 
 - Add possibility to select the spectra variable for retention time matching in

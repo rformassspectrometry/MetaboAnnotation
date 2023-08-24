@@ -501,7 +501,8 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' ## the `xcms` package.
 #' library(SummarizedExperiment)
 #' se <- SummarizedExperiment(
-#'     assays = matrix(rnorm(12), nrow = 3, ncol = 4),
+#'     assays = matrix(rnorm(12), nrow = 3, ncol = 4,
+#'     dimnames = list(NULL, c("A", "B", "C", "D"))),
 #'     rowData = fts)
 #'
 #' ## We can now perform the matching of this SummarizedExperiment against the

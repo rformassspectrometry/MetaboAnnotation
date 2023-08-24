@@ -215,6 +215,8 @@
 #' @param param for `filterMatches`: parameter object to select and customize
 #'   the filtering procedure.
 #'
+#' @param pattern for `query`: ignored.
+#'
 #' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
 #'   `data.frame` (same number of rows than `queryValue`) specifying the scores
 #'   for the matches to add. If not specified, a `NA` will be used as score.
@@ -665,10 +667,12 @@ target <- function(object) {
 
 #' @rdname Matched
 #'
+#' @importMethodsFrom AnnotationHub query
+#'
 #' @export
-query <- function(object) {
-    object@query
-}
+setMethod("query", "Matched", function(x, ...) {
+    x@query
+})
 
 #' @rdname Matched
 #'
@@ -1164,7 +1168,7 @@ setMethod("filterMatches", c("Matched", "ScoreThresholdParam"),
                   stop("\"", param@column,
                        "\" variable not present in `object`")
               if (param@above)
-                  to_keep <- object@matches[, param@column] > param@threshold  
+                  to_keep <- object@matches[, param@column] > param@threshold
               else to_keep <- object@matches[, param@column] < param@threshold
               object@matches <- object@matches[to_keep, , drop = FALSE]
               object@metadata <- c(object@metadata, param = param)
@@ -1252,8 +1256,8 @@ setMethod("addMatches", "Matched",
 #' @importFrom S4Vectors endoapply
 #'
 #' @export
-setMethod("endoapply", "ANY", function(object, FUN, ...) {
-    endoapply(object, FUN, ...)
+setMethod("endoapply", "ANY", function(X, FUN, ...) {
+    endoapply(X, FUN, ...)
 })
 
 #' @rdname Matched
@@ -1261,13 +1265,13 @@ setMethod("endoapply", "ANY", function(object, FUN, ...) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("endoapply", "Matched", function(object, FUN, ...) {
-    tmp <- lapply(seq_along(object), function(i) FUN(object[i], ...)@matches)
+setMethod("endoapply", "Matched", function(X, FUN, ...) {
+    tmp <- lapply(seq_along(X), function(i) FUN(X[i], ...)@matches)
     matches <- do.call(rbind, tmp)
     matches$query_idx <- rep(seq_along(tmp), vapply(tmp, nrow, integer(1)))
-    object@matches <- matches
-    validObject(object)
-    object
+    X@matches <- matches
+    validObject(X)
+    X
 })
 
 #' @rdname Matched

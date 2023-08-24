@@ -6,6 +6,12 @@ setGeneric("addMatches", function(object, ...)
 
 #' @rdname Matched
 #'
+#' @exportMethod endoapply
+setGeneric("endoapply", function(X, FUN, ...)
+    standardGeneric("endoapply"))
+
+#' @rdname Matched
+#'
 #' @exportMethod filterMatches
 setGeneric("filterMatches", function(object, param, ...)
   standardGeneric("filterMatches"))
@@ -15,12 +21,6 @@ setGeneric("filterMatches", function(object, param, ...)
 #' @exportMethod matchedData
 setGeneric("matchedData", function(object, ...)
     standardGeneric("matchedData"))
-
-#' @rdname Matched
-#'
-#' @exportMethod endoapply
-setGeneric("endoapply", function(object, ...)
-    standardGeneric("endoapply"))
 
 #' @title Spectral matching
 #'
