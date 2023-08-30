@@ -1027,7 +1027,10 @@ test_that(".valid_adduct works", {
 test_that("matchValues,data.frame,Spectra,MzRtParam works", {
     df <- data.frame(mz = c(279.09, 200, 224.08, 100),
                      rt = c(379, 200, 378, 100))
-    expect_error(matchValues(df, pest_ms2, MzRtParam()), "in target")
+    expect_error(matchValues(df, pest_ms2, MzRtParam(),
+                             mzColname = c("mz", "mz")), "peak variable")
+    expect_error(matchValues(df, pest_ms2, MzRtParam(),
+                             mzColname = c("mz", "other")), "in target")
     expect_error(matchValues(df, pest_ms2, mzColname = c("mz", "precursorMz"),
                              MzRtParam(tolerance = 0.1,
                                        toleranceRt = 3)), "in target")
@@ -1044,4 +1047,40 @@ test_that("matchValues,data.frame,Spectra,MzRtParam works", {
                        rtColname = c("rt", "rtime"), param = MzRtParam())
     expect_equal(whichQuery(res), integer())
     expect_equal(whichTarget(res), integer())
+})
+
+test_that("matchValues,data.frame,Spectra,MzParam works", {
+    df <- data.frame(mz = c(279.09, 200, 224.08, 100),
+                     rt = c(379, 200, 378, 100))
+    expect_error(matchValues(df, pest_ms2, MzParam(),
+                             mzColname = c("mz")), "peak variable")
+    expect_error(matchValues(df, pest_ms2, MzParam(),
+                             mzColname = c("other")), "in target")
+
+    res <- matchValues(df, pest_ms2, MzParam(tolerance = 0.01),
+                       mzColname = c("mz", "precursorMz"))
+
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(1L, 3L))
+    expect_equal(whichTarget(res), c(4L, 9L, 7L, 11L))
+    expect_equal(query(res), df)
+    expect_equal(target(res), pest_ms2)
+})
+
+test_that("matchValues,numeric,Spectra,MzParam works", {
+    mzs <- c(200, 400, 224.08, 124)
+
+    expect_error(matchValues(mzs, pest_ms2, MzParam(),
+                             mzColname = c("mz")), "peak variable")
+    expect_error(matchValues(mzs, pest_ms2, MzParam(),
+                             mzColname = c("other")), "in target")
+
+    res <- matchValues(mzs, pest_ms2, MzParam(tolerance = 0.01),
+                       mzColname = c("precursorMz"))
+
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(3L))
+    expect_equal(whichTarget(res), c(7L, 11L))
+    expect_equal(query(res), mzs)
+    expect_equal(target(res), pest_ms2)
 })

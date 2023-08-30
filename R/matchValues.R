@@ -711,6 +711,24 @@ setMethod("matchValues",
               res
           })
 
+setMethod("matchValues",
+          signature = c(query = "numeric",
+                        target = "Spectra",
+                        param = "MzParam"),
+          function(query, target, param, mzColname = "mz",
+                   targetAssay = character()) {
+              if (mzColname %in% peaksVariables(target))
+                  stop("Matching against the peak variable \"", mzColname,
+                       "\" is not supported. Please use on of the available ",
+                       "spectra variables ('spectraVariables(target)').")
+              target_ <- .objectToMatch(target, targetAssay, mzColname)
+              res <- matchValues(query, target_, param)
+              res@target <- target
+              res@targetAssay <- targetAssay
+              res
+          })
+
+
 #' @rdname matchValues
 setMethod("matchValues",
           signature = c(query = "data.frameOrSimilar",
@@ -736,6 +754,31 @@ setMethod("matchValues",
                   mzColname <- rep(mzColname, 2)
               query_ <- .objectToMatch(query, queryAssay, mzColname[1])
               target_ <- .objectToMatch(target, targetAssay, mzColname[2])
+              res <- matchValues(query_, target_, param)
+              res@query <- query
+              res@queryAssay <- queryAssay
+              res@target <- target
+              res@targetAssay <- targetAssay
+              res
+          })
+
+#' @rdname matchValues
+#'
+#' @importMethodsFrom Spectra peaksVariables
+setMethod("matchValues",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "Spectra",
+                        param = "MzParam"),
+          function(query, target, param, mzColname = c("mz", "mz"),
+                   queryAssay = character(), targetAssay = character()) {
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if (mzColname[2L] %in% peaksVariables(target))
+                  stop("Matching against the peak variable \"", mzColname[2L],
+                       "\" is not supported. Please use on of the available ",
+                       "spectra variables ('spectraVariables(target)').")
+              query_ <- .objectToMatch(query, queryAssay, mzColname[1])
+              target_ <- .objectToMatch(target, targetAssay, mzColname[2L])
               res <- matchValues(query_, target_, param)
               res@query <- query
               res@queryAssay <- queryAssay
@@ -829,6 +872,10 @@ setMethod("matchValues",
                   mzColname <- rep(mzColname, 2)
               if(length(rtColname) == 1)
                   rtColname <- rep(rtColname, 2)
+              if (mzColname[2L] %in% peaksVariables(target))
+                  stop("Matching against the peak variable \"", mzColname[2L],
+                       "\" is not supported. Please use on of the available ",
+                       "spectra variables ('spectraVariables(target)').")
               target_ <- .objectToMatch(target, targetAssay,
                                         c(mzColname[2L], rtColname[2L]))
               res <- matchValues(query = query, target = target_, param = param,
@@ -836,6 +883,7 @@ setMethod("matchValues",
                                  queryAssay = queryAssay,
                                  targetAssay = targetAssay)
               res@target <- target
+              res@targetAssay <- targetAssay
               res
           })
 
