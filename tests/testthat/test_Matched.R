@@ -1014,6 +1014,13 @@ test_that(".objectToMatch works", {
     expect_error(.objectToMatch(q1, "a1", c("col1", "col3")), "Missing column")
     expect_error(.objectToMatch(q3, "a1", c("col1", "col3")), "Missing column")
     expect_error(.objectToMatch(q4, "a1", c("col1", "col3")), "Missing column")
+
+    expect_error(.objectToMatch(pest_ms2, colnames = c("other_col")),
+                 "Missing spectra")
+    expect_identical(.objectToMatch(pest_ms2), spectraData(pest_ms2))
+    expect_identical(.objectToMatch(pest_ms2, colnames = c("rtime", "msLevel")),
+                     spectraData(pest_ms2, c("rtime", "msLevel")))
+
 })
 
 test_that(".subset_qt works", {
