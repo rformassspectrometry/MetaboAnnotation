@@ -19,6 +19,7 @@
 \alias{matchValues,data.frameOrSimilar,numeric,Mass2MzParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam-method}
 \alias{matchValues,numeric,data.frameOrSimilar,MzParam-method}
+\alias{matchValues,numeric,Spectra,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,numeric,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,Spectra,MzParam-method}
@@ -109,6 +110,8 @@ matchValues(query, target, param, ...)
 )
 
 \S4method{matchValues}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColname = "mz", targetAssay = character())
+
+\S4method{matchValues}{numeric,Spectra,MzParam}(query, target, param, mzColname = "mz", targetAssay = character())
 
 \S4method{matchValues}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColname = "mz", queryAssay = character())
 

@@ -711,6 +711,7 @@ setMethod("matchValues",
               res
           })
 
+#' @rdname matchValues
 setMethod("matchValues",
           signature = c(query = "numeric",
                         target = "Spectra",

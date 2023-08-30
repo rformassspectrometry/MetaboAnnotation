@@ -1055,7 +1055,7 @@ test_that("matchValues,data.frame,Spectra,MzParam works", {
     expect_error(matchValues(df, pest_ms2, MzParam(),
                              mzColname = c("mz")), "peak variable")
     expect_error(matchValues(df, pest_ms2, MzParam(),
-                             mzColname = c("other")), "in target")
+                             mzColname = c("mz", "other")), "in target")
 
     res <- matchValues(df, pest_ms2, MzParam(tolerance = 0.01),
                        mzColname = c("mz", "precursorMz"))
