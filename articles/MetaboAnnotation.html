@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Thu Aug 24 12:02:40 2023</p>
+[ctb]<br><strong>Compiled</strong>: Wed Aug 30 10:29:25 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -736,7 +736,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Thu Aug 24 12:03:09 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Wed Aug 30 10:29:53 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1236,7 +1236,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Aug 24 12:03:17 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Wed Aug 30 10:30:01 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1285,11 +1285,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr     min      lq     mean</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 62.8296 63.8448 72.61802</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 36.7407 36.9925 40.63548</span></span>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 64.2752 64.9887 72.39942</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 36.7151 36.7269 40.54350</span></span>
 <span><span class="co">##   median      uq      max neval</span></span>
-<span><span class="co">##  64.7813 64.8453 106.7891     5</span></span>
-<span><span class="co">##  37.2932 37.6096  54.5414     5</span></span></code></pre>
+<span><span class="co">##  65.1193 65.2318 102.3821     5</span></span>
+<span><span class="co">##  36.7368 37.3235  55.2152     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1347,14 +1347,14 @@ connection can not be shared across different processes.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] microbenchmark_1.4.10       msdata_0.41.0              </span></span>
-<span><span class="co">##  [3] QFeatures_1.11.1            MultiAssayExperiment_1.27.3</span></span>
+<span><span class="co">##  [3] QFeatures_1.11.2            MultiAssayExperiment_1.27.5</span></span>
 <span><span class="co">##  [5] SummarizedExperiment_1.31.1 Biobase_2.61.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.53.1        GenomeInfoDb_1.37.2        </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.53.1        GenomeInfoDb_1.37.3        </span></span>
 <span><span class="co">##  [9] IRanges_2.35.2              MatrixGenerics_1.13.1      </span></span>
 <span><span class="co">## [11] matrixStats_1.0.0-9002      Spectra_1.11.9             </span></span>
 <span><span class="co">## [13] ProtGenerics_1.33.1         BiocParallel_1.35.4        </span></span>
-<span><span class="co">## [15] S4Vectors_0.39.1            MetaboAnnotation_1.5.2     </span></span>
-<span><span class="co">## [17] AnnotationHub_3.9.1         BiocFileCache_2.9.1        </span></span>
+<span><span class="co">## [15] S4Vectors_0.39.1            MetaboAnnotation_1.5.3     </span></span>
+<span><span class="co">## [17] AnnotationHub_3.9.2         BiocFileCache_2.9.1        </span></span>
 <span><span class="co">## [19] dbplyr_2.3.3                BiocGenerics_0.47.0        </span></span>
 <span><span class="co">## [21] BiocStyle_2.29.1           </span></span>
 <span><span class="co">## </span></span>
@@ -1398,7 +1398,7 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [73] tidyselect_1.2.0              Biostrings_2.69.2            </span></span>
 <span><span class="co">##  [75] knitr_1.43                    gridExtra_2.3                </span></span>
 <span><span class="co">##  [77] bookdown_0.35                 xfun_0.40                    </span></span>
-<span><span class="co">##  [79] DT_0.28                       stringi_1.7.12               </span></span>
+<span><span class="co">##  [79] DT_0.29                       stringi_1.7.12               </span></span>
 <span><span class="co">##  [81] lazyeval_0.2.2                yaml_2.3.7                   </span></span>
 <span><span class="co">##  [83] evaluate_0.21                 codetools_0.2-19             </span></span>
 <span><span class="co">##  [85] MsCoreUtils_1.13.1            tibble_3.2.1                 </span></span>

@@ -5,13 +5,16 @@ Generally, query is expected to contain MS experimental values
 (m/z and possibly retention time) while target reference values. query
 and target can be numeric, a two dimensional array (such as a
 data.frame, matrix or DataFrame), a SummarizedExperiment
-or a QFeatures. For SummarizedExperiment, the information for
-the matching is expected to be in the object's rowData. For QFeatures
-matching is performed for values present in the rowData of one of the
-object's assays (which needs to be specified with the assayQuery
-parameter - if a QFeatures is used as target the name of the assay needs
-to be specified with parameter assayTarget). matchMz is an alias for
-matchValues to allow backward compatibility.
+or a QFeatures, target can in addition be a Spectra() object.
+For SummarizedExperiment, the information for the matching is expected
+to be in the object's rowData. For QFeatures matching is performed
+for values present in the rowData of one of the object's assays (which
+needs to be specified with the assayQuery parameter - if a QFeatures
+is used as target the name of the assay needs to be specified with
+parameter assayTarget). If target is a Spectra matching is performed
+against spectra variables of this object and the respective variable names
+need to be specified e.g. with mzColname and/or rtColname.
+matchMz is an alias for matchValues to allow backward compatibility.
 Available param objects and corresponding matching approaches are:
 ValueParam: generic matching between values in query and target given
 acceptable differences expressed in ppm and tolerance. If query or
@@ -71,13 +74,16 @@ Generally, query is expected to contain MS experimental values
 (m/z and possibly retention time) while target reference values. query
 and target can be numeric, a two dimensional array (such as a
 data.frame, matrix or DataFrame), a SummarizedExperiment
-or a QFeatures. For SummarizedExperiment, the information for
-the matching is expected to be in the object's rowData. For QFeatures
-matching is performed for values present in the rowData of one of the
-object's assays (which needs to be specified with the assayQuery
-parameter - if a QFeatures is used as target the name of the assay needs
-to be specified with parameter assayTarget). matchMz is an alias for
-matchValues to allow backward compatibility.
+or a QFeatures, target can in addition be a Spectra() object.
+For SummarizedExperiment, the information for the matching is expected
+to be in the object's rowData. For QFeatures matching is performed
+for values present in the rowData of one of the object's assays (which
+needs to be specified with the assayQuery parameter - if a QFeatures
+is used as target the name of the assay needs to be specified with
+parameter assayTarget). If target is a Spectra matching is performed
+against spectra variables of this object and the respective variable names
+need to be specified e.g. with mzColname and/or rtColname.
+matchMz is an alias for matchValues to allow backward compatibility.
 Available param objects and corresponding matching approaches are:
 ValueParam: generic matching between values in query and target given
 acceptable differences expressed in ppm and tolerance. If query or
@@ -142,7 +148,7 @@ retention times and m/z values, respectively.
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -187,13 +193,16 @@ Generally, <code>query</code> is expected to contain MS experimental values
 (m/z and possibly retention time) while <code>target</code> reference values. <code>query</code>
 and <code>target</code> can be <code>numeric</code>, a two dimensional array (such as a
 <code>data.frame</code>, <code>matrix</code> or <code>DataFrame</code>), a <code>SummarizedExperiment</code>
-or a <code>QFeatures</code>. For <code>SummarizedExperiment</code>, the information for
-the matching is expected to be in the object's <code>rowData</code>. For <code>QFeatures</code>
-matching is performed for values present in the <code>rowData</code> of one of the
-object's assays (which needs to be specified with the <code>assayQuery</code>
-parameter - if a <code>QFeatures</code> is used as <code>target</code> the name of the assay needs
-to be specified with parameter <code>assayTarget</code>). <code>matchMz</code> is an alias for
-<code>matchValues</code> to allow backward compatibility.</p>
+or a <code>QFeatures</code>, <code>target</code> can in addition be a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object.
+For <code>SummarizedExperiment</code>, the information for the matching is expected
+to be in the object's <code>rowData</code>. For <code>QFeatures</code> matching is performed
+for values present in the <code>rowData</code> of one of the object's assays (which
+needs to be specified with the <code>assayQuery</code> parameter - if a <code>QFeatures</code>
+is used as <code>target</code> the name of the assay needs to be specified with
+parameter <code>assayTarget</code>). If <code>target</code> is a <code>Spectra</code> matching is performed
+against spectra variables of this object and the respective variable names
+need to be specified e.g. with <code>mzColname</code> and/or <code>rtColname</code>.
+<code>matchMz</code> is an alias for <code>matchValues</code> to allow backward compatibility.</p>
 <p>Available <code>param</code> objects and corresponding matching approaches are:</p><ul><li><p><code>ValueParam</code>: generic matching between values in <code>query</code> and <code>target</code> given
 acceptable differences expressed in <code>ppm</code> and <code>tolerance</code>. If <code>query</code> or
 <code>target</code> are not numeric, parameter <code>valueColname</code> has to be used to
@@ -336,10 +345,23 @@ retention times and m/z values, respectively.</p></li>
 <span><span class="co"># S4 method for numeric,data.frameOrSimilar,MzParam</span></span>
 <span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S4 method for numeric,Spectra,MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S4 method for data.frameOrSimilar,numeric,MzParam</span></span>
 <span><span class="fu">matchValues</span><span class="op">(</span><span class="va">query</span>, <span class="va">target</span>, <span class="va">param</span>, mzColname <span class="op">=</span> <span class="st">"mz"</span>, queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,Spectra,MzParam</span></span>
 <span><span class="fu">matchValues</span><span class="op">(</span></span>
 <span>  <span class="va">query</span>,</span>
 <span>  <span class="va">target</span>,</span>
@@ -362,6 +384,17 @@ retention times and m/z values, respectively.</p></li>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S4 method for data.frameOrSimilar,data.frameOrSimilar,MzRtParam</span></span>
+<span><span class="fu">matchValues</span><span class="op">(</span></span>
+<span>  <span class="va">query</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">param</span>,</span>
+<span>  mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mz"</span>, <span class="st">"mz"</span><span class="op">)</span>,</span>
+<span>  rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rt"</span>, <span class="st">"rt"</span><span class="op">)</span>,</span>
+<span>  queryAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  targetAssay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for data.frameOrSimilar,Spectra,MzRtParam</span></span>
 <span><span class="fu">matchValues</span><span class="op">(</span></span>
 <span>  <span class="va">query</span>,</span>
 <span>  <span class="va">target</span>,</span>
@@ -512,7 +545,9 @@ only to be specified for <code>query</code>) then <code>mzColname</code> is expe
 <code>character(1)</code>. If both <code>query</code> and <code>target</code> are not numeric <code>mzColname</code>
 is expected to be <code>character(2)</code> (or <code>character(1)</code> and in this last case
 the two column names are assumed to be the same). If not specified the
-assumed default name for columns with m/z values is <code>"mz"</code>.</p></dd>
+assumed default name for columns with m/z values is <code>"mz"</code>. If <code>target</code>
+is a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object, the name of the spectra variable that should be
+used for the matching needs to be specified with <code>mzColname</code>.</p></dd>
 
 
 <dt>rtColname</dt>
@@ -520,7 +555,9 @@ assumed default name for columns with m/z values is <code>"mz"</code>.</p></dd>
 the compounds retention times in <code>query</code> and the name for the one in
 <code>target</code>. It can also be <code>character(1)</code> if the two names are the same.
 To be used when <code>param</code> is <code>MzRtParam</code> or <code>Mass2MzRtParam</code>.
-Defaults to <code>rtColname = c("rt", "rt")</code>.</p></dd>
+Defaults to <code>rtColname = c("rt", "rt")</code>. If <code>target</code> is a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code>
+object, the name of the spectra variable that should be used for the
+matching needs to be specified with <code>mzColname</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -783,12 +820,12 @@ element.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 4 rows and 4 columns</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     query   target        score ppm_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NA     12       NA           NA        NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1     343 342.9993  0.000690232   2.01234</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      23  22.9996  0.000385772  16.77297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3     231 231.0010 -0.000972021   4.20787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    query   target        score ppm_error</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;AsIs&gt;   &lt;AsIs&gt;    &lt;numeric&gt; &lt;numeric&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     12  11.9997  0.000268715  22.39341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    343 343.0018 -0.001834944   5.34966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     23  22.9997  0.000304082  13.22113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    231 230.9996  0.000383389   1.65969</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Matching with a SummarizedExperiment or a QFeatures work analogously,</span></span></span>
 <span class="r-in"><span><span class="co">## only that the matching is performed on the object's `rowData`.</span></span></span>
