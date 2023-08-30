@@ -934,6 +934,15 @@ setMethod("matchedData", "Matched", function(object,
     }
     if (is(x, "SummarizedExperiment"))
         x <- rowData(x)
+    if (is(x, "Spectra")) {
+        if (any(tmp <- !colnames %in% spectraVariables(x)))
+            stop(paste0("Missing spectra variables \"", colnames[tmp],
+                        "\" in ", what, collapse = "\n"), call. = FALSE)
+        if (length(colnames))
+            x <- spectraData(x, colnames)
+        else
+            x <- spectraData(x)
+    }
     if (length(colnames)) {
         if (any(tmp <- !colnames %in% colnames(x)))
             stop(paste0("Missing column \"", colnames[tmp], "\" in ",

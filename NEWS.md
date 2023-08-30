@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.3
+
+- Add support to `matchValues` for matching between `data.frame` and `Spectra`
+  objects.
+
 ## Changes in 1.5.2
 
 - Fix vignette, examples and unit tests using `QFeatures`.

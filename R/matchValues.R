@@ -181,13 +181,16 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' (m/z and possibly retention time) while `target` reference values. `query`
 #' and `target` can be `numeric`, a two dimensional array (such as a
 #' `data.frame`, `matrix` or `DataFrame`), a `SummarizedExperiment`
-#' or a `QFeatures`. For `SummarizedExperiment`, the information for
-#' the matching is expected to be in the object's `rowData`. For `QFeatures`
-#' matching is performed for values present in the `rowData` of one of the
-#' object's assays (which needs to be specified with the `assayQuery`
-#' parameter - if a `QFeatures` is used as `target` the name of the assay needs
-#' to be specified with parameter `assayTarget`). `matchMz` is an alias for
-#' `matchValues` to allow backward compatibility.
+#' or a `QFeatures`, `target` can in addition be a [Spectra()] object.
+#' For `SummarizedExperiment`, the information for the matching is expected
+#' to be in the object's `rowData`. For `QFeatures` matching is performed
+#' for values present in the `rowData` of one of the object's assays (which
+#' needs to be specified with the `assayQuery` parameter - if a `QFeatures`
+#' is used as `target` the name of the assay needs to be specified with
+#' parameter `assayTarget`). If `target` is a `Spectra` matching is performed
+#' against spectra variables of this object and the respective variable names
+#' need to be specified e.g. with `mzColname` and/or `rtColname`.
+#' `matchMz` is an alias for `matchValues` to allow backward compatibility.
 #'
 #' Available `param` objects and corresponding matching approaches are:
 #'
@@ -277,7 +280,9 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     `character(1)`. If both `query` and `target` are not numeric `mzColname`
 #'     is expected to be `character(2)` (or `character(1)` and in this last case
 #'     the two column names are assumed to be the same). If not specified the
-#'     assumed default name for columns with m/z values is `"mz"`.
+#'     assumed default name for columns with m/z values is `"mz"`. If `target`
+#'     is a [Spectra()] object, the name of the spectra variable that should be
+#'     used for the matching needs to be specified with `mzColname`.
 #'
 #' @param param parameter object defining the matching approach and containing
 #'     the settings for that approach. See description above for details.
@@ -307,7 +312,9 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     the compounds retention times in `query` and the name for the one in
 #'     `target`. It can also be `character(1)` if the two names are the same.
 #'     To be used when `param` is `MzRtParam` or `Mass2MzRtParam`.
-#'     Defaults to `rtColname = c("rt", "rt")`.
+#'     Defaults to `rtColname = c("rt", "rt")`. If `target` is a [Spectra()]
+#'     object, the name of the spectra variable that should be used for the
+#'     matching needs to be specified with `mzColname`.
 #'
 #' @param target compound table with metabolites to compare against. The
 #'     expected types are the same as those for `query`.
@@ -808,6 +815,28 @@ setMethod("matchValues",
                       matches = do.call(rbind, matches),
                       queryAssay = queryAssay, targetAssay = targetAssay,
                       metadata = list(param = param))
+          })
+
+#' @rdname matchValues
+setMethod("matchValues",
+          signature = c(query = "data.frameOrSimilar",
+                        target = "Spectra",
+                        param = "MzRtParam"),
+          function(query, target, param, mzColname = c("mz", "mz"),
+                   rtColname = c("rt", "rt"), queryAssay = character(),
+                   targetAssay = character()) {
+              if(length(mzColname) == 1)
+                  mzColname <- rep(mzColname, 2)
+              if(length(rtColname) == 1)
+                  rtColname <- rep(rtColname, 2)
+              target_ <- .objectToMatch(target, targetAssay,
+                                        c(mzColname[2L], rtColname[2L]))
+              res <- matchValues(query = query, target = target_, param = param,
+                                 mzColname = mzColname, rtColname = rtColname,
+                                 queryAssay = queryAssay,
+                                 targetAssay = targetAssay)
+              res@target <- target
+              res
           })
 
 #' @rdname matchValues
