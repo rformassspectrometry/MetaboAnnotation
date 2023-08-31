@@ -151,7 +151,19 @@
 #'
 #' - `target` returns the *target* object.
 #'
+#' - `targetIndex` returns the indices of the matched targets in the order they
+#'   are assigned to the query elements. The length of the returned `integer`
+#'   vector is equal to the total number of matches in the object. `targetIndex`
+#'   and `queryIndex` are aligned, i.e. each element in them represent a matched
+#'   query-target pair.
+#'
 #' - `query` returns the *query* object.
+#'
+#' - `queryIndex` returns the indices of the query elements with matches to
+#'   target elements. The length of the returned `integer` vector is equal to
+#'   the total number of matches in the object. `targetIndex` and `queryIndex`
+#'   are aligned, i.e. each element in them represent a matched query-target
+#'   pair.
 #'
 #' - `scoreVariables` returns the names of the score variables stored in the
 #'   `Matched` object (precisely the names of the variables in `matches(object)`
@@ -324,6 +336,15 @@
 #' res
 #' res$col1
 #' res$target_col1
+#'
+#' ## With the `queryIndex` and `targetIndex` it is possible to extract the
+#' ## indices of the matched query-target pairs:
+#' queryIndex(mo)
+#' targetIndex(mo)
+#'
+#' ## Hence, the first match is between the query with index 1 to the target
+#' ## with index 2, then, query with index 2 is matched to target with index 2
+#' ## and so on.
 #'
 #' ## The example matched object contains all query and all target
 #' ## elements (rows). Below we subset the object keeping only query rows that
@@ -673,6 +694,26 @@ target <- function(object) {
 setMethod("query", "Matched", function(x, ...) {
     x@query
 })
+
+#' @rdname Matched
+#'
+#' @export
+targetIndex <- function(object) {
+    if (!inherits(object, "Matched"))
+        stop("'object' is expected to be a or inherit from an object of ",
+             "type 'Matched'.")
+    matches(object)$target_idx
+}
+
+#' @rdname Matched
+#'
+#' @export
+queryIndex <- function(object) {
+    if (!inherits(object, "Matched"))
+        stop("'object' is expected to be a or inherit from an object of ",
+             "type 'Matched'.")
+    matches(object)$query_idx
+}
 
 #' @rdname Matched
 #'

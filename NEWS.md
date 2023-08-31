@@ -1,5 +1,11 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.4
+
+- Add functions `targetIndex` and `queryIndex` to extract the indices of the
+  matched pairs query-target.
+- Add examples and a section to the vignette explaining their use.
+
 ## Changes in 1.5.3
 
 - Add support to `matchValues` for matching between `data.frame` and `Spectra`

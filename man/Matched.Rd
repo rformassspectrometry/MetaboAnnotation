@@ -14,6 +14,8 @@
 \alias{matches}
 \alias{target}
 \alias{query,Matched-method}
+\alias{targetIndex}
+\alias{queryIndex}
 \alias{whichTarget}
 \alias{whichQuery}
 \alias{$,Matched-method}
@@ -62,6 +64,10 @@ matches(object)
 target(object)
 
 \S4method{query}{Matched}(x, pattern, ...)
+
+targetIndex(object)
+
+queryIndex(object)
 
 whichTarget(object)
 
@@ -371,7 +377,17 @@ columns \code{"query_idx"} (index of the element in \code{query}), \code{"target
 (index of the element in \code{target}) \code{"score"} (the score of the match) and
 eventual additional columns.
 \item \code{target} returns the \emph{target} object.
+\item \code{targetIndex} returns the indices of the matched targets in the order they
+are assigned to the query elements. The length of the returned \code{integer}
+vector is equal to the total number of matches in the object. \code{targetIndex}
+and \code{queryIndex} are aligned, i.e. each element in them represent a matched
+query-target pair.
 \item \code{query} returns the \emph{query} object.
+\item \code{queryIndex} returns the indices of the query elements with matches to
+target elements. The length of the returned \code{integer} vector is equal to
+the total number of matches in the object. \code{targetIndex} and \code{queryIndex}
+are aligned, i.e. each element in them represent a matched query-target
+pair.
 \item \code{scoreVariables} returns the names of the score variables stored in the
 \code{Matched} object (precisely the names of the variables in \code{matches(object)}
 containing the string "score" in their name ignoring the case).
@@ -428,6 +444,15 @@ res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
 res
 res$col1
 res$target_col1
+
+## With the `queryIndex` and `targetIndex` it is possible to extract the
+## indices of the matched query-target pairs:
+queryIndex(mo)
+targetIndex(mo)
+
+## Hence, the first match is between the query with index 1 to the target
+## with index 2, then, query with index 2 is matched to target with index 2
+## and so on.
 
 ## The example matched object contains all query and all target
 ## elements (rows). Below we subset the object keeping only query rows that

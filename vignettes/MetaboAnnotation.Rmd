@@ -655,6 +655,57 @@ matchedData(res)$target_name
 ```
 
 
+### Finding MS2 spectra for selected m/z and retention times
+
+Sometimes it is needed to identify fragment spectra in a `Spectra` object for
+selected (precursor) m/z values and retention times. An example would be if
+compound quantification was performed with a LC-MS run and in a second LC-MS/MS
+run (with the same chromatographic setup) fragment spectra of the same samples
+were generated. From the first LC-MS data set *features* (or chromatographic
+peaks) would be identified for which it would be necessary to retrieve fragment
+spectra matching the m/z and retention times of these from the second, LC-MS/MS
+data set (assuming that no big retention time shifts between the measurement
+runs are expected). To illustrate this, we below first define a `data.frame`
+that should represent a feature table such as defined by an analysis with the
+`r Biocpkg("xcms")` package.
+
+```{r}
+fts <- data.frame(
+    feature_id = c("FT001", "FT002", "FT003", "FT004", "FT005"),
+    mzmed = c(313.43, 256.11, 224.08, 159.22, 224.08),
+    rtmed = c(38.5, 379.1, 168.2, 48.2, 381.1))
+```
+
+We next match the features from this data frame against the `Spectra` object
+using an `MzRtParam` to identify fragment spectra with their precursor m/z and
+retention times matching (with some tolerance) the values from the features.
+
+```{r}
+fts_mtch <- matchValues(fts, pest_ms2, MzRtParam(ppm = 50, toleranceRt = 3),
+                        mzColname = c("mzmed", "precursorMz"),
+                        rtColname = c("rtmed", "rtime"))
+fts_mtch
+whichQuery(fts_mtch)
+```
+
+Thus, we found fragment spectra matching the m/z and retention times for the 2nd
+and 5th feature. We next extract the `Spectra` object with the matching fragment
+spectra and assign the IDs of the matching features to the respective
+spectra. We us the `targetIndex` and `queryIndex` function for this that extract
+the indices for the matching query-target pairs.
+
+```{r}
+fts_ms2 <- target(fts_mtch)[targetIndex(fts_mtch)]
+fts_ms2$feature_id <- query(fts_mtch)$feature_id[queryIndex(fts_mtch)]
+fts_ms2$feature_id
+```
+
+This `Spectra` could next be used to match the fragment spectra from the
+experiment to e.g. a reference database and with the assigned spectra variable
+`"feature_id"` it would allow to map the results back to the quantified feature
+matrix from the LC-MS run.
+
+
 ### Performance and parallel processing
 
 Pre-filtering the target spectra based on similar precursor m/z (using
