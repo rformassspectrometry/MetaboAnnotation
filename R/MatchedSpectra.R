@@ -191,6 +191,23 @@
 #' ## spectra matches any target spectra and thus `NA` is reported for each of
 #' ## them.
 #'
+#' ## With `queryIndex` and `targetIndex` it is possible to extract the indices
+#' ## of the matched query-index pairs
+#' queryIndex(ms)
+#' targetIndex(ms)
+#'
+#' ## The first match is between query index 1 and target index 2, the second
+#' ## match between query index 1 and target index 5 and so on.
+#' ## We could use these indices to extract a `Spectra` object containing only
+#' ## matched target spectra and assign a spectra variable with the indices of
+#' ## the query spectra
+#' matched_target <- target(ms)[targetIndex(ms)]
+#' matched_target$query_index <- queryIndex(ms)
+#'
+#' ## This `Spectra` object thus contains information from the matching, but
+#' ## is a *conventional* `Spectra` object that could be used for further
+#' ## analyses.
+#'
 #' ## `spectraData` can be used to extract all (or selected) spectra variables
 #' ## from the object. Same as with `$`, a left join between the specta
 #' ## variables from the query spectra and the target spectra is performed. The

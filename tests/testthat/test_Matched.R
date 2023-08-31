@@ -1130,3 +1130,23 @@ test_that("scoreVariables,Matched works", {
                                        other = letters[1:5]))
     expect_identical(scoreVariables(mo), c("score", "Score2", "thirdscore"))
 })
+
+test_that("targetIndex works", {
+    a <- Matched()
+    expect_identical(targetIndex(a), integer())
+    a@matches <- data.frame(query_idx = c(1L, 1L, 2L),
+                            target_idx = c(2L, 3L, 2L),
+                            score = 1:3)
+    expect_identical(targetIndex(a), c(2L, 3L, 2L))
+    expect_error(targetIndex("t"), "'Matched'")
+})
+
+test_that("queryIndex works", {
+    a <- Matched()
+    expect_identical(queryIndex(a), integer())
+    a@matches <- data.frame(query_idx = c(1L, 1L, 2L),
+                            target_idx = c(2L, 3L, 2L),
+                            score = 1:3)
+    expect_identical(queryIndex(a), c(1L, 1L, 2L))
+    expect_error(queryIndex(4), "'Matched'")
+})
