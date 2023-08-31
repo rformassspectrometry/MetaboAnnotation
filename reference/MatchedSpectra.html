@@ -20,7 +20,7 @@ if the query spectrum matches more than one target spectrum."><meta property="og
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -307,6 +307,25 @@ can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.
 <span class="r-in"><span><span class="co">## times are those from these 3 target spectra. None of the remaining 6 query</span></span></span>
 <span class="r-in"><span><span class="co">## spectra matches any target spectra and thus `NA` is reported for each of</span></span></span>
 <span class="r-in"><span><span class="co">## them.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## With `queryIndex` and `targetIndex` it is possible to extract the indices</span></span></span>
+<span class="r-in"><span><span class="co">## of the matched query-index pairs</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">queryIndex</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 1 2 4 4 4</span>
+<span class="r-in"><span><span class="fu"><a href="Matched.html">targetIndex</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2  5  2  8 12 15</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## The first match is between query index 1 and target index 2, the second</span></span></span>
+<span class="r-in"><span><span class="co">## match between query index 1 and target index 5 and so on.</span></span></span>
+<span class="r-in"><span><span class="co">## We could use these indices to extract a `Spectra` object containing only</span></span></span>
+<span class="r-in"><span><span class="co">## matched target spectra and assign a spectra variable with the indices of</span></span></span>
+<span class="r-in"><span><span class="co">## the query spectra</span></span></span>
+<span class="r-in"><span><span class="va">matched_target</span> <span class="op">&lt;-</span> <span class="fu"><a href="Matched.html">target</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="Matched.html">targetIndex</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">matched_target</span><span class="op">$</span><span class="va">query_index</span> <span class="op">&lt;-</span> <span class="fu"><a href="Matched.html">queryIndex</a></span><span class="op">(</span><span class="va">ms</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## This `Spectra` object thus contains information from the matching, but</span></span></span>
+<span class="r-in"><span><span class="co">## is a *conventional* `Spectra` object that could be used for further</span></span></span>
+<span class="r-in"><span><span class="co">## analyses.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## `spectraData` can be used to extract all (or selected) spectra variables</span></span></span>
 <span class="r-in"><span><span class="co">## from the object. Same as with `$`, a left join between the specta</span></span></span>
