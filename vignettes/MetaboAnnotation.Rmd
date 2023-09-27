@@ -494,11 +494,11 @@ maximum intensity of each spectrum.
 
 ```{r}
 
-norm_int <- function(x,...) {
+scale_int <- function(x,...) {
     x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"], na.rm = TRUE)
     x
 }
-mtches <- addProcessing(mtches, norm_int)
+mtches <- addProcessing(mtches, scale_int)
 plotSpectraMirror(mtches[2])
 ```
 
