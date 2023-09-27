@@ -1014,6 +1014,13 @@ test_that(".objectToMatch works", {
     expect_error(.objectToMatch(q1, "a1", c("col1", "col3")), "Missing column")
     expect_error(.objectToMatch(q3, "a1", c("col1", "col3")), "Missing column")
     expect_error(.objectToMatch(q4, "a1", c("col1", "col3")), "Missing column")
+
+    expect_error(.objectToMatch(pest_ms2, colnames = c("other_col")),
+                 "Missing spectra")
+    expect_identical(.objectToMatch(pest_ms2), spectraData(pest_ms2))
+    expect_identical(.objectToMatch(pest_ms2, colnames = c("rtime", "msLevel")),
+                     spectraData(pest_ms2, c("rtime", "msLevel")))
+
 })
 
 test_that(".subset_qt works", {
@@ -1079,7 +1086,7 @@ test_that("endoapply,Matched works", {
     expect_identical(query(res), query(mo))
     expect_identical(target(res), target(mo))
     expect_true(all(res$target_name %in% c("A", "B", "D", NA)))
-    
+
     fun2 <- function(x) {
         x@matches <- x@matches[which.min(x@matches$score), ]
         x
@@ -1122,4 +1129,24 @@ test_that("scoreVariables,Matched works", {
                                        thirdscore = 1:5,
                                        other = letters[1:5]))
     expect_identical(scoreVariables(mo), c("score", "Score2", "thirdscore"))
+})
+
+test_that("targetIndex works", {
+    a <- Matched()
+    expect_identical(targetIndex(a), integer())
+    a@matches <- data.frame(query_idx = c(1L, 1L, 2L),
+                            target_idx = c(2L, 3L, 2L),
+                            score = 1:3)
+    expect_identical(targetIndex(a), c(2L, 3L, 2L))
+    expect_error(targetIndex("t"), "'Matched'")
+})
+
+test_that("queryIndex works", {
+    a <- Matched()
+    expect_identical(queryIndex(a), integer())
+    a@matches <- data.frame(query_idx = c(1L, 1L, 2L),
+                            target_idx = c(2L, 3L, 2L),
+                            score = 1:3)
+    expect_identical(queryIndex(a), c(1L, 1L, 2L))
+    expect_error(queryIndex(4), "'Matched'")
 })

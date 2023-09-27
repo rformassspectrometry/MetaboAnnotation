@@ -1,5 +1,21 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.4
+
+- Add functions `targetIndex` and `queryIndex` to extract the indices of the
+  matched pairs query-target.
+- Add examples and a section to the vignette explaining their use.
+
+## Changes in 1.5.3
+
+- Add support to `matchValues` for matching between `data.frame` and `Spectra`
+  objects.
+
+## Changes in 1.5.2
+
+- Fix vignette, examples and unit tests using `QFeatures`.
+- Import `query` from `AnnotationHub`.
+
 ## Changes in 1.5.1
 
 - Add possibility to select the spectra variable for retention time matching in

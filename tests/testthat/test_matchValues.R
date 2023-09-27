@@ -133,8 +133,10 @@ test_that("matchValues, ValueParam works", {
                      c(140, 150, 160, 160, 170, 180, 170, 180) * 10^6)
 
     ## data.frame, SummarizedExperiment
-    trgt_se <- SummarizedExperiment(assays = data.frame(matrix(NA, 10, 2)),
-                                    rowData = trgt)
+    trgt_se <- SummarizedExperiment(
+        assays = data.frame(matrix(NA, 10, 2,
+                                   dimnames = list(NULL, c("A", "B")))),
+        rowData = trgt)
     par <- ValueParam(tolerance = 0)
 
     expect_error(matchValues(qry, trgt_se, par),
@@ -323,10 +325,11 @@ test_that("matchValues,Mass2MzParam works", {
 
     ## SummarizedExperiment, data.frame
     par <- Mass2MzParam(adducts = adducts, tolerance = 0, ppm = 0)
-    cmpds_se <- SummarizedExperiment(assays = data.frame(matrix(NA, 3, 2)),
-                                     rowData = cmpds,
-                                     colData = data.frame(cD1 = c(NA, NA),
-                                                          cD2 = c(NA, NA)))
+    cmpds_se <- SummarizedExperiment(
+        assays = data.frame(matrix(NA, 3, 2)),
+        rowData = cmpds,
+        colData = data.frame(cD1 = c(NA, NA),
+                             cD2 = c(NA, NA)))
     res <- matchValues(x, cmpds_se, par)
     expect_equal(query(res), x)
     expect_equal(target(res), cmpds_se)
@@ -708,9 +711,11 @@ test_that("matchValues, MzRtParam works", {
     trgt <- data.frame(id = c("X", "Y", "Z"),
                        mz = c(3.5, 8, 5.5),
                        rt = c(4.5, 8.7, 10))
-    ions <- SummarizedExperiment(matrix(rnorm(12), nrow = 6, ncol = 2),
+    ions <- SummarizedExperiment(matrix(rnorm(12), nrow = 6, ncol = 2,
+                                        dimnames = list(NULL, c("a", "b"))),
                                  rowData = ions)
-    cmps <- SummarizedExperiment(matrix(rnorm(6), nrow = 3, ncol = 2),
+    cmps <- SummarizedExperiment(matrix(rnorm(6), nrow = 3, ncol = 2,
+                                        dimnames = list(NULL, c("a", "b"))),
                                  rowData = cmps)
     qf <- QFeatures(list(ions = ions, compounds = cmps))
     prm <- MzRtParam(tolerance = 0.5, toleranceRt = 0.5)
@@ -1017,4 +1022,65 @@ test_that(".valid_adduct works", {
                  paste("Columns \"mass_add\" and \"mass_multi\" must be",
                        "present when `adducts` is a data.frame"))
     expect_null(.valid_adduct(data.frame(mass_add = 1, mass_multi = 2)))
+})
+
+test_that("matchValues,data.frame,Spectra,MzRtParam works", {
+    df <- data.frame(mz = c(279.09, 200, 224.08, 100),
+                     rt = c(379, 200, 378, 100))
+    expect_error(matchValues(df, pest_ms2, MzRtParam(),
+                             mzColname = c("mz", "mz")), "peak variable")
+    expect_error(matchValues(df, pest_ms2, MzRtParam(),
+                             mzColname = c("mz", "other")), "in target")
+    expect_error(matchValues(df, pest_ms2, mzColname = c("mz", "precursorMz"),
+                             MzRtParam(tolerance = 0.1,
+                                       toleranceRt = 3)), "in target")
+    res <- matchValues(df, pest_ms2, mzColname = c("mz", "precursorMz"),
+                       MzRtParam(tolerance = 0.1, toleranceRt = 3),
+                       rtColname = c("rt", "rtime"))
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(1L, 3L))
+    expect_equal(whichTarget(res), c(4L, 9L, 7L, 11L))
+    expect_equal(query(res), df)
+    expect_equal(target(res), pest_ms2)
+
+    res <- matchValues(df, pest_ms2, mzColname = c("mz", "precursorMz"),
+                       rtColname = c("rt", "rtime"), param = MzRtParam())
+    expect_equal(whichQuery(res), integer())
+    expect_equal(whichTarget(res), integer())
+})
+
+test_that("matchValues,data.frame,Spectra,MzParam works", {
+    df <- data.frame(mz = c(279.09, 200, 224.08, 100),
+                     rt = c(379, 200, 378, 100))
+    expect_error(matchValues(df, pest_ms2, MzParam(),
+                             mzColname = c("mz")), "peak variable")
+    expect_error(matchValues(df, pest_ms2, MzParam(),
+                             mzColname = c("mz", "other")), "in target")
+
+    res <- matchValues(df, pest_ms2, MzParam(tolerance = 0.01),
+                       mzColname = c("mz", "precursorMz"))
+
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(1L, 3L))
+    expect_equal(whichTarget(res), c(4L, 9L, 7L, 11L))
+    expect_equal(query(res), df)
+    expect_equal(target(res), pest_ms2)
+})
+
+test_that("matchValues,numeric,Spectra,MzParam works", {
+    mzs <- c(200, 400, 224.08, 124)
+
+    expect_error(matchValues(mzs, pest_ms2, MzParam(),
+                             mzColname = c("mz")), "peak variable")
+    expect_error(matchValues(mzs, pest_ms2, MzParam(),
+                             mzColname = c("other")), "in target")
+
+    res <- matchValues(mzs, pest_ms2, MzParam(tolerance = 0.01),
+                       mzColname = c("precursorMz"))
+
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(3L))
+    expect_equal(whichTarget(res), c(7L, 11L))
+    expect_equal(query(res), mzs)
+    expect_equal(target(res), pest_ms2)
 })

@@ -151,7 +151,19 @@
 #'
 #' - `target` returns the *target* object.
 #'
+#' - `targetIndex` returns the indices of the matched targets in the order they
+#'   are assigned to the query elements. The length of the returned `integer`
+#'   vector is equal to the total number of matches in the object. `targetIndex`
+#'   and `queryIndex` are aligned, i.e. each element in them represent a matched
+#'   query-target pair.
+#'
 #' - `query` returns the *query* object.
+#'
+#' - `queryIndex` returns the indices of the query elements with matches to
+#'   target elements. The length of the returned `integer` vector is equal to
+#'   the total number of matches in the object. `targetIndex` and `queryIndex`
+#'   are aligned, i.e. each element in them represent a matched query-target
+#'   pair.
 #'
 #' - `scoreVariables` returns the names of the score variables stored in the
 #'   `Matched` object (precisely the names of the variables in `matches(object)`
@@ -214,6 +226,8 @@
 #'
 #' @param param for `filterMatches`: parameter object to select and customize
 #'   the filtering procedure.
+#'
+#' @param pattern for `query`: ignored.
 #'
 #' @param score for `addMatches`: `numeric` (same length than `queryValue`) or
 #'   `data.frame` (same number of rows than `queryValue`) specifying the scores
@@ -322,6 +336,15 @@
 #' res
 #' res$col1
 #' res$target_col1
+#'
+#' ## With the `queryIndex` and `targetIndex` it is possible to extract the
+#' ## indices of the matched query-target pairs:
+#' queryIndex(mo)
+#' targetIndex(mo)
+#'
+#' ## Hence, the first match is between the query with index 1 to the target
+#' ## with index 2, then, query with index 2 is matched to target with index 2
+#' ## and so on.
 #'
 #' ## The example matched object contains all query and all target
 #' ## elements (rows). Below we subset the object keeping only query rows that
@@ -665,9 +688,31 @@ target <- function(object) {
 
 #' @rdname Matched
 #'
+#' @importMethodsFrom AnnotationHub query
+#'
 #' @export
-query <- function(object) {
-    object@query
+setMethod("query", "Matched", function(x, ...) {
+    x@query
+})
+
+#' @rdname Matched
+#'
+#' @export
+targetIndex <- function(object) {
+    if (!inherits(object, "Matched"))
+        stop("'object' is expected to be a or inherit from an object of ",
+             "type 'Matched'.")
+    matches(object)$target_idx
+}
+
+#' @rdname Matched
+#'
+#' @export
+queryIndex <- function(object) {
+    if (!inherits(object, "Matched"))
+        stop("'object' is expected to be a or inherit from an object of ",
+             "type 'Matched'.")
+    matches(object)$query_idx
 }
 
 #' @rdname Matched
@@ -930,6 +975,15 @@ setMethod("matchedData", "Matched", function(object,
     }
     if (is(x, "SummarizedExperiment"))
         x <- rowData(x)
+    if (is(x, "Spectra")) {
+        if (any(tmp <- !colnames %in% spectraVariables(x)))
+            stop(paste0("Missing spectra variables \"", colnames[tmp],
+                        "\" in ", what, collapse = "\n"), call. = FALSE)
+        if (length(colnames))
+            x <- spectraData(x, colnames)
+        else
+            x <- spectraData(x)
+    }
     if (length(colnames)) {
         if (any(tmp <- !colnames %in% colnames(x)))
             stop(paste0("Missing column \"", colnames[tmp], "\" in ",
@@ -1164,7 +1218,7 @@ setMethod("filterMatches", c("Matched", "ScoreThresholdParam"),
                   stop("\"", param@column,
                        "\" variable not present in `object`")
               if (param@above)
-                  to_keep <- object@matches[, param@column] > param@threshold  
+                  to_keep <- object@matches[, param@column] > param@threshold
               else to_keep <- object@matches[, param@column] < param@threshold
               object@matches <- object@matches[to_keep, , drop = FALSE]
               object@metadata <- c(object@metadata, param = param)
@@ -1252,8 +1306,8 @@ setMethod("addMatches", "Matched",
 #' @importFrom S4Vectors endoapply
 #'
 #' @export
-setMethod("endoapply", "ANY", function(object, FUN, ...) {
-    endoapply(object, FUN, ...)
+setMethod("endoapply", "ANY", function(X, FUN, ...) {
+    endoapply(X, FUN, ...)
 })
 
 #' @rdname Matched
@@ -1261,13 +1315,13 @@ setMethod("endoapply", "ANY", function(object, FUN, ...) {
 #' @importFrom methods validObject
 #'
 #' @export
-setMethod("endoapply", "Matched", function(object, FUN, ...) {
-    tmp <- lapply(seq_along(object), function(i) FUN(object[i], ...)@matches)
+setMethod("endoapply", "Matched", function(X, FUN, ...) {
+    tmp <- lapply(seq_along(X), function(i) FUN(X[i], ...)@matches)
     matches <- do.call(rbind, tmp)
     matches$query_idx <- rep(seq_along(tmp), vapply(tmp, nrow, integer(1)))
-    object@matches <- matches
-    validObject(object)
-    object
+    X@matches <- matches
+    validObject(X)
+    X
 })
 
 #' @rdname Matched

@@ -19,10 +19,13 @@
 \alias{matchValues,data.frameOrSimilar,numeric,Mass2MzParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,Mass2MzParam-method}
 \alias{matchValues,numeric,data.frameOrSimilar,MzParam-method}
+\alias{matchValues,numeric,Spectra,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,numeric,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,MzParam-method}
+\alias{matchValues,data.frameOrSimilar,Spectra,MzParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,Mass2MzRtParam-method}
 \alias{matchValues,data.frameOrSimilar,data.frameOrSimilar,MzRtParam-method}
+\alias{matchValues,data.frameOrSimilar,Spectra,MzRtParam-method}
 \alias{matchValues,numeric,numeric,Mz2MassParam-method}
 \alias{matchValues,numeric,data.frameOrSimilar,Mz2MassParam-method}
 \alias{matchValues,data.frameOrSimilar,numeric,Mz2MassParam-method}
@@ -108,9 +111,20 @@ matchValues(query, target, param, ...)
 
 \S4method{matchValues}{numeric,data.frameOrSimilar,MzParam}(query, target, param, mzColname = "mz", targetAssay = character())
 
+\S4method{matchValues}{numeric,Spectra,MzParam}(query, target, param, mzColname = "mz", targetAssay = character())
+
 \S4method{matchValues}{data.frameOrSimilar,numeric,MzParam}(query, target, param, mzColname = "mz", queryAssay = character())
 
 \S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,MzParam}(
+  query,
+  target,
+  param,
+  mzColname = c("mz", "mz"),
+  queryAssay = character(),
+  targetAssay = character()
+)
+
+\S4method{matchValues}{data.frameOrSimilar,Spectra,MzParam}(
   query,
   target,
   param,
@@ -131,6 +145,16 @@ matchValues(query, target, param, ...)
 )
 
 \S4method{matchValues}{data.frameOrSimilar,data.frameOrSimilar,MzRtParam}(
+  query,
+  target,
+  param,
+  mzColname = c("mz", "mz"),
+  rtColname = c("rt", "rt"),
+  queryAssay = character(),
+  targetAssay = character()
+)
+
+\S4method{matchValues}{data.frameOrSimilar,Spectra,MzRtParam}(
   query,
   target,
   param,
@@ -244,13 +268,17 @@ only to be specified for \code{query}) then \code{mzColname} is expected to be
 \code{character(1)}. If both \code{query} and \code{target} are not numeric \code{mzColname}
 is expected to be \code{character(2)} (or \code{character(1)} and in this last case
 the two column names are assumed to be the same). If not specified the
-assumed default name for columns with m/z values is \code{"mz"}.}
+assumed default name for columns with m/z values is \code{"mz"}. If \code{target}
+is a \code{\link[=Spectra]{Spectra()}} object, the name of the spectra variable that should be
+used for the matching needs to be specified with \code{mzColname}.}
 
 \item{rtColname}{\code{character(2)} with the name of the column containing
 the compounds retention times in \code{query} and the name for the one in
 \code{target}. It can also be \code{character(1)} if the two names are the same.
 To be used when \code{param} is \code{MzRtParam} or \code{Mass2MzRtParam}.
-Defaults to \code{rtColname = c("rt", "rt")}.}
+Defaults to \code{rtColname = c("rt", "rt")}. If \code{target} is a \code{\link[=Spectra]{Spectra()}}
+object, the name of the spectra variable that should be used for the
+matching needs to be specified with \code{mzColname}.}
 }
 \value{
 \link{Matched} object representing the result.
@@ -278,13 +306,16 @@ Generally, \code{query} is expected to contain MS experimental values
 (m/z and possibly retention time) while \code{target} reference values. \code{query}
 and \code{target} can be \code{numeric}, a two dimensional array (such as a
 \code{data.frame}, \code{matrix} or \code{DataFrame}), a \code{SummarizedExperiment}
-or a \code{QFeatures}. For \code{SummarizedExperiment}, the information for
-the matching is expected to be in the object's \code{rowData}. For \code{QFeatures}
-matching is performed for values present in the \code{rowData} of one of the
-object's assays (which needs to be specified with the \code{assayQuery}
-parameter - if a \code{QFeatures} is used as \code{target} the name of the assay needs
-to be specified with parameter \code{assayTarget}). \code{matchMz} is an alias for
-\code{matchValues} to allow backward compatibility.
+or a \code{QFeatures}, \code{target} can in addition be a \code{\link[=Spectra]{Spectra()}} object.
+For \code{SummarizedExperiment}, the information for the matching is expected
+to be in the object's \code{rowData}. For \code{QFeatures} matching is performed
+for values present in the \code{rowData} of one of the object's assays (which
+needs to be specified with the \code{assayQuery} parameter - if a \code{QFeatures}
+is used as \code{target} the name of the assay needs to be specified with
+parameter \code{assayTarget}). If \code{target} is a \code{Spectra} matching is performed
+against spectra variables of this object and the respective variable names
+need to be specified e.g. with \code{mzColname} and/or \code{rtColname}.
+\code{matchMz} is an alias for \code{matchValues} to allow backward compatibility.
 
 Available \code{param} objects and corresponding matching approaches are:
 \itemize{
@@ -482,7 +513,8 @@ matchedData(res)
 ## the `xcms` package.
 library(SummarizedExperiment)
 se <- SummarizedExperiment(
-    assays = matrix(rnorm(12), nrow = 3, ncol = 4),
+    assays = matrix(rnorm(12), nrow = 3, ncol = 4,
+    dimnames = list(NULL, c("A", "B", "C", "D"))),
     rowData = fts)
 
 ## We can now perform the matching of this SummarizedExperiment against the

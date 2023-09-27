@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.5.1
+Version: 1.5.4
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -42,6 +42,7 @@ Imports:
     BiocParallel,
     SummarizedExperiment,
     QFeatures,
+    AnnotationHub,
     graphics,
     CompoundDb
 Suggests:
@@ -54,7 +55,6 @@ Suggests:
     shiny,
     shinyjs,
     DT,
-    AnnotationHub,
     microbenchmark,
     mzR
 Enhances:
