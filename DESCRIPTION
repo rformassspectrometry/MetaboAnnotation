@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.5.4
+Version: 1.5.5
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -38,7 +38,7 @@ Imports:
     ProtGenerics,
     methods,
     S4Vectors,
-    Spectra (>= 1.9.12),
+    Spectra (>= 1.11.10),
     BiocParallel,
     SummarizedExperiment,
     QFeatures,

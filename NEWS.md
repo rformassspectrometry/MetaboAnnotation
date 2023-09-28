@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.5
+
+- Update objects to the new definitions in `Spectra` version 1.11.10.
+
 ## Changes in 1.5.4
 
 - Add functions `targetIndex` and `queryIndex` to extract the indices of the
