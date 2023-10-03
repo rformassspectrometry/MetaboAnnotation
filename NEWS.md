@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.6
+
+- Fix issue in the vignette. Thanks @RemyDeB for the fix.
+
 ## Changes in 1.5.5
 
 - Update objects to the new definitions in `Spectra` version 1.11.10.
