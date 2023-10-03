@@ -1,7 +1,7 @@
 #' @title Iterate through a table of standard compounds to group them.
 #' 
 #' @description
-#' The `.group_ite` groups rows of a data frame of standard compounds based on 
+#' The `.group_standards_iteration` groups rows of a data frame of standard compounds based on 
 #' their similarity and a specified number of standards per group. 
 #'
 #' @param x `numeric` matrix with row names representing the compounds and 
@@ -35,10 +35,12 @@
 #' result <- .group_ite(x, nstd = 3, min_diff = 2)
 #' result
 #' 
-#' @noRd
+#' @author Philippine Louail
 #' 
+#' @noRd
+#'
 
-.group_ite <- function(x, nstd, min_diff = 2) {   
+.group_standards_iteration <- function(x, nstd, min_diff = 2) {   
   
   output <- vector("list")
   g <- 0

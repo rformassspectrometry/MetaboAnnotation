@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.7
+
+- Add function `.group_standards_iteration` to allow iteration through matrix 
+  of standards and group them if they are dissimilar enough.
+
 ## Changes in 1.5.6
 
 - Fix issue in the vignette. Thanks @RemyDeB for the fix.

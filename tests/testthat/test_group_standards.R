@@ -11,7 +11,7 @@ x <- as.matrix(x)
 results <- list(c("Malic Acid", "Pyridoxic Acid", "Thiamine"), 
                 c("Uric acid", "dUTP", "N-Formyl-L-methionine"))
 
-test_that("essentially works", {
-    expect_equal(.group_ite(x, nstd = 3), results)
-    expect_is(.group_ite(x, nstd = 3), "list")
+test_that("essentially that .group_standards_iteration works", {
+    expect_equal(.group_standards_iteration(x, nstd = 3), results)
+    expect_is(.group_standards_iteration(x, nstd = 3), "list")
 })
