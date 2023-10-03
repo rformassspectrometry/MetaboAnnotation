@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Tue Oct 3 06:11:51 2023</p>
+[ctb]<br><strong>Compiled</strong>: Tue Oct 3 06:28:00 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -736,7 +736,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Tue Oct  3 06:12:23 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Tue Oct  3 06:28:30 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -962,9 +962,11 @@ the query and target spectra and plot the spectra again afterwards (see
 the help for <code>addProcessing</code> in the <code>Spectra</code>
 package for more details on spectra data manipulations). This function
 will replace the absolute spectra intensities with intensities relative
-to the maximum intensity of each spectrum.</p>
+to the maximum intensity of each spectrum. Note that functions for
+<code>addProcessing</code> should include (like in the example below)
+the <code>...</code> parameter.</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scale_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>,<span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<code class="sourceCode R"><span><span class="va">scale_int</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span>, <span class="st">"intensity"</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>    <span class="va">x</span></span>
 <span><span class="op">}</span></span>
@@ -1236,7 +1238,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Tue Oct  3 06:12:34 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Tue Oct  3 06:28:40 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1340,11 +1342,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr     min      lq     mean</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 66.9258 68.1932 85.48852</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 42.0047 42.2940 45.62800</span></span>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 63.3619 63.8164 81.55860</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 36.7400 36.8137 40.34294</span></span>
 <span><span class="co">##   median      uq      max neval</span></span>
-<span><span class="co">##  68.9234 72.2825 151.1177     5</span></span>
-<span><span class="co">##  42.3227 43.2854  58.2332     5</span></span></code></pre>
+<span><span class="co">##  64.0005 64.3768 152.2374     5</span></span>
+<span><span class="co">##  36.9253 37.6955  53.5402     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1408,7 +1410,7 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [9] IRanges_2.35.2              MatrixGenerics_1.13.1      </span></span>
 <span><span class="co">## [11] matrixStats_1.0.0-9002      Spectra_1.11.11            </span></span>
 <span><span class="co">## [13] ProtGenerics_1.33.1         BiocParallel_1.35.4        </span></span>
-<span><span class="co">## [15] S4Vectors_0.39.2            MetaboAnnotation_1.5.5     </span></span>
+<span><span class="co">## [15] S4Vectors_0.39.2            MetaboAnnotation_1.5.6     </span></span>
 <span><span class="co">## [17] AnnotationHub_3.9.2         BiocFileCache_2.9.1        </span></span>
 <span><span class="co">## [19] dbplyr_2.3.4                BiocGenerics_0.47.0        </span></span>
 <span><span class="co">## [21] BiocStyle_2.29.2           </span></span>
