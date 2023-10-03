@@ -490,10 +490,11 @@ scaling function to both the query and target spectra and plot the
 spectra again afterwards (see the help for `addProcessing` in the `Spectra`
 package for more details on spectra data manipulations). This function will
 replace the absolute spectra intensities with intensities relative to the
-maximum intensity of each spectrum.
+maximum intensity of each spectrum. Note that functions for `addProcessing` need
+to have (like in the example below) the `...` parameter.
 
 ```{r}
-scale_int <- function(x) {
+scale_int <- function(x, ...) {
     x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"], na.rm = TRUE)
     x
 }

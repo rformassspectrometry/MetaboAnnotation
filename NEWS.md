@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.4
 
+## Changes in 1.4.3
+
+- Fix `addProcessing` example in the vignette.
+
 ## Changes in 1.4.2
 
 - Import `query` from `AnnotationHub`.
