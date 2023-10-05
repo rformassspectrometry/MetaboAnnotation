@@ -40,7 +40,7 @@ standard_groups_r <- .randomize_grouping(x, max_nstd = 4,
 min_nstd <- 3
 test_that("randomization improves results", {
   expect_true(length(standard_groups) > length(standard_groups_r))
-  expect_true(any(lengths(standard_groups_r) < min_nstd))
+  expect_true(any(lengths(standard_groups_r) > min_nstd))
   expect_false(length(standard_groups_r) == 0 )
 }
   
