@@ -2,7 +2,7 @@
 
 ## Changes in 1.5.7
 
-- Add function `.group_standards_iteration` to allow iteration through matrix 
+- Add function `.group_standards_iteration` and `.randomize_grouping` to allow iteration through matrix 
   of standards and group them if they are dissimilar enough.
 
 ## Changes in 1.5.6
