@@ -83,11 +83,17 @@
         i <- 1
         group <- row.names(x)[i]
         
-          group <- c(group, row.names(x)[i])
-        }
-      } 
-      x <- x[!(rownames(x) %in% group), , drop = FALSE] 
-      output[[g]] <- group
+        while (length(group) < max_nstd & i < nrow(x)) {
+            i <- i + 1
+            diff_table <- abs(outer(as.vector(x[group, ]), as.vector(x[i,]), 
+                                    "-"))
+            
+            if (all(diff_table > min_diff, na.rm= TRUE)) { 
+                group <- c(group, row.names(x)[i])
+            }
+        } 
+        x <- x[!(rownames(x) %in% group), , drop = FALSE] 
+        output[[g]] <- group
     }
     if (nrow(x))  
         output[[g + 1]] <- row.names(x)
