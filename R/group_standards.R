@@ -75,20 +75,14 @@
 #'
 
 .group_standards_iteration <- function(x, max_nstd, min_diff = 2) {   
-  
     output <- vector("list")
     g <- 0
-  
+    
     while (nrow(x) > 1) {
-      g <- g + 1
-      i <- 1
-      group <- row.names(x)[i]
-      
-      while(length(group) < max_nstd & i < nrow(x)) {
-        i <- i + 1
-        diff_table <- abs(outer(as.vector(x[group, ]), as.vector(x[i,]), "-"))
+        g <- g + 1
+        i <- 1
+        group <- row.names(x)[i]
         
-        if (all(diff_table > min_diff, na.rm= TRUE)) { 
           group <- c(group, row.names(x)[i])
         }
       } 
@@ -96,29 +90,29 @@
       output[[g]] <- group
     }
     if (nrow(x))  
-      output[[g + 1]] <- row.names(x)
-      
+        output[[g + 1]] <- row.names(x)
+    
     output
 } 
 
 
 .randomize_grouping <- function(x, 
-                                 max_nstd, 
-                                 min_nstd, 
-                                 min_diff = 2) { 
+                                max_nstd, 
+                                min_nstd, 
+                                min_diff = 2) { 
     n <- nrow(x)
     standard_groups <- vector("list")
     i <- 0
-    while(length(standard_groups) == 0 || any(lengths(standard_groups) < 
+    while (length(standard_groups) == 0 || any(lengths(standard_groups) < 
                                               min_nstd)) {
-      
-      i <- i +1
-      x <- x[sample(n), ]
-      standard_groups <- .group_standards_iteration(x, 
-                                                    max_nstd = max_nstd,
-                                                    min_diff = min_diff)
-      if(i > n*n)
-        stop("all combination were tested, no possibility to fit your input requirement")
+        
+        i <- i +1
+        x <- x[sample(n), ]
+        standard_groups <- .group_standards_iteration(x, 
+                                                      max_nstd = max_nstd,
+                                                      min_diff = min_diff)
+        if (i > n*n)
+            stop("all combination were tested, no possibility to fit your input requirement")
     }  
     standard_groups
 }
