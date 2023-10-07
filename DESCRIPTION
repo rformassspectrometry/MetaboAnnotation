@@ -26,6 +26,10 @@ Authors@R:
              email = "carolin-elisabeth.huber@ufz.de",
              role = c("aut"),
              comment = c(ORCID = "0000-0002-9355-8948")),
+      person(given = "Philippine", family = "Louail",
+             email = "philippine.louail@eurac.edu",
+             role = c("aut"),
+             comment = c(ORCID = "0009-0007-5429-6846")),
       person(given = "Nir", family = "Shachaf",
              email = "nir.shachaf@weizmann.ac.il",
 	     role = "ctb"))
