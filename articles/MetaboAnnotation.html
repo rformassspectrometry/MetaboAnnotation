@@ -98,9 +98,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.18/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
-[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
-Louail [aut] (<a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Sat Oct 7 17:17:37 2023</p>
+[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
+[ctb]<br><strong>Compiled</strong>: Sat Oct 7 17:20:27 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -737,7 +736,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Sat Oct  7 17:18:08 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Sat Oct  7 17:21:03 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1239,7 +1238,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Sat Oct  7 17:18:18 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Sat Oct  7 17:21:17 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1342,12 +1341,12 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra</a></span><span class="op">(</span><span class="va">pest_ms2_mem</span>, <span class="va">minimb_mem</span>, param <span class="op">=</span> <span class="va">csp</span><span class="op">)</span>,</span>
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
-<span><span class="co">##                                                   expr     min      lq     mean</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 68.7673 69.4449 78.60638</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 38.2585 39.0118 44.18186</span></span>
-<span><span class="co">##   median      uq      max neval</span></span>
-<span><span class="co">##  71.0799 72.8457 110.8941     5</span></span>
-<span><span class="co">##  41.0094 43.3255  59.3041     5</span></span></code></pre>
+<span><span class="co">##                                                   expr     min      lq</span></span>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 88.8585 91.1030</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 50.5408 51.7898</span></span>
+<span><span class="co">##       mean  median      uq      max neval</span></span>
+<span><span class="co">##  101.47204 91.2628 91.9499 144.1860     5</span></span>
+<span><span class="co">##   59.36772 52.5000 55.1055  86.9025     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1492,7 +1491,7 @@ in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber, Philippine Louail.</p>
+<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber.</p>
 </div>
 
 <div class="pkgdown-footer-right">
