@@ -113,7 +113,7 @@
                                               min_nstd)) {
         
         i <- i +1
-        x <- x[sample(n), ]
+        x <- x[sample(n), , drop = FALSE]
         standard_groups <- .group_standards_iteration(x, 
                                                       max_nstd = max_nstd,
                                                       min_diff = min_diff)
