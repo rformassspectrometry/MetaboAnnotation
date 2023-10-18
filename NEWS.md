@@ -1,9 +1,15 @@
 # MetaboAnnotation 1.5
 
+## Changes in 1.5.8 
+
+- Fix `.randomize_grouping` to prevent collapsing of matrix when input in a
+  single column
+
 ## Changes in 1.5.7
 
-- Add function `.group_standards_iteration` and `.randomize_grouping` to allow iteration through matrix 
-  of standards and group them if they are dissimilar enough.
+- Add function `.group_standards_iteration` and `.randomize_grouping` to allow
+  iteration through matrix of standards and group them if they are dissimilar
+  enough.
 
 ## Changes in 1.5.6
 
