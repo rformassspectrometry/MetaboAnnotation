@@ -113,12 +113,12 @@
                                               min_nstd)) {
         
         i <- i +1
-        x <- x[sample(n), ]
+        x <- x[sample(n), , drop = FALSE]
         standard_groups <- .group_standards_iteration(x, 
                                                       max_nstd = max_nstd,
                                                       min_diff = min_diff)
         if (i > n*n)
-            stop("all combination were tested, no possibility to fit your input requirement")
+            stop("all combination were tested, no possibility to fit your input requirements")
     }  
     standard_groups
 }
