@@ -1,80 +1,91 @@
-#' @title Iterate through a table of standard compounds to group them.
+#' @title Create Standard Mixes from a Matrix of Standard Compounds
 #' 
 #' @description
-#' The `.group_standards_iteration` function groups rows of a matrix of standard 
-#' compounds based on their similarity and a user-defined specified number of 
-#' standards per group. The `.randomize_grouping` function utilize the 
-#' `.group_standards_iteration` but tries for all combination of rows of `x`. 
-#' This is great if the user is not satisfied by the results of the
-#' `.group_standards_iteration` function.
+#' The `createStandardMixes` function groups rows of a matrix of standard
+#' compounds based on their similarity and a user-defined specified number of
+#' standards per group. It utilizes the `.iterative_grouping` function for 
+#' iterative grouping and `.randomize_grouping` for randomizing grouping.
+#' The results are compiled in the input matrix `x` with an added column 
+#' comprising the group numbers for each component.
 #'
 #' @param x `numeric` matrix with row names representing the compounds and 
 #' columns representing different adducts.
 #' 
-#' @param max_nstd `numeric` number of maximum of standards per group.
+#' @param max_nstd `numeric` number of maximum standards per group.
 #' 
-#' @param min_nstd `numeric` number of minimum of standards per group.
+#' @param min_nstd `numeric` number of minimum standards per group. Only 
+#' needed when using `iterativeRandomization = TRUE`.
 #' 
 #' @param min_diff `numeric` Minimum difference for considering two values as 
-#' distinct. Default is 2.
+#' distinct.
+#' 
+#' @param iterativeRandomization `logical` default `FALSE`. If set to `TRUE`, 
+#' `createStandardMixes` will randomly rearrange the rows of `x` until the user 
+#' inputs are satisfied.
 #'
-#' @return `list` where each element is a vector of row names representing a 
-#' group of standards.
+#' @return `data.frame` created by adding a column `group` to the input `x` 
+#' matrix, comprising the group number for each compound.
 #' 
 #' @details
 #' Users should be aware that because the function iterates through `x`, the 
-#' compound at the bottom of the list is more complicated to group, and there's 
-#' a possibility that some compounds will not be grouped with others. We advise 
-#' to test the `.randomize_grouping`  function if that happens.  
+#' compounds at the bottom of the matrix are more complicated to group, and 
+#' there is a possibility that some compounds will not be grouped with others. 
+#' We advise specifyiong `iterativeRandomization = TRUE` even if it takes more 
+#' time.
 #' 
 #' @examples
 #' 
-#' ## `.group_standards_iteration` only
-#' x <- data.frame(
-#'   row.names = c("Malic Acid", "Pyridoxic Acid", "Thiamine", "Uric acid",
-#'                 "dUTP", "N-Formyl-L-methionine"),
-#'   "adduct_1" = c(135.0288, 184.0604, 265.1118, 169.0356, 468.9809, 178.0532),
-#'   "adduct_2" = c(157.0107, 206.0424, 287.0937, 191.0176, 490.9628, 200.0352)
-#' )
+#' ## Iterative grouping only
+#' x <- matrix(c(135.0288, 157.0107, 184.0604, 206.0424, 265.1118, 287.0937,
+#'               169.0356, 191.0176, 468.9809, 490.9628, 178.0532, 200.0352),
+#'             ncol = 2, byrow = TRUE,
+#'             dimnames = list(c("Malic Acid", "Pyridoxic Acid", "Thiamine",
+#'                                 "Uric acid", "dUTP", "N-Formyl-L-methionine"),
+#'                              c("adduct_1", "adduct_2")))
+#' result <- createStandardMixes(x, max_nstd = 3, min_diff = 2)
 #' 
-#' x <- as.matrix(x)
-#' ## Group standards with a maximum of 3 per group and a minimum difference
-#' ## of 2.
-#' result <- .group_ite(x, max_nstd = 3, min_diff = 2)
-#' result
-#'
-#'
-#'
-#' ## Comparing results with using `.randomize_grouping`.
+#' ## Randomize grouping
 #' set.seed(123)
-#' ## Create a matrix with compound names and ion masses
 #' x <- matrix(c(349.0544, 371.0363, 325.0431, 347.0251, 581.0416, 603.0235,
 #'               167.0564, 189.0383, 150.0583, 172.0403, 171.0053, 192.9872,
 #'               130.0863, 152.0682, 768.1225, 790.1044),
-#'             ncol = 2, byrow = TRUE)
-#'
-#' rownames(x) <- c("IMP", "UMP", "UDP-glucuronate", "1-Methylxanthine", 
-#'                  "Methionine", "Dihydroxyacetone phosphate", "Pipecolic acid", 
-#'                  "CoA")
-#' colnames(x) <- c("[M+H]+", "[M+Na]+")
-#' 
-#' ## run using `.group_standards_iteration` 
-#' standard_groups <- .group_standards_iteration(x, max_nstd = 4, min_diff = 2)
-#' standard_groups
-#' 
-#' ## get incomplete groups, rescue this using the `.randomize_grouping`. 
-#' standard_groups_r <- .randomize_grouping(x, max_nstd = 4, 
-#'                                          min_nstd = 3,
-#'                                          min_diff = 2)
-#' standard_groups_r 
-#' 
+#'             ncol = 2, byrow = TRUE,
+#'             dimnames = list(c("IMP", "UMP", "UDP-glucuronate", 
+#'                                 "1-Methylxanthine", "Methionine", 
+#'                                 "Dihydroxyacetone phosphate", 
+#'                                 "Pipecolic acid", "CoA"),
+#'                              c("[M+H]+", "[M+Na]+")))
+#' result <- createStandardMixes(x, max_nstd = 4, min_nstd = 3, min_diff = 2, 
+#'                                iterativeRandomization = TRUE)
 #' 
 #' @author Philippine Louail
 #' 
+#' @export
+#'
+#' @rdname createStandardMixes
+createStandardMixes <- function(x, max_nstd,
+                                min_nstd, min_diff,
+                                iterativeRandomization = FALSE) {
+    if (!iterativeRandomization)
+        output <- .iterative_grouping(x = x, max_nstd = max_nstd, 
+                                      min_diff = min_diff)
+    else 
+        output <- .randomize_grouping(x = x, max_nstd = max_nstd, 
+                                      min_nstd = min_nstd, min_diff = min_diff)
+    
+    find_index <- function(name) {which(sapply(output, 
+                                               function(X) name %in% X))}
+    x <- as.data.frame(x)
+    x$group <- as.vector(sapply(rownames(x), find_index))
+    
+    x
+}
+
+#'
 #' @noRd
 #'
 
-.group_standards_iteration <- function(x, max_nstd, min_diff = 2) {   
+.iterative_grouping <- function(x, max_nstd, min_diff) {   
     output <- vector("list")
     g <- 0
     
@@ -101,24 +112,24 @@
     output
 } 
 
-
+#'
+#' @noRd
+#' 
 .randomize_grouping <- function(x, 
                                 max_nstd, 
                                 min_nstd, 
-                                min_diff = 2) { 
+                                min_diff) { 
     n <- nrow(x)
-    standard_groups <- vector("list")
+    output <- vector("list")
     i <- 0
-    while (length(standard_groups) == 0 || any(lengths(standard_groups) < 
-                                              min_nstd)) {
+    while (length(output) == 0 || any(lengths(output) < min_nstd)) {
         
         i <- i +1
         x <- x[sample(n), , drop = FALSE]
-        standard_groups <- .group_standards_iteration(x, 
-                                                      max_nstd = max_nstd,
-                                                      min_diff = min_diff)
+        output <- .iterative_grouping(x, max_nstd = max_nstd,
+                                      min_diff = min_diff)
         if (i > n*n)
             stop("all combination were tested, no possibility to fit your input requirements")
     }  
-    standard_groups
+    output
 }
