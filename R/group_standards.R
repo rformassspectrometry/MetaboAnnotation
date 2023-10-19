@@ -1,15 +1,18 @@
 #' @title Create Standard Mixes from a Matrix of Standard Compounds
 #' 
 #' @description
-#' The `createStandardMixes` function groups rows of a matrix of standard
-#' compounds based on their similarity and a user-defined specified number of
-#' standards per group. It utilizes the `.iterative_grouping` function for 
-#' iterative grouping and `.randomize_grouping` for randomizing grouping.
-#' The results are compiled in the input matrix `x` with an added column 
-#' comprising the group numbers for each component.
+#' 
+#' The `createStandardMixes` function defines groups (mixes) of compounds 
+#' (standards) with dissimilar m/z values. The expected size of the groups can 
+#' be defined with parameters `max_nstd` and `min_nstd` and the minimum required
+#' difference between m/z values within each group with parameter `min_diff`. 
+#' The group assignment will be reported in an additional column in the result 
+#' data frame.
 #'
 #' @param x `numeric` matrix with row names representing the compounds and 
-#' columns representing different adducts.
+#' columns representing different adducts. Such a matrix with m/z values for 
+#' different adducts for compounds could e.g. be created with the 
+#' [mass2mz()] function.
 #' 
 #' @param max_nstd `numeric` number of maximum standards per group.
 #' 
@@ -63,9 +66,11 @@
 #' @export
 #'
 #' @rdname createStandardMixes
-createStandardMixes <- function(x, max_nstd,
-                                min_nstd, min_diff,
+createStandardMixes <- function(x, max_nstd = 10,
+                                min_nstd =5, min_diff = 2,
                                 iterativeRandomization = FALSE) {
+    if (!is.matrix(x))
+        stop("The input `x` needs to be a matrix, try as.matrix(x)")
     if (!iterativeRandomization)
         output <- .iterative_grouping(x = x, max_nstd = max_nstd, 
                                       min_diff = min_diff)
@@ -73,10 +78,11 @@ createStandardMixes <- function(x, max_nstd,
         output <- .randomize_grouping(x = x, max_nstd = max_nstd, 
                                       min_nstd = min_nstd, min_diff = min_diff)
     
-    find_index <- function(name) {which(sapply(output, 
-                                               function(X) name %in% X))}
+    find_index <- function(name) {
+        which(vapply(output, function(X) any(X %in% name), logical(1)))
+        }
     x <- as.data.frame(x)
-    x$group <- as.vector(sapply(rownames(x), find_index))
+    x$group <- vapply(rownames(x), find_index, integer(1))
     
     x
 }

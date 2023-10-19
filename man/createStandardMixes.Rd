@@ -6,15 +6,17 @@
 \usage{
 createStandardMixes(
   x,
-  max_nstd,
-  min_nstd,
-  min_diff,
+  max_nstd = 10,
+  min_nstd = 5,
+  min_diff = 2,
   iterativeRandomization = FALSE
 )
 }
 \arguments{
 \item{x}{\code{numeric} matrix with row names representing the compounds and
-columns representing different adducts.}
+columns representing different adducts. Such a matrix with m/z values for
+different adducts for compounds could e.g. be created with the
+\code{\link[=mass2mz]{mass2mz()}} function.}
 
 \item{max_nstd}{\code{numeric} number of maximum standards per group.}
 
@@ -33,12 +35,12 @@ inputs are satisfied.}
 matrix, comprising the group number for each compound.
 }
 \description{
-The \code{createStandardMixes} function groups rows of a matrix of standard
-compounds based on their similarity and a user-defined specified number of
-standards per group. It utilizes the \code{.iterative_grouping} function for
-iterative grouping and \code{.randomize_grouping} for randomizing grouping.
-The results are compiled in the input matrix \code{x} with an added column
-comprising the group numbers for each component.
+The \code{createStandardMixes} function defines groups (mixes) of compounds
+(standards) with dissimilar m/z values. The expected size of the groups can
+be defined with parameters \code{max_nstd} and \code{min_nstd} and the minimum required
+difference between m/z values within each group with parameter \code{min_diff}.
+The group assignment will be reported in an additional column in the result
+data frame.
 }
 \details{
 Users should be aware that because the function iterates through \code{x}, the
