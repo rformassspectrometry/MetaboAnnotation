@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.9</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,8 +98,9 @@ document.addEventListener("DOMContentLoaded", function() {
 </script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.18/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (<a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
 [aut, cre] (<a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
-[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Sat Oct 7 17:20:27 2023</p>
+[aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
+Louail [aut] (<a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
+[ctb]<br><strong>Compiled</strong>: Thu Oct 19 12:28:19 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -736,7 +737,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Sat Oct  7 17:21:03 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Thu Oct 19 12:28:46 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1238,7 +1239,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Sat Oct  7 17:21:17 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Oct 19 12:28:54 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1341,12 +1342,12 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra</a></span><span class="op">(</span><span class="va">pest_ms2_mem</span>, <span class="va">minimb_mem</span>, param <span class="op">=</span> <span class="va">csp</span><span class="op">)</span>,</span>
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
-<span><span class="co">##                                                   expr     min      lq</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 88.8585 91.1030</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 50.5408 51.7898</span></span>
-<span><span class="co">##       mean  median      uq      max neval</span></span>
-<span><span class="co">##  101.47204 91.2628 91.9499 144.1860     5</span></span>
-<span><span class="co">##   59.36772 52.5000 55.1055  86.9025     5</span></span></code></pre>
+<span><span class="co">##                                                   expr     min      lq     mean</span></span>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 64.3366 64.8008 70.73858</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 36.8224 36.9074 39.91596</span></span>
+<span><span class="co">##   median      uq     max neval</span></span>
+<span><span class="co">##  64.8357 64.8885 94.8313     5</span></span>
+<span><span class="co">##  36.9509 37.5215 51.3776     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1406,11 +1407,11 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [1] microbenchmark_1.4.10       msdata_0.41.0              </span></span>
 <span><span class="co">##  [3] QFeatures_1.11.2            MultiAssayExperiment_1.27.5</span></span>
 <span><span class="co">##  [5] SummarizedExperiment_1.31.1 Biobase_2.61.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.53.1        GenomeInfoDb_1.37.6        </span></span>
-<span><span class="co">##  [9] IRanges_2.35.2              MatrixGenerics_1.13.1      </span></span>
-<span><span class="co">## [11] matrixStats_1.0.0-9002      Spectra_1.11.11            </span></span>
+<span><span class="co">##  [7] GenomicRanges_1.53.2        GenomeInfoDb_1.37.6        </span></span>
+<span><span class="co">##  [9] IRanges_2.35.3              MatrixGenerics_1.13.1      </span></span>
+<span><span class="co">## [11] matrixStats_1.0.0-9003      Spectra_1.11.11            </span></span>
 <span><span class="co">## [13] ProtGenerics_1.33.1         BiocParallel_1.35.4        </span></span>
-<span><span class="co">## [15] S4Vectors_0.39.2            MetaboAnnotation_1.5.7     </span></span>
+<span><span class="co">## [15] S4Vectors_0.39.3            MetaboAnnotation_1.5.9     </span></span>
 <span><span class="co">## [17] AnnotationHub_3.9.2         BiocFileCache_2.9.1        </span></span>
 <span><span class="co">## [19] dbplyr_2.3.4                BiocGenerics_0.47.0        </span></span>
 <span><span class="co">## [21] BiocStyle_2.29.2           </span></span>
@@ -1420,13 +1421,13 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##   [3] gridExtra_2.3                 rlang_1.1.1                  </span></span>
 <span><span class="co">##   [5] magrittr_2.0.3                clue_0.3-65                  </span></span>
 <span><span class="co">##   [7] compiler_4.3.1                RSQLite_2.3.1                </span></span>
-<span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.4            </span></span>
-<span><span class="co">##  [11] vctrs_0.6.3                   stringr_1.5.0                </span></span>
+<span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.5            </span></span>
+<span><span class="co">##  [11] vctrs_0.6.4                   stringr_1.5.0                </span></span>
 <span><span class="co">##  [13] pkgconfig_2.0.3               MetaboCoreUtils_1.9.4        </span></span>
 <span><span class="co">##  [15] crayon_1.5.2                  fastmap_1.1.1                </span></span>
 <span><span class="co">##  [17] XVector_0.41.1                ellipsis_0.3.2               </span></span>
 <span><span class="co">##  [19] utf8_1.2.3                    promises_1.2.1               </span></span>
-<span><span class="co">##  [21] rmarkdown_2.25                ragg_1.2.5                   </span></span>
+<span><span class="co">##  [21] rmarkdown_2.25                ragg_1.2.6                   </span></span>
 <span><span class="co">##  [23] purrr_1.0.2                   bit_4.0.5                    </span></span>
 <span><span class="co">##  [25] xfun_0.40                     zlibbioc_1.47.0              </span></span>
 <span><span class="co">##  [27] cachem_1.0.8                  ChemmineR_3.53.2             </span></span>
@@ -1436,30 +1437,30 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##  [35] parallel_4.3.1                R6_2.5.1                     </span></span>
 <span><span class="co">##  [37] bslib_0.5.1                   stringi_1.7.12               </span></span>
 <span><span class="co">##  [39] jquerylib_0.1.4               Rcpp_1.0.11                  </span></span>
-<span><span class="co">##  [41] bookdown_0.35                 knitr_1.44                   </span></span>
+<span><span class="co">##  [41] bookdown_0.36                 knitr_1.44                   </span></span>
 <span><span class="co">##  [43] base64enc_0.1-3               igraph_1.5.1                 </span></span>
 <span><span class="co">##  [45] Matrix_1.6-1.1                httpuv_1.6.11                </span></span>
 <span><span class="co">##  [47] tidyselect_1.2.0              abind_1.4-5                  </span></span>
 <span><span class="co">##  [49] yaml_2.3.7                    codetools_0.2-19             </span></span>
 <span><span class="co">##  [51] curl_5.1.0                    lattice_0.21-9               </span></span>
 <span><span class="co">##  [53] tibble_3.2.1                  withr_2.5.1                  </span></span>
-<span><span class="co">##  [55] shiny_1.7.5                   KEGGREST_1.41.4              </span></span>
+<span><span class="co">##  [55] shiny_1.7.5.1                 KEGGREST_1.41.4              </span></span>
 <span><span class="co">##  [57] evaluate_0.22                 desc_1.4.2                   </span></span>
 <span><span class="co">##  [59] xml2_1.3.5                    Biostrings_2.69.2            </span></span>
 <span><span class="co">##  [61] pillar_1.9.0                  BiocManager_1.30.22          </span></span>
 <span><span class="co">##  [63] filelock_1.0.2                DT_0.30                      </span></span>
 <span><span class="co">##  [65] ncdf4_1.21                    generics_0.1.3               </span></span>
 <span><span class="co">##  [67] rprojroot_2.0.3               RCurl_1.98-1.12              </span></span>
-<span><span class="co">##  [69] BiocVersion_3.18.0            ggplot2_3.4.3                </span></span>
+<span><span class="co">##  [69] BiocVersion_3.18.0            ggplot2_3.4.4                </span></span>
 <span><span class="co">##  [71] munsell_0.5.0                 scales_1.2.1                 </span></span>
 <span><span class="co">##  [73] xtable_1.8-4                  glue_1.6.2                   </span></span>
 <span><span class="co">##  [75] lazyeval_0.2.2                tools_4.3.1                  </span></span>
 <span><span class="co">##  [77] mzR_2.35.1                    fs_1.6.3                     </span></span>
 <span><span class="co">##  [79] grid_4.3.1                    MsCoreUtils_1.13.1           </span></span>
 <span><span class="co">##  [81] AnnotationDbi_1.63.2          colorspace_2.1-0             </span></span>
-<span><span class="co">##  [83] GenomeInfoDbData_1.2.10       cli_3.6.1                    </span></span>
-<span><span class="co">##  [85] rappdirs_0.3.3                textshaping_0.3.6            </span></span>
-<span><span class="co">##  [87] rsvg_2.5.0                    fansi_1.0.4                  </span></span>
+<span><span class="co">##  [83] GenomeInfoDbData_1.2.11       cli_3.6.1                    </span></span>
+<span><span class="co">##  [85] rappdirs_0.3.3                textshaping_0.3.7            </span></span>
+<span><span class="co">##  [87] rsvg_2.6.0                    fansi_1.0.5                  </span></span>
 <span><span class="co">##  [89] S4Arrays_1.1.6                dplyr_1.1.3                  </span></span>
 <span><span class="co">##  [91] AnnotationFilter_1.25.0       gtable_0.3.4                 </span></span>
 <span><span class="co">##  [93] sass_0.4.7                    digest_0.6.33                </span></span>
@@ -1491,7 +1492,7 @@ in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber.</p>
+<p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber, Philippine Louail.</p>
 </div>
 
 <div class="pkgdown-footer-right">
