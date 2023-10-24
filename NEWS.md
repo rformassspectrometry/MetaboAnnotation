@@ -1,4 +1,4 @@
-# MetaboAnnotation 1.5.10
+# MetaboAnnotation 1.5
 
 ## Changes in 1.5.10
 
