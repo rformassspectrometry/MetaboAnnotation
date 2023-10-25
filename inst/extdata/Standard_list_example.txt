@@ -24,14 +24,14 @@ Perindopril erbumine	C19H32N2O5
 Folinic acid calcium salt hydrate	C20H23N7O7
 "Tauroursodeoxycholic acid, Na salt"	C26H45NO6S
 Glycyl-L-leucine	C8H16N2O3
-²-Carotene	C40H56
+Carotene	C40H56
 2-Methylsuccinic acid	C5H8O4
 DL-m-Tyrosine	C9H11NO3
 Ursodeoxycholic acid	C24H40O4
 N-Acetyl-L-alanine	C5H9NO3
 3-Hydroxybenzyl alcohol	C7H8O2
 2-Hydroxy-4-(methylthio)butyric acid calcium salt	C5H10O3S
-²-Myrcene	C10H16
+Myrcene	C10H16
 "3,4-Dihydroxybenzeneacetic acid"	C8H8O4
 Deoxycholic acid	C24H40O4
 2-Aminobenzenesulfonic acid	C6H7NO3S
@@ -50,28 +50,28 @@ Acid Yellow 36	C18H15N3O3S
 L-Arabitol	C5H12O5
 Sodium phytate hydrate	C6H18O24P6
 Phosphoserine	C3H8NO6P
-2-Deoxy-D-glucose	C6H12O5
-²-Alanine methyl ester hydrochloride	C4H9NO2
+Deoxy-D-glucose	C6H12O5
+Alanine methyl ester hydrochloride	C4H9NO2
 Phenylac-Gly-OH	C10H11NO3
 NADPH sodium salt	C21H30N7O17P3
 Pyridoxine HCl	C8H11NO3
-L-(âˆ’)-Malic ac	C4H6O5
+L-Malic ac	C4H6O5
 Uracil	C4H4N2O2
 Adenosine	C10H13N5O4
 L-Carnitine inner salt	C7H15NO3
-N-Î±-Acetyl-L-glutamin	C7H12N2O4
-³-Aminobutyric acid	C4H9NO2
+Acetyl-L-glutamin	C7H12N2O4
+Aminobutyric acid	C4H9NO2
 Ortho-Hydroxyphenylacetic acid	C8H8O3
 Riboflavin	C17H20N4O6
-"1,4-Diaminobutane dihydrochloride"	C4H12N2
+Diaminobutane dihydrochloride	C4H12N2
 Sarcosine	C3H7NO2
 L-Carnosine	C9H14N4O3
-2-Methylmalonic acid	C4H6O4
+Methylmalonic acid	C4H6O4
 L-Pyroglutamic acid	C5H7NO3
 Rhodamine B	C28H31N2O3
 Indigo Carmine	C16H10N2O8S2
-"DL-2,3-Diaminopropionic acid monohydrochloride"	C3H8N2O2
-"5,6-Dimethylbenzimidazole"	C9H10N2
+Diaminopropionic acid monohydrochloride	C3H8N2O2
+Dimethylbenzimidazole	C9H10N2
 N-Acetyl-L-aspartic acid	C6H9NO5
 Thiamine hydrochloride hydrate	C12H17N4OS
 Taurine	C2H7NO3S
@@ -79,23 +79,23 @@ Maleic acid	C4H4O4
 O-Acetyl-L-carnitine HCl	C9H17NO4
 N-Acetyl-D-galactosamine	C8H15NO6
 Citric acid	C6H8O7
-"N,N-Dimethylglycine hydrochloride"	C4H9NO2
+Dimethylglycine hydrochloride	C4H9NO2
 Erioglaucine disodium salt	C37H37N2O9S3
 Sebacic acid	C10H18O4
 Stearic acid	C18H36O2
 L-Arginine	C6H14N4O2
 2'-Deoxyuridine	C9H12N2O5
 Maltotriose	C18H32O16
-"N,N-dimethyl-L-Valine"	C7H15NO2
-2-Acetylphenothiazine	C14H11NOS
-2-Methoxybenzoic acid	C8H8O3
+dimethyl-L-Valine	C7H15NO2
+Acetylphenothiazine	C14H11NOS
+Methoxybenzoic acid	C8H8O3
 Metyrosine	C10H13NO3
 Rhein	C15H8O6
 N6-Methyladenine	C6H7N5
-4-Hydroxybenzoic acid	C7H6O3
+Hydroxybenzoic acid	C7H6O3
 Sodium D-gluconate	C6H12O7
 L-Threonic acid Calcium Salt	C4H8O5
 Methyl 3-aminopyrazine-2-carboxylate	C6H7N3O2
 DL-Î±-Lipoamid	C8H15NOS2
 Lauric acid	C12H24O2
-²-Nicotinamide mononucleotide	C11H16N2O8P
+Nicotinamide mononucleotide	C11H16N2O8P

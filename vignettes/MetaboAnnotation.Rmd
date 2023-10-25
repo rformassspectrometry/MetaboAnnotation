@@ -762,7 +762,13 @@ all backends. In particular, backends based on SQL databases don't allow
 parallel processing because the database connection can not be shared across
 different processes.
 
-# Creating mixes of standard compounds
+
+# Utility functions
+
+*MetaboAnnotation* provides also other utility functions not directly related to
+the annotation process. These are presented in this section.
+
+## Creating mixes of standard compounds
 
 The function `createStandardMixes` allows for grouping of standard compounds
 with a minimum difference in m/z based on user input. 
@@ -771,10 +777,12 @@ with a minimum difference in m/z based on user input.
 library(MetaboCoreUtils)
 ```
 
-## Input format 
+### Input format 
 
 As an example here I will extract a list of a 100 standard compounds with their 
-formula from an excel file 
+formula from a tab delimited text file provided with the package. Such files
+could also be imported from an xlsx sheet using the *readxl* package.
+
 ```{r}
 standard <- read.table(system.file("extdata", "Standard_list_example.txt",
                                package = "MetaboAnnotation"),
@@ -782,7 +790,7 @@ standard <- read.table(system.file("extdata", "Standard_list_example.txt",
 ```
 
 We will use functions from the MetaboCoreUtil package to get the mass of each 
-compounds and the charge for the adducts wanted. 
+compounds and the m/z for the adducts wanted. 
 
 ```{r}
 #' Calculate mass based on formula of compounds
@@ -800,20 +808,31 @@ if (!is.matrix(standard_charged))
     standard_charged <- as.matrix(standard_charged)
 ```
 
-Below is is what the ideal input for the function looks like: 
+The input table for the createStandardMixes should thus look like the one shown
+below, i.e. should be a numeric matrix with each row representing one compound.
+Columns are expected to contain m/z values for different adducts of that
+compound. Importantly, the row names of the matrix should represent the (unique)
+compound names (or any other unique identifier for the compound).
+
 ```{r}
 standard_charged 
 ```
 
-## Using the function
+### Using the function
 
-For this first example, we will try to group just a subset of our list of
-compounds and run with default parameters:
+The `createStandardMixes` function organizes given compounds in such a way that
+each compound is placed in a group where all ions (adducts) have a m/z
+difference exceeding a user-defined threshold (default: `min_diff = 2`). 
+In this initial example, we aim to group only a subset of our compound list and
+execute the function with default parameters:
+
 ```{r}
 group_no_randomization <- createStandardMixes(standard_charged[1:20,])
 group_no_randomization
 ```
-Let's see the number of compounds per group
+
+Let's see the number of compounds per group:
+
 ```{r}
 table(group_no_randomization$group)
 ```
