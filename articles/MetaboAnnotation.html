@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.10</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut] (<a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (<a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
 Louail [aut] (<a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Thu Oct 19 12:28:19 2023</p>
+[ctb]<br><strong>Compiled</strong>: Thu Oct 26 07:56:20 2023</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -737,7 +737,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Thu Oct 19 12:28:46 2023]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Thu Oct 26 07:56:53 2023]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1239,7 +1239,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Oct 19 12:28:54 2023]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Oct 26 07:57:04 2023]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1343,11 +1343,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr     min      lq     mean</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 64.3366 64.8008 70.73858</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 36.8224 36.9074 39.91596</span></span>
-<span><span class="co">##   median      uq     max neval</span></span>
-<span><span class="co">##  64.8357 64.8885 94.8313     5</span></span>
-<span><span class="co">##  36.9509 37.5215 51.3776     5</span></span></code></pre>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 75.4139 82.1275 93.66554</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 47.2744 48.5684 54.62906</span></span>
+<span><span class="co">##   median       uq      max neval</span></span>
+<span><span class="co">##  83.1769 108.5843 119.0251     5</span></span>
+<span><span class="co">##  52.9159  55.7777  68.6089     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1378,6 +1378,246 @@ connection can not be shared across different processes.</p>
 </div>
 </div>
 <div class="section level2">
+<h2 id="utility-functions">Utility functions<a class="anchor" aria-label="anchor" href="#utility-functions"></a>
+</h2>
+<p><em>MetaboAnnotation</em> provides also other utility functions not
+directly related to the annotation process. These are presented in this
+section.</p>
+<div class="section level3">
+<h3 id="creating-mixes-of-standard-compounds">Creating mixes of standard compounds<a class="anchor" aria-label="anchor" href="#creating-mixes-of-standard-compounds"></a>
+</h3>
+<p>The function <code>createStandardMixes</code> allows for grouping of
+standard compounds with a minimum difference in m/z based on user
+input.</p>
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="input-format">Input format<a class="anchor" aria-label="anchor" href="#input-format"></a>
+</h4>
+<p>As an example here I will extract a list of a 100 standard compounds
+with their formula from a tab delimited text file provided with the
+package. Such files could also be imported from an xlsx sheet using the
+<em>readxl</em> package.</p>
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">standard</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Standard_list_example.txt"</span>,</span>
+<span>                               package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span>,</span>
+<span>                   header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, quote <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
+<p>We will use functions from the MetaboCoreUtil package to get the mass
+of each compounds and the m/z for the adducts wanted.</p>
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#' Calculate mass based on formula of compounds</span></span>
+<span><span class="va">standard</span><span class="op">$</span><span class="va">mass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass</a></span><span class="op">(</span><span class="va">standard</span><span class="op">$</span><span class="va">formula</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' Create input for function</span></span>
+<span><span class="co">#' Calculate charge for 2 adducts</span></span>
+<span><span class="va">standard_charged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">mass2mz</a></span><span class="op">(</span><span class="va">standard</span><span class="op">$</span><span class="va">mass</span>, adduct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#' have compounds names as rownames</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">standard</span><span class="op">[</span> , <span class="fl">1</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">#' ensure the input `x` is a matrix</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">is.matrix</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">standard_charged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">)</span></span></code></pre></div>
+<p>The input table for the createStandardMixes should thus look like the
+one shown below, i.e. should be a numeric matrix with each row
+representing one compound. Columns are expected to contain m/z values
+for different adducts of that compound. Importantly, the row names of
+the matrix should represent the (unique) compound names (or any other
+unique identifier for the compound).</p>
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">standard_charged</span> </span></code></pre></div>
+<pre><code><span><span class="co">##                                                         [M+H]+   [M+Na]+</span></span>
+<span><span class="co">## 2-Acetylpyrazine                                     123.05529 145.03723</span></span>
+<span><span class="co">## Guanosine 5′-diphosphate sodium sa                   444.03161 466.01355</span></span>
+<span><span class="co">## Quinoline-4-carboxylic acid                          174.05495 196.03690</span></span>
+<span><span class="co">## Heneicosanoic acid                                   327.32576 349.30770</span></span>
+<span><span class="co">## Sudan III                                            353.13969 375.12163</span></span>
+<span><span class="co">## Erythrosine B                                        836.66234 858.64429</span></span>
+<span><span class="co">## Hypoxanthine                                         137.04579 159.02773</span></span>
+<span><span class="co">## 2-Oxoadipic acid                                     161.04445 183.02639</span></span>
+<span><span class="co">## N-Acetyl-L-cysteine                                  164.03759 186.01953</span></span>
+<span><span class="co">## Carbamazepine                                        237.10224 259.08418</span></span>
+<span><span class="co">## Famotidine                                           338.05221 360.03416</span></span>
+<span><span class="co">## "trans-2-Butene-1,4-dicarboxylic acid"               145.04953 167.03148</span></span>
+<span><span class="co">## DL-p-Hydroxyphenyllactic acid                        183.06518 205.04713</span></span>
+<span><span class="co">## "Malachite Green, Oxalate"                           365.17790 387.15985</span></span>
+<span><span class="co">## Brucine sulfate heptahydrate                         395.19653 417.17848</span></span>
+<span><span class="co">## Uric acid                                            169.03562 191.01756</span></span>
+<span><span class="co">## Glycocholic acid hydrate                             466.31631 488.29826</span></span>
+<span><span class="co">## DL-4-Hydroxy-3-methoxymandelic acid                  199.06010 221.04204</span></span>
+<span><span class="co">## Phosphorylcholine chloride calcium salt tetrahydrate 185.08115 207.06309</span></span>
+<span><span class="co">## Imidazole                                             69.04472  91.02667</span></span>
+<span><span class="co">## Indole                                               118.06513 140.04707</span></span>
+<span><span class="co">## Perindopril erbumine                                 369.23840 391.22034</span></span>
+<span><span class="co">## Folinic acid calcium salt hydrate                    474.17317 496.15512</span></span>
+<span><span class="co">## "Tauroursodeoxycholic acid, Na salt"                 500.30404 522.28598</span></span>
+<span><span class="co">## Glycyl-L-leucine                                     189.12337 211.10531</span></span>
+<span><span class="co">## Carotene                                             537.44548 559.42742</span></span>
+<span><span class="co">## 2-Methylsuccinic acid                                133.04953 155.03148</span></span>
+<span><span class="co">## DL-m-Tyrosine                                        182.08117 204.06311</span></span>
+<span><span class="co">## Ursodeoxycholic acid                                 393.29994 415.28188</span></span>
+<span><span class="co">## N-Acetyl-L-alanine                                   132.06552 154.04746</span></span>
+<span><span class="co">## 3-Hydroxybenzyl alcohol                              125.05971 147.04165</span></span>
+<span><span class="co">## 2-Hydroxy-4-(methylthio)butyric acid calcium salt    151.04234 173.02429</span></span>
+<span><span class="co">## Myrcene                                              137.13248 159.11442</span></span>
+<span><span class="co">## "3,4-Dihydroxybenzeneacetic acid"                    169.04953 191.03148</span></span>
+<span><span class="co">## Deoxycholic acid                                     393.29994 415.28188</span></span>
+<span><span class="co">## 2-Aminobenzenesulfonic acid                          174.02194 196.00388</span></span>
+<span><span class="co">## Indole-3-acetamide                                   175.08659 197.06853</span></span>
+<span><span class="co">## L-Glutathione reduced                                308.09108 330.07303</span></span>
+<span><span class="co">## (±)-3-Methyl-2-oxovaleric acid sodium sal            131.07027 153.05221</span></span>
+<span><span class="co">## Lithocholic acid                                     377.30502 399.28697</span></span>
+<span><span class="co">## Chenodeoxycholic acid sodium salt                    393.29994 415.28188</span></span>
+<span><span class="co">## D-Allose                                             181.07066 203.05261</span></span>
+<span><span class="co">## Solvent Blue 35                                      351.20670 373.18865</span></span>
+<span><span class="co">## Tetradecanedioic acid                                259.19039 281.17233</span></span>
+<span><span class="co">## Food Yellow 3                                        409.01587 430.99781</span></span>
+<span><span class="co">## L-Homocitrulline                                     190.11862 212.10056</span></span>
+<span><span class="co">## 3-Methylxanthine                                     167.05635 189.03830</span></span>
+<span><span class="co">## Acid Yellow 36                                       354.09069 376.07263</span></span>
+<span><span class="co">## L-Arabitol                                           153.07575 175.05769</span></span>
+<span><span class="co">## Sodium phytate hydrate                               660.86865 682.85059</span></span>
+<span><span class="co">## Phosphoserine                                        186.01620 207.99814</span></span>
+<span><span class="co">## Deoxy-D-glucose                                      165.07575 187.05769</span></span>
+<span><span class="co">## Alanine methyl ester hydrochloride                   104.07060 126.05255</span></span>
+<span><span class="co">## Phenylac-Gly-OH                                      194.08117 216.06311</span></span>
+<span><span class="co">## NADPH sodium salt                                    746.09838 768.08032</span></span>
+<span><span class="co">## Pyridoxine HCl                                       170.08117 192.06311</span></span>
+<span><span class="co">## L-Malic ac                                           135.02880 157.01074</span></span>
+<span><span class="co">## Uracil                                               113.03455 135.01650</span></span>
+<span><span class="co">## Adenosine                                            268.10403 290.08597</span></span>
+<span><span class="co">## L-Carnitine inner salt                               162.11247 184.09441</span></span>
+<span><span class="co">## Acetyl-L-glutamin                                    189.08698 211.06893</span></span>
+<span><span class="co">## Aminobutyric acid                                    104.07060 126.05255</span></span>
+<span><span class="co">## Ortho-Hydroxyphenylacetic acid                       153.05462 175.03656</span></span>
+<span><span class="co">## Riboflavin                                           377.14556 399.12750</span></span>
+<span><span class="co">## Diaminobutane dihydrochloride                         89.10732 111.08927</span></span>
+<span><span class="co">## Sarcosine                                             90.05495 112.03690</span></span>
+<span><span class="co">## L-Carnosine                                          227.11387 249.09581</span></span>
+<span><span class="co">## Methylmalonic acid                                   119.03388 141.01583</span></span>
+<span><span class="co">## L-Pyroglutamic acid                                  130.04987 152.03181</span></span>
+<span><span class="co">## Rhodamine B                                          444.24074 466.22269</span></span>
+<span><span class="co">## Indigo Carmine                                       422.99513 444.97708</span></span>
+<span><span class="co">## Diaminopropionic acid monohydrochloride              105.06585 127.04780</span></span>
+<span><span class="co">## Dimethylbenzimidazole                                147.09167 169.07362</span></span>
+<span><span class="co">## N-Acetyl-L-aspartic acid                             176.05535 198.03729</span></span>
+<span><span class="co">## Thiamine hydrochloride hydrate                       266.11958 288.10153</span></span>
+<span><span class="co">## Taurine                                              126.02194 148.00388</span></span>
+<span><span class="co">## Maleic acid                                          117.01823 139.00018</span></span>
+<span><span class="co">## O-Acetyl-L-carnitine HCl                             204.12303 226.10498</span></span>
+<span><span class="co">## N-Acetyl-D-galactosamine                             222.09721 244.07916</span></span>
+<span><span class="co">## Citric acid                                          193.03428 215.01622</span></span>
+<span><span class="co">## Dimethylglycine hydrochloride                        104.07060 126.05255</span></span>
+<span><span class="co">## Erioglaucine disodium salt                           750.17339 772.15534</span></span>
+<span><span class="co">## Sebacic acid                                         203.12779 225.10973</span></span>
+<span><span class="co">## Stearic acid                                         285.27881 307.26075</span></span>
+<span><span class="co">## L-Arginine                                           175.11895 197.10090</span></span>
+<span><span class="co">## 2'-Deoxyuridine                                      229.08190 251.06384</span></span>
+<span><span class="co">## Maltotriose                                          505.17631 527.15825</span></span>
+<span><span class="co">## dimethyl-L-Valine                                    146.11755 168.09950</span></span>
+<span><span class="co">## Acetylphenothiazine                                  242.06341 264.04535</span></span>
+<span><span class="co">## Methoxybenzoic acid                                  153.05462 175.03656</span></span>
+<span><span class="co">## Metyrosine                                           196.09682 218.07876</span></span>
+<span><span class="co">## Rhein                                                285.03936 307.02131</span></span>
+<span><span class="co">## N6-Methyladenine                                     150.07742 172.05937</span></span>
+<span><span class="co">## Hydroxybenzoic acid                                  139.03897 161.02091</span></span>
+<span><span class="co">## Sodium D-gluconate                                   197.06558 219.04752</span></span>
+<span><span class="co">## L-Threonic acid Calcium Salt                         137.04445 159.02639</span></span>
+<span><span class="co">## Methyl 3-aminopyrazine-2-carboxylate                 154.06110 176.04305</span></span>
+<span><span class="co">## DL-α-Lipoamid                                        206.06678 228.04873</span></span>
+<span><span class="co">## Lauric acid                                          201.18491 223.16685</span></span>
+<span><span class="co">## Nicotinamide mononucleotide                          336.07170 358.05365</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="using-the-function">Using the function<a class="anchor" aria-label="anchor" href="#using-the-function"></a>
+</h4>
+<p>The <code>createStandardMixes</code> function organizes given
+compounds in such a way that each compound is placed in a group where
+all ions (adducts) have a m/z difference exceeding a user-defined
+threshold (default: <code>min_diff = 2</code>). In this initial example,
+we aim to group only a subset of our compound list and execute the
+function with default parameters:</p>
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group_no_randomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">group_no_randomization</span></span></code></pre></div>
+<pre><code><span><span class="co">##                                                         [M+H]+   [M+Na]+ group</span></span>
+<span><span class="co">## 2-Acetylpyrazine                                     123.05529 145.03723     1</span></span>
+<span><span class="co">## Guanosine 5′-diphosphate sodium sa                   444.03161 466.01355     1</span></span>
+<span><span class="co">## Quinoline-4-carboxylic acid                          174.05495 196.03690     1</span></span>
+<span><span class="co">## Heneicosanoic acid                                   327.32576 349.30770     1</span></span>
+<span><span class="co">## Sudan III                                            353.13969 375.12163     1</span></span>
+<span><span class="co">## Erythrosine B                                        836.66234 858.64429     1</span></span>
+<span><span class="co">## Hypoxanthine                                         137.04579 159.02773     1</span></span>
+<span><span class="co">## 2-Oxoadipic acid                                     161.04445 183.02639     1</span></span>
+<span><span class="co">## N-Acetyl-L-cysteine                                  164.03759 186.01953     1</span></span>
+<span><span class="co">## Carbamazepine                                        237.10224 259.08418     1</span></span>
+<span><span class="co">## Famotidine                                           338.05221 360.03416     2</span></span>
+<span><span class="co">## "trans-2-Butene-1,4-dicarboxylic acid"               145.04953 167.03148     2</span></span>
+<span><span class="co">## DL-p-Hydroxyphenyllactic acid                        183.06518 205.04713     2</span></span>
+<span><span class="co">## "Malachite Green, Oxalate"                           365.17790 387.15985     2</span></span>
+<span><span class="co">## Brucine sulfate heptahydrate                         395.19653 417.17848     2</span></span>
+<span><span class="co">## Uric acid                                            169.03562 191.01756     2</span></span>
+<span><span class="co">## Glycocholic acid hydrate                             466.31631 488.29826     2</span></span>
+<span><span class="co">## DL-4-Hydroxy-3-methoxymandelic acid                  199.06010 221.04204     2</span></span>
+<span><span class="co">## Phosphorylcholine chloride calcium salt tetrahydrate 185.08115 207.06309     2</span></span>
+<span><span class="co">## Imidazole                                             69.04472  91.02667     2</span></span></code></pre>
+<p>Let’s see the number of compounds per group:</p>
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_no_randomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  1  2 </span></span>
+<span><span class="co">## 10 10</span></span></code></pre>
+<p>The grouping here worked perfectly, but let’s now use the entire
+compound list and run with the default parameter again:</p>
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group_no_randomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_no_randomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  1  2  3  4  5  6  7  8  9 10 11 </span></span>
+<span><span class="co">## 10 10 10 10 10 10 10 10 10  7  3</span></span></code></pre>
+<p>This time we can see that the grouping is less ideal. In this case we
+can switch the <code>iterativeRandomization = TRUE</code>.</p>
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">group_with_ramdomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span>, </span>
+<span>                                                iterativeRandomization <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_with_ramdomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  1  2  3  4  5  6  7  8  9 10 </span></span>
+<span><span class="co">## 10 10 10 10 10 10 10 10 10 10</span></span></code></pre>
+<p>Changing <code>iterativeRandomization =</code> from the default
+<code>FALSE</code> to <code>TRUE</code> enables the randomization of
+input <code>x</code> rows until it fits the <code>min_nstd</code>
+parameter. If the list of compounds is very long or the requirement is
+hard to fit, this function can take a bit longer if
+<code>iterativeRandomization =</code> is set to <code>TRUE.</code></p>
+<p>What if we want groups of a maximum of 20 and a minimum of 15
+compounds, and with a minimum difference of 2 m/z between compounds of
+the same group? If you want to know more about the parameters of this
+function, look at <code><a href="../reference/createStandardMixes.html">?createStandardMixes</a></code>.</p>
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">group_with_ramdomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span>, </span>
+<span>                                                max_nstd <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>                                                min_nstd <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>                                                min_diff <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                                iterativeRandomization <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_with_ramdomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  1  2  3  4  5  6  7 </span></span>
+<span><span class="co">## 15 15 15 15 15 15 10</span></span></code></pre>
+<p>Great ! these groups look good; we can now export. As the function
+already returns a <code>data.frame</code>, you can directly save is as
+an Excel file using <code>write.xlsx</code> or as below in text format
+that can also be open in Excel.</p>
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">group_with_ramdomization</span>, </span>
+<span>           file <span class="op">=</span> <span class="st">"standard_mixes.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, quote <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
 <pre><code><span><span class="co">## R version 4.3.1 (2023-06-16)</span></span>
@@ -1404,17 +1644,17 @@ connection can not be shared across different processes.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] microbenchmark_1.4.10       msdata_0.41.0              </span></span>
-<span><span class="co">##  [3] QFeatures_1.11.2            MultiAssayExperiment_1.27.5</span></span>
-<span><span class="co">##  [5] SummarizedExperiment_1.31.1 Biobase_2.61.0             </span></span>
-<span><span class="co">##  [7] GenomicRanges_1.53.2        GenomeInfoDb_1.37.6        </span></span>
-<span><span class="co">##  [9] IRanges_2.35.3              MatrixGenerics_1.13.1      </span></span>
-<span><span class="co">## [11] matrixStats_1.0.0-9003      Spectra_1.11.11            </span></span>
-<span><span class="co">## [13] ProtGenerics_1.33.1         BiocParallel_1.35.4        </span></span>
-<span><span class="co">## [15] S4Vectors_0.39.3            MetaboAnnotation_1.5.9     </span></span>
-<span><span class="co">## [17] AnnotationHub_3.9.2         BiocFileCache_2.9.1        </span></span>
-<span><span class="co">## [19] dbplyr_2.3.4                BiocGenerics_0.47.0        </span></span>
-<span><span class="co">## [21] BiocStyle_2.29.2           </span></span>
+<span><span class="co">##  [1] MetaboCoreUtils_1.10.0      microbenchmark_1.4.10      </span></span>
+<span><span class="co">##  [3] msdata_0.41.0               QFeatures_1.11.2           </span></span>
+<span><span class="co">##  [5] MultiAssayExperiment_1.28.0 SummarizedExperiment_1.32.0</span></span>
+<span><span class="co">##  [7] Biobase_2.62.0              GenomicRanges_1.54.0       </span></span>
+<span><span class="co">##  [9] GenomeInfoDb_1.38.0         IRanges_2.36.0             </span></span>
+<span><span class="co">## [11] MatrixGenerics_1.14.0       matrixStats_1.0.0-9003     </span></span>
+<span><span class="co">## [13] Spectra_1.12.0              ProtGenerics_1.34.0        </span></span>
+<span><span class="co">## [15] BiocParallel_1.36.0         S4Vectors_0.40.0           </span></span>
+<span><span class="co">## [17] MetaboAnnotation_1.5.10     AnnotationHub_3.10.0       </span></span>
+<span><span class="co">## [19] BiocFileCache_2.10.0        dbplyr_2.3.4               </span></span>
+<span><span class="co">## [21] BiocGenerics_0.48.0         BiocStyle_2.30.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##   [1] DBI_1.1.3                     bitops_1.0-7                 </span></span>
@@ -1423,53 +1663,53 @@ connection can not be shared across different processes.</p>
 <span><span class="co">##   [7] compiler_4.3.1                RSQLite_2.3.1                </span></span>
 <span><span class="co">##   [9] png_0.1-8                     systemfonts_1.0.5            </span></span>
 <span><span class="co">##  [11] vctrs_0.6.4                   stringr_1.5.0                </span></span>
-<span><span class="co">##  [13] pkgconfig_2.0.3               MetaboCoreUtils_1.9.4        </span></span>
-<span><span class="co">##  [15] crayon_1.5.2                  fastmap_1.1.1                </span></span>
-<span><span class="co">##  [17] XVector_0.41.1                ellipsis_0.3.2               </span></span>
-<span><span class="co">##  [19] utf8_1.2.3                    promises_1.2.1               </span></span>
-<span><span class="co">##  [21] rmarkdown_2.25                ragg_1.2.6                   </span></span>
-<span><span class="co">##  [23] purrr_1.0.2                   bit_4.0.5                    </span></span>
-<span><span class="co">##  [25] xfun_0.40                     zlibbioc_1.47.0              </span></span>
-<span><span class="co">##  [27] cachem_1.0.8                  ChemmineR_3.53.2             </span></span>
-<span><span class="co">##  [29] jsonlite_1.8.7                blob_1.2.4                   </span></span>
-<span><span class="co">##  [31] later_1.3.1                   DelayedArray_0.27.10         </span></span>
-<span><span class="co">##  [33] interactiveDisplayBase_1.39.0 cluster_2.1.4                </span></span>
-<span><span class="co">##  [35] parallel_4.3.1                R6_2.5.1                     </span></span>
-<span><span class="co">##  [37] bslib_0.5.1                   stringi_1.7.12               </span></span>
-<span><span class="co">##  [39] jquerylib_0.1.4               Rcpp_1.0.11                  </span></span>
-<span><span class="co">##  [41] bookdown_0.36                 knitr_1.44                   </span></span>
-<span><span class="co">##  [43] base64enc_0.1-3               igraph_1.5.1                 </span></span>
-<span><span class="co">##  [45] Matrix_1.6-1.1                httpuv_1.6.11                </span></span>
-<span><span class="co">##  [47] tidyselect_1.2.0              abind_1.4-5                  </span></span>
-<span><span class="co">##  [49] yaml_2.3.7                    codetools_0.2-19             </span></span>
-<span><span class="co">##  [51] curl_5.1.0                    lattice_0.21-9               </span></span>
-<span><span class="co">##  [53] tibble_3.2.1                  withr_2.5.1                  </span></span>
-<span><span class="co">##  [55] shiny_1.7.5.1                 KEGGREST_1.41.4              </span></span>
-<span><span class="co">##  [57] evaluate_0.22                 desc_1.4.2                   </span></span>
-<span><span class="co">##  [59] xml2_1.3.5                    Biostrings_2.69.2            </span></span>
-<span><span class="co">##  [61] pillar_1.9.0                  BiocManager_1.30.22          </span></span>
-<span><span class="co">##  [63] filelock_1.0.2                DT_0.30                      </span></span>
-<span><span class="co">##  [65] ncdf4_1.21                    generics_0.1.3               </span></span>
-<span><span class="co">##  [67] rprojroot_2.0.3               RCurl_1.98-1.12              </span></span>
-<span><span class="co">##  [69] BiocVersion_3.18.0            ggplot2_3.4.4                </span></span>
-<span><span class="co">##  [71] munsell_0.5.0                 scales_1.2.1                 </span></span>
-<span><span class="co">##  [73] xtable_1.8-4                  glue_1.6.2                   </span></span>
-<span><span class="co">##  [75] lazyeval_0.2.2                tools_4.3.1                  </span></span>
-<span><span class="co">##  [77] mzR_2.35.1                    fs_1.6.3                     </span></span>
-<span><span class="co">##  [79] grid_4.3.1                    MsCoreUtils_1.13.1           </span></span>
-<span><span class="co">##  [81] AnnotationDbi_1.63.2          colorspace_2.1-0             </span></span>
-<span><span class="co">##  [83] GenomeInfoDbData_1.2.11       cli_3.6.1                    </span></span>
-<span><span class="co">##  [85] rappdirs_0.3.3                textshaping_0.3.7            </span></span>
-<span><span class="co">##  [87] rsvg_2.6.0                    fansi_1.0.5                  </span></span>
-<span><span class="co">##  [89] S4Arrays_1.1.6                dplyr_1.1.3                  </span></span>
-<span><span class="co">##  [91] AnnotationFilter_1.25.0       gtable_0.3.4                 </span></span>
-<span><span class="co">##  [93] sass_0.4.7                    digest_0.6.33                </span></span>
-<span><span class="co">##  [95] SparseArray_1.1.12            rjson_0.2.21                 </span></span>
-<span><span class="co">##  [97] htmlwidgets_1.6.2             memoise_2.0.1                </span></span>
-<span><span class="co">##  [99] htmltools_0.5.6.1             pkgdown_2.0.7.9000           </span></span>
-<span><span class="co">## [101] lifecycle_1.0.3               httr_1.4.7                   </span></span>
-<span><span class="co">## [103] CompoundDb_1.3.3              mime_0.12                    </span></span>
-<span><span class="co">## [105] bit64_4.0.5                   MASS_7.3-60</span></span></code></pre>
+<span><span class="co">##  [13] pkgconfig_2.0.3               crayon_1.5.2                 </span></span>
+<span><span class="co">##  [15] fastmap_1.1.1                 XVector_0.42.0               </span></span>
+<span><span class="co">##  [17] ellipsis_0.3.2                utf8_1.2.4                   </span></span>
+<span><span class="co">##  [19] promises_1.2.1                rmarkdown_2.25               </span></span>
+<span><span class="co">##  [21] ragg_1.2.6                    purrr_1.0.2                  </span></span>
+<span><span class="co">##  [23] bit_4.0.5                     xfun_0.40                    </span></span>
+<span><span class="co">##  [25] zlibbioc_1.48.0               cachem_1.0.8                 </span></span>
+<span><span class="co">##  [27] ChemmineR_3.54.0              jsonlite_1.8.7               </span></span>
+<span><span class="co">##  [29] blob_1.2.4                    later_1.3.1                  </span></span>
+<span><span class="co">##  [31] DelayedArray_0.28.0           interactiveDisplayBase_1.40.0</span></span>
+<span><span class="co">##  [33] cluster_2.1.4                 parallel_4.3.1               </span></span>
+<span><span class="co">##  [35] R6_2.5.1                      bslib_0.5.1                  </span></span>
+<span><span class="co">##  [37] stringi_1.7.12                jquerylib_0.1.4              </span></span>
+<span><span class="co">##  [39] Rcpp_1.0.11                   bookdown_0.36                </span></span>
+<span><span class="co">##  [41] knitr_1.44                    base64enc_0.1-3              </span></span>
+<span><span class="co">##  [43] igraph_1.5.1                  Matrix_1.6-1.1               </span></span>
+<span><span class="co">##  [45] httpuv_1.6.12                 tidyselect_1.2.0             </span></span>
+<span><span class="co">##  [47] abind_1.4-5                   yaml_2.3.7                   </span></span>
+<span><span class="co">##  [49] codetools_0.2-19              curl_5.1.0                   </span></span>
+<span><span class="co">##  [51] lattice_0.22-5                tibble_3.2.1                 </span></span>
+<span><span class="co">##  [53] withr_2.5.1                   shiny_1.7.5.1                </span></span>
+<span><span class="co">##  [55] KEGGREST_1.42.0               evaluate_0.22                </span></span>
+<span><span class="co">##  [57] desc_1.4.2                    xml2_1.3.5                   </span></span>
+<span><span class="co">##  [59] Biostrings_2.70.0             pillar_1.9.0                 </span></span>
+<span><span class="co">##  [61] BiocManager_1.30.22           filelock_1.0.2               </span></span>
+<span><span class="co">##  [63] DT_0.30                       ncdf4_1.21                   </span></span>
+<span><span class="co">##  [65] generics_0.1.3                rprojroot_2.0.3              </span></span>
+<span><span class="co">##  [67] RCurl_1.98-1.12               BiocVersion_3.18.0           </span></span>
+<span><span class="co">##  [69] ggplot2_3.4.4                 munsell_0.5.0                </span></span>
+<span><span class="co">##  [71] scales_1.2.1                  xtable_1.8-4                 </span></span>
+<span><span class="co">##  [73] glue_1.6.2                    lazyeval_0.2.2               </span></span>
+<span><span class="co">##  [75] tools_4.3.1                   mzR_2.36.0                   </span></span>
+<span><span class="co">##  [77] fs_1.6.3                      grid_4.3.1                   </span></span>
+<span><span class="co">##  [79] MsCoreUtils_1.14.0            AnnotationDbi_1.64.0         </span></span>
+<span><span class="co">##  [81] colorspace_2.1-0              GenomeInfoDbData_1.2.11      </span></span>
+<span><span class="co">##  [83] cli_3.6.1                     rappdirs_0.3.3               </span></span>
+<span><span class="co">##  [85] textshaping_0.3.7             rsvg_2.6.0                   </span></span>
+<span><span class="co">##  [87] fansi_1.0.5                   S4Arrays_1.2.0               </span></span>
+<span><span class="co">##  [89] dplyr_1.1.3                   AnnotationFilter_1.26.0      </span></span>
+<span><span class="co">##  [91] gtable_0.3.4                  sass_0.4.7                   </span></span>
+<span><span class="co">##  [93] digest_0.6.33                 SparseArray_1.2.0            </span></span>
+<span><span class="co">##  [95] rjson_0.2.21                  htmlwidgets_1.6.2            </span></span>
+<span><span class="co">##  [97] memoise_2.0.1                 htmltools_0.5.6.1            </span></span>
+<span><span class="co">##  [99] pkgdown_2.0.7.9000            lifecycle_1.0.3              </span></span>
+<span><span class="co">## [101] httr_1.4.7                    CompoundDb_1.3.3             </span></span>
+<span><span class="co">## [103] mime_0.12                     bit64_4.0.5                  </span></span>
+<span><span class="co">## [105] MASS_7.3-60</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
