@@ -1,15 +1,17 @@
-# MetaboAnnotation 1.5
+# MetaboAnnotation 1.7
 
-## Changes in 1.5.10
+## Changes in 1.7.1
 
 - Add examples and a section to the vignette explaining the use of
   `createStandardMixes`.
+
+# MetaboAnnotation 1.5
 
 ## Changes in 1.5.9
 
 - Addition of global function `createStandardMixes`.
 
-## Changes in 1.5.8 
+## Changes in 1.5.8
 
 - Fix `.randomize_grouping` to prevent collapsing of matrix when input in a
   single column.
