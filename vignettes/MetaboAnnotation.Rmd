@@ -763,6 +763,128 @@ parallel processing because the database connection can not be shared across
 different processes.
 
 
+# Utility functions
+
+*MetaboAnnotation* provides also other utility functions not directly related to
+the annotation process. These are presented in this section.
+
+## Creating mixes of standard compounds
+
+The function `createStandardMixes` allows for grouping of standard compounds
+with a minimum difference in m/z based on user input. 
+
+```{r}
+library(MetaboCoreUtils)
+```
+
+### Input format 
+
+As an example here I will extract a list of a 100 standard compounds with their 
+formula from a tab delimited text file provided with the package. Such files
+could also be imported from an xlsx sheet using the *readxl* package.
+
+```{r}
+standard <- read.table(system.file("extdata", "Standard_list_example.txt",
+                               package = "MetaboAnnotation"),
+                   header = TRUE, sep = "\t", quote = "")
+```
+
+We will use functions from the MetaboCoreUtil package to get the mass of each 
+compounds and the m/z for the adducts wanted. 
+
+```{r}
+#' Calculate mass based on formula of compounds
+standard$mass <- calculateMass(standard$formula)
+
+#' Create input for function
+#' Calculate charge for 2 adducts
+standard_charged <- mass2mz(standard$mass, adduct = c("[M+H]+", "[M+Na]+"))
+
+#' have compounds names as rownames
+rownames(standard_charged) <- standard[ , 1]
+
+#' ensure the input `x` is a matrix
+if (!is.matrix(standard_charged))
+    standard_charged <- as.matrix(standard_charged)
+```
+
+The input table for the createStandardMixes should thus look like the one shown
+below, i.e. should be a numeric matrix with each row representing one compound.
+Columns are expected to contain m/z values for different adducts of that
+compound. Importantly, the row names of the matrix should represent the (unique)
+compound names (or any other unique identifier for the compound).
+
+```{r}
+standard_charged 
+```
+
+### Using the function
+
+The `createStandardMixes` function organizes given compounds in such a way that
+each compound is placed in a group where all ions (adducts) have a m/z
+difference exceeding a user-defined threshold (default: `min_diff = 2`). 
+In this initial example, we aim to group only a subset of our compound list and
+execute the function with default parameters:
+
+```{r}
+group_no_randomization <- createStandardMixes(standard_charged[1:20,])
+group_no_randomization
+```
+
+Let's see the number of compounds per group:
+
+```{r}
+table(group_no_randomization$group)
+```
+
+The grouping here worked perfectly, but let's now use the entire compound list 
+and run with the default parameter again:
+
+```{r}
+group_no_randomization <- createStandardMixes(standard_charged)
+table(group_no_randomization$group)
+```
+
+This time we can see that the grouping is less ideal. 
+In this case we can switch the `iterativeRandomization = TRUE`. 
+
+```{r}
+group_with_ramdomization <- createStandardMixes(standard_charged, 
+                                                iterativeRandomization = TRUE)
+
+table(group_with_ramdomization$group)
+```
+
+Changing `iterativeRandomization =` from the default `FALSE` to `TRUE` enables
+the randomization of input `x` rows until it fits the `min_nstd` parameter. If
+the list of compounds is very long or the requirement is hard to fit, this
+function can take a bit longer if `iterativeRandomization =` is set to `TRUE.`
+
+What if we want groups of a maximum of 20 and a minimum of 15 compounds, and with
+a minimum difference of 2 m/z between compounds of the same group? If you want
+to know more about the parameters of this function, look at
+`?createStandardMixes`.
+
+```{r}
+set.seed(123)
+group_with_ramdomization <- createStandardMixes(standard_charged, 
+                                                max_nstd = 15,
+                                                min_nstd = 10,
+                                                min_diff = 2,
+                                                iterativeRandomization = TRUE)
+
+table(group_with_ramdomization$group)
+```
+
+Great ! these groups look good; we can now export. As the function already
+returns a `data.frame`, you can directly save is as an Excel file using
+`write.xlsx` or as below in text format that can also be open in Excel.
+
+```{r eval=FALSE}
+write.table(group_with_ramdomization, 
+           file = "standard_mixes.txt", sep = "\t", quote = FALSE)
+```
+
 # Session information {-}
 
 ```{r sessioninfo, echo=FALSE}
