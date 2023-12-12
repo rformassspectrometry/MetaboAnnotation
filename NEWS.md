@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.7
 
+## Changes in 1.7.2
+
+- Update the `Spectra` objects within the package to the new versions.
+
 ## Changes in 1.7.1
 
 - Add examples and a section to the vignette explaining the use of
