@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.7
 
+## Changes in 1.7.3
+
+- Add new methods `queryVariables` and `targetVariables` to extract the names
+  of variables (columns) of *query* and *target*.
+
 ## Changes in 1.7.2
 
 - Update the `Spectra` objects within the package to the new versions.

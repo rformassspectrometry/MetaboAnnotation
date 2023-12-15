@@ -60,6 +60,33 @@
 #' - `filterMatches`: filter matches in a `Matched` object using different
 #'    approaches depending on the class of `param`:
 #'
+#'   - `SingleMatchParam`: reduces matches to keep only (at most) a
+#'     single match per query. The deduplication strategy can be defined with
+#'     parameter `duplicates`:
+#'     - `duplicates = "remove"`: all matches for query elements matching more
+#'       than one target element will be removed.
+#'     - `duplicates = "closest"`: keep only the *closest* match for each
+#'       query element. The closest match is defined by the value(s) of
+#'       *score* (and eventually *score_rt*, if present). The one match with
+#'       the smallest value for this (these) column(s) is retained. This is
+#'       equivalent to `TopRankedMatchesParam(n = 1L, decreasing = FALSE)`.
+#'     - `duplicates = "top_ranked"`: select the best ranking match for each
+#'       query element. Parameter `column` allows to specify the column by
+#'       which matches are ranked (use LLLLLL to list possible columns).
+#'       The column. Parameter `decreasing` allows
+#'       to define whether the match with the highest (`decreasing = TRUE`)
+#'       or lowest (`decreasing = FALSE`) value will be selected.
+#'   - `ScoreThresholdParam`: keeps only the matches whose score is strictly
+#'     above or strictly below a certain threshold (respectively when parameter
+#'     `above = TRUE` and `above = FALSE`). The name of the column containing
+#'     the scores to be used for the filtering can be specified with parameter
+#'     `column`. The default for `column` is `"score"`. Such variable is present
+#'     in each `Matched` object. The name of other score variables (if present)
+#'     can be provided (the names of all score variables can be obtained with
+#'     `scoreVariables()` function). For example `column = "score_rt"` can be
+#'     used to filter matches based on retention time scores for `Matched`
+#'     objects returned by [matchValues()] when `param` objects involving a
+#'     retention time comparison are used.
 #'   - `SelectMatchesParam`: keeps or removes (respectively when parameter
 #'     `keep = TRUE` and `keep = FALSE`) matches corresponding to certain
 #'     indices or values of `query` and `target`. If `queryValue` and
@@ -86,17 +113,6 @@
 #'     is performed on the absolute value of `"score_rt"`). Thus, matches with
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
-#'     - `ScoreThresholdParam`: keeps only the matches whose score is strictly
-#'     above or strictly below a certain threshold (respectively when parameter
-#'     `above = TRUE` and `above = FALSE`). The name of the column containing
-#'     the scores to be used for the filtering can be specified with parameter
-#'     `column`. The default for `column` is `"score"`. Such variable is present
-#'     in each `Matched` object. The name of other score variables (if present)
-#'     can be provided (the names of all score variables can be obtained with
-#'     `scoreVariables()` function). For example `column = "score_rt"` can be
-#'     used to filter matches based on retention time scores for `Matched`
-#'     objects returned by [matchValues()] when `param` objects involving a
-#'     retention time comparison are used.
 #'
 #' - `lapply`: applies a user defined function `FUN` to each subset of
 #'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
@@ -165,9 +181,14 @@
 #'   are aligned, i.e. each element in them represent a matched query-target
 #'   pair.
 #'
+#' - `queryVariables` returns the names of the variables (columns) in *query*.
+#'
 #' - `scoreVariables` returns the names of the score variables stored in the
 #'   `Matched` object (precisely the names of the variables in `matches(object)`
 #'   containing the string "score" in their name ignoring the case).
+#'
+#' - `targetVariables` returns the names of the variables (columns) in *target*
+#'   (prefixed with `"target_"`).
 #'
 #' - `whichTarget` returns an `integer` with the indices of the elements in
 #'   *target* that match at least one element in *query*.
@@ -757,6 +778,22 @@ scoreVariables <- function(object) {
     matchescols[grep("score", matchescols, ignore.case = TRUE)]
 }
 
+#' @rdname Matched
+setMethod("queryVariables", "Matched", function(object) {
+    query <- .objectToMatch(object@query, object@queryAssay)
+    cnq <- character()
+    if (length(dim(query)) == 2)
+        cnq <- colnames(query)
+    if (is.null(dim(query)))
+        cnq <- "query"
+    cnq
+})
+
+#' @rdname Matched
+setMethod("targetVariables", "Matched", function(object) {
+    .cnt(.objectToMatch(object@target, object@targetAssay))
+})
+
 #' @importMethodsFrom S4Vectors cbind
 #'
 #' @importFrom S4Vectors DataFrame
@@ -1225,6 +1262,29 @@ setMethod("filterMatches", c("Matched", "ScoreThresholdParam"),
               validObject(object)
               object
           })
+
+#' @noRd
+setClass("SingleMatchParam",
+         slots = c(
+             duplicates = "character",
+             column = "character",
+             decreasing = "logical"),
+         contains = "Param",
+         prototype = prototype(
+             duplicates = "remove",
+             column = "score",
+             decreasing = TRUE)
+         )
+
+#' @rdname Matched
+#'
+#' @export
+SingleMatchParam <- function(duplicates = c("remove", "closest", "top_ranked"),
+                             column = "score", decreasing = TRUE) {
+    duplicates <- force(match.arg(duplicates))
+    new("SingleMatchParam", duplicates = duplicates, column = column[1L],
+        decreasing = decreasing[1L])
+}
 
 #' @importFrom MsCoreUtils rbindFill
 .addMatches <- function(query, target, matches, queryValue = integer(),

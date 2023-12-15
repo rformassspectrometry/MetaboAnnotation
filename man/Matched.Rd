@@ -5,6 +5,8 @@
 \alias{endoapply}
 \alias{filterMatches}
 \alias{matchedData}
+\alias{queryVariables}
+\alias{targetVariables}
 \alias{Matched}
 \alias{Matched-class}
 \alias{[,Matched-method}
@@ -21,6 +23,8 @@
 \alias{$,Matched-method}
 \alias{colnames,Matched-method}
 \alias{scoreVariables}
+\alias{queryVariables,Matched-method}
+\alias{targetVariables,Matched-method}
 \alias{matchedData,Matched-method}
 \alias{pruneTarget}
 \alias{filterMatches,Matched,missing-method}
@@ -30,6 +34,7 @@
 \alias{filterMatches,Matched,SelectMatchesParam-method}
 \alias{filterMatches,Matched,TopRankedMatchesParam-method}
 \alias{filterMatches,Matched,ScoreThresholdParam-method}
+\alias{SingleMatchParam}
 \alias{addMatches,Matched-method}
 \alias{endoapply,ANY-method}
 \alias{endoapply,Matched-method}
@@ -43,6 +48,10 @@ endoapply(X, FUN, ...)
 filterMatches(object, param, ...)
 
 matchedData(object, ...)
+
+queryVariables(object, ...)
+
+targetVariables(object, ...)
 
 Matched(
   query = list(),
@@ -79,6 +88,10 @@ whichQuery(object)
 
 scoreVariables(object)
 
+\S4method{queryVariables}{Matched}(object)
+
+\S4method{targetVariables}{Matched}(object)
+
 \S4method{matchedData}{Matched}(object, columns = colnames(object), ...)
 
 pruneTarget(object)
@@ -112,6 +125,12 @@ ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
 \S4method{filterMatches}{Matched,TopRankedMatchesParam}(object, param, ...)
 
 \S4method{filterMatches}{Matched,ScoreThresholdParam}(object, param, ...)
+
+SingleMatchParam(
+  duplicates = c("remove", "closest", "top_ranked"),
+  column = "score",
+  decreasing = TRUE
+)
 
 \S4method{addMatches}{Matched}(
   object,
@@ -291,6 +310,35 @@ has to return a \code{Matched} object.
 \item \code{filterMatches}: filter matches in a \code{Matched} object using different
 approaches depending on the class of \code{param}:
 \itemize{
+\item \code{SingleMatchParam}: reduces matches to keep only (at most) a
+single match per query. The deduplication strategy can be defined with
+parameter \code{duplicates}:
+\itemize{
+\item \code{duplicates = "remove"}: all matches for query elements matching more
+than one target element will be removed.
+\item \code{duplicates = "closest"}: keep only the \emph{closest} match for each
+query element. The closest match is defined by the value(s) of
+\emph{score} (and eventually \emph{score_rt}, if present). The one match with
+the smallest value for this (these) column(s) is retained. This is
+equivalent to \code{TopRankedMatchesParam(n = 1L, decreasing = FALSE)}.
+\item \code{duplicates = "top_ranked"}: select the best ranking match for each
+query element. Parameter \code{column} allows to specify the column by
+which matches are ranked (use LLLLLL to list possible columns).
+The column. Parameter \code{decreasing} allows
+to define whether the match with the highest (\code{decreasing = TRUE})
+or lowest (\code{decreasing = FALSE}) value will be selected.
+}
+\item \code{ScoreThresholdParam}: keeps only the matches whose score is strictly
+above or strictly below a certain threshold (respectively when parameter
+\code{above = TRUE} and \code{above = FALSE}). The name of the column containing
+the scores to be used for the filtering can be specified with parameter
+\code{column}. The default for \code{column} is \code{"score"}. Such variable is present
+in each \code{Matched} object. The name of other score variables (if present)
+can be provided (the names of all score variables can be obtained with
+\code{scoreVariables()} function). For example \code{column = "score_rt"} can be
+used to filter matches based on retention time scores for \code{Matched}
+objects returned by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a
+retention time comparison are used.
 \item \code{SelectMatchesParam}: keeps or removes (respectively when parameter
 \code{keep = TRUE} and \code{keep = FALSE}) matches corresponding to certain
 indices or values of \code{query} and \code{target}. If \code{queryValue} and
@@ -314,19 +362,6 @@ the ranks of the two variables (ranking of retention time differences
 is performed on the absolute value of \code{"score_rt"}). Thus, matches with
 small (or, depending on parameter \code{decreasing}, large) values for
 \code{"score"} \strong{and} \code{"score_rt"} are returned.
-\itemize{
-\item \code{ScoreThresholdParam}: keeps only the matches whose score is strictly
-above or strictly below a certain threshold (respectively when parameter
-\code{above = TRUE} and \code{above = FALSE}). The name of the column containing
-the scores to be used for the filtering can be specified with parameter
-\code{column}. The default for \code{column} is \code{"score"}. Such variable is present
-in each \code{Matched} object. The name of other score variables (if present)
-can be provided (the names of all score variables can be obtained with
-\code{scoreVariables()} function). For example \code{column = "score_rt"} can be
-used to filter matches based on retention time scores for \code{Matched}
-objects returned by \code{\link[=matchValues]{matchValues()}} when \code{param} objects involving a
-retention time comparison are used.
-}
 }
 \item \code{lapply}: applies a user defined function \code{FUN} to each subset of
 matches in a \code{Matched} object for each \code{query} element (i.e. to each \code{x[i]}
@@ -388,9 +423,12 @@ target elements. The length of the returned \code{integer} vector is equal to
 the total number of matches in the object. \code{targetIndex} and \code{queryIndex}
 are aligned, i.e. each element in them represent a matched query-target
 pair.
+\item \code{queryVariables} returns the names of the variables (columns) in \emph{query}.
 \item \code{scoreVariables} returns the names of the score variables stored in the
 \code{Matched} object (precisely the names of the variables in \code{matches(object)}
 containing the string "score" in their name ignoring the case).
+\item \code{targetVariables} returns the names of the variables (columns) in \emph{target}
+(prefixed with \code{"target_"}).
 \item \code{whichTarget} returns an \code{integer} with the indices of the elements in
 \emph{target} that match at least one element in \emph{query}.
 \item \code{whichQuery} returns an \code{integer} with the indices of the elements in

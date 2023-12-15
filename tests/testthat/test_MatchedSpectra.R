@@ -16,6 +16,10 @@ test_that("MatchedSpectra works", {
     expect_true(is(target(ms), "Spectra"))
     expect_equal(whichQuery(ms), integer())
     expect_equal(whichTarget(ms), integer())
+    expect_equal(scoreVariables(ms), "score")
+    expect_equal(queryVariables(ms), spectraVariables(ms@query))
+    expect_equal(targetVariables(ms),
+                 paste0("target_", spectraVariables(ms@target)))
 
     ## With data
     ms <- MatchedSpectra(
@@ -29,6 +33,10 @@ test_that("MatchedSpectra works", {
     expect_true(is(target(ms), "Spectra"))
     expect_equal(whichQuery(ms), c(1L, 2L, 4L))
     expect_equal(whichTarget(ms), c(2L, 5L, 8L, 12L, 15L))
+    expect_equal(scoreVariables(ms), "score")
+    expect_equal(queryVariables(ms), spectraVariables(ms@query))
+    expect_equal(targetVariables(ms),
+                 paste0("target_", spectraVariables(ms@target)))
 
     ms <- .matched_spectra(
         sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),

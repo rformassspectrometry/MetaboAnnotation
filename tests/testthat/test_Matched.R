@@ -60,6 +60,9 @@ test_that("Matched works", {
     expect_output(show(mo), "Matched")
     expect_equal(whichQuery(mo), integer())
     expect_equal(whichTarget(mo), integer())
+    expect_equal(scoreVariables(mo), "score")
+    expect_equal(queryVariables(mo), "query")
+    expect_equal(targetVariables(mo), "target")
 
     ## With data. query and target of type data.frame
     mo <- Matched(query = q1, target = t1,
@@ -73,6 +76,9 @@ test_that("Matched works", {
     expect_true(is(target(mo), "data.frame"))
     expect_equal(whichQuery(mo), c(1L, 2L, 5L))
     expect_equal(whichTarget(mo), c(2L, 3L, 4L, 5L))
+    expect_equal(scoreVariables(mo), c("score"))
+    expect_equal(queryVariables(mo), colnames(q1))
+    expect_equal(targetVariables(mo), paste0("target_", colnames(t1)))
 
     ## With data. query and target of type list
     mo <- Matched(query = q2, target = t2,
@@ -86,6 +92,9 @@ test_that("Matched works", {
     expect_true(is(target(mo), "list"))
     expect_equal(whichQuery(mo), c(1L, 2L, 5L))
     expect_equal(whichTarget(mo), c(2L, 3L, 4L, 5L))
+    expect_equal(scoreVariables(mo), "score")
+    expect_equal(queryVariables(mo), "query")
+    expect_equal(targetVariables(mo), "target")
 
     ## With data. query SummarizedExperiment and target data.frame
     mo <- Matched(query = q3, target = t3,
@@ -99,7 +108,9 @@ test_that("Matched works", {
     expect_true(is(target(mo), "data.frame"))
     expect_equal(whichQuery(mo), c(1L, 2L, 5L))
     expect_equal(whichTarget(mo), c(2L, 3L, 4L, 5L))
-
+    expect_equal(scoreVariables(mo), "score")
+    expect_equal(queryVariables(mo), colnames(rowData(q3)))
+    expect_equal(targetVariables(mo), paste0("target_", colnames(t3)))
 })
 
 test_that(".subset_matches_nodim and [ works", {

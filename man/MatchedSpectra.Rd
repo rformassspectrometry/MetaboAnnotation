@@ -4,6 +4,8 @@
 \alias{MatchedSpectra}
 \alias{MatchedSpectra-class}
 \alias{spectraVariables,MatchedSpectra-method}
+\alias{queryVariables,MatchedSpectra-method}
+\alias{targetVariables,MatchedSpectra-method}
 \alias{colnames,MatchedSpectra-method}
 \alias{$,MatchedSpectra-method}
 \alias{spectraData,MatchedSpectra-method}
@@ -20,6 +22,10 @@ MatchedSpectra(
 )
 
 \S4method{spectraVariables}{MatchedSpectra}(object)
+
+\S4method{queryVariables}{MatchedSpectra}(object)
+
+\S4method{targetVariables}{MatchedSpectra}(object)
 
 \S4method{colnames}{MatchedSpectra}(x)
 
@@ -85,18 +91,29 @@ return this type of object. By default, all data accessors work as
 returned for each \emph{query} spectrum with eventual duplicated entries (values)
 if the query spectrum matches more than one target spectrum.
 }
-\section{Creation and subsetting}{
+\section{Creation, subset and filtering}{
 
 
-\code{MatchedSpectra} objects can be created with the \code{MatchedSpectra} function
-providing the \code{query} and \code{target} \code{Spectra} as well as a \code{data.frame} with
-the
+\code{MatchedSpectra} objects are the result object from the \code{\link[=matchSpectra]{matchSpectra()}}.
+While generally not needed, \code{MatchedSpectra} objects can also be created
+with the \code{MatchedSpectra} function providing the \code{query} and \code{target}
+\code{Spectra} objects as well as a \code{data.frame} with the \emph{matches} between
+query and target elements. This data frame is expected to have columns
+\code{"query_idx"}, \code{"target_idx"} with the \code{integer} indices of query and
+target objects that are \emph{matched} and a column \code{"score"} with a \code{numeric}
+score for the match.
+
+\code{MatchedSpectra} objects can be subset using:
 \itemize{
 \item \code{[} subset the \code{MatchedSpectra} selecting \code{query} spectra to keep with
 parameter \code{i}. The \code{target} spectra will by default be returned as-is.
 \item \code{pruneTarget} \emph{cleans} the \code{MatchedSpectra} object by removing non-matched
 target spectra.
 }
+
+In addition, \code{MatchedSpectra} can be filtered with any of the filtering
+approaches defined for \code{\link[=Matched]{Matched()}} objects: \code{\link[=SelectMatchesParam]{SelectMatchesParam()}},
+\code{\link[=TopRankedMatchesParam]{TopRankedMatchesParam()}} or \code{\link[=ScoreThresholdParam]{ScoreThresholdParam()}}.
 }
 
 \section{Extracting data}{
@@ -114,6 +131,8 @@ spectra that don't match any target spectra. See examples below for more
 details.
 \item \code{length} returns the number of \strong{query} spectra.
 \item \code{matchedData} same as \code{spectraData} below.
+\item \code{query} returns the \emph{query} \code{Spectra}.
+\item \code{queryVariables} returns the \code{spectraVariables} of \emph{query}.
 \item \code{spectraData} returns spectra variables from the query and/or target
 \code{Spectra} as a \code{DataFrame}. Parameter \code{columns} allows to define which
 variables should be returned (defaults to
@@ -131,7 +150,8 @@ and \emph{target} spectra. The prefix \code{"target_"} is used to label spectra
 variables of target spectra (e.g. the name of the spectra variable for the
 MS level of target spectra is called \code{"target_msLevel"}).
 \item \code{target} returns the \emph{target} \code{Spectra}.
-\item \code{query} returns the \emph{query} \code{Spectra}.
+\item \code{targetVariables} returns the \code{spectraVariables} of \emph{target} (prefixed
+with \code{"target_"}).
 \item \code{whichTarget} returns an \code{integer} with the indices of the spectra in
 \emph{target} that match at least on spectrum in \emph{query}.
 \item \code{whichQuery} returns an \code{integer} with the indices of the spectra in
