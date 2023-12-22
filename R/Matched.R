@@ -23,7 +23,7 @@
 #' objects (including `SummarizedExperiment` or `QFeatures`). For [QFeatures()]
 #' objects matches to only one of the *assays* within the object is supported.
 #'
-#' @section Creation and subsetting:
+#' @section Ceation and general handling:
 #'
 #' `Matched` object is returned as result from the [matchValues()] function.
 #'
@@ -31,11 +31,6 @@
 #' function providing the `query` and `target` objects as well as the `matches`
 #' `data.frame` with two columns of integer indices defining which elements
 #' from *query* match which element from *target*.
-#'
-#' - `[`: subset the object selecting `query` object elements to keep with
-#'   parameter `i`. The resulting object will contain all the matches
-#'   for the selected query elements. The `target` object will by default be
-#'   returned as-is.
 #'
 #' - `addMatches`: add new matches to an existing object. Parameters
 #'   `queryValue` and `targetValue` allow to define which element(s) in
@@ -57,25 +52,23 @@
 #'   in a single `Matched` object representing updated matches. Note that `FUN`
 #'   has to return a `Matched` object.
 #'
+#' - `lapply`: applies a user defined function `FUN` to each subset of
+#'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
+#'   with `i` from `1` to `length(x)`). It returns a `list` of `length(object)`
+#'   elements where each element is the output of `FUN` applied to each subset
+#'   of matches.
+#'
+#'
+#' @section Filtering and subsetting:
+#'
+#' - `[`: subset the object selecting `query` object elements to keep with
+#'   parameter `i`. The resulting object will contain all the matches
+#'   for the selected query elements. The `target` object will by default be
+#'   returned as-is.
+#'
 #' - `filterMatches`: filter matches in a `Matched` object using different
 #'    approaches depending on the class of `param`:
 #'
-#'   - `SingleMatchParam`: reduces matches to keep only (at most) a
-#'     single match per query. The deduplication strategy can be defined with
-#'     parameter `duplicates`:
-#'     - `duplicates = "remove"`: all matches for query elements matching more
-#'       than one target element will be removed.
-#'     - `duplicates = "closest"`: keep only the *closest* match for each
-#'       query element. The closest match is defined by the value(s) of
-#'       *score* (and eventually *score_rt*, if present). The one match with
-#'       the smallest value for this (these) column(s) is retained. This is
-#'       equivalent to `TopRankedMatchesParam(n = 1L, decreasing = FALSE)`.
-#'     - `duplicates = "top_ranked"`: select the best ranking match for each
-#'       query element. Parameter `column` allows to specify the column by
-#'       which matches are ranked (use LLLLLL to list possible columns).
-#'       The column. Parameter `decreasing` allows
-#'       to define whether the match with the highest (`decreasing = TRUE`)
-#'       or lowest (`decreasing = FALSE`) value will be selected.
 #'   - `ScoreThresholdParam`: keeps only the matches whose score is strictly
 #'     above or strictly below a certain threshold (respectively when parameter
 #'     `above = TRUE` and `above = FALSE`). The name of the column containing
@@ -87,6 +80,7 @@
 #'     used to filter matches based on retention time scores for `Matched`
 #'     objects returned by [matchValues()] when `param` objects involving a
 #'     retention time comparison are used.
+#'
 #'   - `SelectMatchesParam`: keeps or removes (respectively when parameter
 #'     `keep = TRUE` and `keep = FALSE`) matches corresponding to certain
 #'     indices or values of `query` and `target`. If `queryValue` and
@@ -96,6 +90,25 @@
 #'     from the [matches()] matrix from the `Matched` object but thus not alter
 #'     the `query` or `target` in the object. See examples below for more
 #'     information.
+#'
+#'   - `SingleMatchParam`: reduces matches to keep only (at most) a
+#'     single match per query. The deduplication strategy can be defined with
+#'     parameter `duplicates`:
+#'     - `duplicates = "remove"`: all matches for query elements matching more
+#'       than one target element will be removed.
+#'     - `duplicates = "closest"`: keep only the *closest* match for each
+#'       query element. The closest match is defined by the value(s) of
+#'       *score* (and eventually *score_rt*, if present). The one match with
+#'       the smallest value for this (these) column(s) is retained. This is
+#'       equivalent to `TopRankedMatchesParam(n = 1L, decreasing = FALSE)`.
+#'     - `duplicates = "top_ranked"`: select the *best ranking* match for each
+#'       query element. Parameter `column` allows to specify the column by
+#'       which matches are ranked (use `targetVariables(object)` or
+#'       `scoreVariables(object)` to list possible columns). Parameter
+#'       `decreasing` allows to define whether the match with the highest
+#'       (`decreasing = TRUE`) or lowest (`decreasing = FALSE`) value in
+#'       `column` for each *query* will be selected.
+#'
 #'   - `TopRankedMatchesParam`: for each query element the matches are ranked
 #'     according to their score and only the `n` best of them are kept (if `n`
 #'     is larger than the number of matches for a given query element all the
@@ -114,15 +127,8 @@
 #'     small (or, depending on parameter `decreasing`, large) values for
 #'     `"score"` **and** `"score_rt"` are returned.
 #'
-#' - `lapply`: applies a user defined function `FUN` to each subset of
-#'   matches in a `Matched` object for each `query` element (i.e. to each `x[i]`
-#'   with `i` from `1` to `length(x)`). It returns a `list` of `length(object)`
-#'   elements where each element is the output of `FUN` applied to each subset
-#'   of matches.
-#'
 #' - `pruneTarget`: *cleans* the object by removing non-matched
 #'   **target** elements.
-#'
 #'
 #' @section Extracting data:
 #'
@@ -202,7 +208,9 @@
 #'
 #' @param column for `ScoreThresholdParam`: `character(1)` specifying the name
 #'   of the score variable to consider for the filtering (the default is
-#'   `column = "score"`).
+#'   `column = "score"`). For `SingleMatchParam`: `character(1)` defining the
+#'   name of the column to be used for de-duplication. See description of
+#'   `SingleMatchParam` in the *Filtering and subsetting* section for details.
 #'
 #' @param columns for `matchedData`: `character` vector with column names of
 #'   variables that should be extracted.
@@ -212,6 +220,10 @@
 #'   `decreasing = FALSE`.
 #'
 #' @param drop for `[`: ignored.
+#'
+#' @param duplicates for `SingleMatchParam`: `character(1)` defining the
+#'   *de-duplication* strategy. See the description of `SingleMatchParam` in
+#'   the *Filtering and subsetting* subsection for choices and details.
 #'
 #' @param FUN for `lapply` and `endoapply`: user defined `function` that takes a
 #'   `Matched` object as a first parameter and possibly additional parameters
@@ -1285,6 +1297,59 @@ SingleMatchParam <- function(duplicates = c("remove", "closest", "top_ranked"),
     new("SingleMatchParam", duplicates = duplicates, column = column[1L],
         decreasing = decreasing[1L])
 }
+
+#' @rdname Matched
+#'
+#' @export
+setMethod(
+    "filterMatches", c("Matched", "SingleMatchParam"),
+    function (object, param, ...) {
+        if (!param@column %in% c(scoreVariables(object),
+                                 targetVariables(object)))
+            stop("Variable \"", param@column, "\" not found. `column` ",
+                 "should be one of 'scoreVariables(object)' or ",
+                 "'targetVariables(object)'.")
+        object@metadata <- c(object@metadata, param = param)
+        if (!nrow(object@matches))
+            return(object)
+        switch(
+            param@duplicates[1L],
+            "remove" = {
+                s <- split(seq_len(nrow(object@matches)),
+                           object@matches$query_idx)
+                keep <- unlist(s[lengths(s) == 1L], use.names = FALSE)
+                object@matches <- object@matches[keep, , drop = FALSE]
+            },
+            "closest" = {
+                object <- filterMatches(
+                    object, TopRankedMatchesParam(n = 1L, decreasing = FALSE))
+            },
+            "top_ranked" = {
+                ## Rank matches by "column"
+                if (param@column %in% scoreVariables(object))
+                    vals <- cbind(seq_len(nrow(object@matches)),
+                                  object@matches$query_idx,
+                                  object@matches[, param@column])
+                else
+                    vals <- cbind(
+                        seq_len(nrow(object@matches)),
+                        object@matches$query_idx,
+                        .extract_elements(
+                            .objectToMatch(object@target, object@targetAssay),
+                            object@matches$target_idx,
+                            sub("target_", "", param@column)))
+                    vals <- vals[order(vals[, 3L],
+                                       decreasing = param@decreasing), ,
+                                 drop = FALSE]
+                    keep <- vals[match(unique(object@matches$query_idx),
+                                       vals[, 2L]), 1L]
+                    object@matches <- object@matches[keep, , drop = FALSE]
+            },
+            stop("'duplicates' has to be one of \"remove\", \"closest\"",
+                 " or \"top_ranked\"."))
+        validObject(object)
+        object
+    })
 
 #' @importFrom MsCoreUtils rbindFill
 .addMatches <- function(query, target, matches, queryValue = integer(),

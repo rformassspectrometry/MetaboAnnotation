@@ -1161,3 +1161,99 @@ test_that("queryIndex works", {
     expect_identical(queryIndex(a), c(1L, 1L, 2L))
     expect_error(queryIndex(4), "'Matched'")
 })
+
+test_that("SingleMatchParam works", {
+    res <- SingleMatchParam()
+    expect_s4_class(res, "SingleMatchParam")
+    expect_true(validObject(res))
+    expect_error(SingleMatchParam(duplicates = "other"), "should be")
+    res <- SingleMatchParam("closest", column = "other", decreasing = FALSE)
+    expect_equal(res@duplicates, "closest")
+    expect_equal(res@column, "other")
+    expect_equal(res@decreasing, FALSE)
+})
+
+test_that("filterMatches,Matched,SingleMatchParam works", {
+    a <- Matched()
+    p <- SingleMatchParam(column = "ops")
+    expect_error(filterMatches(a, p), "not found")
+
+    ## target is data.frame
+    a <- Matched(
+        query = q1, target = t1,
+        matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                             target_idx = c(2L, 2L, 3L, 4L, 5L),
+                             score = seq(0.5, 0.9, by = 0.1)))
+    p@duplicates <- "sum"
+    p@column <- "score"
+    expect_error(filterMatches(a, p), "has to be one")
+    p <- SingleMatchParam()
+    ## remove
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(2L, 5L))
+    ## closest
+    p <- SingleMatchParam(duplicates = "closest")
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(2L, 2L, 5L))
+    ## top_ranked
+    p <- SingleMatchParam(duplicates = "top_ranked", column = "target_col2",
+                          decreasing = TRUE)
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(2L, 4L, 5L))
+
+    ## target is vector
+    a <- Matched(
+        query = q1, target = c(100, 200, 300, 800),
+        matches = data.frame(query_idx = c(1L, 1L, 1L, 3L, 3L, 3L, 3L),
+                             target_idx = c(3L, 4L, 1L, 2L, 3L, 1L, 4L),
+                             score = c(1, 2, 4, 3, 1, 2, 7))
+    )
+    ## remove
+    p <- SingleMatchParam()
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, integer())
+    ## closest
+    p <- SingleMatchParam(duplicates = "closest")
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(3L, 3L))
+    ## top_ranked
+    p <- SingleMatchParam(duplicates = "top_ranked", column = "target",
+                          decreasing = FALSE)
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(1L, 1L))
+
+    ## target is SummarizedExperiment
+    rowData(q3)$new_col <- seq_len(nrow(q1))
+    a <- Matched(query = q1, target = q3,
+                 matches = data.frame(
+                     query_idx = c(1L, 1L, 1L, 2L, 2L, 3L, 3L, 5L),
+                     target_idx = c(2L, 4L, 5L, 1L, 2L, 3L, 4L, 5L),
+                     score = c(4, 1, 2, 3, 4, 3, 1, 9)))
+    ## remove
+    p <- SingleMatchParam()
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$query_idx, 5L)
+    expect_equal(res@matches$target_idx, 5L)
+
+    ## closest
+    p <- SingleMatchParam(duplicates = "closest")
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$query_idx, c(1L, 2L, 3L, 5L))
+    expect_equal(res@matches$target_idx, c(4L, 1L, 4L, 5L))
+
+    ## top_ranked
+    p <- SingleMatchParam(duplicates = "top_ranked", column = "target_new_col",
+                          decreasing = TRUE)
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$query_idx, c(1L, 2L, 3L, 5L))
+    expect_equal(res@matches$target_idx, c(5L, 2L, 4L, 5L))
+})
