@@ -284,7 +284,7 @@ between elements of one-dimensional objects, or rows for two-dimensional
 objects (including \code{SummarizedExperiment} or \code{QFeatures}). For \code{\link[=QFeatures]{QFeatures()}}
 objects matches to only one of the \emph{assays} within the object is supported.
 }
-\section{Ceation and general handling}{
+\section{Creation and general handling}{
 
 
 \code{Matched} object is returned as result from the \code{\link[=matchValues]{matchValues()}} function.

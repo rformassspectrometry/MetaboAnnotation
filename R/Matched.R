@@ -23,7 +23,7 @@
 #' objects (including `SummarizedExperiment` or `QFeatures`). For [QFeatures()]
 #' objects matches to only one of the *assays* within the object is supported.
 #'
-#' @section Ceation and general handling:
+#' @section Creation and general handling:
 #'
 #' `Matched` object is returned as result from the [matchValues()] function.
 #'
