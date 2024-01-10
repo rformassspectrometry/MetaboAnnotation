@@ -94,7 +94,7 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
+          install.packages(c("remotes", "withr"))
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -169,21 +169,28 @@ jobs:
 
       - name: Install dependencies pass 1
         run: |
-          ## Try installing the package dependencies in steps. First the local
-          ## dependencies, then any remaining dependencies to avoid the
-          ## issues described at
-          ## https://stat.ethz.ch/pipermail/bioc-devel/2020-April/016675.html
-          ## https://github.com/r-lib/remotes/issues/296
-          ## Ideally, all dependencies should get installed in the first pass.
+          withr::with_makevars(
+          c(CFLAGS = "-w",
+            CXXFLAGS = "-w",
+            CPPFLAGS = "-w"),
+            {
 
-          ## Pass #1 at installing dependencies
-          message(paste('****', Sys.time(), 'pass number 1 at installing dependencies: local dependencies ****'))
-          remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = FALSE, upgrade = TRUE)
+            ## Pass #1 at installing dependencies
+            message(paste('****', Sys.time(), 'pass number 1 at installing dependencies: local dependencies ****'))
+            remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = FALSE, upgrade = TRUE)
+            },
+            assignment = "+="
+            )
         continue-on-error: true
         shell: Rscript {0}
 
       - name: Install dependencies pass 2
         run: |
+          withr::with_makevars(
+          c(CFLAGS = "-w",
+            CXXFLAGS = "-w",
+            CPPFLAGS = "-w"),
+          {
           ## Pass #2 at installing dependencies
           message(paste('****', Sys.time(), 'pass number 2 at installing dependencies: any remaining dependencies ****'))
           remotes::install_local(dependencies = TRUE, repos = BiocManager::repositories(), build_vignettes = FALSE, upgrade = TRUE)
@@ -207,6 +214,9 @@ jobs:
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
           BiocManager::install("BiocCheck")
+          },
+          assignment = "+="
+          )
         shell: Rscript {0}
 
       - name: Install BiocGenerics
