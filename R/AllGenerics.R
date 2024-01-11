@@ -50,3 +50,15 @@ setGeneric("matchedData", function(object, ...)
 #' @export
 setGeneric("matchSpectra", function(query, target, param, ...)
            standardGeneric("matchSpectra"))
+
+#' @rdname Matched
+#'
+#' @exportMethod queryVariables
+setGeneric("queryVariables", function(object, ...)
+    standardGeneric("queryVariables"))
+
+#' @rdname Matched
+#'
+#' @exportMethod targetVariables
+setGeneric("targetVariables", function(object, ...)
+    standardGeneric("targetVariables"))

@@ -13,17 +13,29 @@
 #' returned for each *query* spectrum with eventual duplicated entries (values)
 #' if the query spectrum matches more than one target spectrum.
 #'
-#' @section Creation and subsetting:
+#' @section Creation, subset and filtering:
 #'
-#' `MatchedSpectra` objects can be created with the `MatchedSpectra` function
-#' providing the `query` and `target` `Spectra` as well as a `data.frame` with
-#' the
+#' `MatchedSpectra` objects are the result object from the [matchSpectra()].
+#' While generally not needed, `MatchedSpectra` objects can also be created
+#' with the `MatchedSpectra` function providing the `query` and `target`
+#' `Spectra` objects as well as a `data.frame` with the *matches* between
+#' query and target elements. This data frame is expected to have columns
+#' `"query_idx"`, `"target_idx"` with the `integer` indices of query and
+#' target objects that are *matched* and a column `"score"` with a `numeric`
+#' score for the match.
+#'
+#' `MatchedSpectra` objects can be subset using:
 #'
 #' - `[` subset the `MatchedSpectra` selecting `query` spectra to keep with
 #'   parameter `i`. The `target` spectra will by default be returned as-is.
 #'
 #' - `pruneTarget` *cleans* the `MatchedSpectra` object by removing non-matched
 #'   target spectra.
+#'
+#' In addition, `MatchedSpectra` can be filtered with any of the filtering
+#' approaches defined for [Matched()] objects: [SelectMatchesParam()],
+#' [TopRankedMatchesParam()] or [ScoreThresholdParam()].
+#'
 #'
 #' @section Extracting data:
 #'
@@ -41,6 +53,10 @@
 #' - `length` returns the number of **query** spectra.
 #'
 #' - `matchedData` same as `spectraData` below.
+#'
+#' - `query` returns the *query* `Spectra`.
+#'
+#' - `queryVariables` returns the `spectraVariables` of *query*.
 #'
 #' - `spectraData` returns spectra variables from the query and/or target
 #'   `Spectra` as a `DataFrame`. Parameter `columns` allows to define which
@@ -62,7 +78,8 @@
 #'
 #' - `target` returns the *target* `Spectra`.
 #'
-#' - `query` returns the *query* `Spectra`.
+#' - `targetVariables` returns the `spectraVariables` of *target* (prefixed
+#'    with `"target_"`).
 #'
 #' - `whichTarget` returns an `integer` with the indices of the spectra in
 #'   *target* that match at least on spectrum in *query*.
@@ -308,6 +325,16 @@ setMethod("spectraVariables", "MatchedSpectra", function(object) {
     svt <- spectraVariables(target(object))
     cns <- colnames(object@matches)
     c(svq, paste0("target_", svt), cns[!cns %in% c("query_idx", "target_idx")])
+})
+
+#' @rdname MatchedSpectra
+setMethod("queryVariables", "MatchedSpectra", function(object) {
+    spectraVariables(query(object))
+})
+
+#' @rdname MatchedSpectra
+setMethod("targetVariables", "MatchedSpectra", function(object) {
+    paste0("target_", spectraVariables(target(object)))
 })
 
 #' @exportMethod colnames
