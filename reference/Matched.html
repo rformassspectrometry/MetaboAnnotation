@@ -38,7 +38,7 @@ objects matches to only one of the assays within the object is supported."><meta
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,6 +104,10 @@ filterMatches(object, param, ...)
 
 matchedData(object, ...)
 
+queryVariables(object, ...)
+
+targetVariables(object, ...)
+
 Matched(
   query = list(),
   target = list(),
@@ -146,6 +150,12 @@ colnames(x)
 scoreVariables(object)
 
 # S4 method for Matched
+queryVariables(object)
+
+# S4 method for Matched
+targetVariables(object)
+
+# S4 method for Matched
 matchedData(object, columns = colnames(object), ...)
 
 pruneTarget(object)
@@ -182,6 +192,15 @@ filterMatches(object, param, ...)
 filterMatches(object, param, ...)
 
 # S4 method for Matched,ScoreThresholdParam
+filterMatches(object, param, ...)
+
+SingleMatchParam(
+  duplicates = c("remove", "closest", "top_ranked"),
+  column = "score",
+  decreasing = TRUE
+)
+
+# S4 method for Matched,SingleMatchParam
 filterMatches(object, param, ...)
 
 # S4 method for Matched
@@ -360,7 +379,15 @@ threshold.</p></dd>
 <dt>column</dt>
 <dd><p>for <code>ScoreThresholdParam</code>: <code>character(1)</code> specifying the name
 of the score variable to consider for the filtering (the default is
-<code>column = "score"</code>).</p></dd>
+<code>column = "score"</code>). For <code>SingleMatchParam</code>: <code>character(1)</code> defining the
+name of the column to be used for de-duplication. See description of
+<code>SingleMatchParam</code> in the <em>Filtering and subsetting</em> section for details.</p></dd>
+
+
+<dt>duplicates</dt>
+<dd><p>for <code>SingleMatchParam</code>: <code>character(1)</code> defining the
+<em>de-duplication</em> strategy. See the description of <code>SingleMatchParam</code> in
+the <em>Filtering and subsetting</em> subsection for choices and details.</p></dd>
 
 
 <dt>score</dt>
@@ -381,7 +408,7 @@ for the matches to add. If not specified, a <code>NA</code> will be used as scor
 <p>See individual method description above for details.</p>
     </div>
     <div class="section level2">
-    <h2 id="creation-and-subsetting">Creation and subsetting<a class="anchor" aria-label="anchor" href="#creation-and-subsetting"></a></h2>
+    <h2 id="creation-and-general-handling">Creation and general handling<a class="anchor" aria-label="anchor" href="#creation-and-general-handling"></a></h2>
     
 
 
@@ -389,11 +416,7 @@ for the matches to add. If not specified, a <code>NA</code> will be used as scor
 <p>Alternatively, <code>Matched</code> objects can also be created with the <code>Matched</code>
 function providing the <code>query</code> and <code>target</code> objects as well as the <code>matches</code>
 <code>data.frame</code> with two columns of integer indices defining which elements
-from <em>query</em> match which element from <em>target</em>.</p><ul><li><p><code>[</code>: subset the object selecting <code>query</code> object elements to keep with
-parameter <code>i</code>. The resulting object will contain all the matches
-for the selected query elements. The <code>target</code> object will by default be
-returned as-is.</p></li>
-<li><p><code>addMatches</code>: add new matches to an existing object. Parameters
+from <em>query</em> match which element from <em>target</em>.</p><ul><li><p><code>addMatches</code>: add new matches to an existing object. Parameters
 <code>queryValue</code> and <code>targetValue</code> allow to define which element(s) in
 <code>query</code> and <code>target</code> should be considered matching. If <code>isIndex = TRUE</code>,
 both <code>queryValue</code> and <code>targetValue</code> are considered to be integer indices
@@ -411,13 +434,55 @@ matches in a <code>Matched</code> object corresponding to a <code>query</code> e
 each <code>x[i]</code> with <code>i</code> being 1 to <code>length(x)</code>). The results are then combined
 in a single <code>Matched</code> object representing updated matches. Note that <code>FUN</code>
 has to return a <code>Matched</code> object.</p></li>
+<li><p><code>lapply</code>: applies a user defined function <code>FUN</code> to each subset of
+matches in a <code>Matched</code> object for each <code>query</code> element (i.e. to each <code>x[i]</code>
+with <code>i</code> from <code>1</code> to <code>length(x)</code>). It returns a <code>list</code> of <code>length(object)</code>
+elements where each element is the output of <code>FUN</code> applied to each subset
+of matches.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="filtering-and-subsetting">Filtering and subsetting<a class="anchor" aria-label="anchor" href="#filtering-and-subsetting"></a></h2>
+    
+
+<ul><li><p><code>[</code>: subset the object selecting <code>query</code> object elements to keep with
+parameter <code>i</code>. The resulting object will contain all the matches
+for the selected query elements. The <code>target</code> object will by default be
+returned as-is.</p></li>
 <li><p><code>filterMatches</code>: filter matches in a <code>Matched</code> object using different
-approaches depending on the class of <code>param</code>:</p><ul><li><p><code>SelectMatchesParam</code>: keeps or removes (respectively when parameter
+approaches depending on the class of <code>param</code>:</p><ul><li><p><code>ScoreThresholdParam</code>: keeps only the matches whose score is strictly
+above or strictly below a certain threshold (respectively when parameter
+<code>above = TRUE</code> and <code>above = FALSE</code>). The name of the column containing
+the scores to be used for the filtering can be specified with parameter
+<code>column</code>. The default for <code>column</code> is <code>"score"</code>. Such variable is present
+in each <code>Matched</code> object. The name of other score variables (if present)
+can be provided (the names of all score variables can be obtained with
+<code>scoreVariables()</code> function). For example <code>column = "score_rt"</code> can be
+used to filter matches based on retention time scores for <code>Matched</code>
+objects returned by <code><a href="matchValues.html">matchValues()</a></code> when <code>param</code> objects involving a
+retention time comparison are used.</p></li>
+<li><p><code>SelectMatchesParam</code>: keeps or removes (respectively when parameter
 <code>keep = TRUE</code> and <code>keep = FALSE</code>) matches corresponding to certain
 indices or values of <code>query</code> and <code>target</code>. If <code>queryValue</code> and
 <code>targetValue</code> are provided, matches for these value pairs are kept or
 removed. Parameter index<code>allows to filter matches providing their index in the [matches()] matrix. Note that</code>filterMatches<code>removes only matches from the [matches()] matrix from the</code>Matched<code>object but thus not alter the</code>query<code>or</code>target` in the object. See examples below for more
 information.</p></li>
+<li><p><code>SingleMatchParam</code>: reduces matches to keep only (at most) a
+single match per query. The deduplication strategy can be defined with
+parameter <code>duplicates</code>:</p><ul><li><p><code>duplicates = "remove"</code>: all matches for query elements matching more
+than one target element will be removed.</p></li>
+<li><p><code>duplicates = "closest"</code>: keep only the <em>closest</em> match for each
+query element. The closest match is defined by the value(s) of
+<em>score</em> (and eventually <em>score_rt</em>, if present). The one match with
+the smallest value for this (these) column(s) is retained. This is
+equivalent to <code>TopRankedMatchesParam(n = 1L, decreasing = FALSE)</code>.</p></li>
+<li><p><code>duplicates = "top_ranked"</code>: select the <em>best ranking</em> match for each
+query element. Parameter <code>column</code> allows to specify the column by
+which matches are ranked (use <code>targetVariables(object)</code> or
+<code>scoreVariables(object)</code> to list possible columns). Parameter
+<code>decreasing</code> allows to define whether the match with the highest
+(<code>decreasing = TRUE</code>) or lowest (<code>decreasing = FALSE</code>) value in
+<code>column</code> for each <em>query</em> will be selected.</p></li>
+</ul></li>
 <li><p><code>TopRankedMatchesParam</code>: for each query element the matches are ranked
 according to their score and only the <code>n</code> best of them are kept (if <code>n</code>
 is larger than the number of matches for a given query element all the
@@ -434,24 +499,8 @@ time comparison), the ordering of the matches is based on the product of
 the ranks of the two variables (ranking of retention time differences
 is performed on the absolute value of <code>"score_rt"</code>). Thus, matches with
 small (or, depending on parameter <code>decreasing</code>, large) values for
-<code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p><ul><li><p><code>ScoreThresholdParam</code>: keeps only the matches whose score is strictly
-above or strictly below a certain threshold (respectively when parameter
-<code>above = TRUE</code> and <code>above = FALSE</code>). The name of the column containing
-the scores to be used for the filtering can be specified with parameter
-<code>column</code>. The default for <code>column</code> is <code>"score"</code>. Such variable is present
-in each <code>Matched</code> object. The name of other score variables (if present)
-can be provided (the names of all score variables can be obtained with
-<code>scoreVariables()</code> function). For example <code>column = "score_rt"</code> can be
-used to filter matches based on retention time scores for <code>Matched</code>
-objects returned by <code><a href="matchValues.html">matchValues()</a></code> when <code>param</code> objects involving a
-retention time comparison are used.</p></li>
+<code>"score"</code> <strong>and</strong> <code>"score_rt"</code> are returned.</p></li>
 </ul></li>
-</ul></li>
-<li><p><code>lapply</code>: applies a user defined function <code>FUN</code> to each subset of
-matches in a <code>Matched</code> object for each <code>query</code> element (i.e. to each <code>x[i]</code>
-with <code>i</code> from <code>1</code> to <code>length(x)</code>). It returns a <code>list</code> of <code>length(object)</code>
-elements where each element is the output of <code>FUN</code> applied to each subset
-of matches.</p></li>
 <li><p><code>pruneTarget</code>: <em>cleans</em> the object by removing non-matched
 <strong>target</strong> elements.</p></li>
 </ul></div>
@@ -506,9 +555,12 @@ target elements. The length of the returned <code>integer</code> vector is equal
 the total number of matches in the object. <code>targetIndex</code> and <code>queryIndex</code>
 are aligned, i.e. each element in them represent a matched query-target
 pair.</p></li>
+<li><p><code>queryVariables</code> returns the names of the variables (columns) in <em>query</em>.</p></li>
 <li><p><code>scoreVariables</code> returns the names of the score variables stored in the
 <code>Matched</code> object (precisely the names of the variables in <code>matches(object)</code>
 containing the string "score" in their name ignoring the case).</p></li>
+<li><p><code>targetVariables</code> returns the names of the variables (columns) in <em>target</em>
+(prefixed with <code>"target_"</code>).</p></li>
 <li><p><code>whichTarget</code> returns an <code>integer</code> with the indices of the elements in
 <em>target</em> that match at least one element in <em>query</em>.</p></li>
 <li><p><code>whichQuery</code> returns an <code>integer</code> with the indices of the elements in

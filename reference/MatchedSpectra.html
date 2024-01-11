@@ -20,7 +20,7 @@ if the query spectrum matches more than one target spectrum."><meta property="og
     
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,12 @@ if the query spectrum matches more than one target spectrum.</p>
 
 # S4 method for MatchedSpectra
 spectraVariables(object)
+
+# S4 method for MatchedSpectra
+queryVariables(object)
+
+# S4 method for MatchedSpectra
+targetVariables(object)
 
 # S4 method for MatchedSpectra
 colnames(x)
@@ -175,17 +181,26 @@ See help for <code>setBackend</code> in <code><a href="https://rdrr.io/pkg/Spect
 <p>See individual method desciption above for details.</p>
     </div>
     <div class="section level2">
-    <h2 id="creation-and-subsetting">Creation and subsetting<a class="anchor" aria-label="anchor" href="#creation-and-subsetting"></a></h2>
+    <h2 id="creation-subset-and-filtering">Creation, subset and filtering<a class="anchor" aria-label="anchor" href="#creation-subset-and-filtering"></a></h2>
     
 
 
-<p><code>MatchedSpectra</code> objects can be created with the <code>MatchedSpectra</code> function
-providing the <code>query</code> and <code>target</code> <code>Spectra</code> as well as a <code>data.frame</code> with
-the</p><ul><li><p><code>[</code> subset the <code>MatchedSpectra</code> selecting <code>query</code> spectra to keep with
+<p><code>MatchedSpectra</code> objects are the result object from the <code><a href="matchSpectra.html">matchSpectra()</a></code>.
+While generally not needed, <code>MatchedSpectra</code> objects can also be created
+with the <code>MatchedSpectra</code> function providing the <code>query</code> and <code>target</code>
+<code>Spectra</code> objects as well as a <code>data.frame</code> with the <em>matches</em> between
+query and target elements. This data frame is expected to have columns
+<code>"query_idx"</code>, <code>"target_idx"</code> with the <code>integer</code> indices of query and
+target objects that are <em>matched</em> and a column <code>"score"</code> with a <code>numeric</code>
+score for the match.</p>
+<p><code>MatchedSpectra</code> objects can be subset using:</p><ul><li><p><code>[</code> subset the <code>MatchedSpectra</code> selecting <code>query</code> spectra to keep with
 parameter <code>i</code>. The <code>target</code> spectra will by default be returned as-is.</p></li>
 <li><p><code>pruneTarget</code> <em>cleans</em> the <code>MatchedSpectra</code> object by removing non-matched
 target spectra.</p></li>
-</ul></div>
+</ul><p>In addition, <code>MatchedSpectra</code> can be filtered with any of the filtering
+approaches defined for <code><a href="Matched.html">Matched()</a></code> objects: <code><a href="Matched.html">SelectMatchesParam()</a></code>,
+<code><a href="Matched.html">TopRankedMatchesParam()</a></code> or <code><a href="Matched.html">ScoreThresholdParam()</a></code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="extracting-data">Extracting data<a class="anchor" aria-label="anchor" href="#extracting-data"></a></h2>
     
@@ -202,6 +217,8 @@ spectra that don't match any target spectra. See examples below for more
 details.</p></li>
 <li><p><code>length</code> returns the number of <strong>query</strong> spectra.</p></li>
 <li><p><code>matchedData</code> same as <code>spectraData</code> below.</p></li>
+<li><p><code>query</code> returns the <em>query</em> <code>Spectra</code>.</p></li>
+<li><p><code>queryVariables</code> returns the <code>spectraVariables</code> of <em>query</em>.</p></li>
 <li><p><code>spectraData</code> returns spectra variables from the query and/or target
 <code>Spectra</code> as a <code>DataFrame</code>. Parameter <code>columns</code> allows to define which
 variables should be returned (defaults to
@@ -219,7 +236,8 @@ and <em>target</em> spectra. The prefix <code>"target_"</code> is used to label 
 variables of target spectra (e.g. the name of the spectra variable for the
 MS level of target spectra is called <code>"target_msLevel"</code>).</p></li>
 <li><p><code>target</code> returns the <em>target</em> <code>Spectra</code>.</p></li>
-<li><p><code>query</code> returns the <em>query</em> <code>Spectra</code>.</p></li>
+<li><p><code>targetVariables</code> returns the <code>spectraVariables</code> of <em>target</em> (prefixed
+with <code>"target_"</code>).</p></li>
 <li><p><code>whichTarget</code> returns an <code>integer</code> with the indices of the spectra in
 <em>target</em> that match at least on spectrum in <em>query</em>.</p></li>
 <li><p><code>whichQuery</code> returns an <code>integer</code> with the indices of the spectra in
