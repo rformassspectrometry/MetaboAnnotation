@@ -421,7 +421,7 @@ setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
                           xlab = xlab, ylab = ylab, main = main, ...)
 })
 
-#' @importMethodsFrom Spectra setBackend
+#' @importMethodsFrom ProtGenerics setBackend
 #'
 #' @rdname MatchedSpectra
 #'

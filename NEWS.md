@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.7
 
+## Changes in 1.7.4
+
+- Import `setBackend()` generic from `ProtGenerics`.
+
 ## Changes in 1.7.3
 
 - Add `SingleMatchParam` for `filterMatches` to allow selection of (at most) a
