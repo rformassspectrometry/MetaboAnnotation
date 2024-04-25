@@ -11,7 +11,13 @@
 \alias{matchSpectra,Spectra,Spectra,MatchForwardReverseParam-method}
 \title{Matching MS Spectra against a reference}
 \usage{
-\S4method{matchSpectra}{Spectra,CompDbSource,Param}(query, target, param, BPPARAM = BiocParallel::SerialParam())
+\S4method{matchSpectra}{Spectra,CompDbSource,Param}(
+  query,
+  target,
+  param,
+  BPPARAM = BiocParallel::SerialParam(),
+  addOriginalQueryIndex = TRUE
+)
 
 CompareSpectraParam(
   MAPFUN = joinPeaks,
@@ -45,7 +51,8 @@ MatchForwardReverseParam(
   target,
   param,
   rtColname = c("rtime", "rtime"),
-  BPPARAM = BiocParallel::SerialParam()
+  BPPARAM = BiocParallel::SerialParam(),
+  addOriginalQueryIndex = TRUE
 )
 
 \S4method{matchSpectra}{Spectra,CompDb,Param}(
@@ -53,7 +60,8 @@ MatchForwardReverseParam(
   target,
   param,
   rtColname = c("rtime", "rtime"),
-  BPPARAM = BiocParallel::SerialParam()
+  BPPARAM = BiocParallel::SerialParam(),
+  addOriginalQueryIndex = TRUE
 )
 
 \S4method{matchSpectra}{Spectra,Spectra,MatchForwardReverseParam}(
@@ -61,7 +69,8 @@ MatchForwardReverseParam(
   target,
   param,
   rtColname = c("rtime", "rtime"),
-  BPPARAM = BiocParallel::SerialParam()
+  BPPARAM = BiocParallel::SerialParam(),
+  addOriginalQueryIndex = TRUE
 )
 }
 \arguments{
@@ -77,6 +86,13 @@ the target (reference) spectra to compare \code{query} against.}
 \item{BPPARAM}{for \code{matchSpectra}: parallel processing setup (see the
 \code{BiocParallel} package for more information). Parallel processing is
 disabled by default (with the default setting \code{BPPARAM = SerialParam()}).}
+
+\item{addOriginalQueryIndex}{for \code{matchSpectra()}: \code{logical(1)} whether an
+additional spectra variable \code{".original_query_index"} should be added to
+the \code{query} \code{Spectra} object providing the index of the spectrum in this
+originally provided object. This spectra variable can be useful to link
+back to the original \code{Spectra} object if the \code{MatchedSpectra} object gets
+subsetted/processed.}
 
 \item{MAPFUN}{\code{function} used to map peaks between the compared spectra.
 Defaults for \code{CompareSpectraParam} to \code{\link[=joinPeaks]{joinPeaks()}}. See

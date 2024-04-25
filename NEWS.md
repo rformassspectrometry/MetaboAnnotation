@@ -1,5 +1,11 @@
 # MetaboAnnotation 1.7
 
+## Changes in 1.7.5
+
+- Add parameter `addOriginalQueryIndex` to `matchSpectra()` that allows to add
+  an additional spectra variable to the `query` `Spectra` with the index in
+  the original object (issue #114).
+
 ## Changes in 1.7.4
 
 - Import `setBackend()` generic from `ProtGenerics`.

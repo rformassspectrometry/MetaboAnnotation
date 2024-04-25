@@ -50,10 +50,10 @@ install `BiocManager` use `install.packages("BiocManager")` and, after that,
 chemical formulas, numeric values (e.g. m/z or retention times) or fragment
 spectra. The available matching functions are:
 
-- `matchFormula`: to match chemical formulas.
-- `matchSpectra`: to match fragment spectra.
-- `matchValues` (formerly `matchMz`): to match numerical values (m/z, masses,
-  retention times etc).
+- `matchFormula()`: to match chemical formulas.
+- `matchSpectra()`: to match fragment spectra.
+- `matchValues()` (formerly `matchMz()`): to match numerical values (m/z,
+  masses, retention times etc).
 
 For each of these matching functions *parameter* objects are available that
 allow different types or matching algorithms. Refer to the help pages for a
@@ -103,8 +103,8 @@ features (i.e. the query m/z values) against them. For this we need to define
 the *most likely* ions/adducts that would be generated from the compounds based
 on the ionization used in the experiment. We assume the most abundant adducts
 from the compounds being `"[M+H]+"` and `"[M+Na]+`. We next perform the matching
-with the `matchValues` function providing the query and target data as well as a
-parameter object (in our case a `Mass2MzParam`) with the settings for the
+with the `matchValues()` function providing the query and target data as well as
+a parameter object (in our case a `Mass2MzParam`) with the settings for the
 matching. With the `Mass2MzParam`, the mass or target compounds get first
 converted to m/z values, based on the defined adducts, and these are then
 matched against the query m/z values (i.e. the m/z values for the features). To
@@ -124,16 +124,16 @@ matched_features
 From the tested 100 features 55 were matched against at least one target
 compound (all matches are against a single compound). The result object (of type
 `Matched`) contains the full query data frame and target data frames as well as
-the matching information. We can access the original query data with `query` and
-the original target data with `target` function:
+the matching information. We can access the original query data with `query()`
+and the original target data with `target()` function:
 
 ```{r}
 head(query(matched_features))
 head(target(matched_features))
 ```
 
-Functions `whichQuery` and `whichTarget` can be used to identify the rows in the
-query and target data that could be matched:
+Functions `whichQuery()` and `whichTarget()` can be used to identify the rows in
+the query and target data that could be matched:
 
 ```{r}
 whichQuery(matched_features)
@@ -152,13 +152,13 @@ prefix `"target_"` is added to the original column names in `target`) and
 information on the matching result (in this case columns `"adduct"`, `"score"`
 and `"ppm_error"`).
 
-We can extract the full matching table with `matchedData`. This returns a
+We can extract the full matching table with `matchedData()`. This returns a
 `DataFrame` with all rows in *query* the corresponding matches in *target* along
 with the matching adduct (column `"adduct"`) and the difference in m/z (column
 `"score"` for absolute differences and `"ppm_error"` for the m/z relative
 differences). Note that if a row in *query* matches multiple elements in
-*target*, this row will be duplicated in the `DataFrame` returned by `data`.
-For rows that can not be matched `NA` values are reported.
+*target*, this row will be duplicated in the `DataFrame` returned by
+`matchedData()`.  For rows that can not be matched `NA` values are reported.
 
 ```{r}
 matchedData(matched_features)
@@ -180,7 +180,7 @@ the `MzParam` instead of the `Mass2MzParam`.
 ## Matching of m/z and retention time values
 
 If expected retention time values were available for the target compounds, an
-annotation with higher confidence could be performed with `matchValues` and a
+annotation with higher confidence could be performed with `matchValues()` and a
 `Mass2MzRtParam` parameter object. To illustrate this we randomly assign
 retention times from query features to the target compounds adding also 2
 seconds difference. In a real use case the target `data.frame` would contain
@@ -243,14 +243,14 @@ Results from LC-MS preprocessing (e.g. by the `r BiocStyle::Biocpkg("xcms")`
 package) or generally metabolomics results might be best represented and bundled
 as `SummarizedExperiment` or `QFeatures` objects (from the same-named
 Bioconductor packages). A `XCMSnExp` preprocessing result from `xcms` can for
-example be converted to a `SummarizedExperiment` using the `quantify` method
+example be converted to a `SummarizedExperiment` using the `quantify()` method
 from the `xcms` package. The feature definitions (i.e. their m/z and retention
-time values) will then be stored in the object's `rowData` while the assay (the
-numerical matrix) will contain the feature abundances across all samples. Such
-`SummarizedExperiment` objects can be simply passed as `query` objects to the
-`matchValues` method. To illustrate this, we create below a simple
-`SummarizedExperiment` using the `ms1_features` data frame from the example
-above as `rowData` and adding a `matrix` with random values as assay.
+time values) will then be stored in the object's `rowData()` while the assay
+(the numerical matrix) will contain the feature abundances across all
+samples. Such `SummarizedExperiment` objects can be simply passed as `query`
+objects to the `matchValues()` method. To illustrate this, we create below a
+simple `SummarizedExperiment` using the `ms1_features` data frame from the
+example above as `rowData` and adding a `matrix` with random values as assay.
 
 ```{r}
 library(SummarizedExperiment)
@@ -261,7 +261,7 @@ se <- SummarizedExperiment(
     rowData = ms1_features)
 ```
 
-We can now use the same `matchValues` call as before to perform the
+We can now use the same `matchValues()` call as before to perform the
 matching. Matching will be performed on the object's `rowData`, i.e. each
 row/element of the `SummarizedExperiment` will be matched against the target
 using e.g. m/z values available in columns of the object's `rowData`:
@@ -273,9 +273,9 @@ matched_features <- matchValues(se, target_df, param = parm)
 matched_features
 ```
 
-As `query`, the result contains the full `SummarizedExperiment`, but `colnames`
-and `matchedData` will access the respective information from the `rowData` of
-this `SummarizedExperiment`:
+As `query`, the result contains the full `SummarizedExperiment`, but
+`colnames()` and `matchedData()` will access the respective information from the
+`rowData` of this `SummarizedExperiment`:
 
 ```{r}
 colnames(matched_features)
@@ -305,7 +305,7 @@ qf <- QFeatures(list(features = se))
 qf
 ```
 
-`matchValues` supports also matching of `QFeatures` objects but the user
+`matchValues()` supports also matching of `QFeatures` objects but the user
 needs to define the assay which should be used for the matching with the
 `queryAssay` parameter.
 
@@ -314,7 +314,7 @@ matched_qf <- matchValues(qf, target_df, param = parm, queryAssay = "features")
 matched_qf
 ```
 
-`colnames` and `matchedData` allow to access the `rowData` of the
+`colnames()` and `matchedData()` allow to access the `rowData` of the
 `SummarizedExperiment` stored in the `QFeatures`' `"features"` assay:
 
 ```{r}
@@ -333,7 +333,7 @@ functions and concepts used here are more suitable to the *end user* as they
 simplify the handling of the spectra matching results.
 
 Below we load spectra from a file from a reversed-phase (DDA) LC-MS/MS run of
-the Agilent Pesticide mix. With `filterMsLevel` we subset the data set to only
+the Agilent Pesticide mix. With `filterMsLevel()` we subset the data set to only
 MS2 spectra. To reduce processing time of the example we further subset the
 `Spectra` to a small set of selected MS2 spectra. In addition we assign *feature
 identifiers* to each spectrum (again, for this example these are arbitrary IDs,
@@ -368,7 +368,7 @@ also the [SpectraTutorials](https://jorainer.github.io/SpectraTutorials/)
 workshop). As an alternative, it would also be possible to use a `CompDb` object
 representing a compound annotation database (defined in the
 `r Biocpkg("CompoundDb")` package) with parameter `target`. See the
-`matchSpectra` help page or section *Query against multiple reference
+`matchSpectra()` help page or section *Query against multiple reference
 databases* below for more details and options to retrieve such annotation
 resources from Bioconductor's `r Biocpkg("AnnotationHub")`.
 
@@ -377,19 +377,19 @@ load(system.file("extdata", "minimb.RData", package = "MetaboAnnotation"))
 minimb
 ```
 
-We can now use the `matchSpectra` function to match each of our experimental
+We can now use the `matchSpectra()` function to match each of our experimental
 *query* spectra against the *target* (reference) spectra. Settings for this
 matching can be defined with a dedicated *param* object. We use below the
-`CompareSpectraParam` that uses the `compareSpectra` function from the `Spectra`
-package to calculate similarities between each query spectrum and all target
-spectra. `CompareSpectraParam` allows to set all individual settings for the
-`compareSpectra` call with parameters `MAPFUN`, `ppm`, `tolerance` and `FUN`
-(see the help on `compareSpectra` in the `r Biocpkg("Spectra")` package for more
-details). In addition, we can *pre-filter* the target spectra for each
+`CompareSpectraParam` that uses the `compareSpectra()` function from the
+`Spectra` package to calculate similarities between each query spectrum and all
+target spectra. `CompareSpectraParam` allows to set all individual settings for
+the `compareSpectra()` call with parameters `MAPFUN`, `ppm`, `tolerance` and
+`FUN` (see the help on `compareSpectra()` in the `r Biocpkg("Spectra")` package
+for more details). In addition, we can *pre-filter* the target spectra for each
 individual query spectrum to speed-up the calculations. By setting
 `requirePrecursor = TRUE` we compare below each query spectrum only to target
 spectra with matching precursor m/z (accepting a deviation defined by parameters
-`ppm` and `tolerance`). By default, `matchSpectra` with `CompareSpectraParam`
+`ppm` and `tolerance`). By default, `matchSpectra()` with `CompareSpectraParam`
 considers spectra with a similarity score higher than 0.7 as *matching* and
 these are thus reported.
 
@@ -423,7 +423,7 @@ no or multiple target spectra and each target spectrum can be matched to none,
 one or multiple query spectra.
 
 Data (spectra variables of either the query and/or the target spectra) can be
-extracted from the result object with the `spectraData` function or with `$`
+extracted from the result object with the `spectraData()` function or with `$`
 (similar to a `Spectra` object). The `spectraVariables` function can be used to
 list all available spectra variables in the result object:
 
@@ -434,6 +434,13 @@ spectraVariables(mtches)
 This lists the spectra variables from both the *query* **and** the *target*
 spectra, with the prefix `"target_"` being used for spectra variable names of
 the target spectra. Spectra variable `"score"` contains the similarity score.
+
+Note that by default also an additional column `".original_query_index"` is
+added to the `query` `Spectra` object by the `matchValues()` function, that
+enables an easier mapping of results to the *original* query object used as
+input, in particular, if the `MatchedSpectra` object gets further subset. As the
+name says, this column contains for each query spectrum the index in the
+original `Spectra` object provided with the `query` parameter.
 
 We could thus use `$target_compound_name` to extract the compound name of the
 matching target spectra for the second query spectrum:
@@ -450,6 +457,20 @@ above from the full result object.
 mtches$spectrum_id
 ```
 
+We added this column manually to the query object before the `matchSpectra()`
+call, but the automatically added spectra variable `".original_query_index"`
+would provide the same information:
+
+```{r}
+mtches$.original_query_index
+```
+
+And the respective values in the query object:
+
+```{r}
+query(mtches)$.original_query_index
+```
+
 Because of the n:m mapping between query and target spectra, the number of
 values returned by `$` (or `spectraData`) can be larger than the total number of
 query spectra. Also in the example above, some of the spectra IDs are present
@@ -461,7 +482,7 @@ hence their IDs are reported multiple times. Both `spectraData` and `$` for
 target spectrum) with eventually duplicated values (rows) if the query spectrum
 matches more than one target spectrum (each value for a query spectrum is
 repeated as many times as it matches target spectra). To illustrate this we
-use below the `spectraData` function to extract specific data from our
+use below the `spectraData()` function to extract specific data from our
 result object, i.e. the spectrum and feature IDs for the query spectra we
 defined above, the MS2 spectra similarity score, and the target spectra's ID and
 compound name.
@@ -473,10 +494,11 @@ mtches_df <- spectraData(mtches, columns = c("spectrum_id", "feature_id",
 as.data.frame(mtches_df)
 ```
 
-Using the `plotSpectraMirror` function we can visualize the matching results for
-one query spectrum. Note also that an interactive, `shiny`-based, validation of
-matching results is available with the `validateMatchedSpectra` function. Below
-we call this function to show all matches for the second spectrum.
+Using the `plotSpectraMirror()` function we can visualize the matching results
+for one query spectrum. Note also that an interactive, `shiny`-based, validation
+of matching results is available with the `validateMatchedSpectra()`
+function. Below we call this function to show all matches for the second
+spectrum.
 
 ```{r}
 plotSpectraMirror(mtches[2])
@@ -487,14 +509,13 @@ different scales. While this was no problem for the similarity calculation (the
 normalized dot-product which is used by default is independent of the absolute
 peak values) it is not ideal for visualization. Thus, we apply below a simple
 scaling function to both the query and target spectra and plot the
-spectra again afterwards (see the help for `addProcessing` in the `Spectra`
+spectra again afterwards (see the help for `addProcessing()` in the `Spectra`
 package for more details on spectra data manipulations). This function will
 replace the absolute spectra intensities with intensities relative to the
-maximum intensity of each spectrum. Note that functions for `addProcessing`
+maximum intensity of each spectrum. Note that functions for `addProcessing()`
 should include (like in the example below) the `...` parameter.
 
 ```{r}
-
 scale_int <- function(x, ...) {
     x[, "intensity"] <- x[, "intensity"] / max(x[, "intensity"], na.rm = TRUE)
     x
@@ -511,7 +532,7 @@ mtches[2]$target_compound_name
 ```
 
 As alternative to the `CompareSpectraParam` we could also use the
-`MatchForwardReverseParam` with `matchSpectra`. This has the same settings and
+`MatchForwardReverseParam` with `matchSpectra()`. This has the same settings and
 performs the same spectra similarity search than `CompareSpectraParam`, but
 reports in addition (similar to MS-DIAL) to the (*forward*) similarity score
 also the *reverse* spectra similarity score as well as the *presence ratio* for
@@ -564,19 +585,19 @@ as.data.frame(res)
 
 Note that this whole example would work on any `Spectra` object with MS2
 spectra. Such objects could also be extracted from an `xcms`-based LC-MS/MS data
-analysis with the `chromPeaksSpectra` or `featureSpectra` functions from the
+analysis with the `chromPeaksSpectra()` or `featureSpectra()` functions from the
 `r Biocpkg("xcms")` package. Note also that retention times could in addition be
 considered in the matching by selecting a non-infinite value for the
 `toleranceRt` of any of the parameter classes. By default this uses the
 retention times provided by the query and target spectra (i.e. spectra variable
 `"rtime"`) but it is also possible to specify any other spectra variable for the
 additional retention time matching (e.g. retention indices instead of times)
-using the `rtColname` parameter of the `matchSpectra` function (see
+using the `rtColname` parameter of the `matchSpectra(0` function (see
 `?matchSpectra` help page for more information).
 
 Matches can be also further validated using an interactive Shiny app by calling
-`validateMatchedSpectra` on the `MatchedSpectra` object. Individual matches can
-be set to TRUE or FALSE in this app. By closing the app via the Save & Close
+`validateMatchedSpectra()` on the `MatchedSpectra` object. Individual matches
+can be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
 
@@ -588,7 +609,7 @@ it might involve lookup and download of specific resources or eventual
 conversion of these into a format suitable for import. `MetaboAnnotation`
 provides *compound annotation sources* to simplify this process. These
 annotation source objects represent references (links) to annotation resources
-and can be used in the `matchSpectra` call to define the targed/reference
+and can be used in the `matchSpectra()` call to define the targed/reference
 spectra. The annotation source object takes then care, upon request, of
 retrieving the annotation data or connecting to the annotation resources.
 
@@ -632,7 +653,7 @@ mbank <- MassBankSource("2022.06")
 mbank
 ```
 
-We can now use that annotation source object in the `matchSpectra` call to
+We can now use that annotation source object in the `matchSpectra()` call to
 compare the experimental spectra from the previous examples against that release
 of MassBank.
 
@@ -691,10 +712,59 @@ whichQuery(fts_mtch)
 ```
 
 Thus, we found fragment spectra matching the m/z and retention times for the 2nd
-and 5th feature. We next extract the `Spectra` object with the matching fragment
-spectra and assign the IDs of the matching features to the respective
-spectra. We us the `targetIndex` and `queryIndex` function for this that extract
-the indices for the matching query-target pairs.
+and 5th feature. To extract the `Spectra` matching these features, it would be
+best to first reduce the object to features with at least one matching fragment
+spectrum. The indices of query elements (in our case features) with matches can
+be returned using the `whichQuery()` function. We use these below to subset our
+matched result keeping only features for which matches were found:
+
+```{r}
+fts_mtched <- fts_mtch[whichQuery(fts_mtch)]
+fts_mtched
+```
+
+The feature IDs for the matched spectra can be extracted using:
+
+```{r}
+fts_mtched$feature_id
+```
+
+We next need to extract the matching fragment spectra from the `target`
+`Spectra` object. Here we use the `targetIndex()` function, that returns the
+indices of the target spectra that were matched to the query.
+
+```{r}
+targetIndex(fts_mtched)
+```
+
+We extract thus next the fragment spectra matching at least one feature:
+
+```{r}
+fts_ms2 <- target(fts_mtched)[targetIndex(fts_mtched)]
+fts_ms2
+```
+
+While we have now the spectra, we can't relate them (yet) to the features we
+used as `query`. Extracting the `"feature_id"` column using the `$` function
+from the the matched object would however return, for each match (since we
+restricted the matched object to contain only features with matches) the feature
+ID (provided in the original data frame). We can thus add this information as an
+additional spectra variable to our `Spectra` object:
+
+```{r}
+fts_ms2$feature_id <- fts_mtched$feature_id
+```
+
+Be aware that extracting the `"feature_id"` column from the matched object
+**before** restricting to features with matches would also return the values for
+features for which no MS2 spectrum was found:
+
+```{r}
+fts_mtch$feature_id
+```
+
+Without the initial subsetting of the matched object to features with at least
+one matching spectra, the extraction would be a bit more complicated:
 
 ```{r}
 fts_ms2 <- target(fts_mtch)[targetIndex(fts_mtch)]
@@ -713,14 +783,14 @@ matrix from the LC-MS run.
 Pre-filtering the target spectra based on similar precursor m/z (using
 `requirePrecursor = TRUE` generally speeds up the call because a spectra
 comparison needs only to be performed on subsets of target spectra. Performance
-of the `matchSpectra` function depends however also on the backend used for the
-query and target `Spectra`. For some backends the peaks data (i.e. m/z and
+of the `matchSpectra()` function depends however also on the backend used for
+the query and target `Spectra`. For some backends the peaks data (i.e. m/z and
 intensity values) might not be already loaded into memory and hence spectra
 comparisons might be slower because that data needs to be first loaded. As an
 example, for `Spectra` objects, such as our `pest_ms2` variable, that use the
 `MsBackendMzR`backend, the peaks data needs to be loaded from the raw data files
 before the spectra similarity scores can be calculated. Changing the backend to
-an in-memory data representation before `matchSpectra` can thus improve the
+an in-memory data representation before `matchSpectra()` can thus improve the
 performance (at the cost of a higher memory demand).
 
 Below we change the backends of the `pest_ms2` and `minimb` objects to
@@ -743,7 +813,7 @@ demand. Thus, for large data sets (or reference libraries) this might not be an
 option. See also [issue
 #93](https://github.com/rformassspectrometry/MetaboAnnotation/issues/93) in the
 `MetaboAnnotation` github repository for more benchmarks and information on
-performance of `matchSpectra`.
+performance of `matchSpectra()`.
 
 If for `target` a `Spectra` using a SQL database-based backend is used (such as
 a `MsBackendMassbankSql`, `MsBackendCompDb` or `MsBackendSql`) and spectra
@@ -753,7 +823,7 @@ precursor m/z values of all target spectra in memory improves the performance of
 `target_sps$precursorMz <- precursorMz(target_sps)` where `target_sps` is the
 `Spectra` object that uses one of the above mentioned backends. With this call
 all precursor m/z values will be cached within `target_sps` and any
-`precursorMz(target_sps)` call (which is used by `matchSpectra` to select the
+`precursorMz(target_sps)` call (which is used by `matchSpectra()` to select the
 candidate spectra against which to compare a query spectrum) will not require
 a separate SQL call.
 
@@ -770,16 +840,16 @@ the annotation process. These are presented in this section.
 
 ## Creating mixes of standard compounds
 
-The function `createStandardMixes` allows for grouping of standard compounds
-with a minimum difference in m/z based on user input. 
+The function `createStandardMixes()` allows for grouping of standard compounds
+with a minimum difference in m/z based on user input.
 
 ```{r}
 library(MetaboCoreUtils)
 ```
 
-### Input format 
+### Input format
 
-As an example here I will extract a list of a 100 standard compounds with their 
+As an example here I will extract a list of a 100 standard compounds with their
 formula from a tab delimited text file provided with the package. Such files
 could also be imported from an xlsx sheet using the *readxl* package.
 
@@ -789,8 +859,8 @@ standard <- read.table(system.file("extdata", "Standard_list_example.txt",
                    header = TRUE, sep = "\t", quote = "")
 ```
 
-We will use functions from the MetaboCoreUtil package to get the mass of each 
-compounds and the m/z for the adducts wanted. 
+We will use functions from the MetaboCoreUtil package to get the mass of each
+compounds and the m/z for the adducts wanted.
 
 ```{r}
 #' Calculate mass based on formula of compounds
@@ -815,15 +885,15 @@ compound. Importantly, the row names of the matrix should represent the (unique)
 compound names (or any other unique identifier for the compound).
 
 ```{r}
-standard_charged 
+standard_charged
 ```
 
 ### Using the function
 
-The `createStandardMixes` function organizes given compounds in such a way that
-each compound is placed in a group where all ions (adducts) have a m/z
-difference exceeding a user-defined threshold (default: `min_diff = 2`). 
-In this initial example, we aim to group only a subset of our compound list and
+The `createStandardMixes()` function organizes given compounds in such a way
+that each compound is placed in a group where all ions (adducts) have a m/z
+difference exceeding a user-defined threshold (default: `min_diff = 2`).  In
+this initial example, we aim to group only a subset of our compound list and
 execute the function with default parameters:
 
 ```{r}
@@ -837,7 +907,7 @@ Let's see the number of compounds per group:
 table(group_no_randomization$group)
 ```
 
-The grouping here worked perfectly, but let's now use the entire compound list 
+The grouping here worked perfectly, but let's now use the entire compound list
 and run with the default parameter again:
 
 ```{r}
@@ -845,11 +915,11 @@ group_no_randomization <- createStandardMixes(standard_charged)
 table(group_no_randomization$group)
 ```
 
-This time we can see that the grouping is less ideal. 
-In this case we can switch the `iterativeRandomization = TRUE`. 
+This time we can see that the grouping is less ideal.
+In this case we can switch the `iterativeRandomization = TRUE`.
 
 ```{r}
-group_with_ramdomization <- createStandardMixes(standard_charged, 
+group_with_ramdomization <- createStandardMixes(standard_charged,
                                                 iterativeRandomization = TRUE)
 
 table(group_with_ramdomization$group)
@@ -860,14 +930,14 @@ the randomization of input `x` rows until it fits the `min_nstd` parameter. If
 the list of compounds is very long or the requirement is hard to fit, this
 function can take a bit longer if `iterativeRandomization =` is set to `TRUE.`
 
-What if we want groups of a maximum of 20 and a minimum of 15 compounds, and with
-a minimum difference of 2 m/z between compounds of the same group? If you want
-to know more about the parameters of this function, look at
+What if we want groups of a maximum of 20 and a minimum of 15 compounds, and
+with a minimum difference of 2 m/z between compounds of the same group? If you
+want to know more about the parameters of this function, look at
 `?createStandardMixes`.
 
 ```{r}
 set.seed(123)
-group_with_ramdomization <- createStandardMixes(standard_charged, 
+group_with_ramdomization <- createStandardMixes(standard_charged,
                                                 max_nstd = 15,
                                                 min_nstd = 10,
                                                 min_diff = 2,
@@ -878,10 +948,11 @@ table(group_with_ramdomization$group)
 
 Great ! these groups look good; we can now export. As the function already
 returns a `data.frame`, you can directly save is as an Excel file using
-`write.xlsx` or as below in text format that can also be open in Excel.
+`write_xlsx()` from the *writexl* R package or as below in text format that can
+also be open in Excel.
 
 ```{r eval=FALSE}
-write.table(group_with_ramdomization, 
+write.table(group_with_ramdomization,
            file = "standard_mixes.txt", sep = "\t", quote = FALSE)
 ```
 

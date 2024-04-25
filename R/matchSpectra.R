@@ -71,6 +71,13 @@
 #'   `THRESHFUN_REVERSE` are returned. With the default
 #'   `THRESHFUN_REVERSE = NULL` all matches passing `THRESHFUN` are reported.
 #'
+#' @param addOriginalQueryIndex for `matchSpectra()`: `logical(1)` whether an
+#'   additional spectra variable `".original_query_index"` should be added to
+#'   the `query` `Spectra` object providing the index of the spectrum in this
+#'   originally provided object. This spectra variable can be useful to link
+#'   back to the original `Spectra` object if the `MatchedSpectra` object gets
+#'   subsetted/processed.
+#'
 #' @param BPPARAM for `matchSpectra`: parallel processing setup (see the
 #'   `BiocParallel` package for more information). Parallel processing is
 #'   disabled by default (with the default setting `BPPARAM = SerialParam()`).
@@ -393,8 +400,15 @@ setMethod(
     signature(query = "Spectra", target = "Spectra",
               param = "CompareSpectraParam"),
     function(query, target, param, rtColname = c("rtime", "rtime"),
-             BPPARAM = BiocParallel::SerialParam()) {
+             BPPARAM = BiocParallel::SerialParam(),
+             addOriginalQueryIndex = TRUE) {
         BPPARAM <- .check_bpparam(query, target, BPPARAM)
+        if (addOriginalQueryIndex) {
+            if (any(spectraVariables(query) == ".original_query_index"))
+                warning("Overwriting already present spectra variable ",
+                        "\".original_query_index\"")
+            query$.original_query_index <- seq_along(query)
+        }
         if (length(query) == 1 || param@requirePrecursor ||
             param@requirePrecursorPeak || any(is.finite(param@toleranceRt)) ||
             any(param@percentRt != 0))
@@ -422,9 +436,11 @@ setMethod(
     "matchSpectra", signature(query = "Spectra", target = "CompDb",
                               param = "Param"),
     function(query, target, param, rtColname = c("rtime", "rtime"),
-             BPPARAM = BiocParallel::SerialParam()) {
+             BPPARAM = BiocParallel::SerialParam(),
+             addOriginalQueryIndex = TRUE) {
         matchSpectra(query, Spectra(target), param = param,
-                     rtColname = rtColname, BPPARAM = BPPARAM)
+                     rtColname = rtColname, BPPARAM = BPPARAM,
+                     addOriginalQueryIndex = addOriginalQueryIndex)
     })
 
 .match_spectra <- function(query, target, param,
@@ -548,9 +564,11 @@ setMethod(
     signature(query = "Spectra", target = "Spectra",
               param = "MatchForwardReverseParam"),
     function(query, target, param, rtColname = c("rtime", "rtime"),
-             BPPARAM = BiocParallel::SerialParam()) {
+             BPPARAM = BiocParallel::SerialParam(),
+             addOriginalQueryIndex = TRUE) {
         res <- matchSpectra(query, target, as(param, "CompareSpectraParam"),
-                            rtColname = rtColname, BPPARAM = BPPARAM)
+                            rtColname = rtColname, BPPARAM = BPPARAM,
+                            addOriginalQueryIndex = addOriginalQueryIndex)
         ## Loop over the matches and assign additional stuff...
         nm <- nrow(res@matches)
         res@matches$reverse_score <- rep(NA_real_, nm)

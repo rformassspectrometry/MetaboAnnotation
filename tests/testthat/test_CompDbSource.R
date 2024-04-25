@@ -26,7 +26,8 @@ test_that("matchSpectra,Spectra,CompDbSource works", {
     fl <- system.file("sql", "CompDb.MassBank.sql", package = "CompoundDb")
     src  <- new("CompDbSource", dbfile = fl)
 
-    res <- matchSpectra(pest_ms2, src, param = CompareSpectraParam())
+    res <- matchSpectra(pest_ms2, src, param = CompareSpectraParam(),
+                        addOriginalQueryIndex = FALSE)
     expect_s4_class(res, "MatchedSpectra")
     expect_equal(query(res), pest_ms2)
     expect_s4_class(target(res)@backend, "MsBackendDataFrame")

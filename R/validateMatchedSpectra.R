@@ -11,6 +11,10 @@
 #' button the app is closed and a filtered `MatchedSpectra` is returned,
 #' containing only *validated* matches.
 #'
+#' Note that column `"query_index_"` and `"target_index_"` are temporarily
+#' added to the query and target `Spectra` object to display them in the
+#' interactive graphics for easier identification of the compared spectra.
+#'
 #' @param object A non-empty instance of class `MatchedSpectra`.
 #'
 #' @return A `MatchedSpectra` with validated results.
@@ -45,22 +49,26 @@
 #' ## validate matches using the shiny app. Note: the call is only executed
 #' ## in interactive mode.
 #' if (interactive()) {
-#'     validateMatchedSpectra(ms)
+#'     res <- validateMatchedSpectra(ms)
 #' }
 validateMatchedSpectra <- function(object) {
     if (!requireNamespace("shiny", quietly = TRUE))
         stop("The use of 'validateMatchedSpectra' requires package 'shiny'.",
-             " Please install with 'BiocInstaller::install(\"shiny\")'")
+             " Please install with 'BiocManager::install(\"shiny\")'")
     if (!requireNamespace("shinyjs", quietly = TRUE))
         stop("The use of 'validateMatchedSpectra' requires package 'shinyjs'.",
-             " Please install with 'BiocInstaller::install(\"shinyjs\")'")
+             " Please install with 'BiocManager::install(\"shinyjs\")'")
     if (!requireNamespace("DT", quietly = TRUE))
         stop("The use of 'validateMatchedSpectra' requires package 'DT'.",
-             " Please install with 'BiocInstaller::install(\"DT\")'")
+             " Please install with 'BiocManager::install(\"DT\")'")
 
     stopifnot(inherits(object, "MatchedSpectra"))
     if (!length(object))
         stop("The 'MatchedSpectra' object is empty.")
+
+    ## Add query and target index
+    object@query$query_index_ <- seq_along(object@query)
+    object@target$index_ <- seq_along(object@target)
 
     bpp <- bpparam()
     on.exit(register(bpp))
@@ -77,8 +85,8 @@ validateMatchedSpectra <- function(object) {
                     ),
                     shiny::mainPanel(
                         plotly::plotlyOutput("plot"),
-                        shiny::checkboxInput("valid", "Current match OK?", value = TRUE,
-                                      width = NULL),
+                        shiny::checkboxInput("valid", "Current match OK?",
+                                             value = TRUE, width = NULL),
                         DT::DTOutput("targets")
                         )
                     ))
@@ -96,7 +104,7 @@ validateMatchedSpectra <- function(object) {
         if (nrow(dt)) {
             dt <- data.frame(valid = TRUE, dt)
         } else dt <- data.frame(valid = logical(), dt)
-        dtl <- split(dt, factor(object@matches$query_idx, seq_along(object)))
+        dtl <- split(dt, factor(dt$query_index_, seq_along(object)))
         rv <- shiny::reactiveValues(
             queries = query_ids,
             dtl = dtl
@@ -122,7 +130,8 @@ validateMatchedSpectra <- function(object) {
                 ## rv_target$idx <- input$targets_rows_selected
                 shinyjs::enable("valid")
                 current_valid <- rv$dtl[[rv_query$idx]]$valid[rv_target$idx]
-                shiny::updateCheckboxInput(session, "valid", value = current_valid)
+                shiny::updateCheckboxInput(session, "valid",
+                                           value = current_valid)
             } else
                 shinyjs::disable("valid")
             output$plot <- plotly::renderPlotly(
@@ -139,7 +148,8 @@ validateMatchedSpectra <- function(object) {
             if (nrow(current_match@matches)) {
                 tidx <- current_match@matches$target_idx[rv_target$idx]
                 current_valid <- rv$dtl[[rv_query$idx]]$valid[rv_target$idx]
-                shiny::updateCheckboxInput(session, "valid", value = current_valid)
+                shiny::updateCheckboxInput(session, "valid",
+                                           value = current_valid)
                 output$plot <- plotly::renderPlotly(
                         .plotlySpectraMirror(query(current_match),
                                              target(current_match)[tidx],
@@ -157,6 +167,7 @@ validateMatchedSpectra <- function(object) {
             }
         })
         shiny::observeEvent(input$b_store, {
+            ## Collect all the selections from all data frames
             idx <- which(do.call(rbind, rv$dtl)$valid)
             shiny::stopApp(filterMatches(object, index = idx))
         })
@@ -298,12 +309,15 @@ validateMatchedSpectra <- function(object) {
 }
 
 .create_dt <- function(x){
-    .sel_cols <- c("precursorMz", "target_precursorMz", "rtime",
-                   "target_rtime", "target_name", "target_compound_name",
+    .sel_cols <- c("query_index_", "target_index_", "precursorMz",
+                   "target_precursorMz", "rtime", "target_rtime",
+                   "target_name", "target_compound_name",
                    "score", "reverse_score", "presence_ratio")
     cols <- .sel_cols[.sel_cols %in% spectraVariables(x)]
     tbl <- as.data.frame(matchedData(x, cols))
     tbl$score <- round(tbl$score, 3)
+    if (any(colnames(tbl) == "precursorMz"))
+        tbl$precursorMz <- round(tbl$precursorMz, 3)
     if (any(colnames(tbl) == "reverse_score"))
         tbl$reverse_score <- round(tbl$reverse_score, 3)
     if (any(colnames(tbl) == "presence_ratio"))
