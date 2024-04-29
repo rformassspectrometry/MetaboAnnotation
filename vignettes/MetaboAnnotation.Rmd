@@ -436,7 +436,7 @@ spectra, with the prefix `"target_"` being used for spectra variable names of
 the target spectra. Spectra variable `"score"` contains the similarity score.
 
 Note that by default also an additional column `".original_query_index"` is
-added to the `query` `Spectra` object by the `matchValues()` function, that
+added to the `query` `Spectra` object by the `matchSpectra()` function, that
 enables an easier mapping of results to the *original* query object used as
 input, in particular, if the `MatchedSpectra` object gets further subset. As the
 name says, this column contains for each query spectrum the index in the
