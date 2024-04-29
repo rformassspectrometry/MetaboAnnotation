@@ -68,6 +68,10 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
     res <- matchSpectra(pest_ms2, minimb, csp)
     expect_equal(res@matches$query_idx, 1:13)
     expect_equal(length(unique(res$target_spectrum_id)), 11)
+    expect_true(any(spectraVariables(res) == ".original_query_index"))
+    expect_equal(res@query$.original_query_index, seq_along(pest_ms2))
+    res <- matchSpectra(pest_ms2, minimb, csp, addOriginalQueryIndex = FALSE)
+    expect_false(any(spectraVariables(res) == ".original_query_index"))
 
     mb2 <- minimb
     spectraNames(mb2) <- seq_along(mb2)
@@ -193,6 +197,8 @@ test_that("matchSpectra,MatchForwardReverseParam works", {
     expect_equal(colnames(res@matches), c("query_idx", "target_idx", "score",
                                           "reverse_score", "presence_ratio",
                                           "matched_peaks_count"))
+    expect_true(any(spectraVariables(res) == ".original_query_index"))
+    expect_equal(query(res)$.original_query_index, seq_along(pest_ms2))
 
     mp <- MatchForwardReverseParam(requirePrecursor = TRUE,
                                    THRESHFUN = function(x) which.max(x))

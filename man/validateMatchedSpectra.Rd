@@ -21,6 +21,10 @@ plot is generated. Valid matches can be selected using a check box which is
 displayed below the mirror plot. Upon pushing the "Save & Close"
 button the app is closed and a filtered \code{MatchedSpectra} is returned,
 containing only \emph{validated} matches.
+
+Note that column \code{"query_index_"} and \code{"target_index_"} are temporarily
+added to the query and target \code{Spectra} object to display them in the
+interactive graphics for easier identification of the compared spectra.
 }
 \examples{
 
@@ -44,7 +48,7 @@ ms <- matchSpectra(addProcessing(pest_ms2, norm_int),
 ## validate matches using the shiny app. Note: the call is only executed
 ## in interactive mode.
 if (interactive()) {
-    validateMatchedSpectra(ms)
+    res <- validateMatchedSpectra(ms)
 }
 }
 \author{

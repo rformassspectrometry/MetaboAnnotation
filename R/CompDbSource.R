@@ -130,12 +130,14 @@ setMethod("show", "CompDbSource", function(object) {
 setMethod(
     "matchSpectra", signature(query = "Spectra", target = "CompDbSource",
                               param = "Param"),
-    function(query, target, param, BPPARAM = BiocParallel::SerialParam()) {
+    function(query, target, param, BPPARAM = BiocParallel::SerialParam(),
+             addOriginalQueryIndex = TRUE) {
         ## connect to the database
         db <- CompDb(target@dbfile)
         ## get the Spectra from the source and call matchSpectra
-        res <- matchSpectra(query, Spectra(db), param = param,
-                            BPPARAM = BPPARAM)
+        res <- matchSpectra(
+            query, Spectra(db), param = param, BPPARAM = BPPARAM,
+            addOriginalQueryIndex = addOriginalQueryIndex)
         ## keep only matching reference/target spectra  and change the
         ## backend to MsBackendDataFrame
         res <- pruneTarget(res)
