@@ -413,6 +413,8 @@ setMethod(
 #'
 #' @importFrom grDevices n2mfrow
 #'
+#' @importFrom Spectra scalePeaks
+#'
 #' @export
 setMethod(
     "plotSpectraMirror", "MatchedSpectra",
