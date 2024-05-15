@@ -96,8 +96,10 @@
 #'
 #' - `plotSpectraMirror`: creates a mirror plot between the query and each
 #'   matching target spectrum. Can only be applied to a `MatchedSpectra` with a
-#'   single query spectrum. Additional plotting parameters can be passed through
-#'   `...`.
+#'   single query spectrum. Setting parameter `scalePeaks = TRUE` will scale
+#'   the peak intensities per spectrum to a total sum of one for a better
+#'   graphical visualization. Additional plotting parameters can be passed
+#'   through `...`.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
 #'   [Spectra()] object. The function will return a `MatchedSpectra` object with
@@ -122,6 +124,10 @@
 #' @param name for `$`: the name of the spectra variable to extract.
 #'
 #' @param object `MatchedSpectra` object.
+#'
+#' @param scalePeaks for `plotSpectraMirror`: `logical(1)` if peak intensities
+#'   (per spectrum) should be scaled to a total sum of one (per spectrum) prior
+#'   to plotting.
 #'
 #' @param spectraVariables for `addProcessing`: `character` with additional
 #'   spectra variables that should be passed along to the function defined
@@ -405,21 +411,27 @@ setMethod(
 #'
 #' @importFrom graphics par
 #'
+#' @importFrom grDevices n2mfrow
+#'
 #' @export
-setMethod("plotSpectraMirror", "MatchedSpectra", function(x, xlab = "m/z",
-                                                          ylab = "intensity",
-                                                          main = "", ...) {
-    if (length(query(x)) != 1)
-        stop("Length of 'query(x)' has to be 1.")
-    y <- x@target[x@matches$target_idx]
-    if (!length(y))
-        y <- Spectra(DataFrame(msLevel = 2L))
-    nr <- sqrt(max(length(y), 1))
-    par(mfrow = c(floor(nr), ceiling(nr)))
-    for (i in seq_along(y))
-        plotSpectraMirror(x = query(x)[1L], y = y[i],
-                          xlab = xlab, ylab = ylab, main = main, ...)
-})
+setMethod(
+    "plotSpectraMirror", "MatchedSpectra",
+    function(x, xlab = "m/z", ylab = "intensity", main = "",
+             scalePeaks = FALSE, ...) {
+        if (length(query(x)) != 1)
+            stop("Length of 'query(x)' has to be 1.")
+        y <- x@target[x@matches$target_idx]
+        if (!length(y))
+            y <- Spectra(DataFrame(msLevel = 2L))
+        if (scalePeaks) {
+            x <- scalePeaks(query(x)[1L])
+            y <- scalePeaks(y)
+        } else x <- query(x)[1L]
+        par(mfrow = n2mfrow(length(y)))
+        for (i in seq_along(y))
+            plotSpectraMirror(x = x, y = y[i],
+                              xlab = xlab, ylab = ylab, main = main, ...)
+    })
 
 #' @importMethodsFrom ProtGenerics setBackend
 #'

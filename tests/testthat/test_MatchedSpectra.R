@@ -220,6 +220,12 @@ test_that("pruneTarget,MatchedSpectra works", {
 test_that("plotSpectraMirror throws an error", {
     ms <- MatchedSpectra()
     expect_error(plotSpectraMirror(ms), "Length")
+
+    ms <- MatchedSpectra(sp1, sp2, matches = data.frame(query_idx = integer(),
+                                                        target_idx = integer(),
+                                                        score = numeric()))
+    plotSpectraMirror(ms[1])
+    plotSpectraMirror(ms[1], scalePeaks = TRUE)
 })
 
 test_that("addProcessing works", {
