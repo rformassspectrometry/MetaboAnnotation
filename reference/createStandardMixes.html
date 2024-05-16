@@ -9,24 +9,14 @@ data frame."><title>Create Standard Mixes from a Matrix of Standard Compounds â€
 be defined with parameters max_nstd and min_nstd and the minimum required
 difference between m/z values within each group with parameter min_diff.
 The group assignment will be reported in an additional column in the result
-data frame."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--></head><body>
+data frame."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
-
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
-    
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
-
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.5</small>
-
-    
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.1</small>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../articles/MetaboAnnotation.html">Get started</a>
@@ -41,13 +31,10 @@ data frame."><meta property="og:image" content="https://rformassspectrometry.git
 <input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
 <li class="nav-item">
   <a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/MetaboAnnotation/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
+    <span class="fa fab fa-github fa-lg"></span>
   </a>
 </li>
       </ul></div>
-
-    
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -56,7 +43,6 @@ data frame."><meta property="og:image" content="https://rformassspectrometry.git
       <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/HEAD/R/group_standards.R" class="external-link"><code>R/group_standards.R</code></a></small>
       <div class="d-none name"><code>createStandardMixes.Rd</code></div>
     </div>
-
     <div class="ref-description section level2">
     <p>The <code>createStandardMixes</code> function defines groups (mixes) of compounds
 (standards) with dissimilar m/z values. The expected size of the groups can
@@ -65,7 +51,6 @@ difference between m/z values within each group with parameter <code>min_diff</c
 The group assignment will be reported in an additional column in the result
 data frame.</p>
     </div>
-
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createStandardMixes</span><span class="op">(</span></span>
@@ -76,43 +61,29 @@ data frame.</p>
 <span>  iterativeRandomization <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
-
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>x</dt>
+    <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p><code>numeric</code> matrix with row names representing the compounds and
 columns representing different adducts. Such a matrix with m/z values for
 different adducts for compounds could e.g. be created with the
 <code>mass2mz()</code> function.</p></dd>
-
-
-<dt>max_nstd</dt>
+<dt id="arg-max-nstd">max_nstd<a class="anchor" aria-label="anchor" href="#arg-max-nstd"></a></dt>
 <dd><p><code>numeric</code> number of maximum standards per group.</p></dd>
-
-
-<dt>min_nstd</dt>
+<dt id="arg-min-nstd">min_nstd<a class="anchor" aria-label="anchor" href="#arg-min-nstd"></a></dt>
 <dd><p><code>numeric</code> number of minimum standards per group. Only
 needed when using <code>iterativeRandomization = TRUE</code>.</p></dd>
-
-
-<dt>min_diff</dt>
+<dt id="arg-min-diff">min_diff<a class="anchor" aria-label="anchor" href="#arg-min-diff"></a></dt>
 <dd><p><code>numeric</code> Minimum difference for considering two values as
 distinct.</p></dd>
-
-
-<dt>iterativeRandomization</dt>
+<dt id="arg-iterativerandomization">iterativeRandomization<a class="anchor" aria-label="anchor" href="#arg-iterativerandomization"></a></dt>
 <dd><p><code>logical</code> default <code>FALSE</code>. If set to <code>TRUE</code>,
 <code>createStandardMixes</code> will randomly rearrange the rows of <code>x</code> until the user
 inputs are satisfied.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
 <p><code>data.frame</code> created by adding a column <code>group</code> to the input <code>x</code></p>
-
-
 <p>matrix, comprising the group number for each compound.</p>
     </div>
     <div class="section level2">
@@ -127,7 +98,6 @@ time.</p>
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Philippine Louail</p>
     </div>
-
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
@@ -156,23 +126,14 @@ time.</p>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
-
-
     <footer><div class="pkgdown-footer-left">
   <p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber, Philippine Louail.</p>
 </div>
-
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
-
     </footer></div>
-
-  
-
-  
-
   </body></html>
 

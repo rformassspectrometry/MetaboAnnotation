@@ -9,24 +9,14 @@ MatchedSpectra object. Functions like the matchSpectra() function will
 return this type of object. By default, all data accessors work as
 left joins between the query and the target spectra, i.e. values are
 returned for each query spectrum with eventual duplicated entries (values)
-if the query spectrum matches more than one target spectrum."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--></head><body>
+if the query spectrum matches more than one target spectrum."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
-
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
-    
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
-
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.5</small>
-
-    
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.1</small>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../articles/MetaboAnnotation.html">Get started</a>
@@ -41,13 +31,10 @@ if the query spectrum matches more than one target spectrum."><meta property="og
 <input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
 <li class="nav-item">
   <a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/MetaboAnnotation/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
+    <span class="fa fab fa-github fa-lg"></span>
   </a>
 </li>
       </ul></div>
-
-    
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -56,7 +43,6 @@ if the query spectrum matches more than one target spectrum."><meta property="og
       <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/HEAD/R/MatchedSpectra.R" class="external-link"><code>R/MatchedSpectra.R</code></a></small>
       <div class="d-none name"><code>MatchedSpectra.Rd</code></div>
     </div>
-
     <div class="ref-description section level2">
     <p>Matches between query and target spectra can be represented by the
 <code>MatchedSpectra</code> object. Functions like the <code><a href="matchSpectra.html">matchSpectra()</a></code> function will
@@ -65,7 +51,6 @@ return this type of object. By default, all data accessors work as
 returned for each <em>query</em> spectrum with eventual duplicated entries (values)
 if the query spectrum matches more than one target spectrum.</p>
     </div>
-
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre><code>MatchedSpectra(
@@ -73,117 +58,85 @@ if the query spectrum matches more than one target spectrum.</p>
   target = Spectra(),
   matches = data.frame(query_idx = integer(), target_idx = integer(), score = numeric())
 )
-
 # S4 method for class 'MatchedSpectra'
 spectraVariables(object)
-
 # S4 method for class 'MatchedSpectra'
 queryVariables(object)
-
 # S4 method for class 'MatchedSpectra'
 targetVariables(object)
-
 # S4 method for class 'MatchedSpectra'
 colnames(x)
-
 # S4 method for class 'MatchedSpectra'
 $(x, name)
-
 # S4 method for class 'MatchedSpectra'
 spectraData(object, columns = spectraVariables(object))
-
 # S4 method for class 'MatchedSpectra'
 matchedData(object, columns = spectraVariables(object), ...)
-
 # S4 method for class 'MatchedSpectra'
 addProcessing(object, FUN, ..., spectraVariables = character())
-
 # S4 method for class 'MatchedSpectra'
-plotSpectraMirror(x, xlab = "m/z", ylab = "intensity", main = "", ...)
-
+plotSpectraMirror(
+  x,
+  xlab = "m/z",
+  ylab = "intensity",
+  main = "",
+  scalePeaks = FALSE,
+  ...
+)
 # S4 method for class 'MatchedSpectra,MsBackend'
 setBackend(object, backend, ...)</code></pre></div>
     </div>
-
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>query</dt>
+    <dl><dt id="arg-query">query<a class="anchor" aria-label="anchor" href="#arg-query"></a></dt>
 <dd><p><code>Spectra</code> with the query spectra.</p></dd>
-
-
-<dt>target</dt>
+<dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>
 <dd><p><code>Spectra</code> with the spectra against which <code>query</code> has been
 matched.</p></dd>
-
-
-<dt>matches</dt>
+<dt id="arg-matches">matches<a class="anchor" aria-label="anchor" href="#arg-matches"></a></dt>
 <dd><p><code>data.frame</code> with columns <code>"query_idx"</code> (<code>integer</code>),
 <code>"target_idx"</code> (<code>integer</code>) and <code>"score"</code> (<code>numeric</code>) representing the
 <em>n:m</em> mapping of elements between the <code>query</code> and the <code>target</code> <code>Spectra</code>.</p></dd>
-
-
-<dt>object</dt>
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p><code>MatchedSpectra</code> object.</p></dd>
-
-
-<dt>x</dt>
+<dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p><code>MatchedSpectra</code> object.</p></dd>
-
-
-<dt>name</dt>
+<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
 <dd><p>for <code>$</code>: the name of the spectra variable to extract.</p></dd>
-
-
-<dt>columns</dt>
+<dt id="arg-columns">columns<a class="anchor" aria-label="anchor" href="#arg-columns"></a></dt>
 <dd><p>for <code>spectraData</code>: <code>character</code> vector with spectra variable
 names that should be extracted.</p></dd>
-
-
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>for <code>addProcessing</code>: additional parameters for the function <code>FUN</code>.
 For <code>plotSpectraMirror</code>: additional parameters passed to the plotting
 functions.</p></dd>
-
-
-<dt>FUN</dt>
+<dt id="arg-fun">FUN<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>for <code>addProcessing</code>: function to be applied to the peak matrix
 of each spectrum in <code>object</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
-
-
-<dt>spectraVariables</dt>
+<dt id="arg-spectravariables">spectraVariables<a class="anchor" aria-label="anchor" href="#arg-spectravariables"></a></dt>
 <dd><p>for <code>addProcessing</code>: <code>character</code> with additional
 spectra variables that should be passed along to the function defined
 with <code>FUN</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for details.</p></dd>
-
-
-<dt>xlab</dt>
+<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
 <dd><p>for <code>plotSpectraMirror</code>: the label for the x-axis.</p></dd>
-
-
-<dt>ylab</dt>
+<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
 <dd><p>for <code>plotSpectraMirror</code>: the label for the y-axis.</p></dd>
-
-
-<dt>main</dt>
+<dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
 <dd><p>for <code>plotSpectraMirror</code>: an optional title for each plot.</p></dd>
-
-
-<dt>backend</dt>
+<dt id="arg-scalepeaks">scalePeaks<a class="anchor" aria-label="anchor" href="#arg-scalepeaks"></a></dt>
+<dd><p>for <code>plotSpectraMirror</code>: <code>logical(1)</code> if peak intensities
+(per spectrum) should be scaled to a total sum of one (per spectrum) prior
+to plotting.</p></dd>
+<dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
 <dd><p>for <code>setBackend</code>: instance of an object extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackend</a>.
 See help for <code>setBackend</code> in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
 <p>See individual method desciption above for details.</p>
     </div>
     <div class="section level2">
     <h2 id="creation-subset-and-filtering">Creation, subset and filtering<a class="anchor" aria-label="anchor" href="#creation-subset-and-filtering"></a></h2>
-    
-
-
 <p><code>MatchedSpectra</code> objects are the result object from the <code><a href="matchSpectra.html">matchSpectra()</a></code>.
 While generally not needed, <code>MatchedSpectra</code> objects can also be created
 with the <code>MatchedSpectra</code> function providing the <code>query</code> and <code>target</code>
@@ -202,8 +155,6 @@ approaches defined for <code><a href="Matched.html">Matched()</a></code> objects
     </div>
     <div class="section level2">
     <h2 id="extracting-data">Extracting data<a class="anchor" aria-label="anchor" href="#extracting-data"></a></h2>
-    
-
 <ul><li><p><code>$</code> extracts a single spectra variable from the <code>MatchedSpectra</code> <code>x</code>. Use
 <code>spectraVariables</code> to get all available spectra variables. Prefix
 <code>"target_"</code> is used for spectra variables from the <em>target</em> <code>Spectra</code>. The
@@ -244,16 +195,16 @@ with <code>"target_"</code>).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="data-manipulation-and-plotting">Data manipulation and plotting<a class="anchor" aria-label="anchor" href="#data-manipulation-and-plotting"></a></h2>
-    
-
 <ul><li><p><code>addProcessing</code>: add a processing step to both the <em>query</em> and <em>target</em>
 <code>Spectra</code> in <code>object</code>. Additional parameters for <code>FUN</code> can be passed <em>via</em>
 <code>...</code>. See <code>addProcessing</code> documentation in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more
 information.</p></li>
 <li><p><code>plotSpectraMirror</code>: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a <code>MatchedSpectra</code> with a
-single query spectrum. Additional plotting parameters can be passed through
-<code>...</code>.</p></li>
+single query spectrum. Setting parameter <code>scalePeaks = TRUE</code> will scale
+the peak intensities per spectrum to a total sum of one for a better
+graphical visualization. Additional plotting parameters can be passed
+through <code>...</code>.</p></li>
 <li><p><code>setBackend</code>: allows to change the <em>backend</em> of both the query and target
 <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object. The function will return a <code>MatchedSpectra</code> object with
 the query and target <code>Spectra</code> changed to the specified <code>backend</code>, which
@@ -267,7 +218,6 @@ can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Johannes Rainer</p>
     </div>
-
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
@@ -401,23 +351,14 @@ can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
 </code></pre></div>
     </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
-
-
     <footer><div class="pkgdown-footer-left">
   <p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber, Philippine Louail.</p>
 </div>
-
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
-
     </footer></div>
-
-  
-
-  
-
   </body></html>
 

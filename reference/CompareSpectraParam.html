@@ -59,7 +59,6 @@ threshold function to filter matches. If THRESHFUN_REVERSE is defined
 only matches with a spectra similarity fulfilling both THRESHFUN and
 THRESHFUN_REVERSE are returned. With the default
 THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
-
 "><title>Matching MS Spectra against a reference — matchSpectra,Spectra,CompDbSource,Param-method • MetaboAnnotation</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Matching MS Spectra against a reference — matchSpectra,Spectra,CompDbSource,Param-method"><meta property="og:description" content="matchSpectra compares experimental (query) MS2 spectra against
 reference (target) MS2 spectra and reports matches with a similarity that
 passing a specified threshold. The function performs the similarity
@@ -120,25 +119,14 @@ threshold function to filter matches. If THRESHFUN_REVERSE is defined
 only matches with a spectra similarity fulfilling both THRESHFUN and
 THRESHFUN_REVERSE are returned. With the default
 THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
-
-"><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--></head><body>
+"><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
-
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark"><div class="container">
-    
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
-
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.7.5</small>
-
-    
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.9.1</small>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="../articles/MetaboAnnotation.html">Get started</a>
@@ -153,13 +141,10 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
 <input type="search" class="form-control" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json"></form></li>
 <li class="nav-item">
   <a class="external-link nav-link" href="https://github.com/RforMassSpectrometry/MetaboAnnotation/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
+    <span class="fa fab fa-github fa-lg"></span>
   </a>
 </li>
       </ul></div>
-
-    
   </div>
 </nav><div class="container template-reference-topic">
 <div class="row">
@@ -168,7 +153,6 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
       <small class="dont-index">Source: <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/HEAD/R/CompDbSource.R" class="external-link"><code>R/CompDbSource.R</code></a>, <a href="https://github.com/RforMassSpectrometry/MetaboAnnotation/blob/HEAD/R/matchSpectra.R" class="external-link"><code>R/matchSpectra.R</code></a></small>
       <div class="d-none name"><code>CompareSpectraParam.Rd</code></div>
     </div>
-
     <div class="ref-description section level2">
     <p><code>matchSpectra</code> compares experimental (<em>query</em>) MS2 spectra against
 reference (<em>target</em>) MS2 spectra and reports matches with a similarity that
@@ -230,7 +214,6 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 <code>THRESHFUN_REVERSE</code> are returned. With the default
 <code>THRESHFUN_REVERSE = NULL</code> all matches passing <code>THRESHFUN</code> are reported.</p></li>
 </ul></div>
-
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S4 method for class 'Spectra,CompDbSource,Param'</span></span>
@@ -299,64 +282,45 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 <span>  addOriginalQueryIndex <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
-
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>query</dt>
+    <dl><dt id="arg-query">query<a class="anchor" aria-label="anchor" href="#arg-query"></a></dt>
 <dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a> object with the query spectra.</p></dd>
-
-
-<dt>target</dt>
+<dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>
 <dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a>, <a href="https://rdrr.io/pkg/CompoundDb/man/CompDb.html" class="external-link">CompDb</a> or object extending
 <a href="CompAnnotationSource.html">CompAnnotationSource</a> (such as <a href="CompDbSource.html">CompDbSource</a>) with
 the target (reference) spectra to compare <code>query</code> against.</p></dd>
-
-
-<dt>param</dt>
+<dt id="arg-param">param<a class="anchor" aria-label="anchor" href="#arg-param"></a></dt>
 <dd><p>for <code>matchSpectra</code>: parameter object (such as
 <code>CompareSpectraParam</code>) defining the settings for the matching.</p></dd>
-
-
-<dt>BPPARAM</dt>
+<dt id="arg-bpparam">BPPARAM<a class="anchor" aria-label="anchor" href="#arg-bpparam"></a></dt>
 <dd><p>for <code>matchSpectra</code>: parallel processing setup (see the
 <code>BiocParallel</code> package for more information). Parallel processing is
 disabled by default (with the default setting <code>BPPARAM = SerialParam()</code>).</p></dd>
-
-
-<dt>addOriginalQueryIndex</dt>
+<dt id="arg-addoriginalqueryindex">addOriginalQueryIndex<a class="anchor" aria-label="anchor" href="#arg-addoriginalqueryindex"></a></dt>
 <dd><p>for <code><a href="matchSpectra.html">matchSpectra()</a></code>: <code>logical(1)</code> whether an
 additional spectra variable <code>".original_query_index"</code> should be added to
 the <code>query</code> <code>Spectra</code> object providing the index of the spectrum in this
 originally provided object. This spectra variable can be useful to link
 back to the original <code>Spectra</code> object if the <code>MatchedSpectra</code> object gets
 subsetted/processed.</p></dd>
-
-
-<dt>MAPFUN</dt>
+<dt id="arg-mapfun">MAPFUN<a class="anchor" aria-label="anchor" href="#arg-mapfun"></a></dt>
 <dd><p><code>function</code> used to map peaks between the compared spectra.
 Defaults for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/Spectra/man/joinPeaks.html" class="external-link">joinPeaks()</a></code>. See
 <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> for details.</p></dd>
-
-
-<dt>tolerance</dt>
+<dt id="arg-tolerance">tolerance<a class="anchor" aria-label="anchor" href="#arg-tolerance"></a></dt>
 <dd><p><code>numeric(1)</code> for an absolute maximal accepted difference
 between m/z values. This will be used in <code>compareSpectra</code> as well as for
 eventual precursor m/z matching.</p></dd>
-
-
-<dt>ppm</dt>
+<dt id="arg-ppm">ppm<a class="anchor" aria-label="anchor" href="#arg-ppm"></a></dt>
 <dd><p><code>numeric(1)</code> for a relative, m/z-dependent, maximal accepted
 difference between m/z values. This will be used in <code>compareSpectra</code> as
 well as for eventual precursor m/z matching.</p></dd>
-
-
-<dt>FUN</dt>
+<dt id="arg-fun">FUN<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p><code>function</code> used to calculate similarity between spectra. Defaults
 for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code>. See
 <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code> for details.</p></dd>
-
-
-<dt>requirePrecursor</dt>
+<dt id="arg-requireprecursor">requirePrecursor<a class="anchor" aria-label="anchor" href="#arg-requireprecursor"></a></dt>
 <dd><p><code>logical(1)</code> whether only target spectra are
 considered in the similarity calculation with a precursor m/z that matches
 the precursor m/z of the query spectrum (considering also <code>ppm</code> and
@@ -364,18 +328,14 @@ the precursor m/z of the query spectrum (considering also <code>ppm</code> and
 will complete much faster, but will not find any hits for target (or query
 spectra) with missing precursor m/z. It is suggested to check first the
 availability of the precursor m/z in <code>target</code> and <code>query</code>.</p></dd>
-
-
-<dt>requirePrecursorPeak</dt>
+<dt id="arg-requireprecursorpeak">requirePrecursorPeak<a class="anchor" aria-label="anchor" href="#arg-requireprecursorpeak"></a></dt>
 <dd><p><code>logical(1)</code> whether only target spectra will be
 considered in the spectra similarity calculation that have a peak with an
 m/z matching the precursor m/z of the query spectrum. Defaults to
 <code>requirePrecursorPeak = FALSE</code>. It is suggested to check first the
 availability of the precursor m/z in <code>query</code>, as no match will be reported
 for query spectra with missing precursor m/z.</p></dd>
-
-
-<dt>THRESHFUN</dt>
+<dt id="arg-threshfun">THRESHFUN<a class="anchor" aria-label="anchor" href="#arg-threshfun"></a></dt>
 <dd><p><code>function</code> applied to the similarity score to define which
 target spectra are considered <em>matching</em>. Defaults to
 <code>THRESHFUN = function(x) which(x &gt;= 0.7)</code> hence selects
@@ -385,18 +345,14 @@ scores from the comparison of a query spectrum with all target spectra (as
 returned by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code>) as input and returns a
 <code>logical</code> vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.</p></dd>
-
-
-<dt>toleranceRt</dt>
+<dt id="arg-tolerancert">toleranceRt<a class="anchor" aria-label="anchor" href="#arg-tolerancert"></a></dt>
 <dd><p><code>numeric</code> of length 1 or equal to the number of query
 spectra defining the maximal accepted (absolute) difference in retention
 time between query and target spectra. By default
 (with <code>toleranceRt = Inf</code>) the retention time-based filter is not
 considered. See help of <code>CompareSpectraParam</code> above for more
 information.</p></dd>
-
-
-<dt>percentRt</dt>
+<dt id="arg-percentrt">percentRt<a class="anchor" aria-label="anchor" href="#arg-percentrt"></a></dt>
 <dd><p><code>numeric</code> of length 1 or equal to the number of query
 spectra defining the maximal accepted relative difference in retention
 time between query and target spectra expressed in percentage of the query
@@ -406,43 +362,31 @@ spectrum and all target spectra with a retention time within query rt
 time-based filter is not considered. Thus, to consider the <code>percentRt</code>
 parameter, <code>toleranceRt</code> should be set to a value different than that.
 See help of <code>CompareSpectraParam</code> above for more information.</p></dd>
-
-
-<dt>...</dt>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>for <code>CompareSpectraParam</code>: additional parameters passed along
 to the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> call.</p></dd>
-
-
-<dt>THRESHFUN_REVERSE</dt>
+<dt id="arg-threshfun-reverse">THRESHFUN_REVERSE<a class="anchor" aria-label="anchor" href="#arg-threshfun-reverse"></a></dt>
 <dd><p>for <code>MatchForwardReverseParam</code>: optional additional
 <em>thresholding function</em> to filter the results on the reverse score. If
 specified the same format than <code>THRESHFUN</code> is expected.</p></dd>
-
-
-<dt>rtColname</dt>
+<dt id="arg-rtcolname">rtColname<a class="anchor" aria-label="anchor" href="#arg-rtcolname"></a></dt>
 <dd><p><code>character(2)</code> with the name of the spectra variable
 containing the retention time information for compounds to be used in
 retention time matching (only used if <code>toleranceRt</code> is not <code>Inf</code>).
 It can also be <code>character(1)</code> if the two names are the same.
 Defaults to <code>rtColname = c("rtime", "rtime")</code>.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
 <p><code>matchSpectra</code> returns a <code><a href="MatchedSpectra.html">MatchedSpectra()</a></code> object with the matching
 results. If <code>target</code> is a <code>CompAnnotationSource</code> only matching target
 spectra will be reported.</p>
-
-
 <p>Constructor functions return an instance of the class.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Johannes Rainer, Michael Witting</p>
     </div>
-
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
@@ -638,23 +582,14 @@ spectra will be reported.</p>
 <span class="r-in"><span><span class="co">## Bioconductor's AnnotationHub.</span></span></span>
 </code></pre></div>
     </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
-
-
     <footer><div class="pkgdown-footer-left">
   <p>Developed by Michael Witting, Johannes Rainer, Andrea Vicini, Carolin Huber, Philippine Louail.</p>
 </div>
-
 <div class="pkgdown-footer-right">
   <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.9000.</p>
 </div>
-
     </footer></div>
-
-  
-
-  
-
   </body></html>
 
