@@ -37,7 +37,14 @@ MatchedSpectra(
 
 \S4method{addProcessing}{MatchedSpectra}(object, FUN, ..., spectraVariables = character())
 
-\S4method{plotSpectraMirror}{MatchedSpectra}(x, xlab = "m/z", ylab = "intensity", main = "", ...)
+\S4method{plotSpectraMirror}{MatchedSpectra}(
+  x,
+  xlab = "m/z",
+  ylab = "intensity",
+  main = "",
+  scalePeaks = FALSE,
+  ...
+)
 
 \S4method{setBackend}{MatchedSpectra,MsBackend}(object, backend, ...)
 }
@@ -76,6 +83,10 @@ with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
 \item{ylab}{for \code{plotSpectraMirror}: the label for the y-axis.}
 
 \item{main}{for \code{plotSpectraMirror}: an optional title for each plot.}
+
+\item{scalePeaks}{for \code{plotSpectraMirror}: \code{logical(1)} if peak intensities
+(per spectrum) should be scaled to a total sum of one (per spectrum) prior
+to plotting.}
 
 \item{backend}{for \code{setBackend}: instance of an object extending \link{MsBackend}.
 See help for \code{setBackend} in \code{\link[=Spectra]{Spectra()}} for more details.}
@@ -168,8 +179,10 @@ with \code{"target_"}).
 information.
 \item \code{plotSpectraMirror}: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
-single query spectrum. Additional plotting parameters can be passed through
-\code{...}.
+single query spectrum. Setting parameter \code{scalePeaks = TRUE} will scale
+the peak intensities per spectrum to a total sum of one for a better
+graphical visualization. Additional plotting parameters can be passed
+through \code{...}.
 \item \code{setBackend}: allows to change the \emph{backend} of both the query and target
 \code{\link[=Spectra]{Spectra()}} object. The function will return a \code{MatchedSpectra} object with
 the query and target \code{Spectra} changed to the specified \code{backend}, which
