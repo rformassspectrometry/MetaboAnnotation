@@ -1,5 +1,9 @@
 # MetaboAnnotation 1.9
 
+## Changes in 1.9.2
+
+- Fix missing ProtGenerics dependency.
+
 ## Changes in 1.9.1
 
 - Add parameter `scalePeaks` to `plotSpectraMirror` to allow scaling peak

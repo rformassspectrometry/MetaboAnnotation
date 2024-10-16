@@ -1,4 +1,5 @@
 library(Spectra)
+library(ProtGenerics)
 df1 <- DataFrame(
     msLevel = 2L, rtime = 1:10,
     spectrum_id = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"))
