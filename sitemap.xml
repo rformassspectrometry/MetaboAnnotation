@@ -1,57 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/404.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/articles/MetaboAnnotation.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompAnnotationSource.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompDbSource.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompareSpectraParam.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/Matched.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/MatchedSpectra.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/createStandardMixes.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/hidden_aliases.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchFormula.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchSpectra.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.html</loc>
-  </url>
-  <url>
-    <loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/validateMatchedSpectra.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/404.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/articles/MetaboAnnotation.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/articles/index.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/authors.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/index.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/news/index.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompAnnotationSource.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompDbSource.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/CompareSpectraParam.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/Matched.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/MatchedSpectra.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/createStandardMixes.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/hidden_aliases.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/index.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchFormula.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchSpectra.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.html</loc></url>
+<url><loc>https://rformassspectrometry.github.io/MetaboAnnotation/reference/validateMatchedSpectra.html</loc></url>
 </urlset>
+
