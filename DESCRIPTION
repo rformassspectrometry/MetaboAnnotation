@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.11.0
+Version: 1.11.1
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -71,6 +71,7 @@ URL: https://github.com/RforMassSpectrometry/MetaboAnnotation
 biocViews: Infrastructure, Metabolomics, MassSpectrometry
 Roxygen: list(markdown=TRUE)
 RoxygenNote: 7.3.2
+Encoding: UTF-8
 Collate:
     'AllClassUnions.R'
     'AllGenerics.R'
