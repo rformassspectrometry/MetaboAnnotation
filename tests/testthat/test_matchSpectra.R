@@ -216,6 +216,35 @@ test_that("matchSpectra,MatchForwardReverseParam works", {
     res_2 <- matchSpectra(pest_ms2, minimb, mp)
     expect_true(all(res_2@matches$reverse_score > 0.9))
     expect_equal(unique(res_2@matches$query_idx), c(2, 4, 8))
+
+    a <- data.frame(
+        precursorMz = c(623.1618, 609.1825)
+    )
+    a$mz <- list(
+        c(300.0276, 315.0511),
+        c(242.0585, 286.0483, 301.0718)
+    )
+    a$intensity <- list(
+        c(20, 100),
+        c(1, 10, 100)
+    )
+    s <- Spectra(a)
+    res <- matchSpectra(
+        s[1], s[2],
+        param =  MatchForwardReverseParam(
+            requirePrecursor = FALSE, tolerance = 0.01,
+            THRESHFUN = function(x) which(x >= 0),
+            MAPFUN = joinPeaksGnps, FUN = MsCoreUtils::gnps))
+    expect_equal(res@matches$matched_peaks_count, 2)
+    ## Check that res@matches is not all 0
+
+    res <- matchSpectra(
+        s[1], s[2],
+        param =  MatchForwardReverseParam(
+            requirePrecursor = FALSE, tolerance = 1.1,
+            THRESHFUN = function(x) which(x >= 0)))
+    expect_equal(res@matches$matched_peaks_count, 1)
+    expect_equal(res@matches$presence_ratio, 1/3)
 })
 
 test_that("matchSpectra,Spectra,CompDb works", {

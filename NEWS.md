@@ -1,3 +1,11 @@
+# MetaboAnnotation 1.11
+
+## Changes in 1.11.1
+
+- Fix reporting of matched peaks with `MatchForwardReverseParam` and
+  *gnps*-matching/similarity calculation (issue
+  [#119](https://github.com/rformassspectrometry/MetaboAnnotation/issues/119)).
+
 # MetaboAnnotation 1.9
 
 ## Changes in 1.9.2

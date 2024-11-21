@@ -576,10 +576,14 @@ setMethod(
         res@matches$matched_peaks_count <- rep(NA_real_, nm)
         parms_rv <- .compare_spectra_parms_list(param)
         parms_rv$type <- "right"
+        query_pmz <- precursorMz(query)
+        target_pmz <- precursorMz(target)
         for (i in seq_len(nm)) {
             spl <- c(
                 list(x = peaksData(query[res@matches$query_idx[i]])[[1L]],
-                     y = peaksData(target[res@matches$target_idx[i]])[[1L]]),
+                     y = peaksData(target[res@matches$target_idx[i]])[[1L]],
+                     xPrecursorMz = query_pmz[res@matches$query_idx[i]],
+                     yPrecursorMz = target_pmz[res@matches$target_idx[i]]),
                 parms_rv)
             map <- do.call(param@MAPFUN, spl)
             spl$x <- map$x
