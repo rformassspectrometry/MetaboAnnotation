@@ -31,11 +31,12 @@ parameters passed to the \code{AnnotationHub} constructor function.}
 should be used.}
 }
 \description{
-\code{CompDbSource} objects represent references to \link{CompDb} database-backed
-annotation resources. Instances are expected to be created with the dedicated
-construction functions such as \code{MassBankSource} or the generic
-\code{CompDbSource}. The annotation data is not stored within the object but will
-be accessed/loaded within the object's \code{matchSpectra} method.
+\code{CompDbSource} objects represent references to \link[CompoundDb:CompDb]{CompoundDb::CompDb}
+database-backed annotation resources. Instances are expected to be
+created with the dedicated construction functions such as
+\code{MassBankSource} or the generic \code{CompDbSource}. The annotation data is
+not stored within the object but will be accessed/loaded within the
+object's \code{matchSpectra} method.
 
 New \code{CompDbSource} objects can be created using the functions:
 \itemize{

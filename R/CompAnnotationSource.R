@@ -17,7 +17,8 @@
 #' Objects extending `CompAnnotationSource` available in this package are:
 #'
 #' - [CompDbSource()]: annotation source referencing an annotation source in the
-#'   `[CompDb()]` format ( from the `CompoundDb` Bioconductor package).
+#'   `[CompoundDb::CompDb()]` format ( from the `CompoundDb` Bioconductor
+#'   package).
 #'
 #' Classes extending `CompAnnotationSource` need to implement the `matchSpectra`
 #' method with parameters `query`, `target` and `param` where `query` is
@@ -32,7 +33,8 @@
 #' This would also enable parallel processing of annotations as no e.g. database
 #' connection would have to be shared across processes.
 #'
-#' @param query for `matchSpectra`: [Spectra] object with the query spectra.
+#' @param query for `matchSpectra`: [Spectra::Spectra] object with the query
+#'   spectra.
 #'
 #' @param target for `matchSpectra`: object extending [CompAnnotationSource]
 #'   (such as [CompDbSource]) with the target (reference) spectra to compare

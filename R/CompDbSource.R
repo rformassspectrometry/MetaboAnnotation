@@ -6,11 +6,12 @@
 #'
 #' @description
 #'
-#' `CompDbSource` objects represent references to [CompDb] database-backed
-#' annotation resources. Instances are expected to be created with the dedicated
-#' construction functions such as `MassBankSource` or the generic
-#' `CompDbSource`. The annotation data is not stored within the object but will
-#' be accessed/loaded within the object's `matchSpectra` method.
+#' `CompDbSource` objects represent references to [CompoundDb::CompDb]
+#' database-backed annotation resources. Instances are expected to be
+#' created with the dedicated construction functions such as
+#' `MassBankSource` or the generic `CompDbSource`. The annotation data is
+#' not stored within the object but will be accessed/loaded within the
+#' object's `matchSpectra` method.
 #'
 #' New `CompDbSource` objects can be created using the functions:
 #'
@@ -149,7 +150,7 @@ setMethod(
 #'
 #' @rdname CompDbSource
 MassBankSource <- function(release = "2021.03", ...) {
-    if (!requireNamespace("AnnotationHub", quietly = TRUE))
+    if (!.is_available_annotation_hub())
         stop("'MassBankSource' requires the 'AnnotationHub' package.\n",
              "Please install it with 'BiocManager::install(",
              "\"AnnotationHub\")' and try again.")
@@ -162,4 +163,8 @@ MassBankSource <- function(release = "2021.03", ...) {
              "AnnotationHub match the provided release information.")
     fn <- unname(AnnotationHub::cache(res))
     CompDbSource(fn)
+}
+
+.is_available_annotation_hub <- function(x) {
+    requireNamespace("AnnotationHub", quietly = TRUE)
 }

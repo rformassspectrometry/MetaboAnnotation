@@ -36,6 +36,8 @@ test_that("matchFormula works", {
   expect_equal(res@matches$query_idx, c(1L, 3L, 4L, 5L))
   expect_equal(res@matches$target_idx, c(3L, 4L, 1L, 1L))
   expect_equal(res@matches$score, rep(1L, 4))
+  expect_error(matchFormula(x_df, y, formulaColname = "other"),
+               "Missing column")
 
   # character vs data.frame
   res <- matchFormula(x, y_df)
@@ -44,6 +46,8 @@ test_that("matchFormula works", {
   expect_equal(res@matches$query_idx, c(1L, 3L, 4L, 5L))
   expect_equal(res@matches$target_idx, c(3L, 4L, 1L, 1L))
   expect_equal(res@matches$score, rep(1L, 4))
+  expect_error(matchFormula(x, y_df, formulaColname = "other"),
+               "Missing column")
 })
 
 test_that(".getFormulaMatches works", {

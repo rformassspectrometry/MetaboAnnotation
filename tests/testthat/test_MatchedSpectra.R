@@ -140,6 +140,7 @@ test_that("spectraData,MatchedSpectra works", {
     expect_true(is(res, "DataFrame"))
     expect_true(nrow(res) == 0)
     expect_equal(colnames(res), spectraVariables(ms))
+    expect_equal(colnames(ms), colnames(res))
 
     ms <- MatchedSpectra(
         sp1, sp2, matches = data.frame(query_idx = c(1L, 1L, 2L, 4L, 4L, 4L),

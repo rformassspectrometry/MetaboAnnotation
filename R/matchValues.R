@@ -181,7 +181,7 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' (m/z and possibly retention time) while `target` reference values. `query`
 #' and `target` can be `numeric`, a two dimensional array (such as a
 #' `data.frame`, `matrix` or `DataFrame`), a `SummarizedExperiment`
-#' or a `QFeatures`, `target` can in addition be a [Spectra()] object.
+#' or a `QFeatures`, `target` can in addition be a [Spectra::Spectra()] object.
 #' For `SummarizedExperiment`, the information for the matching is expected
 #' to be in the object's `rowData`. For `QFeatures` matching is performed
 #' for values present in the `rowData` of one of the object's assays (which
@@ -242,13 +242,14 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #' - `Mz2MassParam`: input values for `query` and `target` are expected to be
 #'   m/z values but matching is performed on exact masses calculated from these
 #'   (based on the provided adduct definitions). In detail, m/z values in
-#'   `query` are first converted to masses with the [mz2mass()] function based
-#'   on the adducts defined with `queryAdducts` (defaults to `"[M+H]+"`). The
-#'   same is done for m/z values in `target` (adducts can be defined with
-#'   `targetAdducts` which defaults to `"[M-H-]"). Matching is then performed
-#'   on these converted values similarly to `ValueParam`. If `query` or `target`
-#'   are not numeric, the column containing the m/z values can be
-#'   specified with `matchValues`' parameter `mzColname` (defaults to `"mz"`).
+#'   `query` are first converted to masses with the [MetaboCoreUtils::mz2mass()]
+#'   function based on the adducts defined with `queryAdducts` (defaults to
+#'   `"[M+H]+"`). The same is done for m/z values in `target` (adducts can
+#'   be defined with `targetAdducts` which defaults to `"[M-H-]").
+#'   Matching is then performed on these converted values similarly to
+#'   `ValueParam`. If `query` or `target` are not numeric, the column
+#'   containing the m/z values can be specified with `matchValues`'
+#'   parameter `mzColname` (defaults to `"mz"`).
 #'
 #' - `Mz2MassRtParam`: same as `Mz2MassParam` but with additional comparison of
 #'   retention times between `query` and `target`. Parameters `rtColname` and
@@ -281,8 +282,9 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     is expected to be `character(2)` (or `character(1)` and in this last case
 #'     the two column names are assumed to be the same). If not specified the
 #'     assumed default name for columns with m/z values is `"mz"`. If `target`
-#'     is a [Spectra()] object, the name of the spectra variable that should be
-#'     used for the matching needs to be specified with `mzColname`.
+#'     is a [Spectra::Spectra()] object, the name of the spectra variable
+#'     that should be used for the matching needs to be specified
+#'     with `mzColname`.
 #'
 #' @param param parameter object defining the matching approach and containing
 #'     the settings for that approach. See description above for details.
@@ -312,9 +314,9 @@ Mz2MassRtParam <- function(queryAdducts = c("[M+H]+"),
 #'     the compounds retention times in `query` and the name for the one in
 #'     `target`. It can also be `character(1)` if the two names are the same.
 #'     To be used when `param` is `MzRtParam` or `Mass2MzRtParam`.
-#'     Defaults to `rtColname = c("rt", "rt")`. If `target` is a [Spectra()]
-#'     object, the name of the spectra variable that should be used for the
-#'     matching needs to be specified with `mzColname`.
+#'     Defaults to `rtColname = c("rt", "rt")`. If `target` is a
+#'     [Spectra::Spectra()] object, the name of the spectra variable that
+#'     should be used for the matching needs to be specified with `mzColname`.
 #'
 #' @param target compound table with metabolites to compare against. The
 #'     expected types are the same as those for `query`.

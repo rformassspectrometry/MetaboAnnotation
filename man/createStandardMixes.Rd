@@ -16,7 +16,7 @@ createStandardMixes(
 \item{x}{\code{numeric} matrix with row names representing the compounds and
 columns representing different adducts. Such a matrix with m/z values for
 different adducts for compounds could e.g. be created with the
-\code{\link[=mass2mz]{mass2mz()}} function.}
+\code{\link[MetaboCoreUtils:mass2mz]{MetaboCoreUtils::mass2mz()}} function.}
 
 \item{max_nstd}{\code{numeric} number of maximum standards per group.}
 
@@ -66,12 +66,12 @@ x <- matrix(c(349.0544, 371.0363, 325.0431, 347.0251, 581.0416, 603.0235,
               167.0564, 189.0383, 150.0583, 172.0403, 171.0053, 192.9872,
               130.0863, 152.0682, 768.1225, 790.1044),
             ncol = 2, byrow = TRUE,
-            dimnames = list(c("IMP", "UMP", "UDP-glucuronate", 
-                                "1-Methylxanthine", "Methionine", 
-                                "Dihydroxyacetone phosphate", 
+            dimnames = list(c("IMP", "UMP", "UDP-glucuronate",
+                                "1-Methylxanthine", "Methionine",
+                                "Dihydroxyacetone phosphate",
                                 "Pipecolic acid", "CoA"),
                              c("[M+H]+", "[M+Na]+")))
-result <- createStandardMixes(x, max_nstd = 4, min_nstd = 3, min_diff = 2, 
+result <- createStandardMixes(x, max_nstd = 4, min_nstd = 3, min_diff = 2,
                                iterativeRandomization = TRUE)
 
 }

@@ -269,16 +269,17 @@ only to be specified for \code{query}) then \code{mzColname} is expected to be
 is expected to be \code{character(2)} (or \code{character(1)} and in this last case
 the two column names are assumed to be the same). If not specified the
 assumed default name for columns with m/z values is \code{"mz"}. If \code{target}
-is a \code{\link[=Spectra]{Spectra()}} object, the name of the spectra variable that should be
-used for the matching needs to be specified with \code{mzColname}.}
+is a \code{\link[Spectra:Spectra]{Spectra::Spectra()}} object, the name of the spectra variable
+that should be used for the matching needs to be specified
+with \code{mzColname}.}
 
 \item{rtColname}{\code{character(2)} with the name of the column containing
 the compounds retention times in \code{query} and the name for the one in
 \code{target}. It can also be \code{character(1)} if the two names are the same.
 To be used when \code{param} is \code{MzRtParam} or \code{Mass2MzRtParam}.
-Defaults to \code{rtColname = c("rt", "rt")}. If \code{target} is a \code{\link[=Spectra]{Spectra()}}
-object, the name of the spectra variable that should be used for the
-matching needs to be specified with \code{mzColname}.}
+Defaults to \code{rtColname = c("rt", "rt")}. If \code{target} is a
+\code{\link[Spectra:Spectra]{Spectra::Spectra()}} object, the name of the spectra variable that
+should be used for the matching needs to be specified with \code{mzColname}.}
 }
 \value{
 \link{Matched} object representing the result.
@@ -306,7 +307,7 @@ Generally, \code{query} is expected to contain MS experimental values
 (m/z and possibly retention time) while \code{target} reference values. \code{query}
 and \code{target} can be \code{numeric}, a two dimensional array (such as a
 \code{data.frame}, \code{matrix} or \code{DataFrame}), a \code{SummarizedExperiment}
-or a \code{QFeatures}, \code{target} can in addition be a \code{\link[=Spectra]{Spectra()}} object.
+or a \code{QFeatures}, \code{target} can in addition be a \code{\link[Spectra:Spectra]{Spectra::Spectra()}} object.
 For \code{SummarizedExperiment}, the information for the matching is expected
 to be in the object's \code{rowData}. For \code{QFeatures} matching is performed
 for values present in the \code{rowData} of one of the object's assays (which
@@ -362,10 +363,10 @@ columns containing m/z values (in \code{query}), retention time values (in
 \item \code{Mz2MassParam}: input values for \code{query} and \code{target} are expected to be
 m/z values but matching is performed on exact masses calculated from these
 (based on the provided adduct definitions). In detail, m/z values in
-\code{query} are first converted to masses with the \code{\link[=mz2mass]{mz2mass()}} function based
-on the adducts defined with \code{queryAdducts} (defaults to \code{"[M+H]+"}). The
-same is done for m/z values in \code{target} (adducts can be defined with
-\code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are not numeric, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
+\code{query} are first converted to masses with the \code{\link[MetaboCoreUtils:mz2mass]{MetaboCoreUtils::mz2mass()}}
+function based on the adducts defined with \code{queryAdducts} (defaults to
+\code{"[M+H]+"}). The same is done for m/z values in \code{target} (adducts can
+be defined with \code{targetAdducts} which defaults to \verb{"[M-H-]"). Matching is then performed on these converted values similarly to }ValueParam\verb{. If }query\code{or}target\verb{are not numeric, the column containing the m/z values can be specified with}matchValues\verb{' parameter }mzColname\verb{(defaults to}"mz"`).
 \item \code{Mz2MassRtParam}: same as \code{Mz2MassParam} but with additional comparison of
 retention times between \code{query} and \code{target}. Parameters \code{rtColname} and
 \code{mzColname} of \code{matchValues} allow to specify which columns contain the

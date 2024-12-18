@@ -54,4 +54,12 @@ test_that("MassBankSource works with AnnotationHub", {
         expect_s4_class(mb, "CompDbSource")
         expect_true(length(mb@dbfile) == 1L)
     }
+    with_mocked_bindings(
+        ".is_available_annotation_hub" = function() FALSE,
+        code = expect_error(MassBankSource(), "requires")
+    )
+})
+
+test_that(".is_available_annotation_hub works", {
+    expect_true(.is_available_annotation_hub())
 })

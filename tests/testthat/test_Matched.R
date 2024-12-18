@@ -287,6 +287,9 @@ test_that("$,Matched and .dollar works", {
     expect_equal(mo$target_col1,
                  .dollar(mo@query, mo@target, mo@matches, "target_col1"))
 
+    expect_error(.dollar(mo@query, mo@target, mo@matches, "no_col"),
+                 "not available")
+
     mo <- Matched(
         q2, t2, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
                                      target_idx = c(2L, 2L, 3L, 4L, 5L),
@@ -1042,6 +1045,9 @@ test_that(".subset_qt works", {
     res <- .subset_qt(q4, "a1", i = i)
     expect_is(res, "QFeatures")
     expect_equal(res[["a1"]], q4[["a1"]][i, ])
+
+    expect_error(.subset_qt(q4, assay = "no_way", i = i),
+                 "Invalid assay name")
 })
 
 test_that("SelectMatchesParam works", {
@@ -1066,6 +1072,11 @@ test_that("TopRankedMatchesParam works", {
 
     expect_error(TopRankedMatchesParam(n = c(2L, 3L)), "length 1")
     expect_error(TopRankedMatchesParam(n = -4L), "positive integer")
+})
+
+test_that("endoapply,ANY works", {
+    res <- endoapply(1:3, function(z) z)
+    expect_equal(res, 1:3)
 })
 
 test_that("endoapply,Matched works", {
@@ -1178,6 +1189,16 @@ test_that("filterMatches,Matched,SingleMatchParam works", {
     p <- SingleMatchParam(column = "ops")
     expect_error(filterMatches(a, p), "not found")
 
+    a <- Matched(
+        query = q1, target = t1,
+        matches = data.frame(query_idx = integer(),
+                             target_idx = integer(),
+                             score = numeric()))
+    res <- filterMatches(a, SingleMatchParam())
+    expect_equal(res@query, a@query)
+    expect_equal(res@target, a@target)
+    expect_equal(res@matches, a@matches)
+
     ## target is data.frame
     a <- Matched(
         query = q1, target = t1,
@@ -1199,6 +1220,12 @@ test_that("filterMatches,Matched,SingleMatchParam works", {
     expect_equal(res@matches$target_idx, c(2L, 2L, 5L))
     ## top_ranked
     p <- SingleMatchParam(duplicates = "top_ranked", column = "target_col2",
+                          decreasing = TRUE)
+    res <- filterMatches(a, p)
+    expect_equal(anyDuplicated(res@matches$query_idx), 0L)
+    expect_equal(res@matches$target_idx, c(2L, 4L, 5L))
+
+    p <- SingleMatchParam(duplicates = "top_ranked", column = "score",
                           decreasing = TRUE)
     res <- filterMatches(a, p)
     expect_equal(anyDuplicated(res@matches$query_idx), 0L)
@@ -1256,4 +1283,60 @@ test_that("filterMatches,Matched,SingleMatchParam works", {
     expect_equal(anyDuplicated(res@matches$query_idx), 0L)
     expect_equal(res@matches$query_idx, c(1L, 2L, 3L, 5L))
     expect_equal(res@matches$target_idx, c(5L, 2L, 4L, 5L))
+})
+
+test_that(".findMatchesIdxs works", {
+    mo <- Matched(
+        q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                     score = seq(0.5, 0.9, by = 0.1)))
+    expect_error(.findMatchesIdxs(mo@query, mo@target, mo@matches,
+                                  queryValue = 3, queryColname = "col1",
+                                  targetValue = c(1, 2)),
+                 "have the same length")
+    expect_error(.findMatchesIdxs(mo@query, mo@target, mo@matches,
+                                  queryValue = 1, targetValue = 2),
+                 "must be provided")
+    expect_error(.findMatchesIdxs(mo@query, mo@target, mo@matches,
+                                  queryValue = 1, targetValue = 2,
+                                  queryColname = "some"),
+                 "not a column")
+    expect_error(.findMatchesIdxs(mo@query, mo@target, mo@matches,
+                                  queryValue = 1, targetValue = 2,
+                                  queryColname = "col1"),
+                 "must be provided")
+    expect_error(.findMatchesIdxs(mo@query, mo@target, mo@matches,
+                                  queryValue = 1, targetValue = 2,
+                                  queryColname = "col1",
+                                  targetColname = "some"),
+                 "not a column")
+
+})
+
+test_that(".addMatches works", {
+    ## Check errors. Rest is tested above in addMatches()
+    m1 <- data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                     target_idx = c(2L, 2L, 3L, 4L, 5L),
+                     score = seq(0.5, 0.9, by = 0.1))
+    expect_error(MetaboAnnotation:::.addMatches(q1, t1, m1, score = c(3, 6, 10)),
+                 "must have the same length")
+    expect_error(MetaboAnnotation:::.addMatches(q1, t1, m1, score = "a"),
+                 "or a numeric")
+    expect_error(.addMatches(q1, t1, m1, score = c(3, 6, 10), isIndex = TRUE,
+                             targetValue = c("a", "b", "c"), queryValue = 1:3),
+                 "must be integer vectors")
+    expect_error(.addMatches(q1, t1, m1, score = c(3, 6, 10), isIndex = TRUE,
+                             targetValue = 1:3, queryValue = c(10L, 2L, 1L)),
+                 "'queryValue' are out-of-bounds")
+    expect_error(.addMatches(q1, t1, m1, score = c(3, 6, 10), isIndex = TRUE,
+                             targetValue = c(3L, 29L, 1L), queryValue = 1:3),
+                 "'targetValue' are out-of-bounds")
+    expect_error(.addMatches(q1, t1, m1, score = c(3, 6, 10), isIndex = FALSE,
+                             queryColname = "col4", queryValue = 1:3,
+                             targetValue = 1:3),
+                 "column of 'query'")
+    expect_error(.addMatches(q1, t1, m1, score = c(3, 6, 10), isIndex = FALSE,
+                             queryColname = "col1", targetColname = "col13",
+                             queryValue = 1:3, targetValue = 1:3),
+                 "column of 'target'")
 })

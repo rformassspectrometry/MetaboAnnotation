@@ -13,8 +13,9 @@
 #' Parameters `query` and `target` can be used to define the query and target
 #' spectra, respectively, while parameter `param` allows to define and configure
 #' the similarity calculation and matching condition. Parameter `query` takes
-#' a [Spectra] object while `target` can be either a [Spectra] object, a
-#' [CompDb] (reference library) object defined in the `CompoundDb` package or
+#' a [Spectra::Spectra] object while `target` can be either a
+#' [Spectra::Spectra] object, a [CompoundDb::CompDb] (reference library)
+#' object defined in the `CompoundDb` package or
 #' a [CompAnnotationSource] (e.g. a [CompDbSource()])
 #' with the reference or connection information to a supported annotation
 #' resource).
@@ -25,16 +26,18 @@
 #' Currently supported parameter objects defining the matching are:
 #'
 #' - `CompareSpectraParam`: the *generic* parameter object allowing to set all
-#'   settings for the [compareSpectra()] call that is used to perform the
-#'   similarity calculation. This includes `MAPFUN` and `FUN` defining the
+#'   settings for the [Spectra::compareSpectra()] call that is used to
+#'   perform the similarity calculation.
+#'   This includes `MAPFUN` and `FUN` defining the
 #'   peak-mapping and similarity calculation functions and `ppm` and `tolerance`
 #'   to define an acceptable difference between m/z values of the compared
 #'   peaks. Additional parameters to the `compareSpectra` call
-#'   can be passed along with `...`. See the help of [Spectra()] for more
-#'   information on these parameters. Parameters `requirePrecursor` (default
-#'   `TRUE`) and `requirePrecursorPeak` (default `FALSE`) allow to pre-filter
-#'   the target spectra prior to the actual similarity calculation for each
-#'   individual query spectrum. Target spectra can also be pre-filtered based on
+#'   can be passed along with `...`. See the help of [Spectra::Spectra()] for
+#'   more information on these parameters. Parameters `requirePrecursor`
+#'   (default `TRUE`) and `requirePrecursorPeak` (default `FALSE`) allow to
+#'   pre-filter the target spectra prior to the actual similarity calculation
+#'   for each individual query spectrum.
+#'   Target spectra can also be pre-filtered based on
 #'   retention time if parameter `toleranceRt` is set to a value different than
 #'   the default `toleranceRt = Inf`. Only target spectra with a retention time
 #'   within the query's retention time +/- (`toleranceRt` + `percentRt`% of the
@@ -87,8 +90,8 @@
 #'   [MsCoreUtils::ndotproduct()] for details.
 #'
 #' @param MAPFUN `function` used to map peaks between the compared spectra.
-#'    Defaults for `CompareSpectraParam` to [joinPeaks()]. See
-#'    [compareSpectra()] for details.
+#'    Defaults for `CompareSpectraParam` to [Spectra::joinPeaks()]. See
+#'    [Spectra::compareSpectra()] for details.
 #'
 #' @param param for `matchSpectra`: parameter object (such as
 #'   `CompareSpectraParam`) defining the settings for the matching.
@@ -107,7 +110,8 @@
 #'   difference between m/z values. This will be used in `compareSpectra` as
 #'   well as for eventual precursor m/z matching.
 #'
-#' @param query for `matchSpectra`: [Spectra] object with the query spectra.
+#' @param query for `matchSpectra`: [Spectra::Spectra] object with the query
+#'   spectra.
 #'
 #' @param requirePrecursor `logical(1)` whether only target spectra are
 #'   considered in the similarity calculation with a precursor m/z that matches
@@ -130,8 +134,8 @@
 #'     It can also be `character(1)` if the two names are the same.
 #'     Defaults to `rtColname = c("rtime", "rtime")`.
 #'
-#' @param target for `matchSpectra`: [Spectra], [CompDb] or object extending
-#'   [CompAnnotationSource] (such as [CompDbSource]) with
+#' @param target for `matchSpectra`: [Spectra::Spectra], [CompoundDb::CompDb]
+#'   or object extending [CompAnnotationSource] (such as [CompDbSource]) with
 #'   the target (reference) spectra to compare `query` against.
 #'
 #' @param tolerance `numeric(1)` for an absolute maximal accepted difference
@@ -151,7 +155,7 @@
 #'   all target spectra matching a query spectrum with a similarity higher or
 #'   equal than `0.7`. Any function that takes a numeric vector with similarity
 #'   scores from the comparison of a query spectrum with all target spectra (as
-#'   returned by [compareSpectra()]) as input and returns a
+#'   returned by [Spectra::compareSpectra()]) as input and returns a
 #'   `logical` vector (same dimensions as the similarity scores) or an integer
 #'   with the matches is supported.
 #'
@@ -160,7 +164,7 @@
 #'   specified the same format than `THRESHFUN` is expected.
 #'
 #' @param ... for `CompareSpectraParam`: additional parameters passed along
-#'   to the [compareSpectra()] call.
+#'   to the [Spectra::compareSpectra()] call.
 #'
 #' @author Johannes Rainer, Michael Witting
 #'
