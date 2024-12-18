@@ -71,7 +71,7 @@ data frame.</p>
 <dd><p><code>numeric</code> matrix with row names representing the compounds and
 columns representing different adducts. Such a matrix with m/z values for
 different adducts for compounds could e.g. be created with the
-<code>mass2mz()</code> function.</p></dd>
+<code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mass2mz.html" class="external-link">MetaboCoreUtils::mass2mz()</a></code> function.</p></dd>
 
 
 <dt id="arg-max-nstd">max_nstd<a class="anchor" aria-label="anchor" href="#arg-max-nstd"></a></dt>
@@ -130,12 +130,12 @@ time.</p>
 <span class="r-in"><span>              <span class="fl">167.0564</span>, <span class="fl">189.0383</span>, <span class="fl">150.0583</span>, <span class="fl">172.0403</span>, <span class="fl">171.0053</span>, <span class="fl">192.9872</span>,</span></span>
 <span class="r-in"><span>              <span class="fl">130.0863</span>, <span class="fl">152.0682</span>, <span class="fl">768.1225</span>, <span class="fl">790.1044</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            ncol <span class="op">=</span> <span class="fl">2</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>            dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IMP"</span>, <span class="st">"UMP"</span>, <span class="st">"UDP-glucuronate"</span>, </span></span>
-<span class="r-in"><span>                                <span class="st">"1-Methylxanthine"</span>, <span class="st">"Methionine"</span>, </span></span>
-<span class="r-in"><span>                                <span class="st">"Dihydroxyacetone phosphate"</span>, </span></span>
+<span class="r-in"><span>            dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"IMP"</span>, <span class="st">"UMP"</span>, <span class="st">"UDP-glucuronate"</span>,</span></span>
+<span class="r-in"><span>                                <span class="st">"1-Methylxanthine"</span>, <span class="st">"Methionine"</span>,</span></span>
+<span class="r-in"><span>                                <span class="st">"Dihydroxyacetone phosphate"</span>,</span></span>
 <span class="r-in"><span>                                <span class="st">"Pipecolic acid"</span>, <span class="st">"CoA"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                             <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"[M+H]+"</span>, <span class="st">"[M+Na]+"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStandardMixes</span><span class="op">(</span><span class="va">x</span>, max_nstd <span class="op">=</span> <span class="fl">4</span>, min_nstd <span class="op">=</span> <span class="fl">3</span>, min_diff <span class="op">=</span> <span class="fl">2</span>, </span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">createStandardMixes</span><span class="op">(</span><span class="va">x</span>, max_nstd <span class="op">=</span> <span class="fl">4</span>, min_nstd <span class="op">=</span> <span class="fl">3</span>, min_diff <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                               iterativeRandomization <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

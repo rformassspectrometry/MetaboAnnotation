@@ -8,7 +8,8 @@ reference resource is not directly exposed to the user it allows integration
 of annotation resources that do not allow access to the full data.
 Objects extending CompAnnotationSource available in this package are:
 CompDbSource(): annotation source referencing an annotation source in the
-[CompDb()] format ( from the CompoundDb Bioconductor package).
+[CompoundDb::CompDb()] format ( from the CompoundDb Bioconductor
+package).
 
 
 Classes extending CompAnnotationSource need to implement the matchSpectra
@@ -30,7 +31,8 @@ reference resource is not directly exposed to the user it allows integration
 of annotation resources that do not allow access to the full data.
 Objects extending CompAnnotationSource available in this package are:
 CompDbSource(): annotation source referencing an annotation source in the
-[CompDb()] format ( from the CompoundDb Bioconductor package).
+[CompoundDb::CompDb()] format ( from the CompoundDb Bioconductor
+package).
 
 
 Classes extending CompAnnotationSource need to implement the matchSpectra
@@ -86,7 +88,8 @@ of external annotation resources by automating the actual connection
 reference resource is not directly exposed to the user it allows integration
 of annotation resources that do not allow access to the full data.</p>
 <p>Objects extending <code>CompAnnotationSource</code> available in this package are:</p><ul><li><p><code><a href="CompDbSource.html">CompDbSource()</a></code>: annotation source referencing an annotation source in the
-<code>[CompDb()]</code> format ( from the <code>CompoundDb</code> Bioconductor package).</p></li>
+<code>[CompoundDb::CompDb()]</code> format ( from the <code>CompoundDb</code> Bioconductor
+package).</p></li>
 </ul><p>Classes extending <code>CompAnnotationSource</code> need to implement the <code>matchSpectra</code>
 method with parameters <code>query</code>, <code>target</code> and <code>param</code> where <code>query</code> is
 the <code>Spectra</code> object with the (experimental) query spectra, <code>target</code> the
@@ -117,7 +120,8 @@ connection would have to be shared across processes.</p>
 
 
 <dl><dt id="arg-query">query<a class="anchor" aria-label="anchor" href="#arg-query"></a></dt>
-<dd><p>for <code>matchSpectra</code>: Spectra object with the query spectra.</p></dd>
+<dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra</a> object with the query
+spectra.</p></dd>
 
 
 <dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>

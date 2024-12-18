@@ -142,13 +142,13 @@ functions.</p></dd>
 
 <dt id="arg-fun">FUN<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>for <code>addProcessing</code>: function to be applied to the peak matrix
-of each spectrum in <code>object</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
+of each spectrum in <code>object</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for more details.</p></dd>
 
 
 <dt id="arg-spectravariables">spectraVariables<a class="anchor" aria-label="anchor" href="#arg-spectravariables"></a></dt>
 <dd><p>for <code>addProcessing</code>: <code>character</code> with additional
 spectra variables that should be passed along to the function defined
-with <code>FUN</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for details.</p></dd>
+with <code>FUN</code>. See <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for details.</p></dd>
 
 
 <dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
@@ -170,8 +170,9 @@ to plotting.</p></dd>
 
 
 <dt id="arg-backend">backend<a class="anchor" aria-label="anchor" href="#arg-backend"></a></dt>
-<dd><p>for <code>setBackend</code>: instance of an object extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackend</a>.
-See help for <code>setBackend</code> in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more details.</p></dd>
+<dd><p>for <code>setBackend</code>: instance of an object extending
+<a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">Spectra::MsBackend</a>. See help for <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::setBackend()</a></code>
+for more details.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -247,7 +248,7 @@ with <code>"target_"</code>).</p></li>
 
 <ul><li><p><code>addProcessing</code>: add a processing step to both the <em>query</em> and <em>target</em>
 <code>Spectra</code> in <code>object</code>. Additional parameters for <code>FUN</code> can be passed <em>via</em>
-<code>...</code>. See <code>addProcessing</code> documentation in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> for more
+<code>...</code>. See <code>addProcessing</code> documentation in <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for more
 information.</p></li>
 <li><p><code>plotSpectraMirror</code>: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a <code>MatchedSpectra</code> with a
@@ -256,9 +257,9 @@ the peak intensities per spectrum to a total sum of one for a better
 graphical visualization. Additional plotting parameters can be passed
 through <code>...</code>.</p></li>
 <li><p><code>setBackend</code>: allows to change the <em>backend</em> of both the query and target
-<code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object. The function will return a <code>MatchedSpectra</code> object with
-the query and target <code>Spectra</code> changed to the specified <code>backend</code>, which
-can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackend</a>.</p></li>
+<code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> object. The function will return a <code>MatchedSpectra</code>
+object with the query and target <code>Spectra</code> changed to the specified
+<code>backend</code>, which can be any backend extending <a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">Spectra::MsBackend</a>.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

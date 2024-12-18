@@ -5,7 +5,7 @@ Generally, query is expected to contain MS experimental values
 (m/z and possibly retention time) while target reference values. query
 and target can be numeric, a two dimensional array (such as a
 data.frame, matrix or DataFrame), a SummarizedExperiment
-or a QFeatures, target can in addition be a Spectra() object.
+or a QFeatures, target can in addition be a Spectra::Spectra() object.
 For SummarizedExperiment, the information for the matching is expected
 to be in the object's rowData. For QFeatures matching is performed
 for values present in the rowData of one of the object's assays (which
@@ -59,10 +59,10 @@ query and target) and exact masses (in target) can be specified.
 Mz2MassParam: input values for query and target are expected to be
 m/z values but matching is performed on exact masses calculated from these
 (based on the provided adduct definitions). In detail, m/z values in
-query are first converted to masses with the mz2mass() function based
-on the adducts defined with queryAdducts (defaults to &quot;[M+H]+&quot;). The
-same is done for m/z values in target (adducts can be defined with
-targetAdducts which defaults to &quot;[M-H-]&quot;). Matching is then performed on these converted values similarly to ValueParam. If queryortargetare not numeric, the column containing the m/z values can be specified withmatchValues' parameter mzColname(defaults to&quot;mz&quot;`).
+query are first converted to masses with the MetaboCoreUtils::mz2mass()
+function based on the adducts defined with queryAdducts (defaults to
+&quot;[M+H]+&quot;). The same is done for m/z values in target (adducts can
+be defined with targetAdducts which defaults to &quot;[M-H-]&quot;). Matching is then performed on these converted values similarly to ValueParam. If queryortargetare not numeric, the column containing the m/z values can be specified withmatchValues' parameter mzColname(defaults to&quot;mz&quot;`).
 Mz2MassRtParam: same as Mz2MassParam but with additional comparison of
 retention times between query and target. Parameters rtColname and
 mzColname of matchValues allow to specify which columns contain the
@@ -74,7 +74,7 @@ Generally, query is expected to contain MS experimental values
 (m/z and possibly retention time) while target reference values. query
 and target can be numeric, a two dimensional array (such as a
 data.frame, matrix or DataFrame), a SummarizedExperiment
-or a QFeatures, target can in addition be a Spectra() object.
+or a QFeatures, target can in addition be a Spectra::Spectra() object.
 For SummarizedExperiment, the information for the matching is expected
 to be in the object's rowData. For QFeatures matching is performed
 for values present in the rowData of one of the object's assays (which
@@ -128,10 +128,10 @@ query and target) and exact masses (in target) can be specified.
 Mz2MassParam: input values for query and target are expected to be
 m/z values but matching is performed on exact masses calculated from these
 (based on the provided adduct definitions). In detail, m/z values in
-query are first converted to masses with the mz2mass() function based
-on the adducts defined with queryAdducts (defaults to &quot;[M+H]+&quot;). The
-same is done for m/z values in target (adducts can be defined with
-targetAdducts which defaults to &quot;[M-H-]&quot;). Matching is then performed on these converted values similarly to ValueParam. If queryortargetare not numeric, the column containing the m/z values can be specified withmatchValues' parameter mzColname(defaults to&quot;mz&quot;`).
+query are first converted to masses with the MetaboCoreUtils::mz2mass()
+function based on the adducts defined with queryAdducts (defaults to
+&quot;[M+H]+&quot;). The same is done for m/z values in target (adducts can
+be defined with targetAdducts which defaults to &quot;[M-H-]&quot;). Matching is then performed on these converted values similarly to ValueParam. If queryortargetare not numeric, the column containing the m/z values can be specified withmatchValues' parameter mzColname(defaults to&quot;mz&quot;`).
 Mz2MassRtParam: same as Mz2MassParam but with additional comparison of
 retention times between query and target. Parameters rtColname and
 mzColname of matchValues allow to specify which columns contain the
@@ -178,7 +178,7 @@ Generally, <code>query</code> is expected to contain MS experimental values
 (m/z and possibly retention time) while <code>target</code> reference values. <code>query</code>
 and <code>target</code> can be <code>numeric</code>, a two dimensional array (such as a
 <code>data.frame</code>, <code>matrix</code> or <code>DataFrame</code>), a <code>SummarizedExperiment</code>
-or a <code>QFeatures</code>, <code>target</code> can in addition be a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object.
+or a <code>QFeatures</code>, <code>target</code> can in addition be a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> object.
 For <code>SummarizedExperiment</code>, the information for the matching is expected
 to be in the object's <code>rowData</code>. For <code>QFeatures</code> matching is performed
 for values present in the <code>rowData</code> of one of the object's assays (which
@@ -231,10 +231,10 @@ columns containing m/z values (in <code>query</code>), retention time values (in
 <li><p><code>Mz2MassParam</code>: input values for <code>query</code> and <code>target</code> are expected to be
 m/z values but matching is performed on exact masses calculated from these
 (based on the provided adduct definitions). In detail, m/z values in
-<code>query</code> are first converted to masses with the <code>mz2mass()</code> function based
-on the adducts defined with <code>queryAdducts</code> (defaults to <code>"[M+H]+"</code>). The
-same is done for m/z values in <code>target</code> (adducts can be defined with
-<code>targetAdducts</code> which defaults to <code>"[M-H-]"). Matching is then performed on these converted values similarly to </code>ValueParam<code>. If </code>query<code>or</code>target<code>are not numeric, the column containing the m/z values can be specified with</code>matchValues<code>' parameter </code>mzColname<code>(defaults to</code>"mz"`).</p></li>
+<code>query</code> are first converted to masses with the <code><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/mz2mass.html" class="external-link">MetaboCoreUtils::mz2mass()</a></code>
+function based on the adducts defined with <code>queryAdducts</code> (defaults to
+<code>"[M+H]+"</code>). The same is done for m/z values in <code>target</code> (adducts can
+be defined with <code>targetAdducts</code> which defaults to <code>"[M-H-]"). Matching is then performed on these converted values similarly to </code>ValueParam<code>. If </code>query<code>or</code>target<code>are not numeric, the column containing the m/z values can be specified with</code>matchValues<code>' parameter </code>mzColname<code>(defaults to</code>"mz"`).</p></li>
 <li><p><code>Mz2MassRtParam</code>: same as <code>Mz2MassParam</code> but with additional comparison of
 retention times between <code>query</code> and <code>target</code>. Parameters <code>rtColname</code> and
 <code>mzColname</code> of <code>matchValues</code> allow to specify which columns contain the
@@ -533,8 +533,9 @@ only to be specified for <code>query</code>) then <code>mzColname</code> is expe
 is expected to be <code>character(2)</code> (or <code>character(1)</code> and in this last case
 the two column names are assumed to be the same). If not specified the
 assumed default name for columns with m/z values is <code>"mz"</code>. If <code>target</code>
-is a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> object, the name of the spectra variable that should be
-used for the matching needs to be specified with <code>mzColname</code>.</p></dd>
+is a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> object, the name of the spectra variable
+that should be used for the matching needs to be specified
+with <code>mzColname</code>.</p></dd>
 
 
 <dt id="arg-rtcolname">rtColname<a class="anchor" aria-label="anchor" href="#arg-rtcolname"></a></dt>
@@ -542,9 +543,9 @@ used for the matching needs to be specified with <code>mzColname</code>.</p></dd
 the compounds retention times in <code>query</code> and the name for the one in
 <code>target</code>. It can also be <code>character(1)</code> if the two names are the same.
 To be used when <code>param</code> is <code>MzRtParam</code> or <code>Mass2MzRtParam</code>.
-Defaults to <code>rtColname = c("rt", "rt")</code>. If <code>target</code> is a <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code>
-object, the name of the spectra variable that should be used for the
-matching needs to be specified with <code>mzColname</code>.</p></dd>
+Defaults to <code>rtColname = c("rt", "rt")</code>. If <code>target</code> is a
+<code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> object, the name of the spectra variable that
+should be used for the matching needs to be specified with <code>mzColname</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

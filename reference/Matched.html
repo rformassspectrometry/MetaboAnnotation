@@ -12,8 +12,9 @@ two-dimensional objects (data.frame or matrix) or more complex
 structures such as SummarizedExperiments or QFeatures. Combinations of
 all these different data types are also supported. Matches are represented
 between elements of one-dimensional objects, or rows for two-dimensional
-objects (including SummarizedExperiment or QFeatures). For QFeatures()
-objects matches to only one of the assays within the object is supported."><meta property="og:description" content="Matches between query and target generic objects can be represented by
+objects (including SummarizedExperiment or QFeatures). For
+QFeatures::QFeatures() objects matches to only one of the assays
+within the object is supported."><meta property="og:description" content="Matches between query and target generic objects can be represented by
 the Matched object. By default, all data accessors work as
 left joins between the query and the target object, i.e. values are
 returned for each query object with eventual duplicated entries (values)
@@ -26,8 +27,9 @@ two-dimensional objects (data.frame or matrix) or more complex
 structures such as SummarizedExperiments or QFeatures. Combinations of
 all these different data types are also supported. Matches are represented
 between elements of one-dimensional objects, or rows for two-dimensional
-objects (including SummarizedExperiment or QFeatures). For QFeatures()
-objects matches to only one of the assays within the object is supported."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"></head><body>
+objects (including SummarizedExperiment or QFeatures). For
+QFeatures::QFeatures() objects matches to only one of the assays
+within the object is supported."><meta property="og:image" content="https://rformassspectrometry.github.io/MetaboAnnotation/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -75,8 +77,9 @@ two-dimensional objects (<code>data.frame</code> or <code>matrix</code>) or more
 structures such as <code>SummarizedExperiments</code> or <code>QFeatures</code>. Combinations of
 all these different data types are also supported. Matches are represented
 between elements of one-dimensional objects, or rows for two-dimensional
-objects (including <code>SummarizedExperiment</code> or <code>QFeatures</code>). For <code>QFeatures()</code>
-objects matches to only one of the <em>assays</em> within the object is supported.</p>
+objects (including <code>SummarizedExperiment</code> or <code>QFeatures</code>). For
+<code><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures::QFeatures()</a></code> objects matches to only one of the <em>assays</em>
+within the object is supported.</p>
     </div>
 
     <div class="section level2">
@@ -503,8 +506,9 @@ dimension (e.g. is a <code>list</code> or a <code>character</code>) the whole ob
 extracted with <code>x$query</code> (<code>x$target</code>). More precisely, when
 <em>query</em> (<em>target</em>) is a <code>SummarizedExperiment</code> the columns from
 <code>rowData(query)</code> (rowData(<code>target</code>)) are extracted; when <em>query</em> (<em>target</em>)
-is a <code>QFeatures()</code> the columns from <code>rowData</code> of the assay specified in the
-<code>queryAssay</code> (<code>targetAssay</code>) slot are extracted. The matching scores
+is a <code><a href="https://rdrr.io/pkg/QFeatures/man/QFeatures-class.html" class="external-link">QFeatures::QFeatures()</a></code> the columns from <code>rowData</code> of the assay
+specified in the <code>queryAssay</code> (<code>targetAssay</code>) slot are extracted.
+The matching scores
 are available as <em>variable</em> <code>"score"</code>. Similar to a left join between the
 query and target elements, this function returns a value for each query
 element, with eventual duplicated values for query elements matching more
@@ -553,7 +557,7 @@ containing the string "score" in their name ignoring the case).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="MatchedSpectra.html">MatchedSpectra()</a></code> for matched <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra()</a></code> objects.</p></div>
+    <div class="dont-index"><p><code><a href="MatchedSpectra.html">MatchedSpectra()</a></code> for matched <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> objects.</p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

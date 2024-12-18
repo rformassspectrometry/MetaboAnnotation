@@ -6,8 +6,9 @@ calculation between each query spectrum against each target spectrum.
 Parameters query and target can be used to define the query and target
 spectra, respectively, while parameter param allows to define and configure
 the similarity calculation and matching condition. Parameter query takes
-a Spectra object while target can be either a Spectra object, a
-CompDb (reference library) object defined in the CompoundDb package or
+a Spectra::Spectra object while target can be either a
+Spectra::Spectra object, a CompoundDb::CompDb (reference library)
+object defined in the CompoundDb package or
 a CompAnnotationSource (e.g. a CompDbSource())
 with the reference or connection information to a supported annotation
 resource).
@@ -15,16 +16,18 @@ Some notes on performance and information on parallel processing are
 provided in the vignette.
 Currently supported parameter objects defining the matching are:
 CompareSpectraParam: the generic parameter object allowing to set all
-settings for the compareSpectra() call that is used to perform the
-similarity calculation. This includes MAPFUN and FUN defining the
+settings for the Spectra::compareSpectra() call that is used to
+perform the similarity calculation.
+This includes MAPFUN and FUN defining the
 peak-mapping and similarity calculation functions and ppm and tolerance
 to define an acceptable difference between m/z values of the compared
 peaks. Additional parameters to the compareSpectra call
-can be passed along with .... See the help of Spectra() for more
-information on these parameters. Parameters requirePrecursor (default
-TRUE) and requirePrecursorPeak (default FALSE) allow to pre-filter
-the target spectra prior to the actual similarity calculation for each
-individual query spectrum. Target spectra can also be pre-filtered based on
+can be passed along with .... See the help of Spectra::Spectra() for
+more information on these parameters. Parameters requirePrecursor
+(default TRUE) and requirePrecursorPeak (default FALSE) allow to
+pre-filter the target spectra prior to the actual similarity calculation
+for each individual query spectrum.
+Target spectra can also be pre-filtered based on
 retention time if parameter toleranceRt is set to a value different than
 the default toleranceRt = Inf. Only target spectra with a retention time
 within the query's retention time +/- (toleranceRt + percentRt% of the
@@ -67,8 +70,9 @@ calculation between each query spectrum against each target spectrum.
 Parameters query and target can be used to define the query and target
 spectra, respectively, while parameter param allows to define and configure
 the similarity calculation and matching condition. Parameter query takes
-a Spectra object while target can be either a Spectra object, a
-CompDb (reference library) object defined in the CompoundDb package or
+a Spectra::Spectra object while target can be either a
+Spectra::Spectra object, a CompoundDb::CompDb (reference library)
+object defined in the CompoundDb package or
 a CompAnnotationSource (e.g. a CompDbSource())
 with the reference or connection information to a supported annotation
 resource).
@@ -76,16 +80,18 @@ Some notes on performance and information on parallel processing are
 provided in the vignette.
 Currently supported parameter objects defining the matching are:
 CompareSpectraParam: the generic parameter object allowing to set all
-settings for the compareSpectra() call that is used to perform the
-similarity calculation. This includes MAPFUN and FUN defining the
+settings for the Spectra::compareSpectra() call that is used to
+perform the similarity calculation.
+This includes MAPFUN and FUN defining the
 peak-mapping and similarity calculation functions and ppm and tolerance
 to define an acceptable difference between m/z values of the compared
 peaks. Additional parameters to the compareSpectra call
-can be passed along with .... See the help of Spectra() for more
-information on these parameters. Parameters requirePrecursor (default
-TRUE) and requirePrecursorPeak (default FALSE) allow to pre-filter
-the target spectra prior to the actual similarity calculation for each
-individual query spectrum. Target spectra can also be pre-filtered based on
+can be passed along with .... See the help of Spectra::Spectra() for
+more information on these parameters. Parameters requirePrecursor
+(default TRUE) and requirePrecursorPeak (default FALSE) allow to
+pre-filter the target spectra prior to the actual similarity calculation
+for each individual query spectrum.
+Target spectra can also be pre-filtered based on
 retention time if parameter toleranceRt is set to a value different than
 the default toleranceRt = Inf. Only target spectra with a retention time
 within the query's retention time +/- (toleranceRt + percentRt% of the
@@ -163,24 +169,27 @@ calculation between each query spectrum against each target spectrum.
 Parameters <code>query</code> and <code>target</code> can be used to define the query and target
 spectra, respectively, while parameter <code>param</code> allows to define and configure
 the similarity calculation and matching condition. Parameter <code>query</code> takes
-a Spectra object while <code>target</code> can be either a Spectra object, a
-CompDb (reference library) object defined in the <code>CompoundDb</code> package or
+a <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra</a> object while <code>target</code> can be either a
+<a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra</a> object, a <a href="https://rdrr.io/pkg/CompoundDb/man/CompDb.html" class="external-link">CompoundDb::CompDb</a> (reference library)
+object defined in the <code>CompoundDb</code> package or
 a <a href="CompAnnotationSource.html">CompAnnotationSource</a> (e.g. a <code><a href="CompDbSource.html">CompDbSource()</a></code>)
 with the reference or connection information to a supported annotation
 resource).</p>
 <p>Some notes on performance and information on parallel processing are
 provided in the vignette.</p>
 <p>Currently supported parameter objects defining the matching are:</p><ul><li><p><code>CompareSpectraParam</code>: the <em>generic</em> parameter object allowing to set all
-settings for the <code>compareSpectra()</code> call that is used to perform the
-similarity calculation. This includes <code>MAPFUN</code> and <code>FUN</code> defining the
+settings for the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">Spectra::compareSpectra()</a></code> call that is used to
+perform the similarity calculation.
+This includes <code>MAPFUN</code> and <code>FUN</code> defining the
 peak-mapping and similarity calculation functions and <code>ppm</code> and <code>tolerance</code>
 to define an acceptable difference between m/z values of the compared
 peaks. Additional parameters to the <code>compareSpectra</code> call
-can be passed along with <code>...</code>. See the help of <code>Spectra()</code> for more
-information on these parameters. Parameters <code>requirePrecursor</code> (default
-<code>TRUE</code>) and <code>requirePrecursorPeak</code> (default <code>FALSE</code>) allow to pre-filter
-the target spectra prior to the actual similarity calculation for each
-individual query spectrum. Target spectra can also be pre-filtered based on
+can be passed along with <code>...</code>. See the help of <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for
+more information on these parameters. Parameters <code>requirePrecursor</code>
+(default <code>TRUE</code>) and <code>requirePrecursorPeak</code> (default <code>FALSE</code>) allow to
+pre-filter the target spectra prior to the actual similarity calculation
+for each individual query spectrum.
+Target spectra can also be pre-filtered based on
 retention time if parameter <code>toleranceRt</code> is set to a value different than
 the default <code>toleranceRt = Inf</code>. Only target spectra with a retention time
 within the query's retention time +/- (<code>toleranceRt</code> + <code>percentRt</code>% of the
@@ -291,12 +300,13 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 
 
 <dl><dt id="arg-query">query<a class="anchor" aria-label="anchor" href="#arg-query"></a></dt>
-<dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a> object with the query spectra.</p></dd>
+<dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra</a> object with the query
+spectra.</p></dd>
 
 
 <dt id="arg-target">target<a class="anchor" aria-label="anchor" href="#arg-target"></a></dt>
-<dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra</a>, <a href="https://rdrr.io/pkg/CompoundDb/man/CompDb.html" class="external-link">CompDb</a> or object extending
-<a href="CompAnnotationSource.html">CompAnnotationSource</a> (such as <a href="CompDbSource.html">CompDbSource</a>) with
+<dd><p>for <code>matchSpectra</code>: <a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra</a>, <a href="https://rdrr.io/pkg/CompoundDb/man/CompDb.html" class="external-link">CompoundDb::CompDb</a>
+or object extending <a href="CompAnnotationSource.html">CompAnnotationSource</a> (such as <a href="CompDbSource.html">CompDbSource</a>) with
 the target (reference) spectra to compare <code>query</code> against.</p></dd>
 
 
@@ -322,8 +332,8 @@ subsetted/processed.</p></dd>
 
 <dt id="arg-mapfun">MAPFUN<a class="anchor" aria-label="anchor" href="#arg-mapfun"></a></dt>
 <dd><p><code>function</code> used to map peaks between the compared spectra.
-Defaults for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/Spectra/man/joinPeaks.html" class="external-link">joinPeaks()</a></code>. See
-<code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> for details.</p></dd>
+Defaults for <code>CompareSpectraParam</code> to <code><a href="https://rdrr.io/pkg/Spectra/man/joinPeaks.html" class="external-link">Spectra::joinPeaks()</a></code>. See
+<code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">Spectra::compareSpectra()</a></code> for details.</p></dd>
 
 
 <dt id="arg-tolerance">tolerance<a class="anchor" aria-label="anchor" href="#arg-tolerance"></a></dt>
@@ -370,7 +380,7 @@ target spectra are considered <em>matching</em>. Defaults to
 all target spectra matching a query spectrum with a similarity higher or
 equal than <code>0.7</code>. Any function that takes a numeric vector with similarity
 scores from the comparison of a query spectrum with all target spectra (as
-returned by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code>) as input and returns a
+returned by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">Spectra::compareSpectra()</a></code>) as input and returns a
 <code>logical</code> vector (same dimensions as the similarity scores) or an integer
 with the matches is supported.</p></dd>
 
@@ -398,7 +408,7 @@ See help of <code>CompareSpectraParam</code> above for more information.</p></dd
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>for <code>CompareSpectraParam</code>: additional parameters passed along
-to the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> call.</p></dd>
+to the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">Spectra::compareSpectra()</a></code> call.</p></dd>
 
 
 <dt id="arg-threshfun-reverse">THRESHFUN_REVERSE<a class="anchor" aria-label="anchor" href="#arg-threshfun-reverse"></a></dt>
