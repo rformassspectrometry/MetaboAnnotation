@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut] (ORCID: <a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (ORCID: <a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
 Louail [aut] (ORCID: <a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Wed Dec 18 11:37:19 2024</p>
+[ctb]<br><strong>Compiled</strong>: Wed Dec 18 12:46:06 2024</p>
 <pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
 <span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
 <div class="section level2">
@@ -714,7 +714,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Wed Dec 18 11:37:40 2024]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Wed Dec 18 12:46:29 2024]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1236,7 +1236,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Wed Dec 18 11:37:47 2024]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Wed Dec 18 12:46:36 2024]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1333,7 +1333,7 @@ feature:</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Wed Dec 18 11:37:40 2024]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Wed Dec 18 12:46:29 2024]</span></span></code></pre>
 <p>While we have now the spectra, we can’t relate them (yet) to the
 features we used as <code>query</code>. Extracting the
 <code>"feature_id"</code> column using the <code>$</code> function from
@@ -1398,11 +1398,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr      min       lq</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 46.28161 46.53356</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.25890 28.32692</span></span>
-<span><span class="co">##      mean   median       uq      max neval</span></span>
-<span><span class="co">##  52.66617 47.08417 47.24900 76.18251     5</span></span>
-<span><span class="co">##  31.17306 28.48604 28.84443 41.94899     5</span></span></code></pre>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 48.80133 49.91467</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.57211 28.63537</span></span>
+<span><span class="co">##      mean  median       uq      max neval</span></span>
+<span><span class="co">##  56.53982 49.9956 50.30087 83.68663     5</span></span>
+<span><span class="co">##  31.77664 28.6795 29.01582 43.98037     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
