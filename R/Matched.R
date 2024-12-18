@@ -20,8 +20,9 @@
 #' structures such as `SummarizedExperiments` or `QFeatures`. Combinations of
 #' all these different data types are also supported. Matches are represented
 #' between elements of one-dimensional objects, or rows for two-dimensional
-#' objects (including `SummarizedExperiment` or `QFeatures`). For [QFeatures()]
-#' objects matches to only one of the *assays* within the object is supported.
+#' objects (including `SummarizedExperiment` or `QFeatures`). For
+#' [QFeatures::QFeatures()] objects matches to only one of the *assays*
+#' within the object is supported.
 #'
 #' @section Creation and general handling:
 #'
@@ -142,8 +143,9 @@
 #'   extracted with `x$query` (`x$target`). More precisely, when
 #'   *query* (*target*) is a `SummarizedExperiment` the columns from
 #'   `rowData(query)` (rowData(`target`)) are extracted; when *query* (*target*)
-#'   is a [QFeatures()] the columns from `rowData` of the assay specified in the
-#'   `queryAssay` (`targetAssay`) slot are extracted. The matching scores
+#'   is a [QFeatures::QFeatures()] the columns from `rowData` of the assay
+#'   specified in the `queryAssay` (`targetAssay`) slot are extracted.
+#'   The matching scores
 #'   are available as *variable* `"score"`. Similar to a left join between the
 #'   query and target elements, this function returns a value for each query
 #'   element, with eventual duplicated values for query elements matching more
@@ -315,7 +317,7 @@
 #'
 #' @return See individual method description above for details.
 #'
-#' @seealso [MatchedSpectra()] for matched [Spectra()] objects.
+#' @seealso [MatchedSpectra()] for matched [Spectra::Spectra()] objects.
 #'
 #' @exportClass Matched
 #'
@@ -1064,8 +1066,8 @@ pruneTarget <- function(object) {
              call. = FALSE)
     if (length(dim(query)) == 2) {
         if (length(queryColname) == 0)
-            stop("\"", queryColname,
-                 "\" must be set when 'query' is 2-dimensional", call. = FALSE)
+            stop("'queryColname' must be provided when ",
+                 "'query' is 2-dimensional", call. = FALSE)
         if (!queryColname %in% colnames(query))
             stop("\"", queryColname, "\" is not a column of 'query'",
                  call. = FALSE)
@@ -1073,8 +1075,8 @@ pruneTarget <- function(object) {
     targetColname <- sub("target_", "", targetColname)
     if (length(dim(target)) == 2) {
         if (length(targetColname) == 0)
-            stop("\"", targetColname,
-                 "\" must be set when 'target' is 2-dimensional", call. = FALSE)
+            stop("'targetColname' must be provided when ",
+                 "'target' is 2-dimensional", call. = FALSE)
         if (!targetColname %in% colnames(target))
             stop("\"", targetColname, "\" is not a column of 'target'",
                  call. = FALSE)
@@ -1357,7 +1359,7 @@ setMethod(
                         targetColname = character(),
                         score = rep(NA_real_, length(queryValue)),
                         isIndex = FALSE) {
-    if (!is.data.frame(score))
+    if (is.numeric(score))
         score <- data.frame(score = score)
     if (!is.data.frame(score))
         stop("'score' needs to be either a 'data.frame' or a numeric",
@@ -1374,7 +1376,7 @@ setMethod(
             stop("Provided indices in 'queryValue' are out-of-bounds.",
                  call. = FALSE)
         if (any(!targetValue %in% seq_len(.nelements(target))))
-            stop("Provided indices in 'queryValue' are out-of-bounds.",
+            stop("Provided indices in 'targetValue' are out-of-bounds.",
                  call. = FALSE)
         query_idx <- queryValue
         target_idx <- targetValue
@@ -1432,7 +1434,7 @@ setMethod("addMatches", "Matched",
 #'
 #' @export
 setMethod("endoapply", "ANY", function(X, FUN, ...) {
-    endoapply(X, FUN, ...)
+    S4Vectors::endoapply(X, FUN, ...)
 })
 
 #' @rdname Matched

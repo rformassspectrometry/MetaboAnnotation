@@ -72,11 +72,11 @@ For \code{plotSpectraMirror}: additional parameters passed to the plotting
 functions.}
 
 \item{FUN}{for \code{addProcessing}: function to be applied to the peak matrix
-of each spectrum in \code{object}. See \code{\link[=Spectra]{Spectra()}} for more details.}
+of each spectrum in \code{object}. See \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for more details.}
 
 \item{spectraVariables}{for \code{addProcessing}: \code{character} with additional
 spectra variables that should be passed along to the function defined
-with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
+with \code{FUN}. See \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for details.}
 
 \item{xlab}{for \code{plotSpectraMirror}: the label for the x-axis.}
 
@@ -88,8 +88,9 @@ with \code{FUN}. See \code{\link[=Spectra]{Spectra()}} for details.}
 (per spectrum) should be scaled to a total sum of one (per spectrum) prior
 to plotting.}
 
-\item{backend}{for \code{setBackend}: instance of an object extending \link{MsBackend}.
-See help for \code{setBackend} in \code{\link[=Spectra]{Spectra()}} for more details.}
+\item{backend}{for \code{setBackend}: instance of an object extending
+\link[Spectra:MsBackend]{Spectra::MsBackend}. See help for \code{\link[Spectra:Spectra]{Spectra::setBackend()}}
+for more details.}
 }
 \value{
 See individual method desciption above for details.
@@ -175,7 +176,7 @@ with \code{"target_"}).
 \itemize{
 \item \code{addProcessing}: add a processing step to both the \emph{query} and \emph{target}
 \code{Spectra} in \code{object}. Additional parameters for \code{FUN} can be passed \emph{via}
-\code{...}. See \code{addProcessing} documentation in \code{\link[=Spectra]{Spectra()}} for more
+\code{...}. See \code{addProcessing} documentation in \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for more
 information.
 \item \code{plotSpectraMirror}: creates a mirror plot between the query and each
 matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
@@ -184,9 +185,9 @@ the peak intensities per spectrum to a total sum of one for a better
 graphical visualization. Additional plotting parameters can be passed
 through \code{...}.
 \item \code{setBackend}: allows to change the \emph{backend} of both the query and target
-\code{\link[=Spectra]{Spectra()}} object. The function will return a \code{MatchedSpectra} object with
-the query and target \code{Spectra} changed to the specified \code{backend}, which
-can be any backend extending \link{MsBackend}.
+\code{\link[Spectra:Spectra]{Spectra::Spectra()}} object. The function will return a \code{MatchedSpectra}
+object with the query and target \code{Spectra} changed to the specified
+\code{backend}, which can be any backend extending \link[Spectra:MsBackend]{Spectra::MsBackend}.
 }
 }
 

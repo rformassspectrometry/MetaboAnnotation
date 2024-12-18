@@ -15,7 +15,8 @@
 \S4method{metadata}{CompAnnotationSource}(x, ...)
 }
 \arguments{
-\item{query}{for \code{matchSpectra}: \link{Spectra} object with the query spectra.}
+\item{query}{for \code{matchSpectra}: \link[Spectra:Spectra]{Spectra::Spectra} object with the query
+spectra.}
 
 \item{target}{for \code{matchSpectra}: object extending \link{CompAnnotationSource}
 (such as \link{CompDbSource}) with the target (reference) spectra to compare
@@ -42,7 +43,8 @@ of annotation resources that do not allow access to the full data.
 Objects extending \code{CompAnnotationSource} available in this package are:
 \itemize{
 \item \code{\link[=CompDbSource]{CompDbSource()}}: annotation source referencing an annotation source in the
-\verb{[CompDb()]} format ( from the \code{CompoundDb} Bioconductor package).
+\verb{[CompoundDb::CompDb()]} format ( from the \code{CompoundDb} Bioconductor
+package).
 }
 
 Classes extending \code{CompAnnotationSource} need to implement the \code{matchSpectra}

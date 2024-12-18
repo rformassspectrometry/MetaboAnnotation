@@ -281,8 +281,9 @@ two-dimensional objects (\code{data.frame} or \code{matrix}) or more complex
 structures such as \code{SummarizedExperiments} or \code{QFeatures}. Combinations of
 all these different data types are also supported. Matches are represented
 between elements of one-dimensional objects, or rows for two-dimensional
-objects (including \code{SummarizedExperiment} or \code{QFeatures}). For \code{\link[=QFeatures]{QFeatures()}}
-objects matches to only one of the \emph{assays} within the object is supported.
+objects (including \code{SummarizedExperiment} or \code{QFeatures}). For
+\code{\link[QFeatures:QFeatures-class]{QFeatures::QFeatures()}} objects matches to only one of the \emph{assays}
+within the object is supported.
 }
 \section{Creation and general handling}{
 
@@ -402,8 +403,9 @@ dimension (e.g. is a \code{list} or a \code{character}) the whole object can be
 extracted with \code{x$query} (\code{x$target}). More precisely, when
 \emph{query} (\emph{target}) is a \code{SummarizedExperiment} the columns from
 \code{rowData(query)} (rowData(\code{target})) are extracted; when \emph{query} (\emph{target})
-is a \code{\link[=QFeatures]{QFeatures()}} the columns from \code{rowData} of the assay specified in the
-\code{queryAssay} (\code{targetAssay}) slot are extracted. The matching scores
+is a \code{\link[QFeatures:QFeatures-class]{QFeatures::QFeatures()}} the columns from \code{rowData} of the assay
+specified in the \code{queryAssay} (\code{targetAssay}) slot are extracted.
+The matching scores
 are available as \emph{variable} \code{"score"}. Similar to a left join between the
 query and target elements, this function returns a value for each query
 element, with eventual duplicated values for query elements matching more
@@ -746,7 +748,7 @@ mo_sub <- pruneTarget(mo_sub)
 nrow(target(mo_sub))
 }
 \seealso{
-\code{\link[=MatchedSpectra]{MatchedSpectra()}} for matched \code{\link[=Spectra]{Spectra()}} objects.
+\code{\link[=MatchedSpectra]{MatchedSpectra()}} for matched \code{\link[Spectra:Spectra]{Spectra::Spectra()}} objects.
 }
 \author{
 Andrea Vicini, Johannes Rainer

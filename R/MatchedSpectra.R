@@ -91,7 +91,7 @@
 #'
 #' - `addProcessing`: add a processing step to both the *query* and *target*
 #'   `Spectra` in `object`. Additional parameters for `FUN` can be passed *via*
-#'   `...`. See `addProcessing` documentation in [Spectra()] for more
+#'   `...`. See `addProcessing` documentation in [Spectra::Spectra()] for more
 #'   information.
 #'
 #' - `plotSpectraMirror`: creates a mirror plot between the query and each
@@ -102,18 +102,19 @@
 #'   through `...`.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
-#'   [Spectra()] object. The function will return a `MatchedSpectra` object with
-#'   the query and target `Spectra` changed to the specified `backend`, which
-#'   can be any backend extending [MsBackend].
+#'   [Spectra::Spectra()] object. The function will return a `MatchedSpectra`
+#'   object with the query and target `Spectra` changed to the specified
+#'   `backend`, which can be any backend extending [Spectra::MsBackend].
 #'
-#' @param backend for `setBackend`: instance of an object extending [MsBackend].
-#'   See help for `setBackend` in [Spectra()] for more details.
+#' @param backend for `setBackend`: instance of an object extending
+#'   [Spectra::MsBackend]. See help for [Spectra::setBackend()]
+#'   for more details.
 #'
 #' @param columns for `spectraData`: `character` vector with spectra variable
 #'   names that should be extracted.
 #'
 #' @param FUN for `addProcessing`: function to be applied to the peak matrix
-#'   of each spectrum in `object`. See [Spectra()] for more details.
+#'   of each spectrum in `object`. See [Spectra::Spectra()] for more details.
 #'
 #' @param main for `plotSpectraMirror`: an optional title for each plot.
 #'
@@ -131,7 +132,7 @@
 #'
 #' @param spectraVariables for `addProcessing`: `character` with additional
 #'   spectra variables that should be passed along to the function defined
-#'   with `FUN`. See [Spectra()] for details.
+#'   with `FUN`. See [Spectra::Spectra()] for details.
 #'
 #' @param target `Spectra` with the spectra against which `query` has been
 #'   matched.

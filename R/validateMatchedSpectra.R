@@ -52,13 +52,13 @@
 #'     res <- validateMatchedSpectra(ms)
 #' }
 validateMatchedSpectra <- function(object) {
-    if (!requireNamespace("shiny", quietly = TRUE))
+    if (!.is_shiny_available())
         stop("The use of 'validateMatchedSpectra' requires package 'shiny'.",
              " Please install with 'BiocManager::install(\"shiny\")'")
-    if (!requireNamespace("shinyjs", quietly = TRUE))
+    if (!.is_shinyjs_available())
         stop("The use of 'validateMatchedSpectra' requires package 'shinyjs'.",
              " Please install with 'BiocManager::install(\"shinyjs\")'")
-    if (!requireNamespace("DT", quietly = TRUE))
+    if (!.is_dt_available())
         stop("The use of 'validateMatchedSpectra' requires package 'DT'.",
              " Please install with 'BiocManager::install(\"DT\")'")
 
@@ -190,7 +190,7 @@ validateMatchedSpectra <- function(object) {
                                 ppm = 20, tolerance = 0) {
     stopifnot(inherits(x, "Spectra"))
     stopifnot(inherits(y, "Spectra"))
-    if (!requireNamespace("plotly", quietly = TRUE))
+    if (!.is_plotly_available())
         stop("The use of '.plotlySpectraMirror' requires package 'plotly'. ",
              "Please install with 'BiocInstaller::install(\"plotly\")'")
     p <- plotly::plot_ly()
@@ -327,4 +327,20 @@ validateMatchedSpectra <- function(object) {
     if (any(colnames(tbl) == "target_rtime"))
         tbl$target_rtime <- round(tbl$target_rtime, 1)
     tbl[!is.na(tbl$score), , drop = FALSE]
+}
+
+.is_shiny_available <- function() {
+    requireNamespace("shiny", quietly = TRUE)
+}
+
+.is_shinyjs_available <- function() {
+    requireNamespace("shinyjs", quietly = TRUE)
+}
+
+.is_dt_available <- function() {
+    requireNamespace("DT", quietly = TRUE)
+}
+
+.is_plotly_available <- function() {
+    requireNamespace("plotly", quietly = TRUE)
 }

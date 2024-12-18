@@ -30,9 +30,9 @@ setGeneric("matchedData", function(object, ...)
 #' from `target` based on settings specified with `param` and returns the result
 #' from this as a [MatchedSpectra] object.
 #'
-#' @param query [Spectra] object with the (experimental) spectra.
+#' @param query [Spectra::Spectra] object with the (experimental) spectra.
 #'
-#' @param target spectral data to compare against. Can be another [Spectra].
+#' @param target MS data to compare against. Can be another [Spectra::Spectra].
 #'
 #' @param param parameter object containing the settings for the matching (e.g.
 #'     eventual prefiltering settings, cut-off value for similarity above which
@@ -44,8 +44,8 @@ setGeneric("matchedData", function(object, ...)
 #'
 #' @author Johannes Rainer
 #'
-#' @seealso [CompareSpectraParam()] for the comparison between [Spectra]
-#'     objects.
+#' @seealso [CompareSpectraParam()] for the comparison between
+#'     [Spectra::Spectra] objects.
 #'
 #' @export
 setGeneric("matchSpectra", function(query, target, param, ...)

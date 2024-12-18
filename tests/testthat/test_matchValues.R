@@ -627,6 +627,13 @@ test_that("matchValues, MzRtParam works", {
     expect_error(matchValues(qry, trgt, par, rtColname = c("r", "rt")), "Mis")
     expect_error(matchValues(qry, trgt, par, rtColname = c("rt", "r")), "Mis")
 
+    res <- matchValues(qry, trgt, par, mzColname = "mz")
+    expect_equal(query(res), qry)
+    expect_error(matchValues(qry, trgt, par, mzColname = c("r", "mz")), "Mis")
+    expect_error(matchValues(qry, trgt, par, mzColname = c("mz", "m")), "Mis")
+    expect_error(matchValues(qry, trgt, par, rtColname = c("r", "rt")), "Mis")
+    expect_error(matchValues(qry, trgt, par, rtColname = c("rt", "r")), "Mis")
+
     res <- matchValues(qry, trgt, par)
     expect_equal(query(res), qry)
     expect_equal(target(res), trgt)
@@ -732,6 +739,7 @@ test_that("matchValues, MzRtParam works", {
     expect_equal(res$score, c(0, NA, 0))
     expect_equal(res$score_rt, c(-0.5, NA, -0.5))
     expect_equal(matchedData(res), matchedData(matchValues(cmps, trgt, prm)))
+
 })
 
 test_that("matchValues, Mz2MassParam works", {
@@ -777,6 +785,12 @@ test_that("matchValues, Mz2MassParam works", {
     expect_equal(res@matches$target_adduct, rep("[M-H]-", 3))
     expect_equal(res@matches$score, c(0, 0, 0))
     expect_equal(res@matches$ppm_error, c(0, 0, 0))
+
+    res <- matchValues(a, b, par, mzColname = "mz")
+    expect_equal(query(res), a)
+    expect_equal(target(res), b)
+    expect_equal(res@matches$query_idx, c(2, 3, 4))
+    expect_equal(res@matches$target_idx, c(1, 2, 1))
 
     ## no matches
     res <- matchValues(qry + 0.1, trgt, par)
@@ -1047,6 +1061,17 @@ test_that("matchValues,data.frame,Spectra,MzRtParam works", {
                        rtColname = c("rt", "rtime"), param = MzRtParam())
     expect_equal(whichQuery(res), integer())
     expect_equal(whichTarget(res), integer())
+
+    colnames(df) <- c("precursorMz", "rtime")
+    res <- matchValues(df, pest_ms2, mzColname = c("precursorMz"),
+                       MzRtParam(tolerance = 0.1, toleranceRt = 3),
+                       rtColname = c("rtime"))
+    expect_true(validObject(res))
+    expect_equal(whichQuery(res), c(1L, 3L))
+    expect_equal(whichTarget(res), c(4L, 9L, 7L, 11L))
+    expect_equal(query(res), df)
+    expect_equal(target(res), pest_ms2)
+
 })
 
 test_that("matchValues,data.frame,Spectra,MzParam works", {

@@ -36,6 +36,8 @@ test_that(".valid_threshfun works", {
 
     res <- .valid_threshfun(function(z) TRUE)
     expect_match(res, "logical")
+
+    expect_match(.valid_threshfun(function(z) -1L), "values between 1 and")
 })
 
 test_that(".compare_spectra, .compare_spectra_without_precursor work", {
@@ -45,6 +47,10 @@ test_that(".compare_spectra, .compare_spectra_without_precursor work", {
     res <- .match_spectra(pest_ms2, minimb, prm, BPPARAM = SerialParam())
     res_2 <- .match_spectra_without_precursor(pest_ms2, minimb, prm)
     expect_equal(res@matches, res_2@matches)
+
+    res_3 <- .match_spectra(pest_ms2, minimb, prm, BPPARAM = SerialParam(),
+                            rtColname = "rtime")
+    expect_equal(res@matches, res_3@matches)
 
     ## returns integer.
     prm <- CompareSpectraParam(requirePrecursor = FALSE,
@@ -70,6 +76,8 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
     expect_equal(length(unique(res$target_spectrum_id)), 11)
     expect_true(any(spectraVariables(res) == ".original_query_index"))
     expect_equal(res@query$.original_query_index, seq_along(pest_ms2))
+    expect_warning(matchSpectra(res@query, minimb, csp), "Overwriting")
+
     res <- matchSpectra(pest_ms2, minimb, csp, addOriginalQueryIndex = FALSE)
     expect_false(any(spectraVariables(res) == ".original_query_index"))
 
@@ -83,11 +91,20 @@ test_that(".get_matches_spectra, matchSpectra,CompareSpectraParam works", {
     expect_true(is.data.frame(res))
     expect_equal(res$query_idx, 2L)
 
+    res <- .get_matches_spectra(
+        2, pest_ms2, mb2, .compare_spectra_parms_list(csp),
+        csp@THRESHFUN, precMz = FALSE, precMzPeak = TRUE,
+        sn = spectraNames(mb2))
+    expect_true(is.data.frame(res))
+    expect_equal(res$query_idx, 2L)
+    expect_equal(res$target_idx, 73L)
+
     csp <- CompareSpectraParam(requirePrecursor = TRUE,
                                THRESHFUN = function(x) which.max(x))
     res <- matchSpectra(pest_ms2, minimb, csp)
     expect_equal(res@matches$query_idx, c(2, 4, 6, 8, 9))
     expect_true(anyDuplicated(res@matches$query_idx) == 0)
+
 
     csp <- CompareSpectraParam(requirePrecursor = TRUE)
     res <- matchSpectra(pest_ms2, minimb, csp)
@@ -267,4 +284,9 @@ test_that("matchSpectra,Spectra,CompDb works", {
     expect_error(
         matchSpectra(pest_ms2, cdb, CompareSpectraParam(toleranceRt = 1),
                      rtColname = c("other", "other")), "not available")
+})
+
+test_that(".check_bpparam works", {
+    res <- .check_bpparam(pest_ms2, minimb, SnowParam())
+    expect_s4_class(res, "SnowParam")
 })

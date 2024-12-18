@@ -7,9 +7,9 @@
 matchSpectra(query, target, param, ...)
 }
 \arguments{
-\item{query}{\link{Spectra} object with the (experimental) spectra.}
+\item{query}{\link[Spectra:Spectra]{Spectra::Spectra} object with the (experimental) spectra.}
 
-\item{target}{spectral data to compare against. Can be another \link{Spectra}.}
+\item{target}{MS data to compare against. Can be another \link[Spectra:Spectra]{Spectra::Spectra}.}
 
 \item{param}{parameter object containing the settings for the matching (e.g.
 eventual prefiltering settings, cut-off value for similarity above which
@@ -26,8 +26,8 @@ from \code{target} based on settings specified with \code{param} and returns the
 from this as a \link{MatchedSpectra} object.
 }
 \seealso{
-\code{\link[=CompareSpectraParam]{CompareSpectraParam()}} for the comparison between \link{Spectra}
-objects.
+\code{\link[=CompareSpectraParam]{CompareSpectraParam()}} for the comparison between
+\link[Spectra:Spectra]{Spectra::Spectra} objects.
 }
 \author{
 Johannes Rainer
