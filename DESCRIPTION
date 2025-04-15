@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.11.1
+Version: 1.12.0
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
