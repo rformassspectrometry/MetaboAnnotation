@@ -18,11 +18,14 @@ Currently supported parameter objects defining the matching are:
 CompareSpectraParam: the generic parameter object allowing to set all
 settings for the Spectra::compareSpectra() call that is used to
 perform the similarity calculation.
-This includes MAPFUN and FUN defining the
-peak-mapping and similarity calculation functions and ppm and tolerance
-to define an acceptable difference between m/z values of the compared
-peaks. Additional parameters to the compareSpectra call
-can be passed along with .... See the help of Spectra::Spectra() for
+This includes MAPFUN and FUN defining the peak-mapping and similarity
+calculation functions and ppm and tolerance to define an acceptable
+difference between m/z values of the compared peaks. Parameter
+matchedPeaksCount is also passed to compareSpectra() and, if set to
+TRUE (default is FALSE) will report the number of peaks defined to be
+matching by the MAPFUN.
+Additional parameters to the compareSpectra call can be passed along
+with .... See the help of Spectra::Spectra() for
 more information on these parameters. Parameters requirePrecursor
 (default TRUE) and requirePrecursorPeak (default FALSE) allow to
 pre-filter the target spectra prior to the actual similarity calculation
@@ -82,11 +85,14 @@ Currently supported parameter objects defining the matching are:
 CompareSpectraParam: the generic parameter object allowing to set all
 settings for the Spectra::compareSpectra() call that is used to
 perform the similarity calculation.
-This includes MAPFUN and FUN defining the
-peak-mapping and similarity calculation functions and ppm and tolerance
-to define an acceptable difference between m/z values of the compared
-peaks. Additional parameters to the compareSpectra call
-can be passed along with .... See the help of Spectra::Spectra() for
+This includes MAPFUN and FUN defining the peak-mapping and similarity
+calculation functions and ppm and tolerance to define an acceptable
+difference between m/z values of the compared peaks. Parameter
+matchedPeaksCount is also passed to compareSpectra() and, if set to
+TRUE (default is FALSE) will report the number of peaks defined to be
+matching by the MAPFUN.
+Additional parameters to the compareSpectra call can be passed along
+with .... See the help of Spectra::Spectra() for
 more information on these parameters. Parameters requirePrecursor
 (default TRUE) and requirePrecursorPeak (default FALSE) allow to
 pre-filter the target spectra prior to the actual similarity calculation
@@ -135,7 +141,7 @@ THRESHFUN_REVERSE = NULL all matches passing THRESHFUN are reported.
 
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -180,11 +186,14 @@ provided in the vignette.</p>
 <p>Currently supported parameter objects defining the matching are:</p><ul><li><p><code>CompareSpectraParam</code>: the <em>generic</em> parameter object allowing to set all
 settings for the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">Spectra::compareSpectra()</a></code> call that is used to
 perform the similarity calculation.
-This includes <code>MAPFUN</code> and <code>FUN</code> defining the
-peak-mapping and similarity calculation functions and <code>ppm</code> and <code>tolerance</code>
-to define an acceptable difference between m/z values of the compared
-peaks. Additional parameters to the <code>compareSpectra</code> call
-can be passed along with <code>...</code>. See the help of <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for
+This includes <code>MAPFUN</code> and <code>FUN</code> defining the peak-mapping and similarity
+calculation functions and <code>ppm</code> and <code>tolerance</code> to define an acceptable
+difference between m/z values of the compared peaks. Parameter
+<code>matchedPeaksCount</code> is also passed to <code>compareSpectra()</code> and, if set to
+<code>TRUE</code> (default is <code>FALSE</code>) will report the number of peaks defined to be
+<em>matching</em> by the <code>MAPFUN</code>.
+Additional parameters to the <code>compareSpectra</code> call can be passed along
+with <code>...</code>. See the help of <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> for
 more information on these parameters. Parameters <code>requirePrecursor</code>
 (default <code>TRUE</code>) and <code>requirePrecursorPeak</code> (default <code>FALSE</code>) allow to
 pre-filter the target spectra prior to the actual similarity calculation
@@ -247,6 +256,7 @@ only matches with a spectra similarity fulfilling both <code>THRESHFUN</code> <s
 <span>  THRESHFUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0.7</span><span class="op">)</span>,</span>
 <span>  toleranceRt <span class="op">=</span> <span class="cn">Inf</span>,</span>
 <span>  percentRt <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  matchedPeaksCount <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -404,6 +414,13 @@ spectrum and all target spectra with a retention time within query rt
 time-based filter is not considered. Thus, to consider the <code>percentRt</code>
 parameter, <code>toleranceRt</code> should be set to a value different than that.
 See help of <code>CompareSpectraParam</code> above for more information.</p></dd>
+
+
+<dt id="arg-matchedpeakscount">matchedPeaksCount<a class="anchor" aria-label="anchor" href="#arg-matchedpeakscount"></a></dt>
+<dd><p><code>logical(1)</code> for <code>CompareSpectraParam()</code>: whether
+also the number of matching peaks should be reported (in column
+<code>"matched_peaks_count"</code>). This number represents the number of peaks
+reported <em>matching</em> by the <code>MAPFUN</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -642,7 +659,7 @@ spectra will be reported.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer></div>
