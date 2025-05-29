@@ -29,6 +29,7 @@ CompareSpectraParam(
   THRESHFUN = function(x) which(x >= 0.7),
   toleranceRt = Inf,
   percentRt = 0,
+  matchedPeaksCount = FALSE,
   ...
 )
 
@@ -153,6 +154,11 @@ time-based filter is not considered. Thus, to consider the \code{percentRt}
 parameter, \code{toleranceRt} should be set to a value different than that.
 See help of \code{CompareSpectraParam} above for more information.}
 
+\item{matchedPeaksCount}{\code{logical(1)} for \code{CompareSpectraParam()}: whether
+also the number of matching peaks should be reported (in column
+\code{"matched_peaks_count"}). This number represents the number of peaks
+reported \emph{matching} by the \code{MAPFUN}.}
+
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
 to the \code{\link[Spectra:compareSpectra]{Spectra::compareSpectra()}} call.}
 
@@ -196,11 +202,14 @@ Currently supported parameter objects defining the matching are:
 \item \code{CompareSpectraParam}: the \emph{generic} parameter object allowing to set all
 settings for the \code{\link[Spectra:compareSpectra]{Spectra::compareSpectra()}} call that is used to
 perform the similarity calculation.
-This includes \code{MAPFUN} and \code{FUN} defining the
-peak-mapping and similarity calculation functions and \code{ppm} and \code{tolerance}
-to define an acceptable difference between m/z values of the compared
-peaks. Additional parameters to the \code{compareSpectra} call
-can be passed along with \code{...}. See the help of \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for
+This includes \code{MAPFUN} and \code{FUN} defining the peak-mapping and similarity
+calculation functions and \code{ppm} and \code{tolerance} to define an acceptable
+difference between m/z values of the compared peaks. Parameter
+\code{matchedPeaksCount} is also passed to \code{compareSpectra()} and, if set to
+\code{TRUE} (default is \code{FALSE}) will report the number of peaks defined to be
+\emph{matching} by the \code{MAPFUN}.
+Additional parameters to the \code{compareSpectra} call can be passed along
+with \code{...}. See the help of \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for
 more information on these parameters. Parameters \code{requirePrecursor}
 (default \code{TRUE}) and \code{requirePrecursorPeak} (default \code{FALSE}) allow to
 pre-filter the target spectra prior to the actual similarity calculation
