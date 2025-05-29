@@ -1,3 +1,12 @@
+# MetaboAnnotation 1.13
+
+## Changes in 1.13.1
+
+- Add parameter `matchedPeaksCount` to `CompareSpectraParam` that enables
+  reporting of the number of matched peaks for `matchSpectra()` with
+  `CompareSpectraParam`. The result are reported in a column
+  `"matched_peaks_count"`.
+
 # MetaboAnnotation 1.11
 
 ## Changes in 1.11.1

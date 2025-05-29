@@ -391,10 +391,13 @@ individual query spectrum to speed-up the calculations. By setting
 spectra with matching precursor m/z (accepting a deviation defined by parameters
 `ppm` and `tolerance`). By default, `matchSpectra()` with `CompareSpectraParam`
 considers spectra with a similarity score higher than 0.7 as *matching* and
-these are thus reported.
+these are thus reported. As an additional configuration we set
+`matchedPeaksCount = TRUE` to report the number of matching peaks between the
+compared (and matched) spectra.
 
 ```{r}
-csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10)
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
+                           matchedPeaksCount = TRUE)
 mtches <- matchSpectra(pest_ms2, minimb, param = csp)
 mtches
 ```
@@ -402,8 +405,16 @@ mtches
 The results are reported as a `MatchedSpectra` object which represents the
 matching results for all query spectra. This type of object contains all query
 spectra, all target spectra, the matching information and the parameter object
-with the settings of the matching. The object can be subsetted to e.g. matching
-results for a specific query spectrum:
+with the settings of the matching. The object can be subset to results of
+selected **query** spectra using the `[` method. The length of the result object
+matches thus the number of query spectra:
+
+```{r}
+length(pest_ms2)
+length(mtches)
+```
+
+To subset to the results for the first query spectrum:
 
 ```{r}
 mtches[1]
@@ -433,7 +444,9 @@ spectraVariables(mtches)
 
 This lists the spectra variables from both the *query* **and** the *target*
 spectra, with the prefix `"target_"` being used for spectra variable names of
-the target spectra. Spectra variable `"score"` contains the similarity score.
+the target spectra. Spectra variable `"score"` contains the similarity score. If
+`matchedPeaksCount = TRUE` was used, a column `"matched_peaks_count"` is
+available that lists the number of matching peaks between the compared spectra.
 
 Note that by default also an additional column `".original_query_index"` is
 added to the `query` `Spectra` object by the `matchSpectra()` function, that
