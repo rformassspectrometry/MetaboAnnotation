@@ -99,7 +99,8 @@
 #'   single query spectrum. Setting parameter `scalePeaks = TRUE` will scale
 #'   the peak intensities per spectrum to a total sum of one for a better
 #'   graphical visualization. Additional plotting parameters can be passed
-#'   through `...`.
+#'   through `...`. The parameters `tolerance` and `ppm` used for matching
+#'   will be passed down and reflected in the plot.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
 #'   [Spectra::Spectra()] object. The function will return a `MatchedSpectra`
@@ -125,6 +126,19 @@
 #' @param name for `$`: the name of the spectra variable to extract.
 #'
 #' @param object `MatchedSpectra` object.
+#'
+#' @param ppm For `plotSpectraMirror()`: m/z relative acceptable difference
+#' (in parts per million, ppm) for peaks to be considered matching
+#' (see [MsCoreUtils::common()] for details).
+#' By default, the function will use the `ppm` value from the `param` object
+#' used to create the `MatchedSpectra` object; if none is found, the default is
+#' 20.
+#'
+#' @param tolerance For `plotSpectraMirror()`: absolute acceptable difference
+#' of m/z values for peaks to be considered matching
+#' (see [MsCoreUtils::common()] for details).
+#' By default, the function will use the `tolerance` value from the `param`
+#' object; if none is found, the default is 0.
 #'
 #' @param scalePeaks for `plotSpectraMirror`: `logical(1)` if peak intensities
 #'   (per spectrum) should be scaled to a total sum of one (per spectrum) prior
@@ -420,9 +434,15 @@ setMethod(
 setMethod(
     "plotSpectraMirror", "MatchedSpectra",
     function(x, xlab = "m/z", ylab = "intensity", main = "",
-             scalePeaks = FALSE, ...) {
+             scalePeaks = FALSE, ppm = 20, tolerance = 0, ...) {
         if (length(query(x)) != 1)
             stop("Length of 'query(x)' has to be 1.")
+        param <- x@metadata[["param"]]
+        if (!is.null(param)) {
+            if (!is.list(param)) param <- list(param)
+            ppm <- param[[1]]@ppm
+            tolerance <- param[[1]]@tolerance
+        }
         y <- x@target[x@matches$target_idx]
         if (!length(y))
             y <- Spectra(DataFrame(msLevel = 2L))
@@ -433,7 +453,8 @@ setMethod(
         par(mfrow = n2mfrow(length(y)))
         for (i in seq_along(y))
             plotSpectraMirror(x = x, y = y[i],
-                              xlab = xlab, ylab = ylab, main = main, ...)
+                              xlab = xlab, ylab = ylab, main = main,
+                              ppm = ppm, tolerance = tolerance,...)
     })
 
 #' @importMethodsFrom ProtGenerics setBackend

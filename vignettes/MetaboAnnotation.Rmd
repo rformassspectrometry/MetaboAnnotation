@@ -888,7 +888,7 @@ rownames(standard_charged) <- standard[ , 1]
 
 #' ensure the input `x` is a matrix
 if (!is.matrix(standard_charged))
-    standard_charged <- as.matrix(standard_charged)
+    standard_charged <- as.matrix(standard_charged, drop = FALSE)
 ```
 
 The input table for the createStandardMixes should thus look like the one shown

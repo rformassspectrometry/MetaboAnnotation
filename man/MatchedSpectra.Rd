@@ -43,6 +43,8 @@ MatchedSpectra(
   ylab = "intensity",
   main = "",
   scalePeaks = FALSE,
+  ppm = 20,
+  tolerance = 0,
   ...
 )
 
@@ -87,6 +89,19 @@ with \code{FUN}. See \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for detai
 \item{scalePeaks}{for \code{plotSpectraMirror}: \code{logical(1)} if peak intensities
 (per spectrum) should be scaled to a total sum of one (per spectrum) prior
 to plotting.}
+
+\item{ppm}{For \code{plotSpectraMirror()}: m/z relative acceptable difference
+(in parts per million, ppm) for peaks to be considered matching
+(see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
+By default, the function will use the \code{ppm} value from the \code{param} object
+used to create the \code{MatchedSpectra} object; if none is found, the default is
+20.}
+
+\item{tolerance}{For \code{plotSpectraMirror()}: absolute acceptable difference
+of m/z values for peaks to be considered matching
+(see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
+By default, the function will use the \code{tolerance} value from the \code{param}
+object; if none is found, the default is 0.}
 
 \item{backend}{for \code{setBackend}: instance of an object extending
 \link[Spectra:MsBackend]{Spectra::MsBackend}. See help for \code{\link[Spectra:Spectra]{Spectra::setBackend()}}
@@ -183,7 +198,8 @@ matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
 single query spectrum. Setting parameter \code{scalePeaks = TRUE} will scale
 the peak intensities per spectrum to a total sum of one for a better
 graphical visualization. Additional plotting parameters can be passed
-through \code{...}.
+through \code{...}. The parameters \code{tolerance} and \code{ppm} used for matching
+will be passed down and reflected in the plot.
 \item \code{setBackend}: allows to change the \emph{backend} of both the query and target
 \code{\link[Spectra:Spectra]{Spectra::Spectra()}} object. The function will return a \code{MatchedSpectra}
 object with the query and target \code{Spectra} changed to the specified
