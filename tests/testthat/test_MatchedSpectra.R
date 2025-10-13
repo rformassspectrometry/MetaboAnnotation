@@ -232,10 +232,9 @@ test_that("plotSpectraMirror throws an error", {
     ## test the helper function
     dots <- list(ppm = 15)
     pl <- as.list(param <- CompareSpectraParam())
-    expect_equal(resolve_param(dots = dots, pl, "ppm", 20), 15)
-    expect_equal(resolve_param(list(), pl, "ppm", 20), 5)
-    expect_equal(resolve_param(list(), list(), "ppm", 20), 20)
-
+    expect_equal(res_setting(dots = dots, pl, "ppm", 20), 15)
+    expect_equal(res_setting(list(), pl, "ppm", 20), 5)
+    expect_equal(res_setting(list(), list(), "ppm", 20), 20)
 })
 
 test_that("addProcessing works", {

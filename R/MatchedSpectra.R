@@ -438,9 +438,9 @@ setMethod(
             stop("Length of 'query(x)' has to be 1.")
         dots <- list(...)
         pl <- as.list(x@metadata[["param"]])
-        ppm_res <- resolve_param(dots = dots, param = pl,
+        ppm_res <- res_setting(dots = dots, param = pl,
                                  name = "ppm", default = 20)
-        tol_res <- resolve_param(dots = dots, param = pl,
+        tol_res <- res_setting(dots = dots, param = pl,
                                  name = "tolerance",default = 10)
         y <- x@target[x@matches$target_idx]
         if (!length(y))
