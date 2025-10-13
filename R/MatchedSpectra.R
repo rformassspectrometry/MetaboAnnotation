@@ -430,6 +430,8 @@ setMethod(
 #'
 #' @importFrom Spectra scalePeaks
 #'
+#' @importMethodsFrom ProtGenerics as.list
+#'
 #' @export
 setMethod(
     "plotSpectraMirror", "MatchedSpectra",
