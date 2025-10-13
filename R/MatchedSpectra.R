@@ -439,9 +439,17 @@ setMethod(
             stop("Length of 'query(x)' has to be 1.")
         param <- x@metadata[["param"]]
         if (!is.null(param)) {
-            if (!is.list(param)) param <- list(param)
-            ppm <- param[[1]]@ppm
-            tolerance <- param[[1]]@tolerance
+            l <- as.list(param)
+            if (any(names(l) == "ppm"))
+                warning("Using the ppm from the parameter object (ppm = " ,
+                        l$ppm, ", ignoring user provided 'ppm = ", ppm, ".")
+                ppm <- l$ppm
+            if (any(names(l) == "tolerance"))
+                warning("Using the tolerance from the parameter object ",
+                        "(tolerance = ", l$tolerance,
+                        ", ignoring user provided 'tolerance = ",
+                        tolerance, ".")
+                tolerance <- l$tolerance
         }
         y <- x@target[x@matches$target_idx]
         if (!length(y))
