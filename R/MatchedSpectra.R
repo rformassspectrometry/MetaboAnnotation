@@ -438,9 +438,9 @@ setMethod(
             stop("Length of 'query(x)' has to be 1.")
         dots <- list(...)
         pl <- as.list(x@metadata[["param"]])
-        ppm_res <- res_setting(dots = dots, param = pl,
+        ppm_res <- .res_setting(dots = dots, param_list = pl,
                                  name = "ppm", default = 20)
-        tol_res <- res_setting(dots = dots, param = pl,
+        tol_res <- .res_setting(dots = dots, param_list = pl,
                                  name = "tolerance",default = 10)
         y <- x@target[x@matches$target_idx]
         if (!length(y))
@@ -458,7 +458,7 @@ setMethod(
 
 #' Helper for ppm and tolerance setting.
 #' @noRd
-res_setting <- function(dots = list(), param_list, name, default) {
+.res_setting <- function(dots = list(), param_list, name, default) {
     if (!is.null(dots[[name]]))
         return(dots[[name]])
     if (!is.null(param_list[[name]]))
