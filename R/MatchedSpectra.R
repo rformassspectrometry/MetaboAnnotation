@@ -128,14 +128,12 @@
 #' @param object `MatchedSpectra` object.
 #'
 #' @param ppm For `plotSpectraMirror()`: relative m/z tolerance (in parts per
-#' million, ppm) for matching peaks (see [MsCoreUtils::common()] for details).
-#' If not provided by the user, the value from the `param` object is used;
-#' if that is missing, the default is 20.
+#' million, ppm) for matching peaks. If not provided by the user, the value
+#' from the `param` object is used; if that is missing, the default is 20.
 #'
 #' @param tolerance For `plotSpectraMirror()`: absolute m/z tolerance for
-#' matching peaks (see [MsCoreUtils::common()] for details).
-#' If not provided by the user, the value from the `param` object is used;
-#' if that is missing, the default is 0.
+#' matching peaks. If not provided by the user, the value from the `param`
+#' object is used; if that is missing, the default is 0.
 #'
 #' @param scalePeaks for `plotSpectraMirror`: `logical(1)` if peak intensities
 #'   (per spectrum) should be scaled to a total sum of one (per spectrum) prior
