@@ -43,8 +43,6 @@ MatchedSpectra(
   ylab = "intensity",
   main = "",
   scalePeaks = FALSE,
-  ppm = 20,
-  tolerance = 0,
   ...
 )
 
@@ -90,22 +88,19 @@ with \code{FUN}. See \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for detai
 (per spectrum) should be scaled to a total sum of one (per spectrum) prior
 to plotting.}
 
-\item{ppm}{For \code{plotSpectraMirror()}: m/z relative acceptable difference
-(in parts per million, ppm) for peaks to be considered matching
-(see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
-By default, the function will use the \code{ppm} value from the \code{param} object
-used to create the \code{MatchedSpectra} object; if none is found, the default is
-20.}
-
-\item{tolerance}{For \code{plotSpectraMirror()}: absolute acceptable difference
-of m/z values for peaks to be considered matching
-(see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
-By default, the function will use the \code{tolerance} value from the \code{param}
-object; if none is found, the default is 0.}
-
 \item{backend}{for \code{setBackend}: instance of an object extending
 \link[Spectra:MsBackend]{Spectra::MsBackend}. See help for \code{\link[Spectra:Spectra]{Spectra::setBackend()}}
 for more details.}
+
+\item{ppm}{For \code{plotSpectraMirror()}: relative m/z tolerance (in parts per
+million, ppm) for matching peaks (see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
+If not provided by the user, the value from the \code{param} object is used;
+if that is missing, the default is 20.}
+
+\item{tolerance}{For \code{plotSpectraMirror()}: absolute m/z tolerance for
+matching peaks (see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
+If not provided by the user, the value from the \code{param} object is used;
+if that is missing, the default is 0.}
 }
 \value{
 See individual method desciption above for details.

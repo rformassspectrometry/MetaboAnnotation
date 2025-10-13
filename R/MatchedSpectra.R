@@ -127,18 +127,15 @@
 #'
 #' @param object `MatchedSpectra` object.
 #'
-#' @param ppm For `plotSpectraMirror()`: m/z relative acceptable difference
-#' (in parts per million, ppm) for peaks to be considered matching
-#' (see [MsCoreUtils::common()] for details).
-#' By default, the function will use the `ppm` value from the `param` object
-#' used to create the `MatchedSpectra` object; if none is found, the default is
-#' 20.
+#' @param ppm For `plotSpectraMirror()`: relative m/z tolerance (in parts per
+#' million, ppm) for matching peaks (see [MsCoreUtils::common()] for details).
+#' If not provided by the user, the value from the `param` object is used;
+#' if that is missing, the default is 20.
 #'
-#' @param tolerance For `plotSpectraMirror()`: absolute acceptable difference
-#' of m/z values for peaks to be considered matching
-#' (see [MsCoreUtils::common()] for details).
-#' By default, the function will use the `tolerance` value from the `param`
-#' object; if none is found, the default is 0.
+#' @param tolerance For `plotSpectraMirror()`: absolute m/z tolerance for
+#' matching peaks (see [MsCoreUtils::common()] for details).
+#' If not provided by the user, the value from the `param` object is used;
+#' if that is missing, the default is 0.
 #'
 #' @param scalePeaks for `plotSpectraMirror`: `logical(1)` if peak intensities
 #'   (per spectrum) should be scaled to a total sum of one (per spectrum) prior
@@ -401,7 +398,7 @@ setMethod("spectraData", "MatchedSpectra",
 setMethod("matchedData", "MatchedSpectra",
           function(object, columns = spectraVariables(object), ...) {
               spectraData(object, columns)
-})
+          })
 
 #' @importMethodsFrom Spectra addProcessing
 #'
@@ -436,23 +433,15 @@ setMethod(
 setMethod(
     "plotSpectraMirror", "MatchedSpectra",
     function(x, xlab = "m/z", ylab = "intensity", main = "",
-             scalePeaks = FALSE, ppm = 20, tolerance = 0, ...) {
+             scalePeaks = FALSE, ...) {
         if (length(query(x)) != 1)
             stop("Length of 'query(x)' has to be 1.")
-        param <- x@metadata[["param"]]
-        if (!is.null(param)) {
-            l <- as.list(param)
-            if (any(names(l) == "ppm"))
-                warning("Using the ppm from the parameter object (ppm = " ,
-                        l$ppm, ", ignoring user provided 'ppm = ", ppm, ".")
-                ppm <- l$ppm
-            if (any(names(l) == "tolerance"))
-                warning("Using the tolerance from the parameter object ",
-                        "(tolerance = ", l$tolerance,
-                        ", ignoring user provided 'tolerance = ",
-                        tolerance, ".")
-                tolerance <- l$tolerance
-        }
+        dots <- list(...)
+        pl <- as.list(x@metadata[["param"]])
+        ppm_res <- resolve_param(dots = dots, param = pl,
+                                 name = "ppm", default = 20)
+        tol_res <- resolve_param(dots = dots, param = pl,
+                                 name = "tolerance",default = 10)
         y <- x@target[x@matches$target_idx]
         if (!length(y))
             y <- Spectra(DataFrame(msLevel = 2L))
@@ -464,8 +453,18 @@ setMethod(
         for (i in seq_along(y))
             plotSpectraMirror(x = x, y = y[i],
                               xlab = xlab, ylab = ylab, main = main,
-                              ppm = ppm, tolerance = tolerance,...)
+                              ppm = ppm_res, tolerance = tol_res,...)
     })
+
+#' Helper for ppm and tolerance setting.
+#' @noRd
+res_setting <- function(dots = list(), param_list, name, default) {
+    if (!is.null(dots[[name]]))
+        return(dots[[name]])
+    if (!is.null(param_list[[name]]))
+        return(param_list[[name]])
+    return(default)
+}
 
 #' @importMethodsFrom ProtGenerics setBackend
 #'
