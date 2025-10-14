@@ -103,7 +103,7 @@
 #'   define the m/z tolerance for matching peaks between the query and target
 #'   spectra. If not provided by the user, the values from the `param`
 #'   object used to create the `MatchedSpectra` object are used; if these are
-#'   missing, the default values for `ppm` is 20 and for `olerance` is 0.
+#'   missing, the default values (`ppm =20` and `tolerance = 0`) are used.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
 #'   [Spectra::Spectra()] object. The function will return a `MatchedSpectra`

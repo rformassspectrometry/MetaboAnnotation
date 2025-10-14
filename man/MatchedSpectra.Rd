@@ -187,7 +187,7 @@ through \code{...}. The parameters \code{ppm} and \code{tolerance} can be used t
 define the m/z tolerance for matching peaks between the query and target
 spectra. If not provided by the user, the values from the \code{param}
 object used to create the \code{MatchedSpectra} object are used; if these are
-missing, the default values for \code{ppm} is 20 and for \code{olerance} is 0.
+missing, the default values (\code{ppm =20} and \code{tolerance = 0}) are used.
 \item \code{setBackend}: allows to change the \emph{backend} of both the query and target
 \code{\link[Spectra:Spectra]{Spectra::Spectra()}} object. The function will return a \code{MatchedSpectra}
 object with the query and target \code{Spectra} changed to the specified
