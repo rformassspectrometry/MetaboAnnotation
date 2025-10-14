@@ -99,7 +99,11 @@
 #'   single query spectrum. Setting parameter `scalePeaks = TRUE` will scale
 #'   the peak intensities per spectrum to a total sum of one for a better
 #'   graphical visualization. Additional plotting parameters can be passed
-#'   through `...`.
+#'   through `...`. The parameters `ppm` and `tolerance` can be used to
+#'   define the m/z tolerance for matching peaks between the query and target
+#'   spectra. If not provided by the user, the values from the `param`
+#'   object used to create the `MatchedSpectra` object are used; if these are
+#'   missing, the default values for `ppm` is 20 and for `olerance` is 0.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
 #'   [Spectra::Spectra()] object. The function will return a `MatchedSpectra`
@@ -387,7 +391,7 @@ setMethod("spectraData", "MatchedSpectra",
 setMethod("matchedData", "MatchedSpectra",
           function(object, columns = spectraVariables(object), ...) {
               spectraData(object, columns)
-})
+          })
 
 #' @importMethodsFrom Spectra addProcessing
 #'
@@ -416,6 +420,8 @@ setMethod(
 #'
 #' @importFrom Spectra scalePeaks
 #'
+#' @importMethodsFrom ProtGenerics as.list
+#'
 #' @export
 setMethod(
     "plotSpectraMirror", "MatchedSpectra",
@@ -423,6 +429,12 @@ setMethod(
              scalePeaks = FALSE, ...) {
         if (length(query(x)) != 1)
             stop("Length of 'query(x)' has to be 1.")
+        dots <- list(...)
+        pl <- as.list(x@metadata[["param"]])
+        ppm_res <- .res_setting(dots = dots, param_list = pl,
+                                 name = "ppm", default = 20)
+        tol_res <- .res_setting(dots = dots, param_list = pl,
+                                 name = "tolerance",default = 10)
         y <- x@target[x@matches$target_idx]
         if (!length(y))
             y <- Spectra(DataFrame(msLevel = 2L))
@@ -433,8 +445,19 @@ setMethod(
         par(mfrow = n2mfrow(length(y)))
         for (i in seq_along(y))
             plotSpectraMirror(x = x, y = y[i],
-                              xlab = xlab, ylab = ylab, main = main, ...)
+                              xlab = xlab, ylab = ylab, main = main,
+                              ppm = ppm_res, tolerance = tol_res,...)
     })
+
+#' Helper for ppm and tolerance setting.
+#' @noRd
+.res_setting <- function(dots = list(), param_list, name, default) {
+    if (!is.null(dots[[name]]))
+        return(dots[[name]])
+    if (!is.null(param_list[[name]]))
+        return(param_list[[name]])
+    return(default)
+}
 
 #' @importMethodsFrom ProtGenerics setBackend
 #'
