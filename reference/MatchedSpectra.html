@@ -17,7 +17,7 @@ if the query spectrum matches more than one target spectrum."><meta property="og
 
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -255,7 +255,11 @@ matching target spectrum. Can only be applied to a <code>MatchedSpectra</code> w
 single query spectrum. Setting parameter <code>scalePeaks = TRUE</code> will scale
 the peak intensities per spectrum to a total sum of one for a better
 graphical visualization. Additional plotting parameters can be passed
-through <code>...</code>.</p></li>
+through <code>...</code>. The parameters <code>ppm</code> and <code>tolerance</code> can be used to
+define the m/z tolerance for matching peaks between the query and target
+spectra. If not provided by the user, the values from the <code>param</code>
+object used to create the <code>MatchedSpectra</code> object are used; if these are
+missing, the default values for <code>ppm</code> is 20 and for <code>olerance</code> is 0.</p></li>
 <li><p><code>setBackend</code>: allows to change the <em>backend</em> of both the query and target
 <code><a href="https://rdrr.io/pkg/Spectra/man/Spectra.html" class="external-link">Spectra::Spectra()</a></code> object. The function will return a <code>MatchedSpectra</code>
 object with the query and target <code>Spectra</code> changed to the specified
