@@ -91,16 +91,6 @@ to plotting.}
 \item{backend}{for \code{setBackend}: instance of an object extending
 \link[Spectra:MsBackend]{Spectra::MsBackend}. See help for \code{\link[Spectra:Spectra]{Spectra::setBackend()}}
 for more details.}
-
-\item{ppm}{For \code{plotSpectraMirror()}: relative m/z tolerance (in parts per
-million, ppm) for matching peaks (see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
-If not provided by the user, the value from the \code{param} object is used;
-if that is missing, the default is 20.}
-
-\item{tolerance}{For \code{plotSpectraMirror()}: absolute m/z tolerance for
-matching peaks (see \code{\link[MsCoreUtils:matching]{MsCoreUtils::common()}} for details).
-If not provided by the user, the value from the \code{param} object is used;
-if that is missing, the default is 0.}
 }
 \value{
 See individual method desciption above for details.
@@ -193,8 +183,11 @@ matching target spectrum. Can only be applied to a \code{MatchedSpectra} with a
 single query spectrum. Setting parameter \code{scalePeaks = TRUE} will scale
 the peak intensities per spectrum to a total sum of one for a better
 graphical visualization. Additional plotting parameters can be passed
-through \code{...}. The parameters \code{tolerance} and \code{ppm} used for matching
-will be passed down and reflected in the plot.
+through \code{...}. The parameters \code{ppm} and \code{tolerance} can be used to
+define the m/z tolerance for matching peaks between the query and target
+spectra. If not provided by the user, the values from the \code{param}
+object used to create the \code{MatchedSpectra} object are used; if these are
+missing, the default values for \code{ppm} is 20 and for \code{olerance} is 0.
 \item \code{setBackend}: allows to change the \emph{backend} of both the query and target
 \code{\link[Spectra:Spectra]{Spectra::Spectra()}} object. The function will return a \code{MatchedSpectra}
 object with the query and target \code{Spectra} changed to the specified

@@ -99,8 +99,11 @@
 #'   single query spectrum. Setting parameter `scalePeaks = TRUE` will scale
 #'   the peak intensities per spectrum to a total sum of one for a better
 #'   graphical visualization. Additional plotting parameters can be passed
-#'   through `...`. The parameters `tolerance` and `ppm` used for matching
-#'   will be passed down and reflected in the plot.
+#'   through `...`. The parameters `ppm` and `tolerance` can be used to
+#'   define the m/z tolerance for matching peaks between the query and target
+#'   spectra. If not provided by the user, the values from the `param`
+#'   object used to create the `MatchedSpectra` object are used; if these are
+#'   missing, the default values for `ppm` is 20 and for `olerance` is 0.
 #'
 #' - `setBackend`: allows to change the *backend* of both the query and target
 #'   [Spectra::Spectra()] object. The function will return a `MatchedSpectra`
@@ -126,14 +129,6 @@
 #' @param name for `$`: the name of the spectra variable to extract.
 #'
 #' @param object `MatchedSpectra` object.
-#'
-#' @param ppm For `plotSpectraMirror()`: relative m/z tolerance (in parts per
-#' million, ppm) for matching peaks. If not provided by the user, the value
-#' from the `param` object is used; if that is missing, the default is 20.
-#'
-#' @param tolerance For `plotSpectraMirror()`: absolute m/z tolerance for
-#' matching peaks. If not provided by the user, the value from the `param`
-#' object is used; if that is missing, the default is 0.
 #'
 #' @param scalePeaks for `plotSpectraMirror`: `logical(1)` if peak intensities
 #'   (per spectrum) should be scaled to a total sum of one (per spectrum) prior
