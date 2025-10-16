@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub,microbenchmark,mzR}
+  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub,microbenchmark,mzR,msentropy}
 bibliography: references.bib
 ---
 
@@ -385,11 +385,12 @@ matching can be defined with a dedicated *param* object. We use below the
 target spectra. `CompareSpectraParam` allows to set all individual settings for
 the `compareSpectra()` call with parameters `MAPFUN`, `ppm`, `tolerance` and
 `FUN` (see the help on `compareSpectra()` in the `r Biocpkg("Spectra")` package
-for more details). In addition, we can *pre-filter* the target spectra for each
-individual query spectrum to speed-up the calculations. By setting
-`requirePrecursor = TRUE` we compare below each query spectrum only to target
-spectra with matching precursor m/z (accepting a deviation defined by parameters
-`ppm` and `tolerance`). By default, `matchSpectra()` with `CompareSpectraParam`
+for more details).
+In addition, we can *pre-filter* the target spectra for each individual query
+spectrum to speed-up the calculations. By setting `requirePrecursor = TRUE` we
+compare below each query spectrum only to target spectra with matching
+precursor m/z (accepting a deviation defined by parameters `ppm` and
+`tolerance`). By default, `matchSpectra()` with `CompareSpectraParam`
 considers spectra with a similarity score higher than 0.7 as *matching* and
 these are thus reported. As an additional configuration we set
 `matchedPeaksCount = TRUE` to report the number of matching peaks between the
@@ -613,6 +614,58 @@ Matches can be also further validated using an interactive Shiny app by calling
 can be set to TRUE or FALSE in this app. By closing the app via the Save & Close
 button a filtered `MatchedSpectra` is returned, containing only matches manually
 validated.
+
+
+### Using alternative spectra similarity functions
+
+The previous examples used the default spectra similarity scoring function used
+by `compareSpectra()` which is the normalized dot product
+`MsCoreUtils::ndotproduct()`. It is however also possible to use other
+similarity functions, either those defined in the `r Biocpkg("MsCoreUtils")`
+package (see `?MsCoreUtils::distance` for a list of available options), or
+functions defined by other, external, packages. Here it is however very
+important to carefully evaluate how this similarity function works and which
+parameters are needed/defined. As an example we use the spectral entropy
+similarity function `msentropy_similarity()` from the
+[*msentropy*](https://cran.r-project.org/web/packages/msentropy/index.html)
+package. This function performs both, the mapping between the fragment peaks of
+the compared spectra **and** the similarity calculation. It is therefore crucial
+to **disable** the default mapping of fragment spectra by setting `MAPFUN =
+joinPeaksNone` in the `CompareSpectraParam()` call. In addition,
+`msentropy_similarity()` uses different parameters and parameter names to
+configure the ppm and tolerance for the mapping. These parameters are
+`ms2_tolerance_in_ppm` (instead of `ppm`) and `ms2_tolerance_in_da` (for
+`tolerance`). To perform the spectra matching using the *msentropy* similarity
+score we thus configure the `CompareSpectraParam` as shown below:
+
+- disable the default mapping of fragment peaks: use `MAPFUN = joinPeaksNone`
+  instead of the default `MAPFUN = joinPeaks`.
+- use `FUN = msentropy_similarity`: this will use the respective function from
+  the *msentropy* function that performs peak mapping (eventual spectra
+  cleaning) and similarity calculation. See `?msentropy_similarity` for more
+  details and parameters.
+- define the ppm tolerance for the mapping of peaks between compared spectra
+  using `ms2_tolerance_in_ppm`.
+- define the absolute tolerance for the mapping of peaks between spectra using
+  `ms2_tolerance_in_da` - setting this to `-1` has the same effect as `tolerance
+  = 0` has with the default `joinPeaks()` mapping function.
+
+```{r, warning = FALSE}
+library(msentropy)
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
+                           matchedPeaksCount = TRUE,
+                           MAPFUN = joinPeaksNone,
+                           FUN = msentropy_similarity,
+                           ms2_tolerance_in_ppm = 10,
+                           ms2_tolerance_in_da = -1)
+mtches <- matchSpectra(pest_ms2, minimb, param = csp)
+mtches
+```
+
+Note that we still configured the `ppm` and `tolerance` parameters, as these
+are used for the similarity between the spectra's precursor m/z. Similarly, to
+use GNPS-like similarity calculation, `MAPFUN = joinPeaksGnps` and `FUN =
+MsCoreUtils::gnps` would need to be used.
 
 
 ### Query against multiple reference databases

@@ -160,7 +160,8 @@ also the number of matching peaks should be reported (in column
 reported \emph{matching} by the \code{MAPFUN}.}
 
 \item{...}{for \code{CompareSpectraParam}: additional parameters passed along
-to the \code{\link[Spectra:compareSpectra]{Spectra::compareSpectra()}} call.}
+to the \code{\link[Spectra:compareSpectra]{Spectra::compareSpectra()}} call, including eventual additional
+parameters of the selected mapping or similarity calculation functions.}
 
 \item{THRESHFUN_REVERSE}{for \code{MatchForwardReverseParam}: optional additional
 \emph{thresholding function} to filter the results on the reverse score. If
@@ -209,11 +210,22 @@ difference between m/z values of the compared peaks. Parameter
 \code{TRUE} (default is \code{FALSE}) will report the number of peaks defined to be
 \emph{matching} by the \code{MAPFUN}.
 Additional parameters to the \code{compareSpectra} call can be passed along
-with \code{...}. See the help of \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for
-more information on these parameters. Parameters \code{requirePrecursor}
-(default \code{TRUE}) and \code{requirePrecursorPeak} (default \code{FALSE}) allow to
-pre-filter the target spectra prior to the actual similarity calculation
-for each individual query spectrum.
+with \code{...}. See the help of \code{\link[Spectra:Spectra]{Spectra::Spectra()}} for more information on
+these parameters. Importantly, if \emph{msentropy} or a GNPS-like similarity
+calculation is used, \code{MAPFUN} should be selected accordingly (see section
+\emph{Using alternative spectra similarity functions} in the package vignette
+for more information).
+By default, parameters \code{ppm} and \code{tolerance} are passed to the similarity
+calculation function, but if this function uses different parameters
+(e.g., \code{msentropy_similarity()} uses \code{ms2_tolerance_in_ppm} instead of
+\code{ppm}), these should be submitted to the \code{CompareSpectraParam()} function
+throught the \code{...} parameter.
+Parameters \code{requirePrecursor} (default \code{TRUE}) and \code{requirePrecursorPeak}
+(default \code{FALSE}) allow to pre-filter the target spectra prior to the
+actual similarity calculation for each individual query spectrum.
+Parameters \code{ppm} and \code{tolerance} are also used to define the maximal
+acceptable difference in precursor m/z if \code{requirePrecursor} or
+\code{requirePrecursorPeak} are set to \code{TRUE}.
 Target spectra can also be pre-filtered based on
 retention time if parameter \code{toleranceRt} is set to a value different than
 the default \code{toleranceRt = Inf}. Only target spectra with a retention time
@@ -233,7 +245,9 @@ the similarity scores to define which matches to report. See below for more
 details.
 \item \code{MatchForwardReverseParam}: performs spectra matching as with
 \code{CompareSpectraParam} but reports, similar to MS-DIAL, also the \emph{reverse}
-similarity score and the \emph{presence ratio}. In detail, the matching of query
+similarity score and the \emph{presence ratio}. Please refer to the
+documentation of \code{CompareSpectraParam} for explanation of the parameters.
+With \code{MatchForwardReverseParam}, the matching of query
 spectra to target spectra is performed by considering all peaks from the
 query and all peaks from the target (reference) spectrum (i.e. \emph{forward}
 matching using an \emph{outer join}-based peak matching strategy). For matching

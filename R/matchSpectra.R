@@ -35,11 +35,22 @@
 #'   `TRUE` (default is `FALSE`) will report the number of peaks defined to be
 #'   *matching* by the `MAPFUN`.
 #'   Additional parameters to the `compareSpectra` call can be passed along
-#'   with `...`. See the help of [Spectra::Spectra()] for
-#'   more information on these parameters. Parameters `requirePrecursor`
-#'   (default `TRUE`) and `requirePrecursorPeak` (default `FALSE`) allow to
-#'   pre-filter the target spectra prior to the actual similarity calculation
-#'   for each individual query spectrum.
+#'   with `...`. See the help of [Spectra::Spectra()] for more information on
+#'   these parameters. Importantly, if *msentropy* or a GNPS-like similarity
+#'   calculation is used, `MAPFUN` should be selected accordingly (see section
+#'   *Using alternative spectra similarity functions* in the package vignette
+#'   for more information).
+#'   By default, parameters `ppm` and `tolerance` are passed to the similarity
+#'   calculation function, but if this function uses different parameters
+#'   (e.g., `msentropy_similarity()` uses `ms2_tolerance_in_ppm` instead of
+#'   `ppm`), these should be submitted to the `CompareSpectraParam()` function
+#'   throught the `...` parameter.
+#'   Parameters `requirePrecursor` (default `TRUE`) and `requirePrecursorPeak`
+#'   (default `FALSE`) allow to pre-filter the target spectra prior to the
+#'   actual similarity calculation for each individual query spectrum.
+#'   Parameters `ppm` and `tolerance` are also used to define the maximal
+#'   acceptable difference in precursor m/z if `requirePrecursor` or
+#'   `requirePrecursorPeak` are set to `TRUE`.
 #'   Target spectra can also be pre-filtered based on
 #'   retention time if parameter `toleranceRt` is set to a value different than
 #'   the default `toleranceRt = Inf`. Only target spectra with a retention time
@@ -60,7 +71,9 @@
 #'
 #' - `MatchForwardReverseParam`: performs spectra matching as with
 #'   `CompareSpectraParam` but reports, similar to MS-DIAL, also the *reverse*
-#'   similarity score and the *presence ratio*. In detail, the matching of query
+#'   similarity score and the *presence ratio*. Please refer to the
+#'   documentation of `CompareSpectraParam` for explanation of the parameters.
+#'   With `MatchForwardReverseParam`, the matching of query
 #'   spectra to target spectra is performed by considering all peaks from the
 #'   query and all peaks from the target (reference) spectrum (i.e. *forward*
 #'   matching using an *outer join*-based peak matching strategy). For matching
@@ -172,7 +185,8 @@
 #'   specified the same format than `THRESHFUN` is expected.
 #'
 #' @param ... for `CompareSpectraParam`: additional parameters passed along
-#'   to the [Spectra::compareSpectra()] call.
+#'   to the [Spectra::compareSpectra()] call, including eventual additional
+#'   parameters of the selected mapping or similarity calculation functions.
 #'
 #' @author Johannes Rainer, Michael Witting
 #'
