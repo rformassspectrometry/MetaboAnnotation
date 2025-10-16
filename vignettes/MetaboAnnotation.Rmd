@@ -867,6 +867,9 @@ compare the performance against the originally used `MsBackendMzR` (for
 ```{r}
 pest_ms2_mem <- setBackend(pest_ms2, MsBackendMemory())
 minimb_mem <- setBackend(minimb, MsBackendMemory())
+csp <- CompareSpectraParam(requirePrecursor = TRUE, ppm = 10,
+                           matchedPeaksCount = TRUE)
+
 library(microbenchmark)
 microbenchmark(compareSpectra(pest_ms2, minimb, param = csp),
                compareSpectra(pest_ms2_mem, minimb_mem, param = csp),
