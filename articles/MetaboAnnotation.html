@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.13.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
 [aut] (ORCID: <a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (ORCID: <a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
 Louail [aut] (ORCID: <a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Tue Oct 14 08:10:19 2025</p>
+[ctb]<br><strong>Compiled</strong>: Thu Oct 16 12:39:34 2025</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -710,7 +710,7 @@ belong).</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Tue Oct 14 08:10:42 2025]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Thu Oct 16 12:39:57 2025]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -1140,6 +1140,70 @@ TRUE or FALSE in this app. By closing the app via the Save &amp; Close
 button a filtered <code>MatchedSpectra</code> is returned, containing
 only matches manually validated.</p>
 <div class="section level4">
+<h4 id="using-alternative-spectra-similarity-functions">Using alternative spectra similarity functions<a class="anchor" aria-label="anchor" href="#using-alternative-spectra-similarity-functions"></a>
+</h4>
+<p>The previous examples used the default spectra similarity scoring
+function used by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> which is the normalized
+dot product <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code>. It is however also
+possible to use other similarity functions, either those defined in the
+<em><a href="https://bioconductor.org/packages/3.22/MsCoreUtils" class="external-link">MsCoreUtils</a></em>
+package (see <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">?MsCoreUtils::distance</a></code> for a list of available
+options), or functions defined by other, external, packages. Here it is
+however very important to carefully evaluate how this similarity
+function works and which parameters are needed/defined. As an example we
+use the spectral entropy similarity function
+<code><a href="https://rdrr.io/pkg/msentropy/man/msentropy_similarity.html" class="external-link">msentropy_similarity()</a></code> from the <a href="https://cran.r-project.org/web/packages/msentropy/index.html" class="external-link"><em>msentropy</em></a>
+package. This function performs both, the mapping between the fragment
+peaks of the compared spectra <strong>and</strong> the similarity
+calculation. It is therefore crucial to <strong>disable</strong> the
+default mapping of fragment spectra by setting
+<code>MAPFUN = joinPeaksNone</code> in the
+<code><a href="../reference/CompareSpectraParam.html">CompareSpectraParam()</a></code> call. In addition,
+<code><a href="https://rdrr.io/pkg/msentropy/man/msentropy_similarity.html" class="external-link">msentropy_similarity()</a></code> uses different parameters and
+parameter names to configure the ppm and tolerance for the mapping.
+These parameters are <code>ms2_tolerance_in_ppm</code> (instead of
+<code>ppm</code>) and <code>ms2_tolerance_in_da</code> (for
+<code>tolerance</code>). To perform the spectra matching using the
+<em>msentropy</em> similarity score we thus configure the
+<code>CompareSpectraParam</code> as shown below:</p>
+<ul>
+<li>disable the default mapping of fragment peaks: use
+<code>MAPFUN = joinPeaksNone</code> instead of the default
+<code>MAPFUN = joinPeaks</code>.</li>
+<li>use <code>FUN = msentropy_similarity</code>: this will use the
+respective function from the <em>msentropy</em> function that performs
+peak mapping (eventual spectra cleaning) and similarity calculation. See
+<code><a href="https://rdrr.io/pkg/msentropy/man/msentropy_similarity.html" class="external-link">?msentropy_similarity</a></code> for more details and parameters.</li>
+<li>define the ppm tolerance for the mapping of peaks between compared
+spectra using <code>ms2_tolerance_in_ppm</code>.</li>
+<li>define the absolute tolerance for the mapping of peaks between
+spectra using <code>ms2_tolerance_in_da</code> - setting this to
+<code>-1</code> has the same effect as <code>tolerance = 0</code> has
+with the default <code><a href="https://rdrr.io/pkg/Spectra/man/joinPeaks.html" class="external-link">joinPeaks()</a></code> mapping function.</li>
+</ul>
+<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/YuanyueLi/MSEntropy" class="external-link">msentropy</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: Rcpp</span></span></code></pre>
+<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>                           matchedPeaksCount <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                           MAPFUN <span class="op">=</span> <span class="va">joinPeaksNone</span>,</span>
+<span>                           FUN <span class="op">=</span> <span class="va">msentropy_similarity</span>,</span>
+<span>                           ms2_tolerance_in_ppm <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>                           ms2_tolerance_in_da <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">mtches</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">csp</span><span class="op">)</span></span>
+<span><span class="va">mtches</span></span></code></pre></div>
+<pre><code><span><span class="co">## Object of class MatchedSpectra </span></span>
+<span><span class="co">## Total number of matches: 12 </span></span>
+<span><span class="co">## Number of query objects: 13 (3 matched)</span></span>
+<span><span class="co">## Number of target objects: 100 (7 matched)</span></span></code></pre>
+<p>Note that we still configured the <code>ppm</code> and
+<code>tolerance</code> parameters, as these are used for the similarity
+between the spectra’s precursor m/z. Similarly, to use GNPS-like
+similarity calculation, <code>MAPFUN = joinPeaksGnps</code> and
+<code>FUN = MsCoreUtils::gnps</code> would need to be used.</p>
+</div>
+<div class="section level4">
 <h4 id="query-against-multiple-reference-databases">Query against multiple reference databases<a class="anchor" aria-label="anchor" href="#query-against-multiple-reference-databases"></a>
 </h4>
 <p>Getting access to reference spectra can sometimes be a little
@@ -1190,7 +1254,7 @@ Subsequent requests for the same annotation resource will load the
 locally cached version instead. Upcoming MassBank database releases will
 be added to <code>AnnotationHub</code> after their official release and
 all previous releases will be available as well.</p>
-<div class="sourceCode" id="cb100"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mbank</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompDbSource.html">MassBankSource</a></span><span class="op">(</span><span class="st">"2022.06"</span><span class="op">)</span></span>
 <span><span class="va">mbank</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class CompDbSource </span></span>
@@ -1206,7 +1270,7 @@ all previous releases will be available as well.</p>
 <p>We can now use that annotation source object in the
 <code><a href="../reference/matchSpectra.html">matchSpectra()</a></code> call to compare the experimental spectra
 from the previous examples against that release of MassBank.</p>
-<div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchSpectra.html">matchSpectra</a></span><span class="op">(</span></span>
 <span>    <span class="va">pest_ms2</span>, <span class="va">mbank</span>,</span>
 <span>    param <span class="op">=</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -1221,7 +1285,7 @@ from the previous examples against that release of MassBank.</p>
 <span><span class="co">## 'MsBackendCompDb' does not support parallel processing. Switching to serial processing.</span></span>
 <span><span class="co">## 'MsBackendCompDb' does not support parallel processing. Switching to serial processing.</span></span>
 <span><span class="co">## 'MsBackendCompDb' does not support parallel processing. Switching to serial processing.</span></span></code></pre>
-<div class="sourceCode" id="cb104"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class MatchedSpectra </span></span>
 <span><span class="co">## Total number of matches: 14 </span></span>
@@ -1229,7 +1293,7 @@ from the previous examples against that release of MassBank.</p>
 <span><span class="co">## Number of target objects: 10 (10 matched)</span></span></code></pre>
 <p>The result object contains only the matching fragment spectra from
 the reference database.</p>
-<div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">target</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## MSn data (Spectra) with 10 spectra in a MsBackendDataFrame backend:</span></span>
 <span><span class="co">##      msLevel     rtime scanIndex</span></span>
@@ -1246,9 +1310,9 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 46 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Tue Oct 14 08:10:49 2025]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Oct 16 12:40:04 2025]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
-<div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
 <pre><code><span><span class="co">##  [1] NA                         "Azaconazole"             </span></span>
 <span><span class="co">##  [3] "Azaconazole"              "Azaconazole"             </span></span>
@@ -1279,7 +1343,7 @@ illustrate this, we below first define a <code>data.frame</code> that
 should represent a feature table such as defined by an analysis with the
 <em><a href="https://bioconductor.org/packages/3.22/xcms" class="external-link">xcms</a></em>
 package.</p>
-<div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>    feature_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FT001"</span>, <span class="st">"FT002"</span>, <span class="st">"FT003"</span>, <span class="st">"FT004"</span>, <span class="st">"FT005"</span><span class="op">)</span>,</span>
 <span>    mzmed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">313.43</span>, <span class="fl">256.11</span>, <span class="fl">224.08</span>, <span class="fl">159.22</span>, <span class="fl">224.08</span><span class="op">)</span>,</span>
@@ -1288,7 +1352,7 @@ package.</p>
 <code>Spectra</code> object using an <code>MzRtParam</code> to identify
 fragment spectra with their precursor m/z and retention times matching
 (with some tolerance) the values from the features.</p>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_mtch</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/matchValues.html">matchValues</a></span><span class="op">(</span><span class="va">fts</span>, <span class="va">pest_ms2</span>, <span class="fu"><a href="../reference/matchValues.html">MzRtParam</a></span><span class="op">(</span>ppm <span class="op">=</span> <span class="fl">50</span>, toleranceRt <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>                        mzColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mzmed"</span>, <span class="st">"precursorMz"</span><span class="op">)</span>,</span>
 <span>                        rtColname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"rtmed"</span>, <span class="st">"rtime"</span><span class="op">)</span><span class="op">)</span></span>
@@ -1297,7 +1361,7 @@ fragment spectra with their precursor m/z and retention times matching
 <span><span class="co">## Total number of matches: 5 </span></span>
 <span><span class="co">## Number of query objects: 5 (2 matched)</span></span>
 <span><span class="co">## Number of target objects: 13 (5 matched)</span></span></code></pre>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 2 5</span></span></code></pre>
 <p>Thus, we found fragment spectra matching the m/z and retention times
@@ -1307,7 +1371,7 @@ features with at least one matching fragment spectrum. The indices of
 query elements (in our case features) with matches can be returned using
 the <code><a href="../reference/Matched.html">whichQuery()</a></code> function. We use these below to subset our
 matched result keeping only features for which matches were found:</p>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_mtched</span> <span class="op">&lt;-</span> <span class="va">fts_mtch</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">whichQuery</a></span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fts_mtched</span></span></code></pre></div>
 <pre><code><span><span class="co">## Object of class Matched </span></span>
@@ -1315,19 +1379,19 @@ matched result keeping only features for which matches were found:</p>
 <span><span class="co">## Number of query objects: 2 (2 matched)</span></span>
 <span><span class="co">## Number of target objects: 13 (5 matched)</span></span></code></pre>
 <p>The feature IDs for the matched spectra can be extracted using:</p>
-<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_mtched</span><span class="op">$</span><span class="va">feature_id</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "FT002" "FT002" "FT002" "FT005" "FT005"</span></span></code></pre>
 <p>We next need to extract the matching fragment spectra from the
 <code>target</code> <code>Spectra</code> object. Here we use the
 <code><a href="../reference/Matched.html">targetIndex()</a></code> function, that returns the indices of the
 target spectra that were matched to the query.</p>
-<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">targetIndex</a></span><span class="op">(</span><span class="va">fts_mtched</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1]  3  6  8  7 11</span></span></code></pre>
 <p>We extract thus next the fragment spectra matching at least one
 feature:</p>
-<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_ms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Matched.html">target</a></span><span class="op">(</span><span class="va">fts_mtched</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">targetIndex</a></span><span class="op">(</span><span class="va">fts_mtched</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fts_ms2</span></span></code></pre></div>
 <pre><code><span><span class="co">## MSn data (Spectra) with 5 spectra in a MsBackendMzR backend:</span></span>
@@ -1343,7 +1407,7 @@ feature:</p>
 <span><span class="co">## file(s):</span></span>
 <span><span class="co">## PestMix1_DDA.mzML</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Tue Oct 14 08:10:42 2025]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Thu Oct 16 12:39:57 2025]</span></span></code></pre>
 <p>While we have now the spectra, we can’t relate them (yet) to the
 features we used as <code>query</code>. Extracting the
 <code>"feature_id"</code> column using the <code>$</code> function from
@@ -1352,19 +1416,19 @@ restricted the matched object to contain only features with matches) the
 feature ID (provided in the original data frame). We can thus add this
 information as an additional spectra variable to our
 <code>Spectra</code> object:</p>
-<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_ms2</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="va">fts_mtched</span><span class="op">$</span><span class="va">feature_id</span></span></code></pre></div>
 <p>Be aware that extracting the <code>"feature_id"</code> column from
 the matched object <strong>before</strong> restricting to features with
 matches would also return the values for features for which no MS2
 spectrum was found:</p>
-<div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_mtch</span><span class="op">$</span><span class="va">feature_id</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "FT001" "FT002" "FT002" "FT002" "FT003" "FT004" "FT005" "FT005"</span></span></code></pre>
 <p>Without the initial subsetting of the matched object to features with
 at least one matching spectra, the extraction would be a bit more
 complicated:</p>
-<div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts_ms2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Matched.html">target</a></span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">targetIndex</a></span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fts_ms2</span><span class="op">$</span><span class="va">feature_id</span> <span class="op">&lt;-</span> <span class="fu">query</span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span><span class="op">$</span><span class="va">feature_id</span><span class="op">[</span><span class="fu"><a href="../reference/Matched.html">queryIndex</a></span><span class="op">(</span><span class="va">fts_mtch</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">fts_ms2</span><span class="op">$</span><span class="va">feature_id</span></span></code></pre></div>
@@ -1399,20 +1463,23 @@ all data (spectra and peaks data) in memory and we compare the
 performance against the originally used <code>MsBackendMzR</code> (for
 <code>pest_ms2</code>) and <code>MsBackendDataFrame</code> (for
 <code>minimb</code>).</p>
-<div class="sourceCode" id="cb128"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pest_ms2_mem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/backendInitialize.html" class="external-link">setBackend</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackendMemory</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">minimb_mem</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/backendInitialize.html" class="external-link">setBackend</a></span><span class="op">(</span><span class="va">minimb</span>, <span class="fu"><a href="https://rdrr.io/pkg/Spectra/man/MsBackend.html" class="external-link">MsBackendMemory</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">csp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CompareSpectraParam.html">CompareSpectraParam</a></span><span class="op">(</span>requirePrecursor <span class="op">=</span> <span class="cn">TRUE</span>, ppm <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>                           matchedPeaksCount <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/joshuaulrich/microbenchmark/" class="external-link">microbenchmark</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra</a></span><span class="op">(</span><span class="va">pest_ms2</span>, <span class="va">minimb</span>, param <span class="op">=</span> <span class="va">csp</span><span class="op">)</span>,</span>
 <span>               <span class="fu"><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra</a></span><span class="op">(</span><span class="va">pest_ms2_mem</span>, <span class="va">minimb_mem</span>, param <span class="op">=</span> <span class="va">csp</span><span class="op">)</span>,</span>
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr      min       lq</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 46.94997 48.07769</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.52586 28.68625</span></span>
-<span><span class="co">##      mean   median       uq     max neval</span></span>
-<span><span class="co">##  54.55679 48.17670 48.50207 81.0775     5</span></span>
-<span><span class="co">##  31.43847 28.83812 29.22532 41.9168     5</span></span></code></pre>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 46.84956 47.02153</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.17031 28.24871</span></span>
+<span><span class="co">##      mean   median       uq      max neval</span></span>
+<span><span class="co">##  53.35013 47.10870 47.24629 78.52460     5</span></span>
+<span><span class="co">##  31.03393 28.44063 28.62161 41.68838     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1455,7 +1522,7 @@ section.</p>
 <p>The function <code><a href="../reference/createStandardMixes.html">createStandardMixes()</a></code> allows for grouping
 of standard compounds with a minimum difference in m/z based on user
 input.</p>
-<div class="sourceCode" id="cb130"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RforMassSpectrometry/MetaboCoreUtils" class="external-link">MetaboCoreUtils</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="input-format">Input format<a class="anchor" aria-label="anchor" href="#input-format"></a>
@@ -1464,13 +1531,13 @@ input.</p>
 with their formula from a tab delimited text file provided with the
 package. Such files could also be imported from an xlsx sheet using the
 <em>readxl</em> package.</p>
-<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">standard</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Standard_list_example.txt"</span>,</span>
 <span>                               package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span>,</span>
 <span>                   header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, quote <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
 <p>We will use functions from the MetaboCoreUtil package to get the mass
 of each compounds and the m/z for the adducts wanted.</p>
-<div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#' Calculate mass based on formula of compounds</span></span>
 <span><span class="va">standard</span><span class="op">$</span><span class="va">mass</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetaboCoreUtils/man/calculateMass.html" class="external-link">calculateMass</a></span><span class="op">(</span><span class="va">standard</span><span class="op">$</span><span class="va">formula</span><span class="op">)</span></span>
 <span></span>
@@ -1490,7 +1557,7 @@ representing one compound. Columns are expected to contain m/z values
 for different adducts of that compound. Importantly, the row names of
 the matrix should represent the (unique) compound names (or any other
 unique identifier for the compound).</p>
-<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">standard_charged</span></span></code></pre></div>
 <pre><code><span><span class="co">##                                                         [M+H]+   [M+Na]+</span></span>
 <span><span class="co">## 2-Acetylpyrazine                                     123.05529 145.03723</span></span>
@@ -1603,7 +1670,7 @@ all ions (adducts) have a m/z difference exceeding a user-defined
 threshold (default: <code>min_diff = 2</code>). In this initial example,
 we aim to group only a subset of our compound list and execute the
 function with default parameters:</p>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group_no_randomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">group_no_randomization</span></span></code></pre></div>
 <pre><code><span><span class="co">##                                                         [M+H]+   [M+Na]+ group</span></span>
@@ -1628,14 +1695,14 @@ function with default parameters:</p>
 <span><span class="co">## Phosphorylcholine chloride calcium salt tetrahydrate 185.08115 207.06309     2</span></span>
 <span><span class="co">## Imidazole                                             69.04472  91.02667     2</span></span></code></pre>
 <p>Let’s see the number of compounds per group:</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_no_randomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  1  2 </span></span>
 <span><span class="co">## 10 10</span></span></code></pre>
 <p>The grouping here worked perfectly, but let’s now use the entire
 compound list and run with the default parameter again:</p>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group_no_randomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">group_no_randomization</span><span class="op">$</span><span class="va">group</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -1643,7 +1710,7 @@ compound list and run with the default parameter again:</p>
 <span><span class="co">## 10 10 10 10 10 10 10 10 10  7  3</span></span></code></pre>
 <p>This time we can see that the grouping is less ideal. In this case we
 can switch the <code>iterativeRandomization = TRUE</code>.</p>
-<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">group_with_ramdomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span>,</span>
 <span>                                                iterativeRandomization <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -1661,7 +1728,7 @@ hard to fit, this function can take a bit longer if
 compounds, and with a minimum difference of 2 m/z between compounds of
 the same group? If you want to know more about the parameters of this
 function, look at <code><a href="../reference/createStandardMixes.html">?createStandardMixes</a></code>.</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">group_with_ramdomization</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createStandardMixes.html">createStandardMixes</a></span><span class="op">(</span><span class="va">standard_charged</span>,</span>
 <span>                                                max_nstd <span class="op">=</span> <span class="fl">15</span>,</span>
@@ -1677,7 +1744,7 @@ function, look at <code><a href="../reference/createStandardMixes.html">?createS
 already returns a <code>data.frame</code>, you can directly save is as
 an Excel file using <code>write_xlsx()</code> from the <em>writexl</em>
 R package or as below in text format that can also be open in Excel.</p>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.table</a></span><span class="op">(</span><span class="va">group_with_ramdomization</span>,</span>
 <span>           file <span class="op">=</span> <span class="st">"standard_mixes.txt"</span>, sep <span class="op">=</span> <span class="st">"\t"</span>, quote <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -1711,16 +1778,17 @@ R package or as below in text format that can also be open in Excel.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
 <span><span class="co">##  [1] MetaboCoreUtils_1.17.1      microbenchmark_1.5.0       </span></span>
-<span><span class="co">##  [3] msdata_0.49.0               QFeatures_1.19.2           </span></span>
-<span><span class="co">##  [5] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2</span></span>
-<span><span class="co">##  [7] Biobase_2.69.1              GenomicRanges_1.61.5       </span></span>
-<span><span class="co">##  [9] Seqinfo_0.99.2              IRanges_2.43.5             </span></span>
-<span><span class="co">## [11] MatrixGenerics_1.21.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">## [13] Spectra_1.19.9              BiocParallel_1.43.4        </span></span>
-<span><span class="co">## [15] S4Vectors_0.47.4            MetaboAnnotation_1.13.2    </span></span>
-<span><span class="co">## [17] AnnotationHub_3.99.6        BiocFileCache_2.99.6       </span></span>
-<span><span class="co">## [19] dbplyr_2.5.1                BiocGenerics_0.55.3        </span></span>
-<span><span class="co">## [21] generics_0.1.4              BiocStyle_2.37.1           </span></span>
+<span><span class="co">##  [3] msentropy_0.1.4             Rcpp_1.1.0                 </span></span>
+<span><span class="co">##  [5] msdata_0.49.0               QFeatures_1.19.2           </span></span>
+<span><span class="co">##  [7] MultiAssayExperiment_1.35.9 SummarizedExperiment_1.39.2</span></span>
+<span><span class="co">##  [9] Biobase_2.69.1              GenomicRanges_1.61.5       </span></span>
+<span><span class="co">## [11] Seqinfo_0.99.2              IRanges_2.43.5             </span></span>
+<span><span class="co">## [13] MatrixGenerics_1.21.0       matrixStats_1.5.0          </span></span>
+<span><span class="co">## [15] Spectra_1.19.10             BiocParallel_1.43.4        </span></span>
+<span><span class="co">## [17] S4Vectors_0.47.4            MetaboAnnotation_1.13.3    </span></span>
+<span><span class="co">## [19] AnnotationHub_3.99.6        BiocFileCache_2.99.6       </span></span>
+<span><span class="co">## [21] dbplyr_2.5.1                BiocGenerics_0.55.3        </span></span>
+<span><span class="co">## [23] generics_0.1.4              BiocStyle_2.37.1           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
 <span><span class="co">##  [1] DBI_1.2.3               bitops_1.0-9            gridExtra_2.3          </span></span>
@@ -1735,27 +1803,27 @@ R package or as below in text format that can also be open in Excel.</p>
 <span><span class="co">## [28] blob_1.2.4              DelayedArray_0.35.3     parallel_4.5.1         </span></span>
 <span><span class="co">## [31] cluster_2.1.8.1         R6_2.6.1                bslib_0.9.0            </span></span>
 <span><span class="co">## [34] stringi_1.8.7           RColorBrewer_1.1-3      jquerylib_0.1.4        </span></span>
-<span><span class="co">## [37] Rcpp_1.1.0              bookdown_0.45           knitr_1.50             </span></span>
-<span><span class="co">## [40] base64enc_0.1-3         BiocBaseUtils_1.11.2    igraph_2.2.0           </span></span>
-<span><span class="co">## [43] Matrix_1.7-4            tidyselect_1.2.1        abind_1.4-8            </span></span>
-<span><span class="co">## [46] yaml_2.3.10             codetools_0.2-20        curl_7.0.0             </span></span>
-<span><span class="co">## [49] plyr_1.8.9              lattice_0.22-7          tibble_3.3.0           </span></span>
-<span><span class="co">## [52] withr_3.0.2             KEGGREST_1.49.2         S7_0.2.0               </span></span>
-<span><span class="co">## [55] evaluate_1.0.5          desc_1.4.3              xml2_1.4.0             </span></span>
-<span><span class="co">## [58] Biostrings_2.77.2       pillar_1.11.1           BiocManager_1.30.26    </span></span>
-<span><span class="co">## [61] filelock_1.0.3          DT_0.34.0               ncdf4_1.24             </span></span>
-<span><span class="co">## [64] RCurl_1.98-1.17         BiocVersion_3.22.0      ggplot2_4.0.0          </span></span>
-<span><span class="co">## [67] scales_1.4.0            glue_1.8.0              lazyeval_0.2.2         </span></span>
-<span><span class="co">## [70] tools_4.5.1             mzR_2.43.3              fs_1.6.6               </span></span>
-<span><span class="co">## [73] grid_4.5.1              tidyr_1.3.1             MsCoreUtils_1.21.0     </span></span>
-<span><span class="co">## [76] AnnotationDbi_1.71.1    cli_3.6.5               rappdirs_0.3.3         </span></span>
-<span><span class="co">## [79] textshaping_1.0.4       rsvg_2.7.0              S4Arrays_1.9.1         </span></span>
-<span><span class="co">## [82] dplyr_1.1.4             AnnotationFilter_1.33.0 gtable_0.3.6           </span></span>
-<span><span class="co">## [85] sass_0.4.10             digest_0.6.37           SparseArray_1.9.1      </span></span>
-<span><span class="co">## [88] rjson_0.2.23            htmlwidgets_1.6.4       farver_2.1.2           </span></span>
-<span><span class="co">## [91] memoise_2.0.1           htmltools_0.5.8.1       pkgdown_2.1.3.9000     </span></span>
-<span><span class="co">## [94] lifecycle_1.0.4         httr_1.4.7              CompoundDb_1.13.0      </span></span>
-<span><span class="co">## [97] bit64_4.6.0-1           MASS_7.3-65</span></span></code></pre>
+<span><span class="co">## [37] bookdown_0.45           knitr_1.50              base64enc_0.1-3        </span></span>
+<span><span class="co">## [40] BiocBaseUtils_1.11.2    igraph_2.2.0            Matrix_1.7-4           </span></span>
+<span><span class="co">## [43] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.10            </span></span>
+<span><span class="co">## [46] codetools_0.2-20        curl_7.0.0              plyr_1.8.9             </span></span>
+<span><span class="co">## [49] lattice_0.22-7          tibble_3.3.0            withr_3.0.2            </span></span>
+<span><span class="co">## [52] KEGGREST_1.49.2         S7_0.2.0                evaluate_1.0.5         </span></span>
+<span><span class="co">## [55] desc_1.4.3              xml2_1.4.0              Biostrings_2.77.2      </span></span>
+<span><span class="co">## [58] pillar_1.11.1           BiocManager_1.30.26     filelock_1.0.3         </span></span>
+<span><span class="co">## [61] DT_0.34.0               ncdf4_1.24              RCurl_1.98-1.17        </span></span>
+<span><span class="co">## [64] BiocVersion_3.22.0      ggplot2_4.0.0           scales_1.4.0           </span></span>
+<span><span class="co">## [67] glue_1.8.0              lazyeval_0.2.2          tools_4.5.1            </span></span>
+<span><span class="co">## [70] mzR_2.43.3              fs_1.6.6                grid_4.5.1             </span></span>
+<span><span class="co">## [73] tidyr_1.3.1             MsCoreUtils_1.21.0      AnnotationDbi_1.71.2   </span></span>
+<span><span class="co">## [76] cli_3.6.5               rappdirs_0.3.3          textshaping_1.0.4      </span></span>
+<span><span class="co">## [79] rsvg_2.7.0              S4Arrays_1.9.1          dplyr_1.1.4            </span></span>
+<span><span class="co">## [82] AnnotationFilter_1.33.0 gtable_0.3.6            sass_0.4.10            </span></span>
+<span><span class="co">## [85] digest_0.6.37           SparseArray_1.9.1       rjson_0.2.23           </span></span>
+<span><span class="co">## [88] htmlwidgets_1.6.4       farver_2.1.2            memoise_2.0.1          </span></span>
+<span><span class="co">## [91] htmltools_0.5.8.1       pkgdown_2.1.3.9000      lifecycle_1.0.4        </span></span>
+<span><span class="co">## [94] httr_1.4.7              CompoundDb_1.13.0       bit64_4.6.0-1          </span></span>
+<span><span class="co">## [97] MASS_7.3-65</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
