@@ -1,9 +1,14 @@
 # MetaboAnnotation 1.13
 
+## Changes in 1.13.3
+
+- Expand documentation for `CompareSpectraParam` to also mention use of
+  *msentropy* or GNPS-like similarity calculation.
+
 ## Changes in 1.13.2
 
-- For `plotSpectraMirror,MatchedSpectra` method, we now pass the available 
-  `ppm` and `tolerance` value that were used in the creation of the object. 
+- For `plotSpectraMirror,MatchedSpectra` method, we now pass the available
+  `ppm` and `tolerance` value that were used in the creation of the object.
 
 ## Changes in 1.13.1
 

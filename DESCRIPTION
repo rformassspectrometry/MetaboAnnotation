@@ -1,6 +1,6 @@
 Package: MetaboAnnotation
 Title: Utilities for Annotation of Metabolomics Data
-Version: 1.13.2
+Version: 1.13.3
 Description:
     High level functions to assist in annotation of (metabolomics) data sets.
     These include functions to perform simple tentative annotations based on
@@ -58,6 +58,7 @@ Suggests:
     plotly,
     shiny,
     shinyjs,
+    msentropy,
     DT,
     microbenchmark,
     mzR
