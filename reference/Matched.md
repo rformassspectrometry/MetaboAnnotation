@@ -1,0 +1,1025 @@
+# Representation of generic objects matches
+
+Matches between *query* and *target* generic objects can be represented
+by the `Matched` object. By default, all data accessors work as *left
+joins* between the *query* and the *target* object, i.e. values are
+returned for each *query* object with eventual duplicated entries
+(values) if the *query* object matches more than one *target* object.
+See also *Creation and subsetting* as well as *Extracting data* sections
+below for details and more information.
+
+The `Matched` object allows to represent matches between one-dimensional
+`query` and `target` objects (being e.g. `numeric` or `list`),
+two-dimensional objects (`data.frame` or `matrix`) or more complex
+structures such as `SummarizedExperiments` or `QFeatures`. Combinations
+of all these different data types are also supported. Matches are
+represented between elements of one-dimensional objects, or rows for
+two-dimensional objects (including `SummarizedExperiment` or
+`QFeatures`). For
+[`QFeatures::QFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.html)
+objects matches to only one of the *assays* within the object is
+supported.
+
+## Usage
+
+``` r
+addMatches(object, ...)
+
+endoapply(X, FUN, ...)
+
+filterMatches(object, param, ...)
+
+matchedData(object, ...)
+
+queryVariables(object, ...)
+
+targetVariables(object, ...)
+
+Matched(
+  query = list(),
+  target = list(),
+  matches = data.frame(query_idx = integer(), target_idx = integer(), score = numeric()),
+  queryAssay = character(),
+  targetAssay = character(),
+  metadata = list()
+)
+
+# S4 method for class 'Matched'
+length(x)
+
+# S4 method for class 'Matched'
+show(object)
+
+# S4 method for class 'Matched,ANY,ANY,ANY'
+x[i, j, ..., drop = FALSE]
+
+matches(object)
+
+target(object)
+
+# S4 method for class 'Matched'
+query(x, pattern, ...)
+
+targetIndex(object)
+
+queryIndex(object)
+
+whichTarget(object)
+
+whichQuery(object)
+
+# S4 method for class 'Matched'
+x$name
+
+# S4 method for class 'Matched'
+colnames(x)
+
+scoreVariables(object)
+
+# S4 method for class 'Matched'
+queryVariables(object)
+
+# S4 method for class 'Matched'
+targetVariables(object)
+
+# S4 method for class 'Matched'
+matchedData(object, columns = colnames(object), ...)
+
+pruneTarget(object)
+
+# S4 method for class 'Matched,missing'
+filterMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE,
+  ...
+)
+
+SelectMatchesParam(
+  queryValue = numeric(),
+  targetValue = numeric(),
+  queryColname = character(),
+  targetColname = character(),
+  index = integer(),
+  keep = TRUE
+)
+
+TopRankedMatchesParam(n = 1L, decreasing = FALSE)
+
+ScoreThresholdParam(threshold = 0, above = FALSE, column = "score")
+
+# S4 method for class 'Matched,SelectMatchesParam'
+filterMatches(object, param, ...)
+
+# S4 method for class 'Matched,TopRankedMatchesParam'
+filterMatches(object, param, ...)
+
+# S4 method for class 'Matched,ScoreThresholdParam'
+filterMatches(object, param, ...)
+
+SingleMatchParam(
+  duplicates = c("remove", "closest", "top_ranked"),
+  column = "score",
+  decreasing = TRUE
+)
+
+# S4 method for class 'Matched,SingleMatchParam'
+filterMatches(object, param, ...)
+
+# S4 method for class 'Matched'
+addMatches(
+  object,
+  queryValue = integer(),
+  targetValue = integer(),
+  queryColname = character(),
+  targetColname = character(),
+  score = rep(NA_real_, length(queryValue)),
+  isIndex = FALSE
+)
+
+# S4 method for class 'ANY'
+endoapply(X, FUN, ...)
+
+# S4 method for class 'Matched'
+endoapply(X, FUN, ...)
+
+# S4 method for class 'Matched'
+lapply(X, FUN, ...)
+```
+
+## Arguments
+
+- object:
+
+  a `Matched` object.
+
+- ...:
+
+  additional parameters.
+
+- X:
+
+  `Matched` object.
+
+- FUN:
+
+  for `lapply` and `endoapply`: user defined `function` that takes a
+  `Matched` object as a first parameter and possibly additional
+  parameters (that need to be provided in the `lapply` or `endoapply`
+  call. For lapply `FUN` can return any object while for `endoapply` it
+  must return a `Matched` object.
+
+- param:
+
+  for `filterMatches`: parameter object to select and customize the
+  filtering procedure.
+
+- query:
+
+  object with the query elements.
+
+- target:
+
+  object with the elements against which `query` has been matched.
+
+- matches:
+
+  `data.frame` with columns `"query_idx"` (`integer`), `"target_idx"`
+  (`integer`) and `"score"` (`numeric`) representing the n:m mapping of
+  elements between the `query` and the `target` objects.
+
+- queryAssay:
+
+  `character` that needs to be specified when `query` is a `QFeatures`.
+  In this case, `queryAssay` is expected to be the name of one of the
+  assays in `query` (the one on which the matching was performed).
+
+- targetAssay:
+
+  `character` that needs to be specified when `target` is a `QFeatures`.
+  In this case, `targetAssay` is expected to be the name of one of the
+  assays in `target` (the one on which the matching was performed).
+
+- metadata:
+
+  `list` with optional additional metadata.
+
+- x:
+
+  `Matched` object.
+
+- i:
+
+  `integer` or `logical` defining the `query` elements to keep.
+
+- j:
+
+  for `[`: ignored.
+
+- drop:
+
+  for `[`: ignored.
+
+- pattern:
+
+  for `query`: ignored.
+
+- name:
+
+  for `$`: the name of the column (or variable) to extract.
+
+- columns:
+
+  for `matchedData`: `character` vector with column names of variables
+  that should be extracted.
+
+- queryValue:
+
+  for `SelectMatchesParam`: vector of values to search for in `query`
+  (if `query` is 1-dimensional) or in column `queryColname` of `query`
+  (if `query` is 2-dimensional). For `addMatches`: either an index in
+  `query` or value in column `queryColname` of `query` defining
+  (together with `targetValue`) the pair of query and target elements
+  for which a match should be manually added. Lengths of `queryValue`
+  and `targetValue` have to match.
+
+- targetValue:
+
+  for `SelectMatchesParam`: vector of values to search for in `target`
+  (if `target` is 1-dimensional) or in column `targetColname` of
+  `target` (if `target` is 2-dimensional). For `addMatches`: either an
+  index in `target` or value in column `targetColname` of `target`
+  defining (together with `queryValue`) the pair of query and target
+  elements for which a match should be manually added. Lengths of
+  `queryValue` and `targetValue` have to match.
+
+- queryColname:
+
+  for `SelectMatchesParam`: if `query` is 2-dimensional it represents
+  the column of `query` against which elements of `queryValue` are
+  compared.
+
+- targetColname:
+
+  for `SelectMatchesParam`: if `query` is 2-dimensional it represents
+  the column of `target` against which elements of `targetValue` are
+  compared.
+
+- index:
+
+  for `SelectMatchesParam`: indices of the matches to keep (if
+  `keep = TRUE`) or to drop if (`keep = FALSE`).
+
+- keep:
+
+  for `SelectMatchesParam`: `logical`. If `keep = TRUE` the matches are
+  kept, if `keep = FALSE` they are removed.
+
+- n:
+
+  for `TopRankedMatchesParam`: `integer(1)` with number of best ranked
+  matches to keep for each `query` element.
+
+- decreasing:
+
+  for `TopRankedMatchesParam`: `logical(1)` whether scores should be
+  ordered increasing or decreasing. Defaults to `decreasing = FALSE`.
+
+- threshold:
+
+  for `ScoreThresholdParam` : `numeric(1)` specifying the threshold to
+  consider for the filtering.
+
+- above:
+
+  for `ScoreThresholdParam` : `logical(1)` specifying whether to keep
+  matches above (`above = TRUE`) or below (`above = FALSE`) a certain
+  threshold.
+
+- column:
+
+  for `ScoreThresholdParam`: `character(1)` specifying the name of the
+  score variable to consider for the filtering (the default is
+  `column = "score"`). For `SingleMatchParam`: `character(1)` defining
+  the name of the column to be used for de-duplication. See description
+  of `SingleMatchParam` in the *Filtering and subsetting* section for
+  details.
+
+- duplicates:
+
+  for `SingleMatchParam`: `character(1)` defining the *de-duplication*
+  strategy. See the description of `SingleMatchParam` in the *Filtering
+  and subsetting* subsection for choices and details.
+
+- score:
+
+  for `addMatches`: `numeric` (same length than `queryValue`) or
+  `data.frame` (same number of rows than `queryValue`) specifying the
+  scores for the matches to add. If not specified, a `NA` will be used
+  as score.
+
+- isIndex:
+
+  for `addMatches`: specifies if `queryValue` and `targetValue` are
+  expected to be vectors of indices.
+
+## Value
+
+See individual method description above for details.
+
+## Creation and general handling
+
+`Matched` object is returned as result from the
+[`matchValues()`](https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.md)
+function.
+
+Alternatively, `Matched` objects can also be created with the `Matched`
+function providing the `query` and `target` objects as well as the
+`matches` `data.frame` with two columns of integer indices defining
+which elements from *query* match which element from *target*.
+
+- `addMatches`: add new matches to an existing object. Parameters
+  `queryValue` and `targetValue` allow to define which element(s) in
+  `query` and `target` should be considered matching. If
+  `isIndex = TRUE`, both `queryValue` and `targetValue` are considered
+  to be integer indices identifying the matching elements in `query` and
+  `target`, respectively. Alternatively (with `isIndex = FALSE`)
+  `queryValue` and `targetValue` can be elements in columns
+  `queryColname` or `targetColname` which can be used to identify the
+  matching elements. Note that in this case **only the first** matching
+  pair is added. Parameter `score` allows to provide the score for the
+  match. It can be a numeric with the score or a `data.frame` with
+  additional information on the manually added matches. In both cases
+  its length (or number of rows) has to match the length of
+  `queryValue`. See examples below for more information.
+
+- `endoapply`: applies a user defined function `FUN` to each subset of
+  matches in a `Matched` object corresponding to a `query` element (i.e.
+  for each `x[i]` with `i` being 1 to `length(x)`). The results are then
+  combined in a single `Matched` object representing updated matches.
+  Note that `FUN` has to return a `Matched` object.
+
+- `lapply`: applies a user defined function `FUN` to each subset of
+  matches in a `Matched` object for each `query` element (i.e. to each
+  `x[i]` with `i` from `1` to `length(x)`). It returns a `list` of
+  `length(object)` elements where each element is the output of `FUN`
+  applied to each subset of matches.
+
+## Filtering and subsetting
+
+- `[`: subset the object selecting `query` object elements to keep with
+  parameter `i`. The resulting object will contain all the matches for
+  the selected query elements. The `target` object will by default be
+  returned as-is.
+
+- `filterMatches`: filter matches in a `Matched` object using different
+  approaches depending on the class of `param`:
+
+  - `ScoreThresholdParam`: keeps only the matches whose score is
+    strictly above or strictly below a certain threshold (respectively
+    when parameter `above = TRUE` and `above = FALSE`). The name of the
+    column containing the scores to be used for the filtering can be
+    specified with parameter `column`. The default for `column` is
+    `"score"`. Such variable is present in each `Matched` object. The
+    name of other score variables (if present) can be provided (the
+    names of all score variables can be obtained with `scoreVariables()`
+    function). For example `column = "score_rt"` can be used to filter
+    matches based on retention time scores for `Matched` objects
+    returned by
+    [`matchValues()`](https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.md)
+    when `param` objects involving a retention time comparison are used.
+
+  - `SelectMatchesParam`: keeps or removes (respectively when parameter
+    `keep = TRUE` and `keep = FALSE`) matches corresponding to certain
+    indices or values of `query` and `target`. If `queryValue` and
+    `targetValue` are provided, matches for these value pairs are kept
+    or removed. Parameter
+    index`allows to filter matches providing their index in the [matches()] matrix. Note that`filterMatches`removes only matches from the [matches()] matrix from the`Matched`object but thus not alter the`query`or`target\`
+    in the object. See examples below for more information.
+
+  - `SingleMatchParam`: reduces matches to keep only (at most) a single
+    match per query. The deduplication strategy can be defined with
+    parameter `duplicates`:
+
+    - `duplicates = "remove"`: all matches for query elements matching
+      more than one target element will be removed.
+
+    - `duplicates = "closest"`: keep only the *closest* match for each
+      query element. The closest match is defined by the value(s) of
+      *score* (and eventually *score_rt*, if present). The one match
+      with the smallest value for this (these) column(s) is retained.
+      This is equivalent to
+      `TopRankedMatchesParam(n = 1L, decreasing = FALSE)`.
+
+    - `duplicates = "top_ranked"`: select the *best ranking* match for
+      each query element. Parameter `column` allows to specify the
+      column by which matches are ranked (use `targetVariables(object)`
+      or `scoreVariables(object)` to list possible columns). Parameter
+      `decreasing` allows to define whether the match with the highest
+      (`decreasing = TRUE`) or lowest (`decreasing = FALSE`) value in
+      `column` for each *query* will be selected.
+
+  - `TopRankedMatchesParam`: for each query element the matches are
+    ranked according to their score and only the `n` best of them are
+    kept (if `n` is larger than the number of matches for a given query
+    element all the matches are returned). For the ranking (ordering)
+    R's `rank` function is used on the absolute values of the scores
+    (variable `"score"`), thus, smaller score values (representing e.g.
+    smaller differences between expected and observed m/z values) are
+    considered *better*. By setting parameter `decreasing = TRUE`
+    matches can be ranked in decreasing order (i.e. higher scores are
+    ranked higher and are thus selected). If besides variable `"score"`
+    also variable `"score_rt"` is available in the `Matched` object
+    (which is the case for the `Matched` object returned by
+    [`matchValues()`](https://rformassspectrometry.github.io/MetaboAnnotation/reference/matchValues.md)
+    for `param` objects involving a retention time comparison), the
+    ordering of the matches is based on the product of the ranks of the
+    two variables (ranking of retention time differences is performed on
+    the absolute value of `"score_rt"`). Thus, matches with small (or,
+    depending on parameter `decreasing`, large) values for `"score"`
+    **and** `"score_rt"` are returned.
+
+- `pruneTarget`: *cleans* the object by removing non-matched **target**
+  elements.
+
+## Extracting data
+
+- `$` extracts a single variable from the `Matched` `x`. The variables
+  that can be extracted can be listed using `colnames(x)`. These
+  variables can belong to *query*, *target* or be related to the matches
+  (e.g. the score of each match). If the *query* (*target*) object is
+  two dimensional, its columns can be extracted (prefix` "target_"` is
+  used for columns in the *target* object) otherwise if *query*
+  (*target*) has only a single dimension (e.g. is a `list` or a
+  `character`) the whole object can be extracted with `x$query`
+  (`x$target`). More precisely, when *query* (*target*) is a
+  `SummarizedExperiment` the columns from `rowData(query)`
+  (rowData(`target`)) are extracted; when *query* (*target*) is a
+  [`QFeatures::QFeatures()`](https://rformassspectrometry.github.io/QFeatures/reference/QFeatures-class.html)
+  the columns from `rowData` of the assay specified in the `queryAssay`
+  (`targetAssay`) slot are extracted. The matching scores are available
+  as *variable* `"score"`. Similar to a left join between the query and
+  target elements, this function returns a value for each query element,
+  with eventual duplicated values for query elements matching more than
+  one target element. If variables from the target `data.frame` are
+  extracted, an `NA` is reported for the entries corresponding to
+  *query* elements that don't match any target element. See examples
+  below for more details.
+
+- `length` returns the number of **query** elements.
+
+- `matchedData` allows to extract multiple variables contained in the
+  `Matched` object as a `DataFrame`. Parameter `columns` allows to
+  define which columns (or variables) should be returned (defaults to
+  `columns = colnames(object)`). Each single column in the returned
+  `DataFrame` is constructed in the same way as in `$`. That is, like
+  `$`, this function performs a *left join* of variables from the
+  *query* and *target* objects returning all values for all *query*
+  elements (eventually returning duplicated elements for query elements
+  matching multiple target elements) and the values for the target
+  elements matched to the respective query elements (or `NA` if the
+  target element is not matched to any query element).
+
+- `matches` returns a `data.frame` with the actual matching information
+  with columns `"query_idx"` (index of the element in `query`),
+  `"target_idx"` (index of the element in `target`) `"score"` (the score
+  of the match) and eventual additional columns.
+
+- `target` returns the *target* object.
+
+- `targetIndex` returns the indices of the matched targets in the order
+  they are assigned to the query elements. The length of the returned
+  `integer` vector is equal to the total number of matches in the
+  object. `targetIndex` and `queryIndex` are aligned, i.e. each element
+  in them represent a matched query-target pair.
+
+- `query` returns the *query* object.
+
+- `queryIndex` returns the indices of the query elements with matches to
+  target elements. The length of the returned `integer` vector is equal
+  to the total number of matches in the object. `targetIndex` and
+  `queryIndex` are aligned, i.e. each element in them represent a
+  matched query-target pair.
+
+- `queryVariables` returns the names of the variables (columns) in
+  *query*.
+
+- `scoreVariables` returns the names of the score variables stored in
+  the `Matched` object (precisely the names of the variables in
+  `matches(object)` containing the string "score" in their name ignoring
+  the case).
+
+- `targetVariables` returns the names of the variables (columns) in
+  *target* (prefixed with `"target_"`).
+
+- `whichTarget` returns an `integer` with the indices of the elements in
+  *target* that match at least one element in *query*.
+
+- `whichQuery` returns an `integer` with the indices of the elements in
+  *query* that match at least one element in *target*.
+
+## See also
+
+[`MatchedSpectra()`](https://rformassspectrometry.github.io/MetaboAnnotation/reference/MatchedSpectra.md)
+for matched
+[`Spectra::Spectra()`](https://rdrr.io/pkg/Spectra/man/Spectra.html)
+objects.
+
+## Author
+
+Andrea Vicini, Johannes Rainer
+
+## Examples
+
+``` r
+
+## Creating a `Matched` object.
+q1 <- data.frame(col1 = 1:5, col2 = 6:10)
+t1 <- data.frame(col1 = 11:16, col2 = 17:22)
+## Define matches between query row 1 with target row 2 and, query row 2
+## with target rows 2,3,4 and query row 5 with target row 5.
+mo <- Matched(
+    q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                 target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                 score = seq(0.5, 0.9, by = 0.1)))
+mo
+#> Object of class Matched 
+#> Total number of matches: 5 
+#> Number of query objects: 5 (3 matched)
+#> Number of target objects: 6 (4 matched)
+
+## Which of the query elements (rows) match at least one target
+## element (row)?
+whichQuery(mo)
+#> [1] 1 2 5
+
+## Which target elements (rows) match at least one query element (row)?
+whichTarget(mo)
+#> [1] 2 3 4 5
+
+## Extracting variable "col1" from query object .
+mo$col1
+#> [1] 1 2 2 2 3 4 5
+
+## We have duplicated values for the entries of `col1` related to query
+## elements (rows) matched to multiple rows of the target object). The
+## value of `col1` is returned for each element (row) in the query.
+
+## Extracting variable "col1" from target object. To access columns from
+## target we have to prefix the name of the column by `"target_"`.
+## Note that only values of `col1` for rows matching at least one query
+## row are returned and an NA is reported for query rows without matching
+## target rows.
+mo$target_col1
+#> [1] 12 12 13 14 NA NA 15
+
+## The 3rd and 4th query rows do not match any target row, thus `NA` is
+## returned.
+
+## `matchedData` can be used to extract all (or selected) columns
+## from the object. Same as with `$`, a left join between the columns
+## from the query and the target is performed. Below we extract selected
+## columns from the object as a DataFrame.
+res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+                                   "target_col2"))
+res
+#> DataFrame with 7 rows and 4 columns
+#>          col1      col2 target_col1 target_col2
+#>     <integer> <integer>   <integer>   <integer>
+#> 1           1         6          12          18
+#> 2           2         7          12          18
+#> 2.1         2         7          13          19
+#> 2.2         2         7          14          20
+#> 3           3         8          NA          NA
+#> 4           4         9          NA          NA
+#> 5           5        10          15          21
+res$col1
+#> [1] 1 2 2 2 3 4 5
+res$target_col1
+#> [1] 12 12 13 14 NA NA 15
+
+## With the `queryIndex` and `targetIndex` it is possible to extract the
+## indices of the matched query-target pairs:
+queryIndex(mo)
+#> [1] 1 2 2 2 5
+targetIndex(mo)
+#> [1] 2 2 3 4 5
+
+## Hence, the first match is between the query with index 1 to the target
+## with index 2, then, query with index 2 is matched to target with index 2
+## and so on.
+
+## The example matched object contains all query and all target
+## elements (rows). Below we subset the object keeping only query rows that
+## are matched to at least one target row.
+mo_sub <- mo[whichQuery(mo)]
+
+## mo_sub contains now only 3 query rows:
+nrow(query(mo_sub))
+#> [1] 3
+
+## while the original object contains all 5 query rows:
+nrow(query(mo))
+#> [1] 5
+
+## Both objects contain however still the full target object:
+nrow(target(mo))
+#> [1] 6
+nrow(target(mo_sub))
+#> [1] 6
+
+## With the `pruneTarget` we can however reduce also the target rows to
+## only those that match at least one query row
+mo_sub <- pruneTarget(mo_sub)
+nrow(target(mo_sub))
+#> [1] 4
+
+########
+## Creating a `Matched` object with a `data.frame` for `query` and a `vector`
+## for `target`. The matches are specified in the same way as the example
+## before.
+
+q1 <- data.frame(col1 = 1:5, col2 = 6:10)
+t2 <- 11:16
+mo <- Matched(q1, t2, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+    target_idx = c(2L, 2L, 3L, 4L, 5L), score = seq(0.5, 0.9, by = 0.1)))
+
+## *target* is a simple vector and has thus no columns. The matched values
+## from target, if it does not have dimensions and hence column names, can
+## be retrieved with `$target`
+mo$target
+#> [1] 12 12 13 14 NA NA 15
+
+## Note that in this case "target" is returned by the function `colnames`
+colnames(mo)
+#> [1] "col1"   "col2"   "target" "score" 
+
+## As before, we can extract all data as a `DataFrame`
+res <- matchedData(mo)
+res
+#> DataFrame with 7 rows and 4 columns
+#>          col1      col2 target     score
+#>     <integer> <integer> <AsIs> <numeric>
+#> 1           1         6     12       0.5
+#> 2           2         7     12       0.6
+#> 2.1         2         7     13       0.7
+#> 2.2         2         7     14       0.8
+#> 3           3         8     NA        NA
+#> 4           4         9     NA        NA
+#> 5           5        10     15       0.9
+
+## Note that the columns of the obtained `DataFrame` are the same as the
+## corresponding vectors obtained with `$`
+res$col1
+#> [1] 1 2 2 2 3 4 5
+res$target
+#> [1] 12 12 13 14 NA NA 15
+
+## Also subsetting and pruning works in the same way as the example above.
+
+mo_sub <- mo[whichQuery(mo)]
+
+## mo_sub contains now only 3 query rows:
+nrow(query(mo_sub))
+#> [1] 3
+
+## while the original object contains all 5 query rows:
+nrow(query(mo))
+#> [1] 5
+
+## Both object contain however still the full target object:
+length(target(mo))
+#> [1] 6
+length(target(mo_sub))
+#> [1] 6
+
+## Reducing the target elements to only those that match at least one query
+## row
+mo_sub <- pruneTarget(mo_sub)
+length(target(mo_sub))
+#> [1] 4
+
+########
+## Filtering `Matched` with `filterMatches`
+
+## Inspecting the matches in `mo`:
+mo$col1
+#> [1] 1 2 2 2 3 4 5
+mo$target
+#> [1] 12 12 13 14 NA NA 15
+
+## We have thus target *12* matched to both query elements with values 1 and
+## 2, and query element 2 is matching 3 target elements. Let's assume we want
+## to resolve this multiple mappings to keep from them only the match between
+## query 1 (column `"col1"` containing value `1`) with target 1 (value `12`)
+## and query 2 (column `"col1"` containing value `2`) with target 2 (value
+## `13`). In addition we also want to keep query element 5 (value `5` in
+## column `"col1"`) with the target with value `15`:
+mo_sub <- filterMatches(mo,
+    SelectMatchesParam(queryValue = c(1, 2, 5), queryColname = "col1",
+                       targetValue = c(12, 13, 15)))
+matchedData(mo_sub)
+#> DataFrame with 5 rows and 4 columns
+#>        col1      col2 target     score
+#>   <integer> <integer> <AsIs> <numeric>
+#> 1         1         6     12       0.5
+#> 2         2         7     13       0.7
+#> 3         3         8     NA        NA
+#> 4         4         9     NA        NA
+#> 5         5        10     15       0.9
+
+## Alternatively to specifying the matches to filter with `queryValue` and
+## `targetValue` it is also possible to specify directly the index of the
+## match(es) in the `matches` `data.frame`:
+matches(mo)
+#>   query_idx target_idx score
+#> 1         1          2   0.5
+#> 2         2          2   0.6
+#> 3         2          3   0.7
+#> 4         2          4   0.8
+#> 5         5          5   0.9
+
+## To keep only matches like in the example above we could use:
+mo_sub <- filterMatches(mo, SelectMatchesParam(index = c(1, 3, 5)))
+matchedData(mo_sub)
+#> DataFrame with 5 rows and 4 columns
+#>        col1      col2 target     score
+#>   <integer> <integer> <AsIs> <numeric>
+#> 1         1         6     12       0.5
+#> 2         2         7     13       0.7
+#> 3         3         8     NA        NA
+#> 4         4         9     NA        NA
+#> 5         5        10     15       0.9
+
+## Note also that, instead of keeping the specified matches, it would be
+## possible to remove them by setting `keep = FALSE`. Below we remove
+## selected matches from the object:
+mo_sub <- filterMatches(mo,
+    SelectMatchesParam(queryValue = c(2, 2), queryColname = "col1",
+                       targetValue = c(12, 14), keep = FALSE))
+mo_sub$col1
+#> [1] 1 2 3 4 5
+mo_sub$target
+#> [1] 12 13 NA NA 15
+
+## As alternative to *manually* selecting matches it is also possible to
+## filter matches keeping only the *best matches* using the
+## `TopRankedMatchesParam`. This will rank matches for each query based on
+## their *score* value and select the best *n* matches with lowest score
+## values (i.e. smallest difference in m/z values).
+mo_sub <- filterMatches(mo, TopRankedMatchesParam(n = 1L))
+matchedData(mo_sub)
+#> DataFrame with 5 rows and 4 columns
+#>        col1      col2 target     score
+#>   <integer> <integer> <AsIs> <numeric>
+#> 1         1         6     12       0.5
+#> 2         2         7     12       0.6
+#> 3         3         8     NA        NA
+#> 4         4         9     NA        NA
+#> 5         5        10     15       0.9
+
+## Additionally it is possible to select matches based on a threshold
+## for their *score*. Below we keep matches with score below 0.75 (one
+## could select matches with *score* greater than the threshold by setting
+## `ScoreThresholdParam` parameter `above = TRUE`.
+mo_sub <- filterMatches(mo, ScoreThresholdParam(threshold = 0.75))
+matchedData(mo_sub)
+#> DataFrame with 6 rows and 4 columns
+#>          col1      col2 target     score
+#>     <integer> <integer> <AsIs> <numeric>
+#> 1           1         6     12       0.5
+#> 2           2         7     12       0.6
+#> 2.1         2         7     13       0.7
+#> 3           3         8     NA        NA
+#> 4           4         9     NA        NA
+#> 5           5        10     NA        NA
+
+########
+## Selecting the best match for each `query` element with `endoapply`
+
+## It is also possible to select for each `query` element the match with the
+## lowest score using `endoapply`. We manually define a function to select
+## the best match for each query and give it as input to `endoapply`
+## together with the `Matched` object itself. We obtain the same results as
+## in the `filterMatches` example above.
+
+FUN <- function(x) {
+    if(nrow(x@matches) > 1)
+        x@matches <- x@matches[order(x@matches$score)[1], , drop = FALSE]
+    x
+}
+
+mo_sub <- endoapply(mo, FUN)
+#> Error in as(from, to_class, strict = FALSE): no method or default for coercing “list” to “Matched”
+matchedData(mo_sub)
+#> DataFrame with 6 rows and 4 columns
+#>          col1      col2 target     score
+#>     <integer> <integer> <AsIs> <numeric>
+#> 1           1         6     12       0.5
+#> 2           2         7     12       0.6
+#> 2.1         2         7     13       0.7
+#> 3           3         8     NA        NA
+#> 4           4         9     NA        NA
+#> 5           5        10     NA        NA
+
+########
+## Adding matches using `addMatches`
+
+## `addMatches` allows to manually add matches. Below we add a new match
+## between the `query` element with a value of `1` in column `"col1"` and
+## the target element with a value of `15`. Parameter `score` allows to
+## assign a score value to the match.
+mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+    targetValue = 15, score = 1.40)
+matchedData(mo_add)
+#> DataFrame with 8 rows and 4 columns
+#>          col1      col2 target     score
+#>     <integer> <integer> <AsIs> <numeric>
+#> 1           1         6     12       0.5
+#> 1.1         1         6     15       1.4
+#> 2           2         7     12       0.6
+#> 2.1         2         7     13       0.7
+#> 2.2         2         7     14       0.8
+#> 3           3         8     NA        NA
+#> 4           4         9     NA        NA
+#> 5           5        10     15       0.9
+## Matches are always sorted by `query`, thus, the new match is listed as
+## second match.
+
+## Alternatively, we can also provide a `data.frame` with parameter `score`
+## which enables us to add additional information to the added match. Below
+## we define the score and an additional column specifying that this match
+## was added manually. This information will then also be available in the
+## `matchedData`.
+mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+    targetValue = 15, score = data.frame(score = 5, manual = TRUE))
+matchedData(mo_add)
+#> DataFrame with 8 rows and 5 columns
+#>          col1      col2 target     score    manual
+#>     <integer> <integer> <AsIs> <numeric> <logical>
+#> 1           1         6     12       0.5        NA
+#> 1.1         1         6     15       5.0      TRUE
+#> 2           2         7     12       0.6        NA
+#> 2.1         2         7     13       0.7        NA
+#> 2.2         2         7     14       0.8        NA
+#> 3           3         8     NA        NA        NA
+#> 4           4         9     NA        NA        NA
+#> 5           5        10     15       0.9        NA
+
+## The match will get a score of NA if we're not providing any score.
+mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
+    targetValue = 15)
+matchedData(mo_add)
+#> DataFrame with 8 rows and 4 columns
+#>          col1      col2 target     score
+#>     <integer> <integer> <AsIs> <numeric>
+#> 1           1         6     12       0.5
+#> 1.1         1         6     15        NA
+#> 2           2         7     12       0.6
+#> 2.1         2         7     13       0.7
+#> 2.2         2         7     14       0.8
+#> 3           3         8     NA        NA
+#> 4           4         9     NA        NA
+#> 5           5        10     15       0.9
+
+## Creating a `Matched` object with a `SummarizedExperiment` for `query` and
+## a `vector` for `target`. The matches are specified in the same way as
+## the example before.
+library(SummarizedExperiment)
+#> Loading required package: MatrixGenerics
+#> Loading required package: matrixStats
+#> 
+#> Attaching package: ‘MatrixGenerics’
+#> The following objects are masked from ‘package:matrixStats’:
+#> 
+#>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+#>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+#>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+#>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+#>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+#>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+#>     colWeightedMeans, colWeightedMedians, colWeightedSds,
+#>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+#>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+#>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+#>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+#>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+#>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+#>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+#>     rowWeightedSds, rowWeightedVars
+#> Loading required package: GenomicRanges
+#> Loading required package: IRanges
+#> Loading required package: Seqinfo
+#> Loading required package: Biobase
+#> Welcome to Bioconductor
+#> 
+#>     Vignettes contain introductory material; view with
+#>     'browseVignettes()'. To cite Bioconductor, see
+#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
+#> 
+#> Attaching package: ‘Biobase’
+#> The following object is masked from ‘package:MatrixGenerics’:
+#> 
+#>     rowMedians
+#> The following objects are masked from ‘package:matrixStats’:
+#> 
+#>     anyMissing, rowMedians
+q1 <- SummarizedExperiment(
+  assays = data.frame(matrix(NA, 5, 2)),
+  rowData = data.frame(col1 = 1:5, col2 = 6:10),
+  colData = data.frame(cD1 = c(NA, NA), cD2 = c(NA, NA)))
+t1 <- data.frame(col1 = 11:16, col2 = 17:22)
+## Define matches between row 1 in rowData(q1) with target row 2 and,
+## rowData(q1) row 2 with target rows 2,3,4 and rowData(q1) row 5 with target
+## row 5.
+mo <- Matched(
+    q1, t1, matches = data.frame(query_idx = c(1L, 2L, 2L, 2L, 5L),
+                                target_idx = c(2L, 2L, 3L, 4L, 5L),
+                                 score = seq(0.5, 0.9, by = 0.1)))
+mo
+#> Object of class Matched 
+#> Total number of matches: 5 
+#> Number of query objects: 5 (3 matched)
+#> Number of target objects: 6 (4 matched)
+
+## Which of the query elements (rows) match at least one target
+## element (row)?
+whichQuery(mo)
+#> [1] 1 2 5
+
+## Which target elements (rows) match at least one query element (row)?
+whichTarget(mo)
+#> [1] 2 3 4 5
+
+## Extracting variable "col1" from rowData(q1).
+mo$col1
+#> [1] 1 2 2 2 3 4 5
+
+## We have duplicated values for the entries of `col1` related to rows of
+## rowData(q1) matched to multiple rows of the target data.frame t1. The
+## value of `col1` is returned for each row in the rowData of query.
+
+## Extracting variable "col1" from target object. To access columns from
+## target we have to prefix the name of the column by `"target_"`.
+## Note that only values of `col1` for rows matching at least one row in
+## rowData of query are returned and an NA is reported for those without
+## matching target rows.
+mo$target_col1
+#> [1] 12 12 13 14 NA NA 15
+
+## The 3rd and 4th query rows do not match any target row, thus `NA` is
+## returned.
+
+## `matchedData` can be used to extract all (or selected) columns
+## from the object. Same as with `$`, a left join between the columns
+## from the query and the target is performed. Below we extract selected
+## columns from the object as a DataFrame.
+res <- matchedData(mo, columns = c("col1", "col2", "target_col1",
+                                  "target_col2"))
+res
+#> DataFrame with 7 rows and 4 columns
+#>        col1      col2 target_col1 target_col2
+#>   <integer> <integer>   <integer>   <integer>
+#> 1         1         6          12          18
+#> 2         2         7          12          18
+#> 2         2         7          13          19
+#> 2         2         7          14          20
+#> 3         3         8          NA          NA
+#> 4         4         9          NA          NA
+#> 5         5        10          15          21
+res$col1
+#> [1] 1 2 2 2 3 4 5
+res$target_col1
+#> [1] 12 12 13 14 NA NA 15
+
+## The example `Matched` object contains all rows in the
+## `rowData` of the `SummarizedExperiment` and all target rows. Below we
+## subset the object keeping only rows that are matched to at least one
+## target row.
+mo_sub <- mo[whichQuery(mo)]
+
+## mo_sub contains now a `SummarizedExperiment` with only 3 rows:
+nrow(query(mo_sub))
+#> [1] 3
+
+## while the original object contains a `SummarizedExperiment` with all 5
+## rows:
+nrow(query(mo))
+#> [1] 5
+
+## Both objects contain however still the full target object:
+nrow(target(mo))
+#> [1] 6
+nrow(target(mo_sub))
+#> [1] 6
+
+## With the `pruneTarget` we can however reduce also the target rows to
+## only those that match at least one in the `rowData` of query
+mo_sub <- pruneTarget(mo_sub)
+nrow(target(mo_sub))
+#> [1] 4
+```
