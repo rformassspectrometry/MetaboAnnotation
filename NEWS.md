@@ -1,3 +1,9 @@
+# MetaboAnnotation 1.15
+
+## Changes in 1.15.1
+
+- Remove dependency on the *msdata* package: get test data from *MsDataHub*.
+
 # MetaboAnnotation 1.13
 
 ## Changes in 1.13.3
