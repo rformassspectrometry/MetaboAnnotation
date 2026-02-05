@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Mass Spectrometry, MS, MSMS, Metabolomics, Infrastructure, Quantitative }
   %\VignetteEncoding{UTF-8}
-  %\VignetteDepends{Spectra,BiocStyle,msdata,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub,microbenchmark,mzR,msentropy}
+  %\VignetteDepends{Spectra,BiocStyle,MsDataHub,MetaboAnnotation,SummarizedExperiment,QFeatures,AnnotationHub,microbenchmark,mzR,msentropy}
 bibliography: references.bib
 ---
 
@@ -342,8 +342,9 @@ feature these spectra belong).
 
 ```{r, message = FALSE}
 library(Spectra)
-library(msdata)
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+## Load an example data set from *MetaboAnnotation*
+library(MsDataHub)
+fl <- MsDataHub::PestMix1_DDA.mzML()
 pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
 ## subset to selected spectra.
 pest_ms2 <- pest_ms2[c(808, 809, 945:955)]

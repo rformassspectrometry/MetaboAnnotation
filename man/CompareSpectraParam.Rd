@@ -268,8 +268,9 @@ only matches with a spectra similarity fulfilling both \code{THRESHFUN} \strong{
 \examples{
 
 library(Spectra)
-library(msdata)
-fl <- system.file("TripleTOF-SWATH", "PestMix1_DDA.mzML", package = "msdata")
+library(MsDataHub)
+## Load a test file from *MsDataHub*
+fl <- MsDataHub::PestMix1_DDA.mzML()
 pest_ms2 <- filterMsLevel(Spectra(fl), 2L)
 
 ## subset to selected spectra.
