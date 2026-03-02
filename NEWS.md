@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.15
 
+## Changes in 1.15.2
+
+- Use `data.table::rbindlist()` for merging lists of `data.frame`'s to improve
+  performance.
+
 ## Changes in 1.15.1
 
 - Remove dependency on the *msdata* package: get test data from *MsDataHub*.

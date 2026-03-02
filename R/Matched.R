@@ -847,6 +847,8 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @importFrom methods slot<-
 #'
+#' @importFrom data.table rbindlist
+#'
 #' @noRd
 .subset_matches_nodim <- function(x, i) {
     if (!all(i %in% seq_len(length(x))))
@@ -859,7 +861,8 @@ setMethod("matchedData", "Matched", function(object,
             mtches, f = as.factor(mtches$query_idx))[as.character(i)]
         lns <- vapply(mtches, function(z)
             if (length(z)) nrow(z) else 0L, integer(1))
-        mtches <- do.call(rbind, mtches[lengths(mtches) > 0])
+        mtches <- as.data.frame(
+            rbindlist(mtches[lengths(mtches) > 0], use.names = FALSE))
         rownames(mtches) <- NULL
         mtches$query_idx <- rep(seq_along(i), lns)
     }
@@ -1444,7 +1447,7 @@ setMethod("endoapply", "ANY", function(X, FUN, ...) {
 #' @export
 setMethod("endoapply", "Matched", function(X, FUN, ...) {
     tmp <- lapply(seq_along(X), function(i) FUN(X[i], ...)@matches)
-    matches <- do.call(rbind, tmp)
+    matches <- as.data.frame(rbindlist(tmp, use.names = FALSE))
     matches$query_idx <- rep(seq_along(tmp), vapply(tmp, nrow, integer(1)))
     X@matches <- matches
     validObject(X)
