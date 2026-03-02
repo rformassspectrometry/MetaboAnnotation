@@ -1,15 +1,15 @@
 # Annotation of MS-based Metabolomics Data
 
 **Package**:
-*[MetaboAnnotation](https://bioconductor.org/packages/3.23/MetaboAnnotation)*  
+*[MetaboAnnotation](https://bioconductor.org/packages/3.23/MetaboAnnotation)*\
 **Authors**: Michael Witting \[aut\] (ORCID:
 <https://orcid.org/0000-0002-1462-4426>), Johannes Rainer \[aut, cre\]
 (ORCID: <https://orcid.org/0000-0002-6977-7147>), Andrea Vicini \[aut\]
 (ORCID: <https://orcid.org/0000-0001-9438-6909>), Carolin Huber \[aut\]
 (ORCID: <https://orcid.org/0000-0002-9355-8948>), Philippine Louail
 \[aut\] (ORCID: <https://orcid.org/0009-0007-5429-6846>), Nir Shachaf
-\[ctb\]  
-**Compiled**: Thu Feb 5 10:03:38 2026
+\[ctb\]\
+**Compiled**: Mon Mar 2 07:03:50 2026
 
 ## Introduction
 
@@ -780,9 +780,9 @@ pest_ms2
     ##  ... 36 more variables/columns.
     ## 
     ## file(s):
-    ## 16ca1ebcef04_7861
+    ## 1a194bebc476_7861
     ## Processing:
-    ##  Filter: select MS level(s) 2 [Thu Feb  5 10:04:02 2026]
+    ##  Filter: select MS level(s) 2 [Mon Mar  2 07:04:14 2026]
 
 This `Spectra` should now represent MS2 spectra associated with LC-MS
 features from an untargeted LC-MS/MS experiment that we would like to
@@ -1512,7 +1512,7 @@ target(res)
     ## 10         2        NA        NA
     ##  ... 47 more variables/columns.
     ## Processing:
-    ##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Feb  5 10:04:10 2026]
+    ##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Mon Mar  2 07:04:21 2026]
 
 And the names of the compounds with matching fragment spectra.
 
@@ -1642,9 +1642,9 @@ fts_ms2
     ##  ... 36 more variables/columns.
     ## 
     ## file(s):
-    ## 16ca1ebcef04_7861
+    ## 1a194bebc476_7861
     ## Processing:
-    ##  Filter: select MS level(s) 2 [Thu Feb  5 10:04:02 2026]
+    ##  Filter: select MS level(s) 2 [Mon Mar  2 07:04:14 2026]
 
 While we have now the spectra, we can’t relate them (yet) to the
 features we used as `query`. Extracting the `"feature_id"` column using
@@ -1728,11 +1728,11 @@ microbenchmark(compareSpectra(pest_ms2, minimb, param = csp),
 
     ## Unit: milliseconds
     ##                                                   expr      min       lq
-    ##          compareSpectra(pest_ms2, minimb, param = csp) 45.08236 46.43455
-    ##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 26.75850 27.18454
+    ##          compareSpectra(pest_ms2, minimb, param = csp) 47.96173 48.39647
+    ##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.63630 28.71975
     ##      mean   median       uq      max neval
-    ##  51.36152 46.60733 46.66985 72.01353     5
-    ##  29.94992 27.21363 28.50255 40.09038     5
+    ##  54.96034 48.65502 50.27876 79.50975     5
+    ##  31.76021 29.08613 29.61182 42.74703     5
 
 There is a considerable performance gain by using the `MsBackendMemory`
 over the two other backends, that comes however at the cost of a higher
@@ -2045,9 +2045,9 @@ write.table(group_with_ramdomization,
 
 ## Session information
 
-    ## R Under development (unstable) (2026-02-01 r89366)
+    ## R Under development (unstable) (2026-03-01 r89508)
     ## Platform: x86_64-pc-linux-gnu
-    ## Running under: Ubuntu 24.04.3 LTS
+    ## Running under: Ubuntu 24.04.4 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -2069,24 +2069,24 @@ write.table(group_with_ramdomization,
     ## [8] base     
     ## 
     ## other attached packages:
-    ##  [1] MetaboCoreUtils_1.19.1      microbenchmark_1.5.0       
+    ##  [1] MetaboCoreUtils_1.19.2      microbenchmark_1.5.0       
     ##  [3] msentropy_0.1.4             Rcpp_1.1.1                 
-    ##  [5] MsDataHub_1.11.0            QFeatures_1.21.0           
-    ##  [7] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.0
+    ##  [5] MsDataHub_1.11.1            QFeatures_1.21.0           
+    ##  [7] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.1
     ##  [9] Biobase_2.71.0              GenomicRanges_1.63.1       
     ## [11] Seqinfo_1.1.0               IRanges_2.45.0             
     ## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          
     ## [15] Spectra_1.21.1              BiocParallel_1.45.0        
-    ## [17] S4Vectors_0.49.0            MetaboAnnotation_1.15.1    
+    ## [17] S4Vectors_0.49.0            MetaboAnnotation_1.15.2    
     ## [19] AnnotationHub_4.1.0         BiocFileCache_3.1.0        
-    ## [21] dbplyr_2.5.1                BiocGenerics_0.57.0        
+    ## [21] dbplyr_2.5.2                BiocGenerics_0.57.0        
     ## [23] generics_0.1.4              BiocStyle_2.39.0           
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] DBI_1.2.3               bitops_1.0-9            gridExtra_2.3          
+    ##  [1] DBI_1.3.0               bitops_1.0-9            gridExtra_2.3          
     ##  [4] httr2_1.2.2             rlang_1.1.7             magrittr_2.0.4         
-    ##  [7] clue_0.3-66             otel_0.2.0              compiler_4.6.0         
-    ## [10] RSQLite_2.4.5           reshape2_1.4.5          png_0.1-8              
+    ##  [7] clue_0.3-67             otel_0.2.0              compiler_4.6.0         
+    ## [10] RSQLite_2.4.6           reshape2_1.4.5          png_0.1-8              
     ## [13] systemfonts_1.3.1       vctrs_0.7.1             stringr_1.6.0          
     ## [16] ProtGenerics_1.43.0     pkgconfig_2.0.3         crayon_1.5.3           
     ## [19] fastmap_1.2.0           XVector_0.51.0          rmarkdown_2.30         
@@ -2096,26 +2096,26 @@ write.table(group_with_ramdomization,
     ## [31] parallel_4.6.0          cluster_2.1.8.2         R6_2.6.1               
     ## [34] bslib_0.10.0            stringi_1.8.7           RColorBrewer_1.1-3     
     ## [37] jquerylib_0.1.4         bookdown_0.46           knitr_1.51             
-    ## [40] base64enc_0.1-6         igraph_2.2.1            Matrix_1.7-4           
+    ## [40] base64enc_0.1-6         igraph_2.2.2            Matrix_1.7-4           
     ## [43] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.12            
     ## [46] codetools_0.2-20        curl_7.0.0              plyr_1.8.9             
-    ## [49] lattice_0.22-7          tibble_3.3.1            withr_3.0.2            
+    ## [49] lattice_0.22-9          tibble_3.3.1            withr_3.0.2            
     ## [52] KEGGREST_1.51.1         S7_0.2.1                evaluate_1.0.5         
     ## [55] desc_1.4.3              xml2_1.5.2              ExperimentHub_3.1.0    
     ## [58] Biostrings_2.79.4       pillar_1.11.1           BiocManager_1.30.27    
     ## [61] filelock_1.0.3          DT_0.34.0               ncdf4_1.24             
     ## [64] RCurl_1.98-1.17         BiocVersion_3.23.1      ggplot2_4.0.2          
     ## [67] scales_1.4.0            glue_1.8.0              lazyeval_0.2.2         
-    ## [70] tools_4.6.0             mzR_2.45.0              fs_1.6.6               
-    ## [73] grid_4.6.0              tidyr_1.3.2             MsCoreUtils_1.23.2     
-    ## [76] AnnotationDbi_1.73.0    cli_3.6.5               rappdirs_0.3.4         
-    ## [79] textshaping_1.0.4       rsvg_2.7.0              S4Arrays_1.11.1        
-    ## [82] dplyr_1.2.0             AnnotationFilter_1.35.0 gtable_0.3.6           
-    ## [85] sass_0.4.10             digest_0.6.39           SparseArray_1.11.10    
-    ## [88] rjson_0.2.23            htmlwidgets_1.6.4       farver_2.1.2           
-    ## [91] memoise_2.0.1           htmltools_0.5.9         pkgdown_2.2.0.9000     
-    ## [94] lifecycle_1.0.5         httr_1.4.7              CompoundDb_1.15.2      
-    ## [97] bit64_4.6.0-1           MASS_7.3-65
+    ## [70] tools_4.6.0             data.table_1.18.2.1     mzR_2.45.0             
+    ## [73] fs_1.6.6                grid_4.6.0              tidyr_1.3.2            
+    ## [76] MsCoreUtils_1.23.2      AnnotationDbi_1.73.0    cli_3.6.5              
+    ## [79] rappdirs_0.3.4          textshaping_1.0.4       rsvg_2.7.0             
+    ## [82] S4Arrays_1.11.1         dplyr_1.2.0             AnnotationFilter_1.35.0
+    ## [85] gtable_0.3.6            sass_0.4.10             digest_0.6.39          
+    ## [88] SparseArray_1.11.10     rjson_0.2.23            htmlwidgets_1.6.4      
+    ## [91] farver_2.1.2            memoise_2.0.1           htmltools_0.5.9        
+    ## [94] pkgdown_2.2.0.9000      lifecycle_1.0.5         httr_1.4.8             
+    ## [97] CompoundDb_1.15.3       bit64_4.6.0-1           MASS_7.3-65
 
 ## References
 

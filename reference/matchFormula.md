@@ -101,11 +101,11 @@ target_df <- data.frame(
 matches <- matchFormula(query, target)
 matchedData(matches)
 #> DataFrame with 3 rows and 3 columns
-#>            query  target     score
-#>           <AsIs>  <AsIs> <numeric>
-#> C6H12O6  H12C6O6 C6H12O6         1
-#> NA      C11H12O2      NA        NA
-#> NA.1         HN3      NA        NA
+#>         query  target     score
+#>        <AsIs>  <AsIs> <numeric>
+#> 1     H12C6O6 C6H12O6         1
+#> NA   C11H12O2      NA        NA
+#> NA.1      HN3      NA        NA
 
 ## data.frame vs data.frame
 matches <- matchFormula(query_df, target_df)

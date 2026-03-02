@@ -2,6 +2,12 @@
 
 ## MetaboAnnotation 1.15
 
+### Changes in 1.15.2
+
+- Use
+  [`data.table::rbindlist()`](https://rdrr.io/pkg/data.table/man/rbindlist.html)
+  for merging lists of `data.frame`’s to improve performance.
+
 ### Changes in 1.15.1
 
 - Remove dependency on the *msdata* package: get test data from
