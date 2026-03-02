@@ -71,18 +71,18 @@ setGeneric("matchFormula", function(query, target, ...)
 #' @rdname matchFormula
 #'
 #' @importFrom MetaboCoreUtils standardizeFormula
-#' 
+#'
 #' @importFrom BiocParallel bpmapply SerialParam
 setMethod(
     "matchFormula",
     signature = c(query = "character",
                   target = "character"),
     function(query, target, BPPARAM = SerialParam()) {
-        matches <- do.call(
-            rbind, bpmapply(seq_along(query), standardizeFormula(query),
-                            FUN = .getFormulaMatches,
-                            MoreArgs =list(target = standardizeFormula(target)),
-                            BPPARAM = BPPARAM, SIMPLIFY = FALSE))
+        matches <- as.data.frame(rbindlist(
+            bpmapply(seq_along(query), standardizeFormula(query),
+                     FUN = .getFormulaMatches,
+                     MoreArgs =list(target = standardizeFormula(target)),
+                     BPPARAM = BPPARAM, SIMPLIFY = FALSE), use.names = FALSE))
         Matched(query = query, target = target, matches = matches)
     })
 
