@@ -1,5 +1,10 @@
 # MetaboAnnotation 1.15
 
+## Changes in 1.15.3
+
+- Use `Spectra::rbindlistWithRownames()` to expand on the changes introduced in
+  version 1.15.2 supporting also `data.frame`s with row names.
+
 ## Changes in 1.15.2
 
 - Use `data.table::rbindlist()` for merging lists of `data.frame`'s to improve
