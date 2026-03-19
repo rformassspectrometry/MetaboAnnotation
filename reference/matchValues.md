@@ -653,12 +653,12 @@ res <- matchValues(mz1, mz2, MzParam(tolerance = 0.001))
 
 matchedData(res)
 #> DataFrame with 4 rows and 4 columns
-#>     query   target        score ppm_error
-#>    <AsIs>   <AsIs>    <numeric> <numeric>
-#> 1      12  12.0002 -0.000183083  15.25665
-#> 2     343 343.0013 -0.001280555   3.73338
-#> NA     23       NA           NA        NA
-#> 3     231 231.0017 -0.001690184   7.31676
+#>    query   target        score ppm_error
+#>   <AsIs>   <AsIs>    <numeric> <numeric>
+#> 1     12  11.9999  0.000108966  9.080580
+#> 2    343 342.9999  0.000117242  0.341813
+#> 3     23  23.0002 -0.000183083  7.960050
+#> 4    231 231.0013 -0.001280555  5.543497
 
 ## Matching with a SummarizedExperiment or a QFeatures work analogously,
 ## only that the matching is performed on the object's `rowData`.

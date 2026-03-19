@@ -37,7 +37,7 @@ within the object is supported."><meta property="og:image" content="https://rfor
 
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.15.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.15.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -887,6 +887,7 @@ containing the string "score" in their name ignoring the case).</p></li>
 <span class="r-in"><span><span class="co">## `matchedData`.</span></span></span>
 <span class="r-in"><span><span class="va">mo_add</span> <span class="op">&lt;-</span> <span class="fu">addMatches</span><span class="op">(</span><span class="va">mo</span>, queryValue <span class="op">=</span> <span class="fl">1</span>, queryColname <span class="op">=</span> <span class="st">"col1"</span>,</span></span>
 <span class="r-in"><span>    targetValue <span class="op">=</span> <span class="fl">15</span>, score <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>score <span class="op">=</span> <span class="fl">5</span>, manual <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Dropping rownames: duplicated rownames present or rownames not available for all data.frames</span>
 <span class="r-in"><span><span class="fu">matchedData</span><span class="op">(</span><span class="va">mo_add</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 8 rows and 5 columns</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          col1      col2 target     score    manual</span>

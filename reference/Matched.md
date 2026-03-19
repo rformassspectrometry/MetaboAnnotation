@@ -857,6 +857,7 @@ matchedData(mo_add)
 ## `matchedData`.
 mo_add <- addMatches(mo, queryValue = 1, queryColname = "col1",
     targetValue = 15, score = data.frame(score = 5, manual = TRUE))
+#> Warning: Dropping rownames: duplicated rownames present or rownames not available for all data.frames
 matchedData(mo_add)
 #> DataFrame with 8 rows and 5 columns
 #>          col1      col2 target     score    manual

@@ -2,6 +2,13 @@
 
 ## MetaboAnnotation 1.15
 
+### Changes in 1.15.3
+
+- Use
+  [`Spectra::rbindlistWithRownames()`](https://rdrr.io/pkg/Spectra/man/rbindlistWithRownames.html)
+  to expand on the changes introduced in version 1.15.2 supporting also
+  `data.frame`s with row names.
+
 ### Changes in 1.15.2
 
 - Use
