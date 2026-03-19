@@ -847,7 +847,7 @@ setMethod("matchedData", "Matched", function(object,
 #'
 #' @importFrom methods slot<-
 #'
-#' @importFrom data.table rbindlist
+#' @importFrom Spectra rbindlistWithRownames
 #'
 #' @noRd
 .subset_matches_nodim <- function(x, i) {
@@ -861,8 +861,8 @@ setMethod("matchedData", "Matched", function(object,
             mtches, f = as.factor(mtches$query_idx))[as.character(i)]
         lns <- vapply(mtches, function(z)
             if (length(z)) nrow(z) else 0L, integer(1))
-        mtches <- as.data.frame(
-            rbindlist(mtches[lengths(mtches) > 0], use.names = FALSE))
+        mtches <- rbindlistWithRownames(
+            mtches[lengths(mtches) > 0], use.names = FALSE)
         rownames(mtches) <- NULL
         mtches$query_idx <- rep(seq_along(i), lns)
     }
@@ -1404,7 +1404,8 @@ setMethod(
     new_matches <- cbind(
         data.frame(query_idx = query_idx, target_idx = target_idx),
         score)
-    new_matches <- rbindFill(matches, new_matches)
+    new_matches <- rbindlistWithRownames(list(matches, new_matches),
+                                         use.names = TRUE, fill = TRUE)
     ## remove possible matches that were already in matches
     new_matches[!duplicated(new_matches[, c("query_idx", "target_idx")]), ]
 }
@@ -1447,7 +1448,7 @@ setMethod("endoapply", "ANY", function(X, FUN, ...) {
 #' @export
 setMethod("endoapply", "Matched", function(X, FUN, ...) {
     tmp <- lapply(seq_along(X), function(i) FUN(X[i], ...)@matches)
-    matches <- as.data.frame(rbindlist(tmp, use.names = FALSE))
+    matches <- rbindlistWithRownames(tmp, use.names = FALSE)
     matches$query_idx <- rep(seq_along(tmp), vapply(tmp, nrow, integer(1)))
     X@matches <- matches
     validObject(X)

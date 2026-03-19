@@ -577,7 +577,7 @@ setMethod("matchValues",
                                           ppm = param@ppm)
               }
               Matched(query = query, target = target,
-                      matches = as.data.frame(rbindlist(res,use.names = FALSE)),
+                      matches = rbindlistWithRownames(res, use.names = FALSE),
                       metadata = list(param = param))
           })
 
@@ -649,7 +649,7 @@ setMethod("matchValues",
                                           ppm = param@ppm)
               }
               Matched(query = query, target = target,
-                      matches = as.data.frame(rbindlist(res,use.names = FALSE)),
+                      matches = rbindlistWithRownames(res, use.names = FALSE),
                       metadata = list(param = param))
           })
 
@@ -821,8 +821,8 @@ setMethod("matchValues",
                                       toleranceRt =param@toleranceRt)
               }
               Matched(query = query, target = target,
-                      matches = as.data.frame(rbindlist(
-                          matches, use.names = FALSE)),
+                      matches = rbindlistWithRownames(
+                          matches, use.names = FALSE),
                       queryAssay = queryAssay, targetAssay = targetAssay,
                       metadata = list(param = param))
           })
@@ -859,8 +859,8 @@ setMethod("matchValues",
                                       toleranceRt = param@toleranceRt)
               }
               Matched(query = query, target = target,
-                      matches = as.data.frame(rbindlist(
-                          matches, use.names = FALSE)),
+                      matches = rbindlistWithRownames(
+                          matches, use.names = FALSE),
                       queryAssay = queryAssay, targetAssay = targetAssay,
                       metadata = list(param = param))
           })
@@ -912,7 +912,7 @@ setMethod("matchValues",
                       matches[[i]]$query_adduct <- query_mass$adduct[i]
                   else matches[[i]]$query_adduct <- character()
               }
-              matches <- as.data.frame(rbindlist(matches, use.names = FALSE))
+              matches <- rbindlistWithRownames(matches, use.names = FALSE)
               colnames(matches)[3] <- "target_adduct"
               Matched(query = query, target = target,
                       matches = matches[, c(1, 2, 6, 3, 4, 5)],
@@ -1005,7 +1005,7 @@ setMethod("matchValues",
                       matches[[i]]$query_adduct <- query_mass$adduct[i]
                   else matches[[i]]$query_adduct <- character()
               }
-              matches <- as.data.frame(rbindlist(matches, use.names = FALSE))
+              matches <- rbindlistWithRownames(matches, use.names = FALSE)
               colnames(matches)[3] <- "target_adduct"
               Matched(query = query, target = target,
                       matches = matches[, c(1, 2, 7, 3, 4, 5, 6)],

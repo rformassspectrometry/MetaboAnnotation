@@ -78,11 +78,11 @@ setMethod(
     signature = c(query = "character",
                   target = "character"),
     function(query, target, BPPARAM = SerialParam()) {
-        matches <- as.data.frame(rbindlist(
+        matches <- rbindlistWithRownames(
             bpmapply(seq_along(query), standardizeFormula(query),
                      FUN = .getFormulaMatches,
                      MoreArgs =list(target = standardizeFormula(target)),
-                     BPPARAM = BPPARAM, SIMPLIFY = FALSE), use.names = FALSE))
+                     BPPARAM = BPPARAM, SIMPLIFY = FALSE), use.names = FALSE)
         Matched(query = query, target = target, matches = matches)
     })
 

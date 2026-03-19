@@ -469,6 +469,8 @@ setMethod(
 #'
 #' @rdname CompareSpectraParam
 #'
+#' @importFrom Spectra rbindlistWithRownames
+#'
 #' @export
 setMethod(
     "matchSpectra", signature(query = "Spectra", target = "CompDb",
@@ -512,7 +514,7 @@ setMethod(
                      query_rt_col = rtColname[1L],
                      target_rt_col = rtColname[2L],
                      sn = snames, BPPARAM = BPPARAM)
-    maps <- as.data.frame(rbindlist(maps, use.names = FALSE))
+    maps <- rbindlistWithRownames(maps, use.names = FALSE)
     if (!nrow(maps))
         maps <- data.frame(query_idx = integer(),
                            target_idx = integer(),
