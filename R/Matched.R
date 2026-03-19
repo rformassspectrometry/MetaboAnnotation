@@ -1404,7 +1404,8 @@ setMethod(
     new_matches <- cbind(
         data.frame(query_idx = query_idx, target_idx = target_idx),
         score)
-    new_matches <- rbindlistWithRownames(list(matches, new_matches))
+    new_matches <- rbindlistWithRownames(list(matches, new_matches),
+                                         use.names = TRUE, fill = TRUE)
     ## remove possible matches that were already in matches
     new_matches[!duplicated(new_matches[, c("query_idx", "target_idx")]), ]
 }
