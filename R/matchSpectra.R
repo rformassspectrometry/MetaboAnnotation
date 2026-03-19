@@ -469,6 +469,8 @@ setMethod(
 #'
 #' @rdname CompareSpectraParam
 #'
+#' @importFrom Spectra rbindlistWithRownames
+#'
 #' @export
 setMethod(
     "matchSpectra", signature(query = "Spectra", target = "CompDb",
