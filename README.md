@@ -9,6 +9,8 @@
 [![build release](http://bioconductor.org/shields/build/release/bioc/MetaboAnnotation.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/MetaboAnnotation/)
 [![build devel](http://bioconductor.org/shields/build/devel/bioc/MetaboAnnotation.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/MetaboAnnotation/)
 
+## Overview
+
 High level functions to assist in annotation of (metabolomics) data sets. These
 include functions to perform simple tentative annotations based on mass matching
 but also functions to consider m/z and retention times for annotation of LC-MS
@@ -20,8 +22,7 @@ such matched data.
 For more information see the package
 [homepage](https://rformassspectrometry.github.io/MetaboAnnotation).
 
-
-# Installation
+## ⤵️ Installation
 
 The package can be installed with
 
@@ -30,10 +31,25 @@ install.packages("BiocManager")
 BiocManager::install("MetaboAnnotation")
 ```
 
+## 🤝 Contribution
 
-# Contributions
+Please help us improving and completing the package! Any type of contribution
+welcome :open_hands: - including discussions, suggestions or actual code. Don't
+be afraid - we're friendly ☺️! 👉 get involved by opening an [issue](https://github.com/rformassspectrometry/MetaboAnnotation/issues).
 
-Contributions are highly welcome and should follow the [contribution
-guidelines](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions).
-Also, please check the coding style guidelines in the [RforMassSpectrometry
-vignette](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html).
+Please also check out the [**RforMassSpectrometry Contributions
+Guide**](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#contributions).
+
+### 📜 Code of Conduct
+
+We follow the [**RforMassSpectrometry Code of
+Conduct**](https://rformassspectrometry.github.io/RforMassSpectrometry/articles/RforMassSpectrometry.html#code-of-conduct)
+to maintain an inclusive and respectful community.
+
+## License
+
+This package is licensed under the **Artistic 2.0** license:
+📄 [https://opensource.org/license/Artistic-2.0](https://opensource.org/license/Artistic-2.0)
+
+Documentation (manuals, vignettes) is licensed under **CC BY-NC-SA 4.0**:
+📄 [https://creativecommons.org/licenses/by-nc-sa/4.0/](https://creativecommons.org/licenses/by-nc-sa/4.0/)
