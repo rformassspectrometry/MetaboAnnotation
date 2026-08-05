@@ -1,9 +1,9 @@
-pandoc: '3.9'
-pkgdown: 2.2.0.9000
-pkgdown_sha: a6abe43ed48e58b1de42eba5e5541a5b6c46b46f
+pandoc: '3.10'
+pkgdown: 2.2.1.9000
+pkgdown_sha: 179cfaee3d4e17eaa9e7d7c700b1269dc62e4d46
 articles:
   MetaboAnnotation: MetaboAnnotation.html
-last_built: 2026-03-19T08:30Z
+last_built: 2026-08-05T13:37Z
 urls:
   reference: https://rformassspectrometry.github.io/MetaboAnnotation/reference
   article: https://rformassspectrometry.github.io/MetaboAnnotation/articles

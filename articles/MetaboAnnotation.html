@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Annotation of MS-based Metabolomics Data • MetaboAnnotation</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Annotation of MS-based Metabolomics Data">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">MetaboAnnotation</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.15.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.17.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,16 +70,16 @@ document.addEventListener("DOMContentLoaded", function() {
     if (links[i].hostname != window.location.hostname)
       links[i].target = '_blank';
 });
-</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.23/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (ORCID: <a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
+</script><p><strong>Package</strong>: <em><a href="https://bioconductor.org/packages/3.24/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em><br><strong>Authors</strong>: Michael Witting [aut] (ORCID: <a href="https://orcid.org/0000-0002-1462-4426" class="external-link uri">https://orcid.org/0000-0002-1462-4426</a>), Johannes Rainer
 [aut, cre] (ORCID: <a href="https://orcid.org/0000-0002-6977-7147" class="external-link uri">https://orcid.org/0000-0002-6977-7147</a>), Andrea Vicini
 [aut] (ORCID: <a href="https://orcid.org/0000-0001-9438-6909" class="external-link uri">https://orcid.org/0000-0001-9438-6909</a>), Carolin Huber
 [aut] (ORCID: <a href="https://orcid.org/0000-0002-9355-8948" class="external-link uri">https://orcid.org/0000-0002-9355-8948</a>), Philippine
 Louail [aut] (ORCID: <a href="https://orcid.org/0009-0007-5429-6846" class="external-link uri">https://orcid.org/0009-0007-5429-6846</a>), Nir Shachaf
-[ctb]<br><strong>Compiled</strong>: Thu Mar 19 08:30:51 2026</p>
+[ctb]<br><strong>Compiled</strong>: Wed Aug 5 13:38:17 2026</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <em><a href="https://bioconductor.org/packages/3.23/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em>
+<p>The <em><a href="https://bioconductor.org/packages/3.24/MetaboAnnotation" class="external-link">MetaboAnnotation</a></em>
 package defines high-level user functionality to support and facilitate
 annotation of MS-based metabolomics data <span class="citation">(Rainer
 et al. 2022)</span>.</p>
@@ -138,7 +138,7 @@ experiments and analyses.</p>
 experiments and matches the measured m/z values against reference masses
 from LipidMaps. Below we use a <code>data.frame</code> as
 <em>reference</em> database, but a <code>CompDb</code> compound database
-instance (as created by the <em><a href="https://bioconductor.org/packages/3.23/CompoundDb" class="external-link">CompoundDb</a></em>
+instance (as created by the <em><a href="https://bioconductor.org/packages/3.24/CompoundDb" class="external-link">CompoundDb</a></em>
 package) would also be supported.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ms1_features</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"MS1_example.txt"</span>,</span>
@@ -428,7 +428,7 @@ the retention times with parameter <code>rtColname</code>.</p>
 <h3 id="matching-of-summarizedexperiment-or-qfeatures-objects">Matching of <code>SummarizedExperiment</code> or
 <code>QFeatures</code> objects<a class="anchor" aria-label="anchor" href="#matching-of-summarizedexperiment-or-qfeatures-objects"></a>
 </h3>
-<p>Results from LC-MS preprocessing (e.g. by the <em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em>
+<p>Results from LC-MS preprocessing (e.g. by the <em><a href="https://bioconductor.org/packages/3.24/xcms" class="external-link">xcms</a></em>
 package) or generally metabolomics results might be best represented and
 bundled as <code>SummarizedExperiment</code> or <code>QFeatures</code>
 objects (from the same-named Bioconductor packages). A
@@ -663,7 +663,7 @@ stored in the <code>QFeatures</code>’ <code>"features"</code> assay:</p>
 <h3 id="matching-of-msms-spectra">Matching of MS/MS spectra<a class="anchor" aria-label="anchor" href="#matching-of-msms-spectra"></a>
 </h3>
 <p>In this section we match experimental MS/MS spectra against reference
-spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.23/Spectra" class="external-link">Spectra</a></em>
+spectra. This can also be performed with functions from the <em><a href="https://bioconductor.org/packages/3.24/Spectra" class="external-link">Spectra</a></em>
 package (see <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>,
 but the functions and concepts used here are more suitable to the
 <em>end user</em> as they simplify the handling of the spectra matching
@@ -709,9 +709,9 @@ belong).</p>
 <span><span class="co">##  ... 36 more variables/columns.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## file(s):</span></span>
-<span><span class="co">## 3ab96b0f9619_7861</span></span>
+<span><span class="co">## d1320035a71_7861</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Thu Mar 19 08:31:14 2026]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Wed Aug  5 13:38:41 2026]</span></span></code></pre>
 <p>This <code>Spectra</code> should now represent MS2 spectra associated
 with LC-MS features from an untargeted LC-MS/MS experiment that we would
 like to annotate by matching them against a spectral reference
@@ -724,11 +724,11 @@ within this package but it would be possible to use any other
 also the <a href="https://jorainer.github.io/SpectraTutorials/" class="external-link">SpectraTutorials</a>
 workshop). As an alternative, it would also be possible to use a
 <code>CompDb</code> object representing a compound annotation database
-(defined in the <em><a href="https://bioconductor.org/packages/3.23/CompoundDb" class="external-link">CompoundDb</a></em>
+(defined in the <em><a href="https://bioconductor.org/packages/3.24/CompoundDb" class="external-link">CompoundDb</a></em>
 package) with parameter <code>target</code>. See the
 <code><a href="../reference/matchSpectra.html">matchSpectra()</a></code> help page or section <em>Query against
 multiple reference databases</em> below for more details and options to
-retrieve such annotation resources from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p>
+retrieve such annotation resources from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.24/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p>
 <div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"minimb.RData"</span>, package <span class="op">=</span> <span class="st">"MetaboAnnotation"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">minimb</span></span></code></pre></div>
@@ -761,7 +761,7 @@ target spectra. <code>CompareSpectraParam</code> allows to set all
 individual settings for the <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> call with
 parameters <code>MAPFUN</code>, <code>ppm</code>, <code>tolerance</code>
 and <code>FUN</code> (see the help on <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> in
-the <em><a href="https://bioconductor.org/packages/3.23/Spectra" class="external-link">Spectra</a></em>
+the <em><a href="https://bioconductor.org/packages/3.24/Spectra" class="external-link">Spectra</a></em>
 package for more details). In addition, we can <em>pre-filter</em> the
 target spectra for each individual query spectrum to speed-up the
 calculations. By setting <code>requirePrecursor = TRUE</code> we compare
@@ -1123,7 +1123,7 @@ selects always the best match.</p>
 object with MS2 spectra. Such objects could also be extracted from an
 <code>xcms</code>-based LC-MS/MS data analysis with the
 <code>chromPeaksSpectra()</code> or <code>featureSpectra()</code>
-functions from the <em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em>
+functions from the <em><a href="https://bioconductor.org/packages/3.24/xcms" class="external-link">xcms</a></em>
 package. Note also that retention times could in addition be considered
 in the matching by selecting a non-infinite value for the
 <code>toleranceRt</code> of any of the parameter classes. By default
@@ -1147,7 +1147,7 @@ only matches manually validated.</p>
 function used by <code><a href="https://rdrr.io/pkg/ProtGenerics/man/protgenerics.html" class="external-link">compareSpectra()</a></code> which is the normalized
 dot product <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">MsCoreUtils::ndotproduct()</a></code>. It is however also
 possible to use other similarity functions, either those defined in the
-<em><a href="https://bioconductor.org/packages/3.23/MsCoreUtils" class="external-link">MsCoreUtils</a></em>
+<em><a href="https://bioconductor.org/packages/3.24/MsCoreUtils" class="external-link">MsCoreUtils</a></em>
 package (see <code><a href="https://rdrr.io/pkg/MsCoreUtils/man/distance.html" class="external-link">?MsCoreUtils::distance</a></code> for a list of available
 options), or functions defined by other, external, packages. Here it is
 however very important to carefully evaluate how this similarity
@@ -1225,7 +1225,7 @@ of <em>compound annotation sources</em> (i.e. objects extending
 <code>CompAnnotationSource</code>):</p>
 <ul>
 <li><p>Annotation resources that provide their data as a
-<code>CompDb</code> database (defined by the <em><a href="https://bioconductor.org/packages/3.23/CompoundDb" class="external-link">CompoundDb</a></em>)
+<code>CompDb</code> database (defined by the <em><a href="https://bioconductor.org/packages/3.24/CompoundDb" class="external-link">CompoundDb</a></em>)
 package. These are supported by the <code>CompDbSource</code>
 class.</p></li>
 <li><p>Annotation resources for which a dedicated <code>MsBackend</code>
@@ -1246,7 +1246,7 @@ for a specific MassBank release. The desired release can be specified
 with the <code>release</code> parameter
 (e.g. <code>release = "2021.03"</code> or
 <code>release = "2022.06"</code>). The function will then download the
-respective annotation database from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.23/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p></li>
+respective annotation database from Bioconductor’s <em><a href="https://bioconductor.org/packages/3.24/AnnotationHub" class="external-link">AnnotationHub</a></em>.</p></li>
 </ul>
 <p>In the example below we create a annotation source for MassBank
 release <em>2022.06</em>. This call will lookup the requested version in
@@ -1311,7 +1311,7 @@ the reference database.</p>
 <span><span class="co">## 10         2        NA        NA</span></span>
 <span><span class="co">##  ... 47 more variables/columns.</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Thu Mar 19 08:31:21 2026]</span></span></code></pre>
+<span><span class="co">##  Switch backend from MsBackendCompDb to MsBackendDataFrame [Wed Aug  5 13:38:49 2026]</span></span></code></pre>
 <p>And the names of the compounds with matching fragment spectra.</p>
 <div class="sourceCode" id="cb112"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Matched.html">matchedData</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">target_name</span></span></code></pre></div>
@@ -1342,7 +1342,7 @@ times of these from the second, LC-MS/MS data set (assuming that no big
 retention time shifts between the measurement runs are expected). To
 illustrate this, we below first define a <code>data.frame</code> that
 should represent a feature table such as defined by an analysis with the
-<em><a href="https://bioconductor.org/packages/3.23/xcms" class="external-link">xcms</a></em>
+<em><a href="https://bioconductor.org/packages/3.24/xcms" class="external-link">xcms</a></em>
 package.</p>
 <div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
@@ -1406,9 +1406,9 @@ feature:</p>
 <span><span class="co">##  ... 36 more variables/columns.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## file(s):</span></span>
-<span><span class="co">## 3ab96b0f9619_7861</span></span>
+<span><span class="co">## d1320035a71_7861</span></span>
 <span><span class="co">## Processing:</span></span>
-<span><span class="co">##  Filter: select MS level(s) 2 [Thu Mar 19 08:31:14 2026]</span></span></code></pre>
+<span><span class="co">##  Filter: select MS level(s) 2 [Wed Aug  5 13:38:41 2026]</span></span></code></pre>
 <p>While we have now the spectra, we can’t relate them (yet) to the
 features we used as <code>query</code>. Extracting the
 <code>"feature_id"</code> column using the <code>$</code> function from
@@ -1476,11 +1476,11 @@ performance against the originally used <code>MsBackendMzR</code> (for
 <span>               times <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Unit: milliseconds</span></span>
 <span><span class="co">##                                                   expr      min       lq</span></span>
-<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 48.06509 48.08225</span></span>
-<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 28.71987 28.89215</span></span>
+<span><span class="co">##          compareSpectra(pest_ms2, minimb, param = csp) 47.72149 47.76620</span></span>
+<span><span class="co">##  compareSpectra(pest_ms2_mem, minimb_mem, param = csp) 29.72699 29.74172</span></span>
 <span><span class="co">##      mean   median       uq      max neval</span></span>
-<span><span class="co">##  55.04199 48.19899 53.05322 77.81042     5</span></span>
-<span><span class="co">##  31.72503 29.03443 29.07803 42.90070     5</span></span></code></pre>
+<span><span class="co">##  48.18237 48.03251 48.63361 48.75804     5</span></span>
+<span><span class="co">##  32.32485 29.75995 30.01118 42.38439     5</span></span></code></pre>
 <p>There is a considerable performance gain by using the
 <code>MsBackendMemory</code> over the two other backends, that comes
 however at the cost of a higher memory demand. Thus, for large data sets
@@ -1754,7 +1754,7 @@ R package or as below in text format that can also be open in Excel.</p>
 <div class="section level2">
 <h2 class="unnumbered" id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h2>
-<pre><code><span><span class="co">## R Under development (unstable) (2026-03-15 r89629)</span></span>
+<pre><code><span><span class="co">## R version 4.6.1 (2026-06-24)</span></span>
 <span><span class="co">## Platform: x86_64-pc-linux-gnu</span></span>
 <span><span class="co">## Running under: Ubuntu 24.04.4 LTS</span></span>
 <span><span class="co">## </span></span>
@@ -1778,53 +1778,54 @@ R package or as below in text format that can also be open in Excel.</p>
 <span><span class="co">## [8] base     </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## other attached packages:</span></span>
-<span><span class="co">##  [1] MetaboCoreUtils_1.19.2      microbenchmark_1.5.0       </span></span>
-<span><span class="co">##  [3] msentropy_0.1.4             Rcpp_1.1.1                 </span></span>
-<span><span class="co">##  [5] MsDataHub_1.11.1            QFeatures_1.21.0           </span></span>
-<span><span class="co">##  [7] MultiAssayExperiment_1.37.2 SummarizedExperiment_1.41.1</span></span>
-<span><span class="co">##  [9] Biobase_2.71.0              GenomicRanges_1.63.1       </span></span>
-<span><span class="co">## [11] Seqinfo_1.1.0               IRanges_2.45.0             </span></span>
-<span><span class="co">## [13] MatrixGenerics_1.23.0       matrixStats_1.5.0          </span></span>
-<span><span class="co">## [15] Spectra_1.21.5              BiocParallel_1.45.0        </span></span>
-<span><span class="co">## [17] S4Vectors_0.49.0            MetaboAnnotation_1.15.3    </span></span>
-<span><span class="co">## [19] AnnotationHub_4.1.0         BiocFileCache_3.1.0        </span></span>
-<span><span class="co">## [21] dbplyr_2.5.2                BiocGenerics_0.57.0        </span></span>
-<span><span class="co">## [23] generics_0.1.4              BiocStyle_2.39.0           </span></span>
+<span><span class="co">##  [1] MetaboCoreUtils_1.21.1      microbenchmark_1.5.0       </span></span>
+<span><span class="co">##  [3] msentropy_0.1.4             Rcpp_1.1.2                 </span></span>
+<span><span class="co">##  [5] MsDataHub_1.13.0            QFeatures_1.23.1           </span></span>
+<span><span class="co">##  [7] MultiAssayExperiment_1.39.0 SummarizedExperiment_1.43.0</span></span>
+<span><span class="co">##  [9] Biobase_2.73.2              GenomicRanges_1.65.1       </span></span>
+<span><span class="co">## [11] Seqinfo_1.3.0               IRanges_2.47.2             </span></span>
+<span><span class="co">## [13] MatrixGenerics_1.25.0       matrixStats_1.5.0          </span></span>
+<span><span class="co">## [15] Spectra_1.23.3              BiocParallel_1.47.0        </span></span>
+<span><span class="co">## [17] S4Vectors_0.51.6            MetaboAnnotation_1.17.0    </span></span>
+<span><span class="co">## [19] AnnotationHub_4.3.2         BiocFileCache_3.3.0        </span></span>
+<span><span class="co">## [21] dbplyr_2.6.0                BiocGenerics_0.59.10       </span></span>
+<span><span class="co">## [23] generics_0.1.4              BiocStyle_2.41.0           </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## loaded via a namespace (and not attached):</span></span>
-<span><span class="co">##  [1] DBI_1.3.0               bitops_1.0-9            gridExtra_2.3          </span></span>
-<span><span class="co">##  [4] httr2_1.2.2             rlang_1.1.7             magrittr_2.0.4         </span></span>
-<span><span class="co">##  [7] clue_0.3-67             otel_0.2.0              compiler_4.6.0         </span></span>
-<span><span class="co">## [10] RSQLite_2.4.6           reshape2_1.4.5          png_0.1-9              </span></span>
-<span><span class="co">## [13] systemfonts_1.3.2       vctrs_0.7.1             stringr_1.6.0          </span></span>
-<span><span class="co">## [16] ProtGenerics_1.43.0     pkgconfig_2.0.3         crayon_1.5.3           </span></span>
-<span><span class="co">## [19] fastmap_1.2.0           XVector_0.51.0          rmarkdown_2.30         </span></span>
-<span><span class="co">## [22] ragg_1.5.1              purrr_1.2.1             bit_4.6.0              </span></span>
-<span><span class="co">## [25] xfun_0.56               cachem_1.1.0            ChemmineR_3.63.1       </span></span>
-<span><span class="co">## [28] jsonlite_2.0.0          blob_1.3.0              DelayedArray_0.37.0    </span></span>
-<span><span class="co">## [31] parallel_4.6.0          cluster_2.1.8.2         R6_2.6.1               </span></span>
-<span><span class="co">## [34] bslib_0.10.0            stringi_1.8.7           RColorBrewer_1.1-3     </span></span>
-<span><span class="co">## [37] jquerylib_0.1.4         bookdown_0.46           knitr_1.51             </span></span>
-<span><span class="co">## [40] base64enc_0.1-6         igraph_2.2.2            Matrix_1.7-4           </span></span>
-<span><span class="co">## [43] tidyselect_1.2.1        abind_1.4-8             yaml_2.3.12            </span></span>
-<span><span class="co">## [46] codetools_0.2-20        curl_7.0.0              plyr_1.8.9             </span></span>
-<span><span class="co">## [49] lattice_0.22-9          tibble_3.3.1            withr_3.0.2            </span></span>
-<span><span class="co">## [52] KEGGREST_1.51.1         S7_0.2.1                evaluate_1.0.5         </span></span>
-<span><span class="co">## [55] desc_1.4.3              xml2_1.5.2              ExperimentHub_3.1.0    </span></span>
-<span><span class="co">## [58] Biostrings_2.79.5       pillar_1.11.1           BiocManager_1.30.27    </span></span>
-<span><span class="co">## [61] filelock_1.0.3          DT_0.34.0               ncdf4_1.24             </span></span>
-<span><span class="co">## [64] RCurl_1.98-1.17         BiocVersion_3.23.1      ggplot2_4.0.2          </span></span>
-<span><span class="co">## [67] scales_1.4.0            glue_1.8.0              lazyeval_0.2.2         </span></span>
-<span><span class="co">## [70] tools_4.6.0             data.table_1.18.2.1     mzR_2.45.0             </span></span>
-<span><span class="co">## [73] fs_1.6.7                grid_4.6.0              tidyr_1.3.2            </span></span>
-<span><span class="co">## [76] MsCoreUtils_1.23.6      AnnotationDbi_1.73.0    cli_3.6.5              </span></span>
-<span><span class="co">## [79] rappdirs_0.3.4          textshaping_1.0.5       rsvg_2.7.0             </span></span>
-<span><span class="co">## [82] S4Arrays_1.11.1         dplyr_1.2.0             AnnotationFilter_1.35.0</span></span>
-<span><span class="co">## [85] gtable_0.3.6            sass_0.4.10             digest_0.6.39          </span></span>
-<span><span class="co">## [88] SparseArray_1.11.11     rjson_0.2.23            htmlwidgets_1.6.4      </span></span>
-<span><span class="co">## [91] farver_2.1.2            memoise_2.0.1           htmltools_0.5.9        </span></span>
-<span><span class="co">## [94] pkgdown_2.2.0.9000      lifecycle_1.0.5         httr_1.4.8             </span></span>
-<span><span class="co">## [97] CompoundDb_1.15.4       bit64_4.6.0-1           MASS_7.3-65</span></span></code></pre>
+<span><span class="co">##   [1] DBI_1.3.0               bitops_1.1-0            gridExtra_2.3.1        </span></span>
+<span><span class="co">##   [4] httr2_1.3.0             rlang_1.3.0             magrittr_2.0.5         </span></span>
+<span><span class="co">##   [7] clue_0.3-68             otel_0.2.0              compiler_4.6.1         </span></span>
+<span><span class="co">##  [10] RSQLite_3.53.3          reshape2_1.4.5          png_0.1-9              </span></span>
+<span><span class="co">##  [13] systemfonts_1.3.2       vctrs_0.7.3             stringr_1.6.0          </span></span>
+<span><span class="co">##  [16] ProtGenerics_1.45.0     pkgconfig_2.0.3         crayon_1.5.3           </span></span>
+<span><span class="co">##  [19] fastmap_1.2.0           XVector_0.53.0          rmarkdown_2.31         </span></span>
+<span><span class="co">##  [22] ragg_1.5.2              purrr_1.2.2             bit_4.6.0              </span></span>
+<span><span class="co">##  [25] xfun_0.60               cachem_1.1.0            ChemmineR_3.65.0       </span></span>
+<span><span class="co">##  [28] jsonlite_2.0.0          blob_1.3.0              DelayedArray_0.39.3    </span></span>
+<span><span class="co">##  [31] parallel_4.6.1          cluster_2.1.8.3         R6_2.6.1               </span></span>
+<span><span class="co">##  [34] bslib_0.12.0            stringi_1.8.9           RColorBrewer_1.1-3     </span></span>
+<span><span class="co">##  [37] jquerylib_0.1.4         bookdown_0.47           knitr_1.51             </span></span>
+<span><span class="co">##  [40] base64enc_0.1-6         BiocBaseUtils_1.15.1    igraph_2.3.3           </span></span>
+<span><span class="co">##  [43] Matrix_1.7-6            tidyselect_1.2.1        abind_1.4-8            </span></span>
+<span><span class="co">##  [46] yaml_2.3.12             codetools_0.2-20        curl_7.1.0             </span></span>
+<span><span class="co">##  [49] plyr_1.8.9              lattice_0.22-9          tibble_3.3.1           </span></span>
+<span><span class="co">##  [52] withr_3.0.3             KEGGREST_1.53.6         S7_0.2.2               </span></span>
+<span><span class="co">##  [55] evaluate_1.0.5          desc_1.4.3              xml2_1.6.0             </span></span>
+<span><span class="co">##  [58] ExperimentHub_3.3.0     Biostrings_2.81.6       pillar_1.11.1          </span></span>
+<span><span class="co">##  [61] BiocManager_1.30.27     filelock_1.0.3          DT_0.34.0              </span></span>
+<span><span class="co">##  [64] ncdf4_1.24              RCurl_1.98-1.19         BiocVersion_3.24.0     </span></span>
+<span><span class="co">##  [67] ggplot2_4.0.3           scales_1.4.0            glue_1.8.1             </span></span>
+<span><span class="co">##  [70] lazyeval_0.2.3          tools_4.6.1             data.table_1.18.4      </span></span>
+<span><span class="co">##  [73] mzR_2.47.0              fs_2.1.0                grid_4.6.1             </span></span>
+<span><span class="co">##  [76] tidyr_1.3.2             MsCoreUtils_1.25.4      AnnotationDbi_1.75.2   </span></span>
+<span><span class="co">##  [79] cli_3.6.6               rappdirs_0.3.4          textshaping_1.0.5      </span></span>
+<span><span class="co">##  [82] rsvg_2.7.0              S4Arrays_1.13.0         dplyr_1.2.1            </span></span>
+<span><span class="co">##  [85] AnnotationFilter_1.37.0 gtable_0.3.6            sass_0.4.10            </span></span>
+<span><span class="co">##  [88] digest_0.6.39           SparseArray_1.13.2      rjson_0.2.23           </span></span>
+<span><span class="co">##  [91] htmlwidgets_1.6.4       farver_2.1.2            memoise_2.0.1          </span></span>
+<span><span class="co">##  [94] htmltools_0.5.9         pkgdown_2.2.1.9000      lifecycle_1.0.5        </span></span>
+<span><span class="co">##  [97] httr_1.4.8              CompoundDb_1.15.4       bit64_4.8.2            </span></span>
+<span><span class="co">## [100] MASS_7.3-66</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -1849,7 +1850,7 @@ in <span>R</span>.”</span> <em>Metabolites</em> 12 (2): 173. <a href="https://
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.9000.</p>
 </div>
 
     </footer>
